@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.6.2
+// @version      2.6.3
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -1624,7 +1624,7 @@
   }, Ae = new Set([ "\u5bf9", "\u6b63\u786e", "true", "t", "\u221a", "\u2713", "1", "\u662f", "yes", "y", "right", "correct", "ri" ]), Te = new Set([ "\u9519", "\u9519\u8bef", "\u4e0d\u6b63\u786e", "false", "f", "\xd7", "\u2715", "x", "0", "\u5426", "no", "n", "wrong", "incorrect", "wr" ]), splitAnswerText = (e, t) => e.split(t).map((e => e.trim())).filter(Boolean), normalizeJudgeAnswer = e => {
     const t = normalizeComparableText(e).toLowerCase();
     return Ae.has(t) ? "\u6b63\u786e" : Te.has(t) ? "\u9519\u8bef" : null;
-  }, mapChoiceValueToOption = (e, t) => {
+  }, flattenAnswerTexts = e => null == e ? [] : Array.isArray(e) ? e.flatMap(flattenAnswerTexts) : "object" == typeof e ? Object.values(e).flatMap(flattenAnswerTexts) : [ String(e) ], mapChoiceValueToOption = (e, t) => {
     var a;
     const n = ((e, t) => {
       var a;
@@ -3342,15 +3342,30 @@
       };
     }
     static getMainAnswer(e) {
-      const t = {
+      const t = (a = e.question, n = isLoggedInUserCache(Cache.get("user", {})), "string" != typeof a || "" === a.trim() ? {
+        answer: "",
+        duration: 0,
+        msg: "\u9898\u5e72\u4e3a\u7a7a\uff0c\u672a\u67e5\u8be2\u9898\u5e93"
+      } : n ? null : {
+        answer: "",
+        duration: 0,
+        msg: "\u767b\u5f55\u540e\u624d\u53ef\u4ee5\u4f7f\u7528\u9898\u5e93\u641c\u9898\uff0c\u8bf7\u5148\u767b\u5f55",
+        needLogin: true
+      });
+      var a, n;
+      if (t) return t.msg, Promise.resolve({
+        form: "\u7231\u95ee\u7b54\u9898\u5e93",
+        ...t
+      });
+      const r = {
         type: e.type,
         question: e.question,
         options: e.options.map((e => e)),
         workType: e.workType,
         pageType: e.pageType
-      }, a = apiUrl("question/search");
+      }, s = apiUrl("question/search");
       return new Promise((e => {
-        requestApi(a, "POST", t, {}, 6e3).then((t => {
+        requestApi(s, "POST", r, {}, 6e3).then((t => {
           var a;
           let n = t[1];
           t = JSON.parse(t[0].responseText);
@@ -10491,7 +10506,8 @@
       }));
       const remap = e => "string" != typeof e ? e : s.get(normalizeComparableText(e)) ?? e;
       "string" == typeof t.answer ? t.answer = remap(t.answer) : Array.isArray(t.answer) && (t.answer = t.answer.map(remap));
-    })(e, t), t;
+    })(e, t), null !== t.answer && void 0 !== t.answer && "object" != typeof t.answer && (t.answer = [ String(t.answer) ]), 
+    t;
   }, parseAntaiQuestion = e => {
     const t = "string" == typeof e.options ? e.options : "", a = [];
     t.split(/[;\uff1b]/).map((e => e.trim())).filter(Boolean).forEach((e => {
@@ -10774,10 +10790,12 @@
   }, saveParser = async (e, t) => {
     const a = t.app, n = t.ask;
     n.rule = e, e.tips && (n.tips = e.tips);
-    const r = questionSaveParser(e.question, e.answerHook || null).filter((e => null != e && 0 !== e.answer.length && "" !== e.answer && "8" != e.type)).map((e => (e.question = titleClean(e.question), 
-    e)));
+    const r = questionSaveParser(e.question, e.answerHook || null).filter((e => {
+      return !(null == e || (t = e.answer, !flattenAnswerTexts(t).some((e => "" !== e.trim()))) || "8" == e.type);
+      var t;
+    })).map((e => (e.question = titleClean(e.question), e)));
     n.saveQuestionData = r, r.forEach((e => {
-      0 !== e.answer.length && Answer.cacheAnswer(e);
+      Answer.cacheAnswer(e);
     })), await async function({questionList: e, pageType: t, paper: a, onPaperError: n, beforeSync: r, syncQuestionList: s}) {
       if (a) try {
         await a(e);
