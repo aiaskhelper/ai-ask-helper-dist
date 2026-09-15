@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.6.4
+// @version      2.6.5
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -6236,7 +6236,10 @@
         question: e
       } ], Je.setPaper(a.hash, a);
     }
-  } ], lt = [ {
+  } ], parseZhijiaoyunTypeText = e => {
+    const t = String(e ?? "").match(/\u3010(.*)\u3011/);
+    return t ? t[1].trim().replace("\u586b\u7a7a\u9898(\u5ba2\u89c2)", "\u586b\u7a7a\u9898") : "";
+  }, lt = [ {
     type: "hook",
     name: "hook",
     match: "spoc-exam.icve.com.cn" === location.host || location.host.includes("exam.courshare.cn") || location.host.includes("webtrn.cn"),
@@ -6454,7 +6457,7 @@
     },
     answerHook: e => {
       const t = D(e.html).find(".xvhao").text().trim();
-      e.type = typeConvert(t.match(/\u3010(.*)\u3011/)[1].trim().replace("\u586b\u7a7a\u9898(\u5ba2\u89c2)", "\u586b\u7a7a\u9898"));
+      e.type = typeConvert(parseZhijiaoyunTypeText(t));
       let a = D(e.html).find(".answer").text().trim();
       switch (e.answer = a.split(",").map((t => e.options[t.charCodeAt(0) - 65])), e.type) {
        case "2":
@@ -6484,8 +6487,11 @@
     type: "ask",
     name: "\u667a\u6167\u804c\u6559+\u7b54\u9898",
     tips: "\u8be5\u5e73\u53f0\u95ee\u9898\u8f83\u591a\uff0c\u9047\u5230\u8bf7\u53cd\u9988\u7ed9\u4f5c\u8005",
-    match: () => location.href.includes("coursePreview/jobTest") || location.href.includes("spockeepTest") || location.href.includes("spocjobTest"),
-    types: [ "0", "1", "3" ],
+    match: () => {
+      return e = location.href, !/spockeepTestView|spocjobTestDocument/.test(e) && (e.includes("coursePreview/jobTest") || e.includes("spockeepTest") || e.includes("spocjobTest"));
+      var e;
+    },
+    types: [ "0", "1", "2", "3" ],
     question: {
       html: ".subjectDet",
       question: ".ql-editor",
@@ -6502,10 +6508,26 @@
     ischecked: e => e.parent().parent().parent().hasClass("is-checked"),
     questionHook: e => {
       const t = D(e.html).find(".title.titleTwo").text().trim();
-      if (e.type = typeConvert(t.match(/\u3010(.*)\u3011/)[1].trim().replace("\u586b\u7a7a\u9898(\u5ba2\u89c2)", "\u586b\u7a7a\u9898")), 
-      "3" === e.type) e.options = [], e.$options = D(e.html).find(".optionList>div label");
+      switch (e.type = typeConvert(parseZhijiaoyunTypeText(t)), e.type) {
+       case "2":
+        e.options = [], e.$options = D(e.html).find(".tkInput input");
+        break;
+
+       case "3":
+        e.options = [], e.$options = D(e.html).find(".optionList>div label");
+      }
       return e;
-    }
+    },
+    setAnswer: e => "2" !== e.type || (((e, t) => {
+      const a = Array.isArray(t) ? t : [ t ];
+      let n = 0;
+      e.forEach(((e, t) => {
+        const r = a[t];
+        null != r && (e.value = String(r), e.dispatchEvent(new Event("input", {
+          bubbles: true
+        })), n++);
+      }));
+    })(D(e.html).find(".tkInput input").get(), e.answer), false)
   }, {
     type: "save",
     name: "\u667a\u6167\u804c\u6559+\u6536\u5f55",
@@ -6526,7 +6548,7 @@
     answerHook: e => {
       e.options = removeStartChar(e.options);
       const t = D(e.html).find(".xvhao").text().trim();
-      e.type = typeConvert(t.match(/\u3010(.*)\u3011/)[1].trim().replace("\u586b\u7a7a\u9898(\u5ba2\u89c2)", "\u586b\u7a7a\u9898"));
+      e.type = typeConvert(parseZhijiaoyunTypeText(t));
       let a = D(e.html).find(".answer").text().trim();
       switch (e.answer = a.split(",").map((t => e.options[t.charCodeAt(0) - 65])), e.type) {
        case "2":
