@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.6.5
+// @version      2.6.6
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -16110,7 +16110,39 @@
       writable: false,
       value: hookedSend
     }), true;
-  }, get_href = () => location.href, hookXHR = () => {
+  }, get_href = () => location.href, comHook = () => {
+    if (hookXHR(), /onlineexamh5new.zhihuishu.com/i.test(get_href())) {
+      const e = W.yxyz;
+      W.yxyz = function(t, a) {
+        !W.yxyzpush && (W.yxyzpush = []);
+        let n = e(t, a);
+        return W.yxyzpush.push({
+          ...t,
+          data: n
+        }), n;
+      };
+    }
+    if (/icve.com.cn/i.test(get_href()) || /courshare.cn/i.test(get_href()) || /webtrn.cn/i.test(get_href())) {
+      const e = W.open;
+      W.open = function() {
+        return arguments[2] = "", e.apply(this, arguments);
+      };
+    }
+    if (/ytccr.com/i.test(get_href())) {
+      const e = localStorage.getItem;
+      localStorage.getItem = function(t) {
+        if ("_debugger" === t) return true;
+        return e.apply(this, arguments);
+      };
+    }
+    if (/91huayi.com/i.test(get_href())) {
+      const e = W.$.cookie;
+      W.$.cookie = function(t, a, n) {
+        return console.log("Cookie\u64cd\u4f5c:", t, a, n), t.startsWith("switchTime") && void 0 !== a ? (a = void 0, 
+        e.apply(this, [ t, a, n ])) : e.apply(this, arguments);
+      };
+    }
+  }, hookXHR = () => {
     installXHRHook(XMLHttpRequest, (function() {
       var e;
       switch (true) {
@@ -16171,6 +16203,9 @@
         }
       }
     }));
+  }, isPageClaimedByNewLine = e => {
+    var t;
+    return "new" === (null == (t = e.documentElement) ? void 0 : t.getAttribute("data-aiask-line"));
   };
 
   (e => {
@@ -16181,6 +16216,7 @@
   })(K);
 
   const run = async () => {
+    if (isPageClaimedByNewLine(document)) return;
     var e;
     (e = document.createElement("iframe")).style.display = "none", document.body.appendChild(e), 
     window.console = e.contentWindow.console;
@@ -16212,40 +16248,8 @@
     })(), parseRule(ha));
   };
 
-  (() => {
-    if (hookXHR(), /onlineexamh5new.zhihuishu.com/i.test(get_href())) {
-      const e = W.yxyz;
-      W.yxyz = function(t, a) {
-        !W.yxyzpush && (W.yxyzpush = []);
-        let n = e(t, a);
-        return W.yxyzpush.push({
-          ...t,
-          data: n
-        }), n;
-      };
-    }
-    if (/icve.com.cn/i.test(get_href()) || /courshare.cn/i.test(get_href()) || /webtrn.cn/i.test(get_href())) {
-      const e = W.open;
-      W.open = function() {
-        return arguments[2] = "", e.apply(this, arguments);
-      };
-    }
-    if (/ytccr.com/i.test(get_href())) {
-      const e = localStorage.getItem;
-      localStorage.getItem = function(t) {
-        if ("_debugger" === t) return true;
-        return e.apply(this, arguments);
-      };
-    }
-    if (/91huayi.com/i.test(get_href())) {
-      const e = W.$.cookie;
-      W.$.cookie = function(t, a, n) {
-        return console.log("Cookie\u64cd\u4f5c:", t, a, n), t.startsWith("switchTime") && void 0 !== a ? (a = void 0, 
-        e.apply(this, [ t, a, n ])) : e.apply(this, arguments);
-      };
-    }
-  })(), ha.filter((e => isRuleMatched(e) && e.hook)).forEach((e => {
+  isPageClaimedByNewLine(document) || (comHook(), ha.filter((e => isRuleMatched(e) && e.hook)).forEach((e => {
     e.hook();
-  })), "complete" === document.readyState ? run() : window.addEventListener("load", run);
+  }))), "complete" === document.readyState ? run() : window.addEventListener("load", run);
 
 })(Vue, Icon, DOMPurify, Pinia, CryptoJS, $);
