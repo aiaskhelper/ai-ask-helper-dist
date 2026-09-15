@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.6.3
+// @version      2.6.4
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -90,6 +90,7 @@
 // @match        *://*.jsnu.edu.cn/*
 // @match        *://*.geovisearth.com/*
 // @match        *://*.bgzk-edu.cn/*
+// @match        *://*.cqie.cn/*
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/vue/3.4.27/vue.global.min.js
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/vue-demi/0.14.6/index.iife.js
 // @require      data:application/javascript,%3Bwindow.Vue%3DVue%3B
@@ -100,7 +101,6 @@
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/pinia/2.2.4/pinia.iife.prod.js
 // @connect      127.0.0.1
 // @connect      icodef.com
-// @connect      muketool.com
 // @connect      wk66.top
 // @connect      zhihuishu.com
 // @connect      greasyfork.org
@@ -213,6 +213,7 @@
 // @connect      jsnu.edu.cn
 // @connect      geovisearth.com
 // @connect      bgzk-edu.cn
+// @connect      cqie.cn
 // @grant        GM.xmlHttpRequest
 // @grant        GM_deleteValue
 // @grant        GM_getValue
@@ -321,10 +322,10 @@
       n || (n = document.createElement("div"), n.id = a, document.body.appendChild(n));
       const r = document.createElement("div");
       r.className = `aah-notice aah-notice-${t}`;
-      const s = document.createElement("span");
-      s.className = "aah-notice-bar";
       const i = document.createElement("span");
-      i.className = "aah-notice-icon", i.textContent = Z[t] || Z.info;
+      i.className = "aah-notice-bar";
+      const s = document.createElement("span");
+      s.className = "aah-notice-icon", s.textContent = Z[t] || Z.info;
       const o = document.createElement("div");
       o.className = "aah-notice-body";
       const l = document.createElement("div");
@@ -333,7 +334,7 @@
       c.className = "aah-notice-type", c.textContent = te[t] || te.info, l.appendChild(c);
       const p = document.createElement("div");
       p.className = "aah-notice-content", p.innerHTML = z.sanitize(e), o.appendChild(l), 
-      o.appendChild(p), r.appendChild(s), r.appendChild(i), r.appendChild(o), n.appendChild(r), 
+      o.appendChild(p), r.appendChild(i), r.appendChild(s), r.appendChild(o), n.appendChild(r), 
       setTimeout((() => {
         r.classList.add("hide"), setTimeout((() => r.remove()), 220);
       }), 2800), addLog(e, t);
@@ -353,12 +354,12 @@
           padding: F.pad.Pkcs7
         }).toString();
       }
-      const r = new TextEncoder, s = r.encode(e), i = r.encode(t), o = r.encode(a), l = await crypto.subtle.importKey("raw", i, {
+      const r = new TextEncoder, i = r.encode(e), s = r.encode(t), o = r.encode(a), l = await crypto.subtle.importKey("raw", s, {
         name: "AES-CBC"
       }, !1, [ "encrypt" ]), c = await crypto.subtle.encrypt({
         name: "AES-CBC",
         iv: o
-      }, l, s), p = new Uint8Array(c), u = 1024;
+      }, l, i), p = new Uint8Array(c), u = 1024;
       let d, m = "";
       for (let e = 0; e < p.length; e += u) {
         const t = p.slice(e, Math.min(e + u, p.length));
@@ -388,7 +389,7 @@
         }).toString(F.enc.Utf8);
       }
       /^[A-Za-z0-9+/]*={0,2}$/.test(e);
-      const r = new TextEncoder, s = r.encode(t), i = r.encode(a);
+      const r = new TextEncoder, i = r.encode(t), s = r.encode(a);
       let o;
       try {
         o = atob(e);
@@ -398,11 +399,11 @@
       const l = new Uint8Array(o.length);
       for (let e = 0; e < o.length; e++) l[e] = o.charCodeAt(e);
       if (l.length % 16 != 0) throw new Error("\u52a0\u5bc6\u6570\u636e\u957f\u5ea6\u4e0d\u6b63\u786e\uff0c\u4e0d\u662f16\u7684\u500d\u6570");
-      const c = await crypto.subtle.importKey("raw", s, {
+      const c = await crypto.subtle.importKey("raw", i, {
         name: "AES-CBC"
       }, !1, [ "decrypt" ]), p = await crypto.subtle.decrypt({
         name: "AES-CBC",
-        iv: i
+        iv: s
       }, c, l);
       return new TextDecoder("utf-8", {
         fatal: !0
@@ -425,8 +426,8 @@
     const a = [];
     return Object.keys(e).sort().forEach((n => {
       if (!t && "html" === n) return;
-      const r = t ? `${t}.${n}` : n, s = e[n];
-      (e => null == e || !(!Array.isArray(e) || 0 !== e.length) || !(!isPlainObject$1(e) || 0 !== Object.keys(e).length))(s) || (Array.isArray(s) ? a.push(`${r}=${(e => e.every((e => "object" != typeof e)) ? [ ...e ].sort().join(",") : JSON.stringify(e))(s)}`) : isPlainObject$1(s) ? a.push(...flattenForSignature(s, r)) : a.push(`${r}=${String(s)}`));
+      const r = t ? `${t}.${n}` : n, i = e[n];
+      (e => null == e || !(!Array.isArray(e) || 0 !== e.length) || !(!isPlainObject$1(e) || 0 !== Object.keys(e).length))(i) || (Array.isArray(i) ? a.push(`${r}=${(e => e.every((e => "object" != typeof e)) ? [ ...e ].sort().join(",") : JSON.stringify(e))(i)}`) : isPlainObject$1(i) ? a.push(...flattenForSignature(i, r)) : a.push(`${r}=${String(i)}`));
     })), a;
   };
 
@@ -471,7 +472,7 @@
 
   W.ksv = md5(re.script.author + re.script.name.replace(/server:/, "").trim());
 
-  const se = {
+  const ie = {
     home: {
       page: "overview",
       subPage: ""
@@ -503,7 +504,7 @@
   };
 
   function resolveNextPage(e, t) {
-    return void 0 !== se[e] ? se[e] : {
+    return void 0 !== ie[e] ? ie[e] : {
       page: e,
       subPage: t ?? ""
     };
@@ -514,7 +515,7 @@
     return Number.isFinite(t) ? Math.max(480, Math.min(1200, Math.round(t))) : 480;
   }
 
-  const ie = {
+  const se = {
     debug: true,
     searchApi: [],
     defaultShowFloat: false,
@@ -539,24 +540,24 @@
 
   const oe = function() {
     const e = Cache.get("app") || {}, t = {
-      ...ie
+      ...se
     };
     for (const [a, n] of Object.entries(e)) "gpt" !== a && "alert" !== a && void 0 !== n && (t[a] = n);
     if (e.gpt) {
       const a = new Map;
       e.gpt.forEach((e => {
         a.set(e.name, e.key);
-      })), t.gpt = ie.gpt.map((e => ({
+      })), t.gpt = se.gpt.map((e => ({
         ...e,
         key: a.get(e.name) || ""
       })));
     }
-    return t.alert = ie.alert, t.gptIndex >= t.gpt.length && (t.gptIndex = 0), t.dialogWidth = normalizeDialogWidth(t.dialogWidth), 
+    return t.alert = se.alert, t.gptIndex >= t.gpt.length && (t.gptIndex = 0), t.dialogWidth = normalizeDialogWidth(t.dialogWidth), 
     t;
   }();
 
   function getApp() {
-    return Cache.get("app") || ie;
+    return Cache.get("app") || se;
   }
 
   !function(e) {
@@ -729,14 +730,14 @@
         }
         return "";
       })).filter(Boolean);
-      let s = `${e}${normalizeHashText(t)}${r.join("")}`;
-      return s = s.replace(/\s/g, ""), md5(s);
+      let i = `${e}${normalizeHashText(t)}${r.join("")}`;
+      return i = i.replace(/\s/g, ""), md5(i);
     }
     const r = Array.from(a).map(normalizeHashText);
     n && r.sort();
-    const s = r.join("");
-    let i = `${e}${normalizeHashText(t)}${s}`;
-    return i = i.replace(/\s/g, ""), md5(i);
+    const i = r.join("");
+    let s = `${e}${normalizeHashText(t)}${i}`;
+    return s = s.replace(/\s/g, ""), md5(s);
   }, sanitizeHtml = (e, t, a) => {
     const n = z.sanitize;
     return "function" == typeof n ? n(e, {
@@ -746,17 +747,17 @@
       KEEP_CONTENT: true
     }) : ((e, t, a) => {
       const n = new Set(t), r = new Set(a);
-      return e.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "").replace(/\son\w+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, "").replace(/<([/]?)([a-z][\w:-]*)([^>]*)>/gi, ((e, t, a, s) => {
-        const i = String(a).toLowerCase();
-        if (!n.has(i)) return "";
-        if (t) return `</${i}>`;
+      return e.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "").replace(/\son\w+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?/gi, "").replace(/<([/]?)([a-z][\w:-]*)([^>]*)>/gi, ((e, t, a, i) => {
+        const s = String(a).toLowerCase();
+        if (!n.has(s)) return "";
+        if (t) return `</${s}>`;
         const o = [];
-        return String(s).replace(/([:\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g, ((e, t, a, n, s) => {
-          const i = String(t).toLowerCase(), l = String(a ?? n ?? s ?? "");
-          return r.has(i) && ("href" !== i && "src" !== i || (c = l.trim(), /^(https?:|mailto:|tel:|data:image\/|\/|\.\/|\.\.\/|#)/i.test(c))) ? (o.push(`${i}="${l.replace(/"/g, "&quot;")}"`), 
+        return String(i).replace(/([:\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g, ((e, t, a, n, i) => {
+          const s = String(t).toLowerCase(), l = String(a ?? n ?? i ?? "");
+          return r.has(s) && ("href" !== s && "src" !== s || (c = l.trim(), /^(https?:|mailto:|tel:|data:image\/|\/|\.\/|\.\.\/|#)/i.test(c))) ? (o.push(`${s}="${l.replace(/"/g, "&quot;")}"`), 
           "") : "";
           var c;
-        })), `<${i}${o.length ? ` ${o.join(" ")}` : ""}>`;
+        })), `<${s}${o.length ? ` ${o.join(" ")}` : ""}>`;
       }));
     })(e, t, a);
   };
@@ -847,9 +848,9 @@
 
   function removeOptionsStartChar(e) {
     for (let t = 0; t < e.length; t += 1) {
-      const a = String.fromCharCode(65 + t) + ".", n = String.fromCharCode(65 + t) + "\u3001", r = String.fromCharCode(65 + t) + "\uff0e", s = String.fromCharCode(65 + t), i = new RegExp(`^${a}|^${n}|^${r}|^${s}`);
-      if (!e[t].match(i)) return false;
-      e[t] = e[t].replace(i, "").trim();
+      const a = String.fromCharCode(65 + t) + ".", n = String.fromCharCode(65 + t) + "\u3001", r = String.fromCharCode(65 + t) + "\uff0e", i = String.fromCharCode(65 + t), s = new RegExp(`^${a}|^${n}|^${r}|^${i}`);
+      if (!e[t].match(s)) return false;
+      e[t] = e[t].replace(s, "").trim();
     }
     return e;
   }
@@ -912,7 +913,7 @@
   const waitUntil = (e, t) => {
     const a = void 0 === t || "number" == typeof t, n = "number" == typeof t ? {
       interval: t
-    } : t ?? {}, r = n.interval ?? 100, s = !a && Object.prototype.hasOwnProperty.call(n, "timeout") && "number" == typeof n.timeout, i = n.timeout, o = n.timeoutMessage ?? "\u7b49\u5f85\u9875\u9762\u6761\u4ef6\u8d85\u65f6", l = Date.now();
+    } : t ?? {}, r = n.interval ?? 100, i = !a && Object.prototype.hasOwnProperty.call(n, "timeout") && "number" == typeof n.timeout, s = n.timeout, o = n.timeoutMessage ?? "\u7b49\u5f85\u9875\u9762\u6761\u4ef6\u8d85\u65f6", l = Date.now();
     return new Promise(((t, n) => {
       const c = setInterval((() => {
         try {
@@ -921,7 +922,7 @@
           if (a) return;
           return clearInterval(c), void n(r);
         }
-        s && Date.now() - l >= i && (clearInterval(c), n(new Error(o)));
+        i && Date.now() - l >= s && (clearInterval(c), n(new Error(o)));
       }), r);
     }));
   };
@@ -1057,7 +1058,7 @@
       })();
       return t ? ((e, t) => {
         const a = "function" == typeof AbortController ? new AbortController : void 0;
-        let r, s, rejectTransport = () => {};
+        let r, i, rejectTransport = () => {};
         const createBaseResponse = (t, a, n = "") => ({
           finalUrl: t.url || e.url,
           response: a,
@@ -1067,8 +1068,8 @@
           statusText: t.statusText
         });
         return {
-          promise: new Promise(((i, o) => {
-            rejectTransport = o, e.timeout && a && (s = setTimeout((() => {
+          promise: new Promise(((s, o) => {
+            rejectTransport = o, e.timeout && a && (i = setTimeout((() => {
               r = "timeout", a.abort();
             }), e.timeout)), (async () => {
               try {
@@ -1091,14 +1092,14 @@
                       cause: n
                     }));
                   }
-                  return void i(createBaseResponse(r, r.body));
+                  return void s(createBaseResponse(r, r.body));
                 }
                 if ("arraybuffer" === e.responseType) {
                   const e = await r.arrayBuffer();
-                  return void i(createBaseResponse(r, e));
+                  return void s(createBaseResponse(r, e));
                 }
-                const s = await r.text();
-                i(createBaseResponse(r, s, s));
+                const i = await r.text();
+                s(createBaseResponse(r, i, i));
               } catch (n) {
                 if ("timeout" === r) return void o(createAiError("AI_REQUEST_TIMEOUT"));
                 if ("manual" === r) return void o(createAiError("AI_NETWORK_FAILED", {
@@ -1108,7 +1109,7 @@
                   cause: n
                 }));
               } finally {
-                s && clearTimeout(s);
+                i && clearTimeout(i);
               }
             })();
           })),
@@ -1126,21 +1127,21 @@
       });
     }
     var n;
-    let r, s, i, rejectTransport = () => {}, o = false, l = false, c = false, p = "";
+    let r, i, s, rejectTransport = () => {}, o = false, l = false, c = false, p = "";
     const u = new Promise(((t, n) => {
       const rejectOnce = e => {
         o || (o = true, n(e));
       };
       rejectTransport = rejectOnce;
-      const beginStreamRead = t => s || (s = readStream(t.response, (t => {
+      const beginStreamRead = t => i || (i = readStream(t.response, (t => {
         var a;
         p.length < 8192 && (p += t), null == (a = e.onStreamChunk) || a.call(e, t);
       })).then((() => {
         l = true;
       })).catch((e => {
-        l = true, c = true, i = e;
-      })), s), rejectWithStatusError = e => {
-        (s ? Promise.race([ s.then((() => p)), new Promise((e => setTimeout((() => e(p)), 500))) ]) : Promise.resolve("")).then((t => {
+        l = true, c = true, s = e;
+      })), i), rejectWithStatusError = e => {
+        (i ? Promise.race([ i.then((() => p)), new Promise((e => setTimeout((() => e(p)), 500))) ]) : Promise.resolve("")).then((t => {
           const a = createHttpStatusError({
             ...e,
             responseText: e.responseText || t
@@ -1166,12 +1167,12 @@
           const a = beginStreamRead(t);
           if (l) return c ? void rejectOnce(createAiError("AI_NETWORK_FAILED", {
             userMessage: "AI \u6d41\u5f0f\u54cd\u5e94\u8bfb\u53d6\u5931\u8d25",
-            cause: i
+            cause: s
           })) : void resolveOnce(t);
           a.then((() => {
             c ? rejectOnce(createAiError("AI_NETWORK_FAILED", {
               userMessage: "AI \u6d41\u5f0f\u54cd\u5e94\u8bfb\u53d6\u5931\u8d25",
-              cause: i
+              cause: s
             })) : resolveOnce(t);
           }));
         },
@@ -1300,12 +1301,12 @@
           },
           timeout: e.config.timeout
         };
-        let s = false;
+        let i = false;
         const attempt = async a => {
-          let i = "";
+          let s = "";
           const o = createSsePacketParser(), emit = t => {
             var a;
-            i += t, s = true, null == (a = e.onToken) || a.call(e, t);
+            s += t, i = true, null == (a = e.onToken) || a.call(e, t);
           }, l = t({
             method: "POST",
             url: r.url,
@@ -1328,15 +1329,15 @@
                 const t = normalizeOpenAiChunk(e);
                 t && emit(t);
               }
-              if (!i) throw createAiError("AI_RESPONSE_PARSE_FAILED");
-            } else i = (e => {
+              if (!s) throw createAiError("AI_RESPONSE_PARSE_FAILED");
+            } else s = (e => {
               var t, a, n;
               const r = null == (n = null == (a = null == (t = null == e ? void 0 : e.choices) ? void 0 : t[0]) ? void 0 : a.message) ? void 0 : n.content;
               if ("string" != typeof r || !r) throw createAiError("AI_RESPONSE_PARSE_FAILED");
               return r;
             })(parseJsonResponse(t));
             return {
-              text: i,
+              text: s,
               raw: t.response,
               duration: Date.now() - n
             };
@@ -1346,7 +1347,7 @@
         };
         try {
           return await attempt(!0);
-        } catch (i) {
+        } catch (s) {
           if (!((e, t, a) => {
             var n;
             if (a) return false;
@@ -1354,7 +1355,7 @@
             if (!isAiError(e)) return false;
             const r = null == (n = e.detail) ? void 0 : n.status;
             return "number" == typeof r && ge.includes(r);
-          })(i, e, s)) throw i;
+          })(s, e, i)) throw s;
           return attempt(false);
         }
       }
@@ -1374,16 +1375,16 @@
             "Content-Type": "application/json"
           },
           timeout: e.config.timeout
-        }, s = t({
+        }, i = t({
           method: "POST",
           url: r.url,
           headers: r.headers,
           data: JSON.stringify(createAnthropicBody(e)),
           timeout: r.timeout,
           responseType: "json"
-        }), i = bindAbortSignal(e.signal, s.abort);
+        }), s = bindAbortSignal(e.signal, i.abort);
         try {
-          const e = await s.promise, t = (e => {
+          const e = await i.promise, t = (e => {
             const t = null == e ? void 0 : e.content;
             if (!Array.isArray(t)) throw createAiError("AI_RESPONSE_PARSE_FAILED");
             const a = t.map((e => e.text)).filter((e => "string" == typeof e)).join("");
@@ -1396,7 +1397,7 @@
             duration: Date.now() - n
           };
         } finally {
-          null == i || i();
+          null == s || s();
         }
       }
     };
@@ -1445,7 +1446,7 @@
       };
     })();
     try {
-      const s = n.provider || (null == (r = n.resolveProvider) ? void 0 : r.call(n, t)) || (e => {
+      const i = n.provider || (null == (r = n.resolveProvider) ? void 0 : r.call(n, t)) || (e => {
         switch (e) {
          case "openai-compatible":
           return ve;
@@ -1453,7 +1454,7 @@
          case "anthropic-messages":
           return ye;
         }
-      })(t.providerKind), i = ((e, t, a = "4") => [ {
+      })(t.providerKind), s = ((e, t, a = "4") => [ {
         role: "system",
         content: "ask" === e ? be[a] || be[4] : "repair" === e ? "\u4f60\u662f\u4e00\u4e2a\u4e13\u4e1a\u7684\u7b54\u9898\u52a9\u624b\uff0c\u8bf7\u4fee\u590d\u7b54\u6848\u4e2d\u7f3a\u5931\u3001\u683c\u5f0f\u9519\u8bef\u6216\u8868\u8ff0\u4e0d\u6e05\u7684\u5185\u5bb9\u3002\u8f93\u51fa\u5e94\u4ee5\u4fee\u590d\u7b54\u6848\u4e3a\u4e3b\uff0c\u4fdd\u6301\u51c6\u786e\u3001\u7b80\u6d01\uff0c\u5e76\u907f\u514d\u65e0\u5173\u89e3\u91ca\u3002" : "\u4f60\u662f\u4e00\u4e2a\u4e13\u4e1a\u7684\u7b54\u9898\u52a9\u624b\uff0c\u8bf7\u6839\u636e\u7528\u6237\u63d0\u4f9b\u7684\u9898\u76ee\u8fdb\u884c\u89e3\u7b54\u3002\u56de\u7b54\u5e94\u51c6\u786e\u3001\u7b80\u6d01\uff0c\u5fc5\u8981\u65f6\u7ed9\u51fa\u7b80\u8981\u7406\u7531\u3002"
       }, {
@@ -1461,9 +1462,9 @@
         content: t
       } ])(e, a, n.questionType), o = n.stream ?? t.stream;
       if (!n.route) {
-        const e = await s.chat({
+        const e = await i.chat({
           config: t,
-          messages: i,
+          messages: s,
           stream: o,
           onToken: n.onToken,
           signal: n.signal
@@ -1535,9 +1536,9 @@
             return {
               ok: !0,
               stage: "upstream",
-              text: (await s.chat({
+              text: (await i.chat({
                 config: t,
-                messages: i,
+                messages: s,
                 stream: o,
                 onToken: a,
                 signal: n.signal,
@@ -1574,9 +1575,9 @@
           try {
             return {
               ok: !0,
-              text: (await s.chat({
+              text: (await i.chat({
                 config: t,
-                messages: i,
+                messages: s,
                 stream: o,
                 onToken: a,
                 signal: n.signal,
@@ -1599,9 +1600,9 @@
         servedBy: c.servedBy,
         fallbackUsed: c.fallbackUsed
       };
-    } catch (s) {
-      const e = isAiError(s) ? s : createAiError("AI_NETWORK_FAILED", {
-        cause: s
+    } catch (i) {
+      const e = isAiError(i) ? i : createAiError("AI_NETWORK_FAILED", {
+        cause: i
       });
       return {
         success: false,
@@ -1649,10 +1650,10 @@
     const t = e.indexOf("{");
     if (t < 0) return;
     let a = 0, n = false, r = false;
-    for (let s = t; s < e.length; s++) {
-      const i = e[s];
-      if (r) r = false; else if ("\\" !== i) if ('"' !== i) {
-        if (!n && ("{" === i && a++, "}" === i && a--, 0 === a)) return e.slice(t, s + 1);
+    for (let i = t; i < e.length; i++) {
+      const s = e[i];
+      if (r) r = false; else if ("\\" !== s) if ('"' !== s) {
+        if (!n && ("{" === s && a++, "}" === s && a--, 0 === a)) return e.slice(t, i + 1);
       } else n = !n; else r = true;
     }
     return e.slice(t);
@@ -1768,8 +1769,8 @@
       const n = a.options.filter(isSubQuestionMeta);
       if (!Array.isArray(e) || 0 === n.length || e.length !== n.length) return invalid("AI_OUTPUT_SCHEMA_INVALID", t);
       const r = [];
-      for (let s = 0; s < n.length; s++) {
-        const a = parseReadingChoice(e[s], t, n[s]);
+      for (let i = 0; i < n.length; i++) {
+        const a = parseReadingChoice(e[i], t, n[i]);
         if (!a.valid) return a;
         if (a.answer.some(Array.isArray)) return invalid("AI_OUTPUT_SCHEMA_INVALID", t);
         r.push(a.answer);
@@ -1804,7 +1805,7 @@
   }, withKeyHelp = e => ({
     ...e,
     keyHelp: e.keyHelp || `\u767b\u5f55 ${e.name} \u63a7\u5236\u53f0\uff0c\u5728 API Key \u9875\u9762\u521b\u5efa\u6216\u590d\u5236 API Key\u3002`
-  }), Pe = [ withKeyHelp({
+  }), He = [ withKeyHelp({
     id: "deepseek",
     name: "DeepSeek",
     providerKind: "openai-compatible",
@@ -2066,7 +2067,7 @@
     docUrl: "https://docs.mistral.ai/models/overview",
     keyUrl: "https://console.mistral.ai/api-keys/",
     region: "global"
-  }) ], getAiProviderPreset = e => Pe.find((t => t.id === e)), He = Pe.map(((e, t) => ({
+  }) ], getAiProviderPreset = e => He.find((t => t.id === e)), Pe = He.map(((e, t) => ({
     id: e.id,
     name: e.name,
     providerKind: e.providerKind,
@@ -2110,17 +2111,17 @@
     return t.length ? Object.fromEntries(t) : void 0;
   }, normalizeChannel = e => {
     if (!isRecord$2(e)) return null;
-    const t = str(e.id), a = str(e.baseUrl), n = Le.includes(e.providerKind) ? e.providerKind : null, r = Array.isArray(e.models) ? e.models.map(normalizeModel).filter((e => null !== e)) : [], s = str(e.defaultModelId);
+    const t = str(e.id), a = str(e.baseUrl), n = Le.includes(e.providerKind) ? e.providerKind : null, r = Array.isArray(e.models) ? e.models.map(normalizeModel).filter((e => null !== e)) : [], i = str(e.defaultModelId);
     if (!(t && a && n && r.length)) return null;
-    if (!r.some((e => e.id === s))) return null;
-    const i = "deprecated" === e.status || "hidden" === e.status ? e.status : "active";
+    if (!r.some((e => e.id === i))) return null;
+    const s = "deprecated" === e.status || "hidden" === e.status ? e.status : "active";
     return {
       id: t,
       name: str(e.name) || t,
       providerKind: n,
       baseUrl: a,
       models: r,
-      defaultModelId: s,
+      defaultModelId: i,
       stream: "boolean" != typeof e.stream || e.stream,
       timeout: "number" == typeof e.timeout && e.timeout > 0 ? e.timeout : 3e4,
       region: "global" === e.region ? "global" : "domestic",
@@ -2130,7 +2131,7 @@
       signupUrl: str(e.signupUrl),
       docUrl: str(e.docUrl),
       keyHelp: str(e.keyHelp),
-      status: i,
+      status: s,
       directConnect: true === e.directConnect,
       disableThinkingParams: normalizeRequestParams(e.disableThinkingParams)
     };
@@ -2155,9 +2156,9 @@
     return readState(e.cacheGet(ze)) || t || {
       seq: 0,
       fetchedAt: 0,
-      channels: He
+      channels: Pe
     };
-  }, resolveChannel = (e, t, a) => e.channels.find((e => e.id === a)) || He.find((e => e.id === a)) || t.find((e => e.id === a)), Me = {
+  }, resolveChannel = (e, t, a) => e.channels.find((e => e.id === a)) || Pe.find((e => e.id === a)) || t.find((e => e.id === a)), Me = {
     text: true,
     image: false
   }, Oe = [ "openai-compatible", "anthropic-messages" ], Fe = [ "direct", "conservative", "preview" ], isRecord$1 = e => "object" == typeof e && null !== e, normalizeCapabilities = (e, t, a) => {
@@ -2187,7 +2188,7 @@
   }, normalizeAiConfig = e => {
     if (!isRecord$1(e) || "string" != typeof e.id || !e.id) return null;
     if (isRemovedCookieProviderValue(e.id) || isRemovedCookieProviderValue(e.providerId) || isRemovedCookieProviderValue(e.providerKind)) return null;
-    const t = "string" == typeof e.providerId ? getAiProviderPreset(e.providerId) : getAiProviderPreset(e.id), a = (e => "string" == typeof e && Oe.includes(e))(e.providerKind) ? e.providerKind : (null == t ? void 0 : t.providerKind) || "openai-compatible", n = (null == t ? void 0 : t.id) || "string" == typeof e.providerId && e.providerId || e.id, r = "string" == typeof e.model && e.model ? e.model : (null == t ? void 0 : t.defaultModel) || "", s = "number" == typeof e.timeout && Number.isFinite(e.timeout) && e.timeout > 0 ? e.timeout : 3e4;
+    const t = "string" == typeof e.providerId ? getAiProviderPreset(e.providerId) : getAiProviderPreset(e.id), a = (e => "string" == typeof e && Oe.includes(e))(e.providerKind) ? e.providerKind : (null == t ? void 0 : t.providerKind) || "openai-compatible", n = (null == t ? void 0 : t.id) || "string" == typeof e.providerId && e.providerId || e.id, r = "string" == typeof e.model && e.model ? e.model : (null == t ? void 0 : t.defaultModel) || "", i = "number" == typeof e.timeout && Number.isFinite(e.timeout) && e.timeout > 0 ? e.timeout : 3e4;
     return {
       id: e.id,
       name: "string" == typeof e.name && e.name ? e.name : (null == t ? void 0 : t.name) || e.id,
@@ -2199,7 +2200,7 @@
       stream: "boolean" == typeof e.stream ? e.stream : (null == t ? void 0 : t.stream) ?? true,
       capabilities: normalizeCapabilities(e.capabilities, n, r),
       credential: normalizeCredential$1(e.credential),
-      timeout: s,
+      timeout: i,
       temperature: "number" == typeof e.temperature ? e.temperature : void 0,
       maxTokens: "number" == typeof e.maxTokens ? e.maxTokens : void 0
     };
@@ -2216,20 +2217,20 @@
       }
     };
     if (!(null == (t = e.gpt) ? void 0 : t.length)) return n;
-    const r = {}, s = e.gpt.map(((e, t) => ({
+    const r = {}, i = e.gpt.map(((e, t) => ({
       item: e,
       index: t
     }))).filter((({item: e}) => !(e => /glm|spark|\u661f\u706b/i.test(e.name))(e)));
-    if (!s.length) return {
+    if (!i.length) return {
       ...n,
       enabledForAsk: false
     };
-    const i = s.map((({item: e, index: t}) => {
+    const s = i.map((({item: e, index: t}) => {
       var a;
-      const n = "deepseek", s = ((e, t) => {
+      const n = "deepseek", i = ((e, t) => {
         const a = t[e] || 0;
         return t[e] = a + 1, 0 === a ? e : `${e}-${a}`;
-      })(((e, t) => `legacy-ai-${t}`)(0, t), r), i = normalizeCredentialValue(e.key);
+      })(((e, t) => `legacy-ai-${t}`)(0, t), r), s = normalizeCredentialValue(e.key);
       return ((e, t = {}) => {
         var a;
         const n = getAiProviderPreset(e);
@@ -2255,19 +2256,19 @@
         };
         var r;
       })(n, {
-        id: s,
+        id: i,
         name: e.desc || e.name,
         baseUrl: normalizeLegacyBaseUrl(e.api) || (null == (a = getAiProviderPreset(n)) ? void 0 : a.baseUrl),
         model: e.model,
         enabled: true,
-        credential: i ? {
+        credential: s ? {
           type: "api-key",
-          value: i
+          value: s
         } : void 0
       });
-    })), o = i[Math.min(Math.max(e.gptIndex || 0, 0), i.length - 1)];
+    })), o = s[Math.min(Math.max(e.gptIndex || 0, 0), s.length - 1)];
     return {
-      configs: i,
+      configs: s,
       defaultConfigId: (null == o ? void 0 : o.id) || n.defaultConfigId,
       defaultVisionConfigId: "",
       enabledForAsk: !!e.askGpt && !!(null == (a = null == o ? void 0 : o.credential) ? void 0 : a.value),
@@ -2327,24 +2328,24 @@
     const n = e.get(De), r = normalizeAiSettingsV2(n);
     if (r) return r;
     n && !e.get(Ne) && e.set(Ne, n);
-    const s = (e => {
+    const i = (e => {
       var t, a;
       if (!isRecord$1(e) || !Array.isArray(e.configs)) return null;
-      const n = e.configs.map(normalizeAiConfig).filter((e => null !== e)), r = "string" == typeof e.defaultConfigId && n.some((t => t.id === e.defaultConfigId)) ? e.defaultConfigId : (null == (t = n.find((e => e.enabled))) ? void 0 : t.id) || (null == (a = n[0]) ? void 0 : a.id) || "", s = "string" == typeof e.defaultVisionConfigId && n.some((t => {
+      const n = e.configs.map(normalizeAiConfig).filter((e => null !== e)), r = "string" == typeof e.defaultConfigId && n.some((t => t.id === e.defaultConfigId)) ? e.defaultConfigId : (null == (t = n.find((e => e.enabled))) ? void 0 : t.id) || (null == (a = n[0]) ? void 0 : a.id) || "", i = "string" == typeof e.defaultVisionConfigId && n.some((t => {
         var a;
         return t.id === e.defaultVisionConfigId && (null == (a = t.capabilities) ? void 0 : a.image);
-      })) ? e.defaultVisionConfigId : "", i = isRecord$1(e.sceneOverrides) ? e.sceneOverrides : {};
+      })) ? e.defaultVisionConfigId : "", s = isRecord$1(e.sceneOverrides) ? e.sceneOverrides : {};
       return {
         configs: n,
         defaultConfigId: r,
-        defaultVisionConfigId: s,
+        defaultVisionConfigId: i,
         enabledForAsk: n.length > 0 && "boolean" == typeof e.enabledForAsk && e.enabledForAsk,
         adoptionStrategy: isAdoptionStrategy(e.adoptionStrategy) ? e.adoptionStrategy : "conservative",
         sceneOverrides: {
-          enabled: "boolean" == typeof i.enabled && i.enabled,
-          search: "string" == typeof i.search ? i.search : void 0,
-          ask: "string" == typeof i.ask ? i.ask : void 0,
-          repair: "string" == typeof i.repair ? i.repair : void 0
+          enabled: "boolean" == typeof s.enabled && s.enabled,
+          search: "string" == typeof s.search ? s.search : void 0,
+          ask: "string" == typeof s.ask ? s.ask : void 0,
+          repair: "string" == typeof s.repair ? s.repair : void 0
         }
       };
     })(n) ?? (() => {
@@ -2353,8 +2354,8 @@
       } catch {
         return null;
       }
-    })(), i = s ? ((e, t) => {
-      var a, n, r, s, i, o, l;
+    })(), s = i ? ((e, t) => {
+      var a, n, r, i, s, o, l;
       if ("object" == typeof (l = e) && null !== l && 2 === l.version) return e;
       const c = [], p = [], u = new Map, adoptCustom = (e, t) => {
         c.push({
@@ -2374,7 +2375,7 @@
         }
         const o = e.models.some((e => e.id === d.model)) ? d.model : void 0, l = c.find((t => t.channelId === e.id));
         if (l) if ((null == (n = l.credential) ? void 0 : n.value) || !(null == (r = d.credential) ? void 0 : r.value)) {
-          if ((null == (s = l.credential) ? void 0 : s.value) && (null == (i = d.credential) ? void 0 : i.value) && l.credential.value !== d.credential.value) {
+          if ((null == (i = l.credential) ? void 0 : i.value) && (null == (s = d.credential) ? void 0 : s.value) && l.credential.value !== d.credential.value) {
             const t = toCustomChannel(d, e.baseUrl);
             p.push(t), adoptCustom(t, d), u.set(d.id, t.id);
           }
@@ -2397,7 +2398,7 @@
         sceneOverrides: e.sceneOverrides,
         transport: "auto"
       };
-    })(s, t) : {
+    })(i, t) : {
       version: 2,
       instances: [],
       customChannels: [],
@@ -2410,7 +2411,7 @@
       },
       transport: "auto"
     };
-    return e.set(De, i), i;
+    return e.set(De, s), s;
   }, asChannel = e => (e => !("models" in e))(e) ? {
     id: e.id,
     name: e.name,
@@ -2458,24 +2459,24 @@
     const build = a => {
       var r;
       if (!a.enabled || !(null == (r = a.credential) ? void 0 : r.value)) return;
-      const s = resolveChannel(t, e.customChannels, a.channelId);
-      if (!s) return;
-      const i = asChannel(s);
-      return ((e, t) => e.models.some((e => e.capabilities[t])))(i, n) ? {
-        channel: i,
+      const i = resolveChannel(t, e.customChannels, a.channelId);
+      if (!i) return;
+      const s = asChannel(i);
+      return ((e, t) => e.models.some((e => e.capabilities[t])))(s, n) ? {
+        channel: s,
         instance: a,
-        config: synthesizeAiConfig(i, a)
+        config: synthesizeAiConfig(s, a)
       } : void 0;
     }, pick = t => {
       const a = e.instances.find((e => e.channelId === t));
       return a ? build(a) : void 0;
-    }, s = (null == (r = e.sceneOverrides) ? void 0 : r.enabled) ? e.sceneOverrides[a] : void 0;
+    }, i = (null == (r = e.sceneOverrides) ? void 0 : r.enabled) ? e.sceneOverrides[a] : void 0;
     if ("image" === n) {
       const t = e.defaultVisionChannelId && pick(e.defaultVisionChannelId);
       if (t) return t;
     }
-    const i = s && pick(s);
-    if (i) return i;
+    const s = i && pick(i);
+    if (s) return s;
     const o = pick(e.defaultChannelId);
     if (o) return o;
     for (const l of e.instances) {
@@ -2589,15 +2590,15 @@
   }, buildImagePart = (e, t, a, n = {}) => {
     const r = toBytes(t);
     if (!r || 0 === r.byteLength) throw new Error("\u56fe\u7247\u54cd\u5e94\u4f53\u4e3a\u7a7a");
-    const s = n.maxBytes || 4194304;
-    if (r.byteLength > s) throw new Error(`\u56fe\u7247\u8fc7\u5927\uff08${Math.round(r.byteLength / 1024)}KB\uff0c\u4e0a\u9650 ${Math.round(s / 1024)}KB\uff09`);
-    const i = (a || "").split(";")[0].trim().toLowerCase();
-    if (i && !i.startsWith("image/")) throw new Error(`\u54cd\u5e94\u4e0d\u662f\u56fe\u7247\uff08${i}\uff09\uff0c\u53ef\u80fd\u662f\u767b\u5f55\u6001\u5931\u6548\u8df3\u8f6c\u4e86\u767b\u5f55\u9875`);
+    const i = n.maxBytes || 4194304;
+    if (r.byteLength > i) throw new Error(`\u56fe\u7247\u8fc7\u5927\uff08${Math.round(r.byteLength / 1024)}KB\uff0c\u4e0a\u9650 ${Math.round(i / 1024)}KB\uff09`);
+    const s = (a || "").split(";")[0].trim().toLowerCase();
+    if (s && !s.startsWith("image/")) throw new Error(`\u54cd\u5e94\u4e0d\u662f\u56fe\u7247\uff08${s}\uff09\uff0c\u53ef\u80fd\u662f\u767b\u5f55\u6001\u5931\u6548\u8df3\u8f6c\u4e86\u767b\u5f55\u9875`);
     return {
       type: "image",
       source: "base64",
       data: bytesToBase64(r),
-      mimeType: i || "image/png",
+      mimeType: s || "image/png",
       url: e
     };
   }, decodeDataUrl = e => {
@@ -2616,7 +2617,7 @@
   }, loadImagePartFromElement = async (e, t = {}) => {
     const a = e.el, n = Number(null == a ? void 0 : a.naturalWidth) || 0, r = Number(null == a ? void 0 : a.naturalHeight) || 0;
     if (!(n > 0 && r > 0)) throw new Error("\u56fe\u7247\u5c1a\u672a\u52a0\u8f7d\u5b8c\u6210");
-    const s = ((e, t, a = 1568) => {
+    const i = ((e, t, a = 1568) => {
       const n = Math.max(e, t);
       if (!(n > a)) return {
         width: e,
@@ -2627,12 +2628,12 @@
         width: Math.max(1, Math.round(e * r)),
         height: Math.max(1, Math.round(t * r))
       };
-    })(n, r, t.maxEdge || 1568), i = (t.createCanvas || defaultCreateCanvas)();
-    i.width = s.width, i.height = s.height;
-    const o = i.getContext("2d");
+    })(n, r, t.maxEdge || 1568), s = (t.createCanvas || defaultCreateCanvas)();
+    s.width = i.width, s.height = i.height;
+    const o = s.getContext("2d");
     if (!o) throw new Error("\u753b\u5e03\u4e0a\u4e0b\u6587\u4e0d\u53ef\u7528");
-    o.fillStyle = "#ffffff", o.fillRect(0, 0, s.width, s.height), o.drawImage(a, 0, 0, s.width, s.height);
-    const l = i.toDataURL(t.mimeType || "image/jpeg", t.quality ?? .85);
+    o.fillStyle = "#ffffff", o.fillRect(0, 0, i.width, i.height), o.drawImage(a, 0, 0, i.width, i.height);
+    const l = s.toDataURL(t.mimeType || "image/jpeg", t.quality ?? .85);
     if (!/^data:image\//i.test(l)) throw new Error("\u753b\u5e03\u5bfc\u51fa\u5931\u8d25");
     return {
       ...decodeDataUrl(l),
@@ -2655,14 +2656,14 @@
         clearTimeout(n);
       }
     })((async n => {
-      var r, s;
-      const i = await a(e, {
+      var r, i;
+      const s = await a(e, {
         credentials: "same-origin",
         signal: n
       });
-      if (!(null == i ? void 0 : i.ok)) throw new Error(`\u56fe\u7247\u8bf7\u6c42\u5931\u8d25 HTTP ${(null == i ? void 0 : i.status) ?? "\u672a\u77e5"}`);
-      const o = await i.arrayBuffer();
-      return buildImagePart(e, o, (null == (s = null == (r = i.headers) ? void 0 : r.get) ? void 0 : s.call(r, "content-type")) || "", {
+      if (!(null == s ? void 0 : s.ok)) throw new Error(`\u56fe\u7247\u8bf7\u6c42\u5931\u8d25 HTTP ${(null == s ? void 0 : s.status) ?? "\u672a\u77e5"}`);
+      const o = await s.arrayBuffer();
+      return buildImagePart(e, o, (null == (i = null == (r = s.headers) ? void 0 : r.get) ? void 0 : i.call(r, "content-type")) || "", {
         maxBytes: t.maxBytes
       });
     }), t.timeout || 2e4);
@@ -2682,16 +2683,16 @@
       })(n.responseHeaders), {
         maxBytes: t.maxBytes
       });
-    })(e, t)), s = [];
-    e.el && s.push([ "canvas", () => a(e) ]), s.push([ "\u540c\u6e90\u8bf7\u6c42", () => n(e.src) ]), 
-    s.push([ "GM \u8bf7\u6c42", () => r(e.src) ]);
-    const i = [];
-    for (const [l, c] of s) try {
+    })(e, t)), i = [];
+    e.el && i.push([ "canvas", () => a(e) ]), i.push([ "\u540c\u6e90\u8bf7\u6c42", () => n(e.src) ]), 
+    i.push([ "GM \u8bf7\u6c42", () => r(e.src) ]);
+    const s = [];
+    for (const [l, c] of i) try {
       return await c();
     } catch (o) {
-      i.push(`${l}\uff1a${(null == o ? void 0 : o.message) || o}`);
+      s.push(`${l}\uff1a${(null == o ? void 0 : o.message) || o}`);
     }
-    throw new Error(i.length ? i.join("\uff1b") : "\u6ca1\u6709\u53ef\u7528\u7684\u53d6\u56fe\u901a\u9053");
+    throw new Error(s.length ? s.join("\uff1b") : "\u6ca1\u6709\u53ef\u7528\u7684\u53d6\u56fe\u901a\u9053");
   }, base64Bytes = e => {
     const t = e.endsWith("==") ? 2 : e.endsWith("=") ? 1 : 0;
     return Math.max(0, 3 * Math.floor(e.length / 4) - t);
@@ -2701,13 +2702,13 @@
       parts: [],
       failures: []
     };
-    const n = t.maxImages || 6, r = a.slice(0, n), s = a.slice(n).map((e => ({
+    const n = t.maxImages || 6, r = a.slice(0, n), i = a.slice(n).map((e => ({
       src: e.src,
       reason: `\u8d85\u51fa\u5355\u9898\u56fe\u7247\u4e0a\u9650\uff08${n} \u5f20\uff09`
-    }))), i = t.loadPart || (e => loadQuestionImagePart(e, t)), o = await (async (e, t, a) => {
+    }))), s = t.loadPart || (e => loadQuestionImagePart(e, t)), o = await (async (e, t, a) => {
       const n = new Array(e.length);
       let r = 0;
-      const s = Array.from({
+      const i = Array.from({
         length: Math.max(1, Math.min(t, e.length))
       }, (async () => {
         for (;r < e.length; ) {
@@ -2715,12 +2716,12 @@
           r += 1, n[t] = await a(e[t]);
         }
       }));
-      return await Promise.all(s), n;
+      return await Promise.all(i), n;
     })(r, t.concurrency || 2, (async e => {
       try {
         return {
           ref: e,
-          part: await i(e)
+          part: await s(e)
         };
       } catch (t) {
         return {
@@ -2732,21 +2733,21 @@
     let p = 0;
     for (const u of o) {
       if (!u.part) {
-        s.push({
+        i.push({
           src: u.ref.src,
           reason: u.reason || "\u53d6\u56fe\u5931\u8d25"
         });
         continue;
       }
       const e = base64Bytes(u.part.data);
-      p + e > c ? s.push({
+      p + e > c ? i.push({
         src: u.ref.src,
         reason: `\u8d85\u51fa\u5355\u9898\u56fe\u7247\u603b\u91cf\u4e0a\u9650\uff08${Math.round(c / 1024)}KB\uff09`
       }) : (p += e, l.push(u.part));
     }
     return {
       parts: l,
-      failures: s
+      failures: i
     };
   };
 
@@ -2940,8 +2941,8 @@
     };
     var a;
   }, applyFillPlan = async (e, t, a, n, r) => {
-    const [s, i] = fillPlanToLegacyAnswerData(e);
-    if (!s) return {
+    const [i, s] = fillPlanToLegacyAnswerData(e);
+    if (!i) return {
       success: false,
       reason: "unsupported" === e.kind ? e.reason : "\u5f53\u524d\u9898\u578b\u6682\u4e0d\u652f\u6301\u586b\u5145"
     };
@@ -2949,7 +2950,7 @@
       shouldContinue: () => (assertFillShouldContinue(r), true)
     } : void 0;
     try {
-      return assertFillShouldContinue(r), await n(s, i, t, a, o), assertFillShouldContinue(r), 
+      return assertFillShouldContinue(r), await n(i, s, t, a, o), assertFillShouldContinue(r), 
       {
         success: !0
       };
@@ -3098,7 +3099,7 @@
   };
 
   function requestApi(e, t, a = void 0, n = void 0, r = 5e3) {
-    return "GET" === t && a && (e += `?${new URLSearchParams(a).toString()}`), new Promise((async (s, i) => {
+    return "GET" === t && a && (e += `?${new URLSearchParams(a).toString()}`), new Promise((async (i, s) => {
       try {
         const o = Cache.get("user", {}), l = isLoggedInUserCache(o), c = AnonymousIdentityOptimized.getIdentity(), p = "POST" !== t || l ? a : {
           ...a,
@@ -3166,18 +3167,18 @@
                   responseText: n
                 };
               })(e, decrypt);
-              JSON.parse(a.responseText), s([ a, t ]);
+              JSON.parse(a.responseText), i([ a, t ]);
             } catch (a) {
-              String(a), i(a);
+              String(a), s(a);
             }
           },
-          ontimeout: () => i(new Error("\u63a5\u53e3\u8bf7\u6c42\u8d85\u65f6")),
+          ontimeout: () => s(new Error("\u63a5\u53e3\u8bf7\u6c42\u8d85\u65f6")),
           onerror: e => {
-            i(e);
+            s(e);
           }
         });
       } catch (o) {
-        i(o);
+        s(o);
       }
     }));
   }
@@ -3188,27 +3189,27 @@
     "GET" === t && a && (e += `?${new URLSearchParams(a).toString()}`), "POST" === t && (n = {
       ...n
     });
-    const s = {
+    const i = {
       "User-Agent": W.navigator.userAgent,
       "Content-Type": "application/json",
       referer: location.href,
       ...n
     };
-    return new Promise(((n, i) => {
+    return new Promise(((n, s) => {
       const o = Date.now();
       K({
         method: t,
         url: e,
-        headers: s,
+        headers: i,
         data: "GET" !== t ? JSON.stringify(a) : void 0,
         timeout: r,
         onload: function(e) {
           const t = Date.now();
           n([ e, t - o ]);
         },
-        ontimeout: () => i(new Error("\u63a5\u53e3\u8bf7\u6c42\u8d85\u65f6")),
+        ontimeout: () => s(new Error("\u63a5\u53e3\u8bf7\u6c42\u8d85\u65f6")),
         onerror: e => {
-          i(e);
+          s(e);
         }
       });
     }));
@@ -3226,10 +3227,6 @@
         score: 0
       });
       a.score += t, Cache.set("api_" + e, a, 600);
-    }
-    static async getAllAnswers(e) {
-      const t = [ this.getAnswer1(e) ];
-      return Promise.all(t);
     }
     static async getAnswersFree(e) {
       const t = [ this.getMainAnswer(e), this.getAnswer1(e) ];
@@ -3252,11 +3249,11 @@
           let t = e[1];
           try {
             e = JSON.parse(e[0].responseText);
-          } catch (s) {
+          } catch (i) {
             a({
               form: "\u4e00\u4e4b\u9898\u5e93",
               answer: null,
-              error: s,
+              error: i,
               duration: t
             });
           }
@@ -3282,34 +3279,6 @@
             duration: 5e3
           });
         }));
-      }));
-    }
-    static async getAnswer2(e) {
-      return new Promise((t => {
-        [ 0, 1, 2 ].includes(parseInt(e.type)) ? request("https://api.muketool.com/cx/v2/query", "POST", {
-          question: e.question,
-          type: parseInt(e.type)
-        }, {}).then((e => {
-          let a = e[1];
-          const n = 1 === (e = JSON.parse(e[0].responseText)).code ? e.data.split("#") : "", r = getNonAnswerMessage(n);
-          t({
-            form: "muketool",
-            answer: r ? "" : n,
-            duration: a,
-            ...r ? {
-              msg: r
-            } : {}
-          });
-        })).catch((e => {
-          "timeout" === e && this.score("muketool", -1), t({
-            form: "muketool",
-            answer: ""
-          });
-        })) : t({
-          form: "muketool",
-          answer: "",
-          duration: "\u4e0d\u652f\u6301\u7684\u9898\u578b"
-        });
       }));
     }
     static getTimestamp() {
@@ -3363,9 +3332,9 @@
         options: e.options.map((e => e)),
         workType: e.workType,
         pageType: e.pageType
-      }, s = apiUrl("question/search");
+      }, i = apiUrl("question/search");
       return new Promise((e => {
-        requestApi(s, "POST", r, {}, 6e3).then((t => {
+        requestApi(i, "POST", r, {}, 6e3).then((t => {
           var a;
           let n = t[1];
           t = JSON.parse(t[0].responseText);
@@ -3437,17 +3406,17 @@
   }
 
   const defaultSetAnswer = async (e, t, a, n, r) => {
-    var s;
+    var i;
     switch (assertFillShouldContinue(r), e) {
      case "xx":
       {
         const optionClickDelay = () => n.optionDelay ? Math.floor(n.optionDelay + 500 * Math.random()) : Math.floor(300 * Math.random() + 200);
         let e = false;
-        for (let s = 0; s < a.$options.length; s++) {
+        for (let i = 0; i < a.$options.length; i++) {
           assertFillShouldContinue(r);
-          const i = !(!n.ischecked || !n.ischecked(a.$options.eq(s)));
-          t.includes(s) !== i && (e && (await sleep(optionClickDelay()), assertFillShouldContinue(r)), 
-          a.$options.eq(s).click(), e = true);
+          const s = !(!n.ischecked || !n.ischecked(a.$options.eq(i)));
+          t.includes(i) !== s && (e && (await sleep(optionClickDelay()), assertFillShouldContinue(r)), 
+          a.$options.eq(i).click(), e = true);
         }
         break;
       }
@@ -3468,35 +3437,35 @@
         assertFillShouldContinue(r), W.UE.getEditor(D(this).attr("name")).ready((function() {
           this.setContent(t[e].replace(/\u7b2c.\u7a7a:/g, ""));
         }));
-      })), null == (s = D(a.html).find(".savebtndiv>a")) || s.click();
+      })), null == (i = D(a.html).find(".savebtndiv>a")) || i.click();
       break;
 
      case "ydlj":
-      if (Array.isArray(t) && a.options) for (let s = 0; s < t.length && s < a.options.length; s++) {
+      if (Array.isArray(t) && a.options) for (let i = 0; i < t.length && i < a.options.length; i++) {
         assertFillShouldContinue(r);
-        let e = t[s], i = a.options[s];
-        if (Array.isArray(e) && e.length > 0 && i.$options) for (let t = 0; t < i.$options.length; t++) if (assertFillShouldContinue(r), 
+        let e = t[i], s = a.options[i];
+        if (Array.isArray(e) && e.length > 0 && s.$options) for (let t = 0; t < s.$options.length; t++) if (assertFillShouldContinue(r), 
         e.includes(t)) {
-          if (n.ischecked && n.ischecked(i.$options.eq(t))) continue;
-          i.$options.eq(t).click(), await sleep(Math.floor(300 * Math.random() + 200));
-        } else n.ischecked && n.ischecked(i.$options.eq(t)) && (i.$options.eq(t).click(), 
+          if (n.ischecked && n.ischecked(s.$options.eq(t))) continue;
+          s.$options.eq(t).click(), await sleep(Math.floor(300 * Math.random() + 200));
+        } else n.ischecked && n.ischecked(s.$options.eq(t)) && (s.$options.eq(t).click(), 
         await sleep(Math.floor(300 * Math.random() + 200)));
       }
     }
   }, applyAnswerResult = async (e, t, a, n, r) => {
-    let s = true;
+    let i = true;
     assertFillShouldContinue(r), n.setAnswerHook && "function" == typeof n.setAnswerHook && await n.setAnswerHook({
       type: a.type,
       answer: t,
       html: a.html,
       ques: a
-    }), assertFillShouldContinue(r), n.setAnswer && "function" == typeof n.setAnswer && (s = await n.setAnswer({
+    }), assertFillShouldContinue(r), n.setAnswer && "function" == typeof n.setAnswer && (i = await n.setAnswer({
       type: a.type,
       answer: t,
       html: a.html,
       ques: a,
       rule: n
-    })), assertFillShouldContinue(r), s && await defaultSetAnswer(e, t, a, n, r);
+    })), assertFillShouldContinue(r), i && await defaultSetAnswer(e, t, a, n, r);
   }, Qe = class _Paper {
     static getPaper(e) {
       return Cache.get(`${_Paper.prefix}_${e}`);
@@ -3518,15 +3487,15 @@
       });
     }
     static compareAndGetNewData(e, t) {
-      const a = _Paper.getLastSyncedHashes(t), n = new Set, r = new Set, s = new Map, i = new Map;
+      const a = _Paper.getLastSyncedHashes(t), n = new Set, r = new Set, i = new Map, s = new Map;
       e.chapter && Array.isArray(e.chapter) && e.chapter.forEach((e => {
         const t = e.hash;
         r.add(t);
         const a = new Map;
         e.question && Array.isArray(e.question) && e.question.forEach((e => {
           const t = e.hash;
-          n.add(t), s.set(t, e), a.set(t, e);
-        })), i.set(t, {
+          n.add(t), i.set(t, e), a.set(t, e);
+        })), s.set(t, {
           chapter: e,
           questions: a
         });
@@ -3544,7 +3513,7 @@
         info: e.info,
         chapter: []
       };
-      return i.forEach(((e, t) => {
+      return s.forEach(((e, t) => {
         if (l.includes(t)) c.chapter.push({
           hash: e.chapter.hash,
           name: e.chapter.name,
@@ -3581,10 +3550,10 @@
       })), Object.keys(t).forEach((e => {
         "chapter" !== e && (n[e] = t[e]);
       })), Cache.set(`${_Paper.prefix}_${e}`, n);
-      const {newData: r, newQuestionHashes: s, newChapterHashes: i} = _Paper.compareAndGetNewData(n, e);
-      if (s.length > 0 || i.length > 0) {
+      const {newData: r, newQuestionHashes: i, newChapterHashes: s} = _Paper.compareAndGetNewData(n, e);
+      if (i.length > 0 || s.length > 0) {
         if (0 === r.chapter.length) return;
-        s.length, i.length;
+        i.length, s.length;
         try {
           const t = await Answer.syncPaper(r);
           let a;
@@ -3594,8 +3563,8 @@
             return;
           } else a = t;
           if (!a || 200 !== a.code && 0 !== a.code && !0 !== a.success) JSON.stringify(a); else {
-            const t = _Paper.getLastSyncedHashes(e), a = Array.from(new Set([ ...t.questions, ...s ])), n = Array.from(new Set([ ...t.chapters, ...i ]));
-            _Paper.setLastSyncedHashes(e, a, n), s.length, i.length;
+            const t = _Paper.getLastSyncedHashes(e), a = Array.from(new Set([ ...t.questions, ...i ])), n = Array.from(new Set([ ...t.chapters, ...s ]));
+            _Paper.setLastSyncedHashes(e, a, n), i.length, s.length;
           }
         } catch (l) {}
       }
@@ -3626,12 +3595,12 @@
       parse: function(t) {
         var a = e._bin, n = new Uint8Array(t), r = 0;
         a.readFixed(n, r), r += 4;
-        var s = a.readUshort(n, r);
+        var i = a.readUshort(n, r);
         r += 2, a.readUshort(n, r), r += 2, a.readUshort(n, r), r += 2, a.readUshort(n, r), 
         r += 2;
-        for (var i = [ "cmap", "head", "hhea", "maxp", "hmtx", "name", "OS/2", "post", "loca", "glyf", "kern", "CFF ", "GPOS", "GSUB", "SVG " ], o = {
+        for (var s = [ "cmap", "head", "hhea", "maxp", "hmtx", "name", "OS/2", "post", "loca", "glyf", "kern", "CFF ", "GPOS", "GSUB", "SVG " ], o = {
           _data: n
-        }, l = {}, c = 0; c < s; c++) {
+        }, l = {}, c = 0; c < i; c++) {
           var p = a.readASCII(n, r, 4);
           r += 4, a.readUint(n, r), r += 4;
           var u = a.readUint(n, r);
@@ -3642,18 +3611,18 @@
             length: d
           };
         }
-        for (c = 0; c < i.length; c++) {
-          var m = i[c];
+        for (c = 0; c < s.length; c++) {
+          var m = s[c];
           l[m] && (o[m.trim()] = e[m.trim()].parse(n, l[m].offset, l[m].length, o));
         }
         return o;
       },
       _tabOffset: function(t, a) {
-        for (var n = e._bin, r = n.readUshort(t, 4), s = 12, i = 0; i < r; i++) {
-          var o = n.readASCII(t, s, 4);
-          s += 4, n.readUint(t, s), s += 4;
-          var l = n.readUint(t, s);
-          if (s += 4, n.readUint(t, s), s += 4, o == a) return l;
+        for (var n = e._bin, r = n.readUshort(t, 4), i = 12, s = 0; s < r; s++) {
+          var o = n.readASCII(t, i, 4);
+          i += 4, n.readUint(t, i), i += 4;
+          var l = n.readUint(t, i);
+          if (i += 4, n.readUint(t, i), i += 4, o == a) return l;
         }
         return 0;
       }
@@ -3680,7 +3649,7 @@
         return e[t] << 8 | e[t + 1];
       },
       readUshorts: function(t, a, n) {
-        for (var r = [], s = 0; s < n; s++) r.push(e._bin.readUshort(t, a + 2 * s));
+        for (var r = [], i = 0; i < n; i++) r.push(e._bin.readUshort(t, a + 2 * i));
         return r;
       },
       readUint: function(t, a) {
@@ -3696,8 +3665,8 @@
       },
       readUnicode: function(e, t, a) {
         for (var n = "", r = 0; r < a; r++) {
-          var s = e[t++] << 8 | e[t++];
-          n += String.fromCharCode(s);
+          var i = e[t++] << 8 | e[t++];
+          n += String.fromCharCode(i);
         }
         return n;
       },
@@ -3719,54 +3688,54 @@
     }, e._bin.t.int8 = new Int8Array(e._bin.t.buff), e._bin.t.uint8 = new Uint8Array(e._bin.t.buff), 
     e._bin.t.int16 = new Int16Array(e._bin.t.buff), e._bin.t.uint16 = new Uint16Array(e._bin.t.buff), 
     e._bin.t.int32 = new Int32Array(e._bin.t.buff), e._bin.t.uint32 = new Uint32Array(e._bin.t.buff), 
-    e._lctf = {}, e._lctf.parse = function(t, a, n, r, s) {
-      var i = e._bin, o = {}, l = a;
-      i.readFixed(t, a), a += 4;
-      var c = i.readUshort(t, a);
+    e._lctf = {}, e._lctf.parse = function(t, a, n, r, i) {
+      var s = e._bin, o = {}, l = a;
+      s.readFixed(t, a), a += 4;
+      var c = s.readUshort(t, a);
       a += 2;
-      var p = i.readUshort(t, a);
+      var p = s.readUshort(t, a);
       a += 2;
-      var u = i.readUshort(t, a);
+      var u = s.readUshort(t, a);
       return a += 2, o.scriptList = e._lctf.readScriptList(t, l + c), o.featureList = e._lctf.readFeatureList(t, l + p), 
-      o.lookupList = e._lctf.readLookupList(t, l + u, s), o;
+      o.lookupList = e._lctf.readLookupList(t, l + u, i), o;
     }, e._lctf.readLookupList = function(t, a, n) {
-      var r = e._bin, s = a, i = [], o = r.readUshort(t, a);
+      var r = e._bin, i = a, s = [], o = r.readUshort(t, a);
       a += 2;
       for (var l = 0; l < o; l++) {
         var c = r.readUshort(t, a);
         a += 2;
-        var p = e._lctf.readLookupTable(t, s + c, n);
-        i.push(p);
+        var p = e._lctf.readLookupTable(t, i + c, n);
+        s.push(p);
       }
-      return i;
+      return s;
     }, e._lctf.readLookupTable = function(t, a, n) {
-      var r = e._bin, s = a, i = {
+      var r = e._bin, i = a, s = {
         tabs: []
       };
-      i.ltype = r.readUshort(t, a), a += 2, i.flag = r.readUshort(t, a), a += 2;
+      s.ltype = r.readUshort(t, a), a += 2, s.flag = r.readUshort(t, a), a += 2;
       var o = r.readUshort(t, a);
       a += 2;
       for (var l = 0; l < o; l++) {
         var c = r.readUshort(t, a);
         a += 2;
-        var p = n(t, i.ltype, s + c);
-        i.tabs.push(p);
+        var p = n(t, s.ltype, i + c);
+        s.tabs.push(p);
       }
-      return i;
+      return s;
     }, e._lctf.numOfOnes = function(e) {
       for (var t = 0, a = 0; a < 32; a++) e >>> a & 1 && t++;
       return t;
     }, e._lctf.readClassDef = function(t, a) {
-      var n = e._bin, r = [], s = n.readUshort(t, a);
-      if (a += 2, 1 == s) {
-        var i = n.readUshort(t, a);
+      var n = e._bin, r = [], i = n.readUshort(t, a);
+      if (a += 2, 1 == i) {
+        var s = n.readUshort(t, a);
         a += 2;
         var o = n.readUshort(t, a);
         a += 2;
-        for (var l = 0; l < o; l++) r.push(i + l), r.push(i + l), r.push(n.readUshort(t, a)), 
+        for (var l = 0; l < o; l++) r.push(s + l), r.push(s + l), r.push(n.readUshort(t, a)), 
         a += 2;
       }
-      if (2 == s) {
+      if (2 == i) {
         var c = n.readUshort(t, a);
         a += 2;
         for (l = 0; l < c; l++) r.push(n.readUshort(t, a)), a += 2, r.push(n.readUshort(t, a)), 
@@ -3780,15 +3749,15 @@
       }
       return -1;
     }, e._lctf.readValueRecord = function(t, a, n) {
-      var r = e._bin, s = [];
-      return s.push(1 & n ? r.readShort(t, a) : 0), a += 1 & n ? 2 : 0, s.push(2 & n ? r.readShort(t, a) : 0), 
-      a += 2 & n ? 2 : 0, s.push(4 & n ? r.readShort(t, a) : 0), a += 4 & n ? 2 : 0, s.push(8 & n ? r.readShort(t, a) : 0), 
-      a += 8 & n ? 2 : 0, s;
+      var r = e._bin, i = [];
+      return i.push(1 & n ? r.readShort(t, a) : 0), a += 1 & n ? 2 : 0, i.push(2 & n ? r.readShort(t, a) : 0), 
+      a += 2 & n ? 2 : 0, i.push(4 & n ? r.readShort(t, a) : 0), a += 4 & n ? 2 : 0, i.push(8 & n ? r.readShort(t, a) : 0), 
+      a += 8 & n ? 2 : 0, i;
     }, e._lctf.readCoverage = function(t, a) {
       var n = e._bin, r = {};
       r.fmt = n.readUshort(t, a), a += 2;
-      var s = n.readUshort(t, a);
-      return a += 2, 1 == r.fmt && (r.tab = n.readUshorts(t, a, s)), 2 == r.fmt && (r.tab = n.readUshorts(t, a, 3 * s)), 
+      var i = n.readUshort(t, a);
+      return a += 2, 1 == r.fmt && (r.tab = n.readUshorts(t, a, i)), 2 == r.fmt && (r.tab = n.readUshorts(t, a, 3 * i)), 
       r;
     }, e._lctf.coverageIndex = function(t, a) {
       var n = t.tab;
@@ -3799,59 +3768,59 @@
       }
       return -1;
     }, e._lctf.readFeatureList = function(t, a) {
-      var n = e._bin, r = a, s = [], i = n.readUshort(t, a);
+      var n = e._bin, r = a, i = [], s = n.readUshort(t, a);
       a += 2;
-      for (var o = 0; o < i; o++) {
+      for (var o = 0; o < s; o++) {
         var l = n.readASCII(t, a, 4);
         a += 4;
         var c = n.readUshort(t, a);
-        a += 2, s.push({
+        a += 2, i.push({
           tag: l.trim(),
           tab: e._lctf.readFeatureTable(t, r + c)
         });
       }
-      return s;
+      return i;
     }, e._lctf.readFeatureTable = function(t, a) {
       var n = e._bin;
       n.readUshort(t, a), a += 2;
       var r = n.readUshort(t, a);
       a += 2;
-      for (var s = [], i = 0; i < r; i++) s.push(n.readUshort(t, a + 2 * i));
-      return s;
+      for (var i = [], s = 0; s < r; s++) i.push(n.readUshort(t, a + 2 * s));
+      return i;
     }, e._lctf.readScriptList = function(t, a) {
-      var n = e._bin, r = a, s = {}, i = n.readUshort(t, a);
+      var n = e._bin, r = a, i = {}, s = n.readUshort(t, a);
       a += 2;
-      for (var o = 0; o < i; o++) {
+      for (var o = 0; o < s; o++) {
         var l = n.readASCII(t, a, 4);
         a += 4;
         var c = n.readUshort(t, a);
-        a += 2, s[l.trim()] = e._lctf.readScriptTable(t, r + c);
+        a += 2, i[l.trim()] = e._lctf.readScriptTable(t, r + c);
       }
-      return s;
+      return i;
     }, e._lctf.readScriptTable = function(t, a) {
-      var n = e._bin, r = a, s = {}, i = n.readUshort(t, a);
-      a += 2, s.default = e._lctf.readLangSysTable(t, r + i);
+      var n = e._bin, r = a, i = {}, s = n.readUshort(t, a);
+      a += 2, i.default = e._lctf.readLangSysTable(t, r + s);
       var o = n.readUshort(t, a);
       a += 2;
       for (var l = 0; l < o; l++) {
         var c = n.readASCII(t, a, 4);
         a += 4;
         var p = n.readUshort(t, a);
-        a += 2, s[c.trim()] = e._lctf.readLangSysTable(t, r + p);
+        a += 2, i[c.trim()] = e._lctf.readLangSysTable(t, r + p);
       }
-      return s;
+      return i;
     }, e._lctf.readLangSysTable = function(t, a) {
       var n = e._bin, r = {};
       n.readUshort(t, a), a += 2, r.reqFeature = n.readUshort(t, a), a += 2;
-      var s = n.readUshort(t, a);
-      return a += 2, r.features = n.readUshorts(t, a, s), r;
+      var i = n.readUshort(t, a);
+      return a += 2, r.features = n.readUshorts(t, a, i), r;
     }, e.CFF = {}, e.CFF.parse = function(t, a, n) {
       var r = e._bin;
       (t = new Uint8Array(t.buffer, a, n))[a = 0], t[++a], t[++a], t[++a], a++;
-      var s = [];
-      a = e.CFF.readIndex(t, a, s);
-      for (var i = [], o = 0; o < s.length - 1; o++) i.push(r.readASCII(t, a + s[o], s[o + 1] - s[o]));
-      a += s[s.length - 1];
+      var i = [];
+      a = e.CFF.readIndex(t, a, i);
+      for (var s = [], o = 0; o < i.length - 1; o++) s.push(r.readASCII(t, a + i[o], i[o + 1] - i[o]));
+      a += i[i.length - 1];
       var l = [];
       a = e.CFF.readIndex(t, a, l);
       var c = [];
@@ -3877,11 +3846,11 @@
       for (var f in p) -1 != [ "FamilyName", "FullName", "Notice", "version", "Copyright" ].indexOf(f) ? h[f] = d[p[f] - 426 + 35] : h[f] = p[f];
       return h;
     }, e.CFF.readSubrs = function(t, a, n) {
-      var r = e._bin, s = [];
-      a = e.CFF.readIndex(t, a, s);
-      var i, o = s.length;
-      i = o < 1240 ? 107 : o < 33900 ? 1131 : 32768, n.Bias = i, n.Subrs = [];
-      for (var l = 0; l < s.length - 1; l++) n.Subrs.push(r.readBytes(t, a + s[l], s[l + 1] - s[l]));
+      var r = e._bin, i = [];
+      a = e.CFF.readIndex(t, a, i);
+      var s, o = i.length;
+      s = o < 1240 ? 107 : o < 33900 ? 1131 : 32768, n.Bias = s, n.Subrs = [];
+      for (var l = 0; l < i.length - 1; l++) n.Subrs.push(r.readBytes(t, a + i[l], i[l + 1] - i[l]));
     }, e.CFF.tableSE = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 0, 111, 112, 113, 114, 0, 115, 116, 117, 118, 119, 120, 121, 122, 0, 123, 0, 124, 125, 126, 127, 128, 129, 130, 131, 0, 132, 133, 0, 134, 135, 136, 137, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 138, 0, 139, 0, 0, 0, 0, 140, 141, 142, 143, 0, 0, 0, 0, 0, 144, 0, 0, 0, 145, 0, 0, 146, 147, 148, 149, 0, 0, 0, 0 ], 
     e.CFF.glyphByUnicode = function(e, t) {
       for (var a = 0; a < e.charset.length; a++) if (e.charset[a] == t) return a;
@@ -3890,56 +3859,56 @@
       return a < 0 || a > 255 ? -1 : e.CFF.glyphByUnicode(t, e.CFF.tableSE[a]);
     }, e.CFF.readEncoding = function(t, a, n) {
       e._bin;
-      var r = [ ".notdef" ], s = t[a];
-      if (a++, 0 != s) throw "error: unknown encoding format: " + s;
-      var i = t[a];
+      var r = [ ".notdef" ], i = t[a];
+      if (a++, 0 != i) throw "error: unknown encoding format: " + i;
+      var s = t[a];
       a++;
-      for (var o = 0; o < i; o++) r.push(t[a + o]);
+      for (var o = 0; o < s; o++) r.push(t[a + o]);
       return r;
     }, e.CFF.readCharset = function(t, a, n) {
-      var r = e._bin, s = [ ".notdef" ], i = t[a];
-      if (a++, 0 == i) for (var o = 0; o < n; o++) {
+      var r = e._bin, i = [ ".notdef" ], s = t[a];
+      if (a++, 0 == s) for (var o = 0; o < n; o++) {
         var l = r.readUshort(t, a);
-        a += 2, s.push(l);
+        a += 2, i.push(l);
       } else {
-        if (1 != i && 2 != i) throw "error: format: " + i;
-        for (;s.length < n; ) {
+        if (1 != s && 2 != s) throw "error: format: " + s;
+        for (;i.length < n; ) {
           l = r.readUshort(t, a);
           a += 2;
           var c = 0;
-          1 == i ? (c = t[a], a++) : (c = r.readUshort(t, a), a += 2);
-          for (o = 0; o <= c; o++) s.push(l), l++;
+          1 == s ? (c = t[a], a++) : (c = r.readUshort(t, a), a += 2);
+          for (o = 0; o <= c; o++) i.push(l), l++;
         }
       }
-      return s;
+      return i;
     }, e.CFF.readIndex = function(t, a, n) {
-      var r = e._bin, s = r.readUshort(t, a), i = t[a += 2];
-      if (a++, 1 == i) for (var o = 0; o < s + 1; o++) n.push(t[a + o]); else if (2 == i) for (o = 0; o < s + 1; o++) n.push(r.readUshort(t, a + 2 * o)); else if (3 == i) for (o = 0; o < s + 1; o++) n.push(16777215 & r.readUint(t, a + 3 * o - 1)); else if (0 != s) throw "unsupported offset size: " + i + ", count: " + s;
-      return (a += (s + 1) * i) - 1;
+      var r = e._bin, i = r.readUshort(t, a), s = t[a += 2];
+      if (a++, 1 == s) for (var o = 0; o < i + 1; o++) n.push(t[a + o]); else if (2 == s) for (o = 0; o < i + 1; o++) n.push(r.readUshort(t, a + 2 * o)); else if (3 == s) for (o = 0; o < i + 1; o++) n.push(16777215 & r.readUint(t, a + 3 * o - 1)); else if (0 != i) throw "unsupported offset size: " + s + ", count: " + i;
+      return (a += (i + 1) * s) - 1;
     }, e.CFF.getCharString = function(t, a, n) {
-      var r = e._bin, s = t[a], i = t[a + 1];
+      var r = e._bin, i = t[a], s = t[a + 1];
       t[a + 2], t[a + 3], t[a + 4];
       var o = 1, l = null, c = null;
-      s <= 20 && (l = s, o = 1), 12 == s && (l = 100 * s + i, o = 2), 21 <= s && s <= 27 && (l = s, 
-      o = 1), 28 == s && (c = r.readShort(t, a + 1), o = 3), 29 <= s && s <= 31 && (l = s, 
-      o = 1), 32 <= s && s <= 246 && (c = s - 139, o = 1), 247 <= s && s <= 250 && (c = 256 * (s - 247) + i + 108, 
-      o = 2), 251 <= s && s <= 254 && (c = 256 * -(s - 251) - i - 108, o = 2), 255 == s && (c = r.readInt(t, a + 1) / 65535, 
+      i <= 20 && (l = i, o = 1), 12 == i && (l = 100 * i + s, o = 2), 21 <= i && i <= 27 && (l = i, 
+      o = 1), 28 == i && (c = r.readShort(t, a + 1), o = 3), 29 <= i && i <= 31 && (l = i, 
+      o = 1), 32 <= i && i <= 246 && (c = i - 139, o = 1), 247 <= i && i <= 250 && (c = 256 * (i - 247) + s + 108, 
+      o = 2), 251 <= i && i <= 254 && (c = 256 * -(i - 251) - s - 108, o = 2), 255 == i && (c = r.readInt(t, a + 1) / 65535, 
       o = 5), n.val = null != c ? c : "o" + l, n.size = o;
     }, e.CFF.readCharString = function(t, a, n) {
-      for (var r = a + n, s = e._bin, i = []; a < r; ) {
+      for (var r = a + n, i = e._bin, s = []; a < r; ) {
         var o = t[a], l = t[a + 1];
         t[a + 2], t[a + 3], t[a + 4];
         var c = 1, p = null, u = null;
         o <= 20 && (p = o, c = 1), 12 == o && (p = 100 * o + l, c = 2), 19 != o && 20 != o || (p = o, 
-        c = 2), 21 <= o && o <= 27 && (p = o, c = 1), 28 == o && (u = s.readShort(t, a + 1), 
+        c = 2), 21 <= o && o <= 27 && (p = o, c = 1), 28 == o && (u = i.readShort(t, a + 1), 
         c = 3), 29 <= o && o <= 31 && (p = o, c = 1), 32 <= o && o <= 246 && (u = o - 139, 
         c = 1), 247 <= o && o <= 250 && (u = 256 * (o - 247) + l + 108, c = 2), 251 <= o && o <= 254 && (u = 256 * -(o - 251) - l - 108, 
-        c = 2), 255 == o && (u = s.readInt(t, a + 1) / 65535, c = 5), i.push(null != u ? u : "o" + p), 
+        c = 2), 255 == o && (u = i.readInt(t, a + 1) / 65535, c = 5), s.push(null != u ? u : "o" + p), 
         a += c;
       }
-      return i;
+      return s;
     }, e.CFF.readDict = function(t, a, n) {
-      for (var r = e._bin, s = {}, i = []; a < n; ) {
+      for (var r = e._bin, i = {}, s = []; a < n; ) {
         var o = t[a], l = t[a + 1];
         t[a + 2], t[a + 3], t[a + 4];
         var c = 1, p = null, u = null;
@@ -3961,18 +3930,18 @@
         if (o <= 21) if (p = [ "version", "Notice", "FullName", "FamilyName", "Weight", "FontBBox", "BlueValues", "OtherBlues", "FamilyBlues", "FamilyOtherBlues", "StdHW", "StdVW", "escape", "UniqueID", "XUID", "charset", "Encoding", "CharStrings", "Private", "Subrs", "defaultWidthX", "nominalWidthX" ][o], 
         c = 1, 12 == o) p = [ "Copyright", "isFixedPitch", "ItalicAngle", "UnderlinePosition", "UnderlineThickness", "PaintType", "CharstringType", "FontMatrix", "StrokeWidth", "BlueScale", "BlueShift", "BlueFuzz", "StemSnapH", "StemSnapV", "ForceBold", 0, 0, "LanguageGroup", "ExpansionFactor", "initialRandomSeed", "SyntheticBase", "PostScript", "BaseFontName", "BaseFontBlend", 0, 0, 0, 0, 0, 0, "ROS", "CIDFontVersion", "CIDFontRevision", "CIDFontType", "CIDCount", "UIDBase", "FDArray", "FDSelect", "FontName" ][l], 
         c = 2;
-        null != p ? (s[p] = 1 == i.length ? i[0] : i, i = []) : i.push(u), a += c;
+        null != p ? (i[p] = 1 == s.length ? s[0] : s, s = []) : s.push(u), a += c;
       }
-      return s;
+      return i;
     }, e.cmap = {}, e.cmap.parse = function(t, a, n) {
       t = new Uint8Array(t.buffer, a, n), a = 0;
-      var r = e._bin, s = {};
+      var r = e._bin, i = {};
       r.readUshort(t, a), a += 2;
-      var i = r.readUshort(t, a);
+      var s = r.readUshort(t, a);
       a += 2;
       var o = [];
-      s.tables = [];
-      for (var l = 0; l < i; l++) {
+      i.tables = [];
+      for (var l = 0; l < s; l++) {
         var c = r.readUshort(t, a);
         a += 2;
         var p = r.readUshort(t, a);
@@ -3982,101 +3951,101 @@
         var d = "p" + c + "e" + p, m = o.indexOf(u);
         if (-1 == m) {
           var h;
-          m = s.tables.length, o.push(u);
+          m = i.tables.length, o.push(u);
           var f = r.readUshort(t, u);
           0 == f ? h = e.cmap.parse0(t, u) : 4 == f ? h = e.cmap.parse4(t, u) : 6 == f ? h = e.cmap.parse6(t, u) : 12 == f ? h = e.cmap.parse12(t, u) : console.log("unknown format: " + f, c, p, u), 
-          s.tables.push(h);
+          i.tables.push(h);
         }
-        if (null != s[d]) throw "multiple tables for one platform+encoding";
-        s[d] = m;
+        if (null != i[d]) throw "multiple tables for one platform+encoding";
+        i[d] = m;
       }
-      return s;
+      return i;
     }, e.cmap.parse0 = function(t, a) {
       var n = e._bin, r = {};
       r.format = n.readUshort(t, a), a += 2;
-      var s = n.readUshort(t, a);
+      var i = n.readUshort(t, a);
       a += 2, n.readUshort(t, a), a += 2, r.map = [];
-      for (var i = 0; i < s - 6; i++) r.map.push(t[a + i]);
+      for (var s = 0; s < i - 6; s++) r.map.push(t[a + s]);
       return r;
     }, e.cmap.parse4 = function(t, a) {
-      var n = e._bin, r = a, s = {};
-      s.format = n.readUshort(t, a), a += 2;
-      var i = n.readUshort(t, a);
+      var n = e._bin, r = a, i = {};
+      i.format = n.readUshort(t, a), a += 2;
+      var s = n.readUshort(t, a);
       a += 2, n.readUshort(t, a), a += 2;
       var o = n.readUshort(t, a);
       a += 2;
       var l = o / 2;
-      s.searchRange = n.readUshort(t, a), a += 2, s.entrySelector = n.readUshort(t, a), 
-      a += 2, s.rangeShift = n.readUshort(t, a), a += 2, s.endCount = n.readUshorts(t, a, l), 
-      a += 2 * l, a += 2, s.startCount = n.readUshorts(t, a, l), a += 2 * l, s.idDelta = [];
-      for (var c = 0; c < l; c++) s.idDelta.push(n.readShort(t, a)), a += 2;
-      for (s.idRangeOffset = n.readUshorts(t, a, l), a += 2 * l, s.glyphIdArray = []; a < r + i; ) s.glyphIdArray.push(n.readUshort(t, a)), 
+      i.searchRange = n.readUshort(t, a), a += 2, i.entrySelector = n.readUshort(t, a), 
+      a += 2, i.rangeShift = n.readUshort(t, a), a += 2, i.endCount = n.readUshorts(t, a, l), 
+      a += 2 * l, a += 2, i.startCount = n.readUshorts(t, a, l), a += 2 * l, i.idDelta = [];
+      for (var c = 0; c < l; c++) i.idDelta.push(n.readShort(t, a)), a += 2;
+      for (i.idRangeOffset = n.readUshorts(t, a, l), a += 2 * l, i.glyphIdArray = []; a < r + s; ) i.glyphIdArray.push(n.readUshort(t, a)), 
       a += 2;
-      return s;
+      return i;
     }, e.cmap.parse6 = function(t, a) {
       var n = e._bin, r = {};
       r.format = n.readUshort(t, a), a += 2, n.readUshort(t, a), a += 2, n.readUshort(t, a), 
       a += 2, r.firstCode = n.readUshort(t, a), a += 2;
-      var s = n.readUshort(t, a);
+      var i = n.readUshort(t, a);
       a += 2, r.glyphIdArray = [];
-      for (var i = 0; i < s; i++) r.glyphIdArray.push(n.readUshort(t, a)), a += 2;
+      for (var s = 0; s < i; s++) r.glyphIdArray.push(n.readUshort(t, a)), a += 2;
       return r;
     }, e.cmap.parse12 = function(t, a) {
       var n = e._bin, r = {};
       r.format = n.readUshort(t, a), a += 2, a += 2, n.readUint(t, a), a += 4, n.readUint(t, a), 
       a += 4;
-      var s = n.readUint(t, a);
+      var i = n.readUint(t, a);
       a += 4, r.groups = [];
-      for (var i = 0; i < s; i++) {
-        var o = a + 12 * i, l = n.readUint(t, o + 0), c = n.readUint(t, o + 4), p = n.readUint(t, o + 8);
+      for (var s = 0; s < i; s++) {
+        var o = a + 12 * s, l = n.readUint(t, o + 0), c = n.readUint(t, o + 4), p = n.readUint(t, o + 8);
         r.groups.push([ l, c, p ]);
       }
       return r;
     }, e.glyf = {}, e.glyf.parse = function(e, t, a, n) {
-      for (var r = [], s = 0; s < n.maxp.numGlyphs; s++) r.push(null);
+      for (var r = [], i = 0; i < n.maxp.numGlyphs; i++) r.push(null);
       return r;
     }, e.glyf._parseGlyf = function(t, a) {
-      var n = e._bin, r = t._data, s = e._tabOffset(r, "glyf") + t.loca[a];
+      var n = e._bin, r = t._data, i = e._tabOffset(r, "glyf") + t.loca[a];
       if (t.loca[a] == t.loca[a + 1]) return null;
-      var i = {};
-      if (i.noc = n.readShort(r, s), s += 2, i.xMin = n.readShort(r, s), s += 2, i.yMin = n.readShort(r, s), 
-      s += 2, i.xMax = n.readShort(r, s), s += 2, i.yMax = n.readShort(r, s), s += 2, 
-      i.xMin >= i.xMax || i.yMin >= i.yMax) return null;
-      if (i.noc > 0) {
-        i.endPts = [];
-        for (var o = 0; o < i.noc; o++) i.endPts.push(n.readUshort(r, s)), s += 2;
-        var l = n.readUshort(r, s);
-        if (s += 2, r.length - s < l) return null;
-        i.instructions = n.readBytes(r, s, l), s += l;
-        var c = i.endPts[i.noc - 1] + 1;
-        i.flags = [];
+      var s = {};
+      if (s.noc = n.readShort(r, i), i += 2, s.xMin = n.readShort(r, i), i += 2, s.yMin = n.readShort(r, i), 
+      i += 2, s.xMax = n.readShort(r, i), i += 2, s.yMax = n.readShort(r, i), i += 2, 
+      s.xMin >= s.xMax || s.yMin >= s.yMax) return null;
+      if (s.noc > 0) {
+        s.endPts = [];
+        for (var o = 0; o < s.noc; o++) s.endPts.push(n.readUshort(r, i)), i += 2;
+        var l = n.readUshort(r, i);
+        if (i += 2, r.length - i < l) return null;
+        s.instructions = n.readBytes(r, i, l), i += l;
+        var c = s.endPts[s.noc - 1] + 1;
+        s.flags = [];
         for (o = 0; o < c; o++) {
-          var p = r[s];
-          if (s++, i.flags.push(p), 8 & p) {
-            var u = r[s];
-            s++;
-            for (var d = 0; d < u; d++) i.flags.push(p), o++;
+          var p = r[i];
+          if (i++, s.flags.push(p), 8 & p) {
+            var u = r[i];
+            i++;
+            for (var d = 0; d < u; d++) s.flags.push(p), o++;
           }
         }
-        i.xs = [];
+        s.xs = [];
         for (o = 0; o < c; o++) {
-          var m = !!(2 & i.flags[o]), h = !!(16 & i.flags[o]);
-          m ? (i.xs.push(h ? r[s] : -r[s]), s++) : h ? i.xs.push(0) : (i.xs.push(n.readShort(r, s)), 
-          s += 2);
+          var m = !!(2 & s.flags[o]), h = !!(16 & s.flags[o]);
+          m ? (s.xs.push(h ? r[i] : -r[i]), i++) : h ? s.xs.push(0) : (s.xs.push(n.readShort(r, i)), 
+          i += 2);
         }
-        i.ys = [];
+        s.ys = [];
         for (o = 0; o < c; o++) {
-          m = !!(4 & i.flags[o]), h = !!(32 & i.flags[o]);
-          m ? (i.ys.push(h ? r[s] : -r[s]), s++) : h ? i.ys.push(0) : (i.ys.push(n.readShort(r, s)), 
-          s += 2);
+          m = !!(4 & s.flags[o]), h = !!(32 & s.flags[o]);
+          m ? (s.ys.push(h ? r[i] : -r[i]), i++) : h ? s.ys.push(0) : (s.ys.push(n.readShort(r, i)), 
+          i += 2);
         }
         var f = 0, g = 0;
-        for (o = 0; o < c; o++) f += i.xs[o], g += i.ys[o], i.xs[o] = f, i.ys[o] = g;
+        for (o = 0; o < c; o++) f += s.xs[o], g += s.ys[o], s.xs[o] = f, s.ys[o] = g;
       } else {
         var v;
-        i.parts = [];
+        s.parts = [];
         do {
-          v = n.readUshort(r, s), s += 2;
+          v = n.readUshort(r, i), i += 2;
           var y = {
             m: {
               a: 1,
@@ -4089,61 +4058,61 @@
             p1: -1,
             p2: -1
           };
-          if (i.parts.push(y), y.glyphIndex = n.readUshort(r, s), s += 2, 1 & v) {
-            var b = n.readShort(r, s);
-            s += 2;
-            var w = n.readShort(r, s);
-            s += 2;
+          if (s.parts.push(y), y.glyphIndex = n.readUshort(r, i), i += 2, 1 & v) {
+            var b = n.readShort(r, i);
+            i += 2;
+            var w = n.readShort(r, i);
+            i += 2;
           } else {
-            b = n.readInt8(r, s);
-            s++;
-            w = n.readInt8(r, s);
-            s++;
+            b = n.readInt8(r, i);
+            i++;
+            w = n.readInt8(r, i);
+            i++;
           }
-          2 & v ? (y.m.tx = b, y.m.ty = w) : (y.p1 = b, y.p2 = w), 8 & v ? (y.m.a = y.m.d = n.readF2dot14(r, s), 
-          s += 2) : 64 & v ? (y.m.a = n.readF2dot14(r, s), s += 2, y.m.d = n.readF2dot14(r, s), 
-          s += 2) : 128 & v && (y.m.a = n.readF2dot14(r, s), s += 2, y.m.b = n.readF2dot14(r, s), 
-          s += 2, y.m.c = n.readF2dot14(r, s), s += 2, y.m.d = n.readF2dot14(r, s), s += 2);
+          2 & v ? (y.m.tx = b, y.m.ty = w) : (y.p1 = b, y.p2 = w), 8 & v ? (y.m.a = y.m.d = n.readF2dot14(r, i), 
+          i += 2) : 64 & v ? (y.m.a = n.readF2dot14(r, i), i += 2, y.m.d = n.readF2dot14(r, i), 
+          i += 2) : 128 & v && (y.m.a = n.readF2dot14(r, i), i += 2, y.m.b = n.readF2dot14(r, i), 
+          i += 2, y.m.c = n.readF2dot14(r, i), i += 2, y.m.d = n.readF2dot14(r, i), i += 2);
         } while (32 & v);
         if (256 & v) {
-          var x = n.readUshort(r, s);
-          s += 2, i.instr = [];
-          for (o = 0; o < x; o++) i.instr.push(r[s]), s++;
+          var x = n.readUshort(r, i);
+          i += 2, s.instr = [];
+          for (o = 0; o < x; o++) s.instr.push(r[i]), i++;
         }
       }
-      return i;
+      return s;
     }, e.GPOS = {}, e.GPOS.parse = function(t, a, n, r) {
       return e._lctf.parse(t, a, n, r, e.GPOS.subt);
     }, e.GPOS.subt = function(t, a, n) {
       if (2 != a) return null;
-      var r = e._bin, s = n, i = {};
-      i.format = r.readUshort(t, n), n += 2;
+      var r = e._bin, i = n, s = {};
+      s.format = r.readUshort(t, n), n += 2;
       var o = r.readUshort(t, n);
-      n += 2, i.coverage = e._lctf.readCoverage(t, o + s), i.valFmt1 = r.readUshort(t, n), 
-      n += 2, i.valFmt2 = r.readUshort(t, n), n += 2;
-      var l = e._lctf.numOfOnes(i.valFmt1), c = e._lctf.numOfOnes(i.valFmt2);
-      if (1 == i.format) {
-        i.pairsets = [];
+      n += 2, s.coverage = e._lctf.readCoverage(t, o + i), s.valFmt1 = r.readUshort(t, n), 
+      n += 2, s.valFmt2 = r.readUshort(t, n), n += 2;
+      var l = e._lctf.numOfOnes(s.valFmt1), c = e._lctf.numOfOnes(s.valFmt2);
+      if (1 == s.format) {
+        s.pairsets = [];
         var p = r.readUshort(t, n);
         n += 2;
         for (var u = 0; u < p; u++) {
           var d = r.readUshort(t, n);
-          n += 2, d += s;
+          n += 2, d += i;
           var m = r.readUshort(t, d);
           d += 2;
           for (var h = [], f = 0; f < m; f++) {
             var g = r.readUshort(t, d);
-            d += 2, 0 != i.valFmt1 && (k = e._lctf.readValueRecord(t, d, i.valFmt1), d += 2 * l), 
-            0 != i.valFmt2 && (q = e._lctf.readValueRecord(t, d, i.valFmt2), d += 2 * c), h.push({
+            d += 2, 0 != s.valFmt1 && (k = e._lctf.readValueRecord(t, d, s.valFmt1), d += 2 * l), 
+            0 != s.valFmt2 && (q = e._lctf.readValueRecord(t, d, s.valFmt2), d += 2 * c), h.push({
               gid2: g,
               val1: k,
               val2: q
             });
           }
-          i.pairsets.push(h);
+          s.pairsets.push(h);
         }
       }
-      if (2 == i.format) {
+      if (2 == s.format) {
         var v = r.readUshort(t, n);
         n += 2;
         var y = r.readUshort(t, n);
@@ -4151,141 +4120,141 @@
         var b = r.readUshort(t, n);
         n += 2;
         var w = r.readUshort(t, n);
-        n += 2, i.classDef1 = e._lctf.readClassDef(t, s + v), i.classDef2 = e._lctf.readClassDef(t, s + y), 
-        i.matrix = [];
+        n += 2, s.classDef1 = e._lctf.readClassDef(t, i + v), s.classDef2 = e._lctf.readClassDef(t, i + y), 
+        s.matrix = [];
         for (u = 0; u < b; u++) {
           var x = [];
           for (f = 0; f < w; f++) {
             var k = null, q = null;
-            0 != i.valFmt1 && (k = e._lctf.readValueRecord(t, n, i.valFmt1), n += 2 * l), 0 != i.valFmt2 && (q = e._lctf.readValueRecord(t, n, i.valFmt2), 
+            0 != s.valFmt1 && (k = e._lctf.readValueRecord(t, n, s.valFmt1), n += 2 * l), 0 != s.valFmt2 && (q = e._lctf.readValueRecord(t, n, s.valFmt2), 
             n += 2 * c), x.push({
               val1: k,
               val2: q
             });
           }
-          i.matrix.push(x);
+          s.matrix.push(x);
         }
       }
-      return i;
+      return s;
     }, e.GSUB = {}, e.GSUB.parse = function(t, a, n, r) {
       return e._lctf.parse(t, a, n, r, e.GSUB.subt);
     }, e.GSUB.subt = function(t, a, n) {
-      var r = e._bin, s = n, i = {};
+      var r = e._bin, i = n, s = {};
       if (1 != a && 4 != a && 5 != a) return null;
-      i.fmt = r.readUshort(t, n), n += 2;
+      s.fmt = r.readUshort(t, n), n += 2;
       var o = r.readUshort(t, n);
-      if (n += 2, i.coverage = e._lctf.readCoverage(t, o + s), 1 == a) {
-        if (1 == i.fmt) i.delta = r.readShort(t, n), n += 2; else if (2 == i.fmt) {
+      if (n += 2, s.coverage = e._lctf.readCoverage(t, o + i), 1 == a) {
+        if (1 == s.fmt) s.delta = r.readShort(t, n), n += 2; else if (2 == s.fmt) {
           var l = r.readUshort(t, n);
-          n += 2, i.newg = r.readUshorts(t, n, l), n += 2 * i.newg.length;
+          n += 2, s.newg = r.readUshorts(t, n, l), n += 2 * s.newg.length;
         }
       } else if (4 == a) {
-        i.vals = [];
+        s.vals = [];
         l = r.readUshort(t, n);
         n += 2;
         for (var c = 0; c < l; c++) {
           var p = r.readUshort(t, n);
-          n += 2, i.vals.push(e.GSUB.readLigatureSet(t, s + p));
+          n += 2, s.vals.push(e.GSUB.readLigatureSet(t, i + p));
         }
-      } else if (5 == a) if (2 == i.fmt) {
+      } else if (5 == a) if (2 == s.fmt) {
         var u = r.readUshort(t, n);
-        n += 2, i.cDef = e._lctf.readClassDef(t, s + u), i.scset = [];
+        n += 2, s.cDef = e._lctf.readClassDef(t, i + u), s.scset = [];
         var d = r.readUshort(t, n);
         n += 2;
         for (c = 0; c < d; c++) {
           var m = r.readUshort(t, n);
-          n += 2, i.scset.push(0 == m ? null : e.GSUB.readSubClassSet(t, s + m));
+          n += 2, s.scset.push(0 == m ? null : e.GSUB.readSubClassSet(t, i + m));
         }
-      } else console.log("unknown table format", i.fmt);
-      return i;
+      } else console.log("unknown table format", s.fmt);
+      return s;
     }, e.GSUB.readSubClassSet = function(t, a) {
-      var n = e._bin.readUshort, r = a, s = [], i = n(t, a);
+      var n = e._bin.readUshort, r = a, i = [], s = n(t, a);
       a += 2;
-      for (var o = 0; o < i; o++) {
+      for (var o = 0; o < s; o++) {
         var l = n(t, a);
-        a += 2, s.push(e.GSUB.readSubClassRule(t, r + l));
+        a += 2, i.push(e.GSUB.readSubClassRule(t, r + l));
       }
-      return s;
+      return i;
     }, e.GSUB.readSubClassRule = function(t, a) {
-      var n = e._bin.readUshort, r = {}, s = n(t, a), i = n(t, a += 2);
+      var n = e._bin.readUshort, r = {}, i = n(t, a), s = n(t, a += 2);
       a += 2, r.input = [];
-      for (var o = 0; o < s - 1; o++) r.input.push(n(t, a)), a += 2;
-      return r.substLookupRecords = e.GSUB.readSubstLookupRecords(t, a, i), r;
+      for (var o = 0; o < i - 1; o++) r.input.push(n(t, a)), a += 2;
+      return r.substLookupRecords = e.GSUB.readSubstLookupRecords(t, a, s), r;
     }, e.GSUB.readSubstLookupRecords = function(t, a, n) {
-      for (var r = e._bin.readUshort, s = [], i = 0; i < n; i++) s.push(r(t, a), r(t, a + 2)), 
+      for (var r = e._bin.readUshort, i = [], s = 0; s < n; s++) i.push(r(t, a), r(t, a + 2)), 
       a += 4;
-      return s;
+      return i;
     }, e.GSUB.readChainSubClassSet = function(t, a) {
-      var n = e._bin, r = a, s = [], i = n.readUshort(t, a);
+      var n = e._bin, r = a, i = [], s = n.readUshort(t, a);
       a += 2;
-      for (var o = 0; o < i; o++) {
+      for (var o = 0; o < s; o++) {
         var l = n.readUshort(t, a);
-        a += 2, s.push(e.GSUB.readChainSubClassRule(t, r + l));
+        a += 2, i.push(e.GSUB.readChainSubClassRule(t, r + l));
       }
-      return s;
+      return i;
     }, e.GSUB.readChainSubClassRule = function(t, a) {
-      for (var n = e._bin, r = {}, s = [ "backtrack", "input", "lookahead" ], i = 0; i < s.length; i++) {
+      for (var n = e._bin, r = {}, i = [ "backtrack", "input", "lookahead" ], s = 0; s < i.length; s++) {
         var o = n.readUshort(t, a);
-        a += 2, 1 == i && o--, r[s[i]] = n.readUshorts(t, a, o), a += 2 * r[s[i]].length;
+        a += 2, 1 == s && o--, r[i[s]] = n.readUshorts(t, a, o), a += 2 * r[i[s]].length;
       }
       o = n.readUshort(t, a);
       return a += 2, r.subst = n.readUshorts(t, a, 2 * o), a += 2 * r.subst.length, r;
     }, e.GSUB.readLigatureSet = function(t, a) {
-      var n = e._bin, r = a, s = [], i = n.readUshort(t, a);
+      var n = e._bin, r = a, i = [], s = n.readUshort(t, a);
       a += 2;
-      for (var o = 0; o < i; o++) {
+      for (var o = 0; o < s; o++) {
         var l = n.readUshort(t, a);
-        a += 2, s.push(e.GSUB.readLigature(t, r + l));
+        a += 2, i.push(e.GSUB.readLigature(t, r + l));
       }
-      return s;
+      return i;
     }, e.GSUB.readLigature = function(t, a) {
       var n = e._bin, r = {
         chain: []
       };
       r.nglyph = n.readUshort(t, a), a += 2;
-      var s = n.readUshort(t, a);
+      var i = n.readUshort(t, a);
       a += 2;
-      for (var i = 0; i < s - 1; i++) r.chain.push(n.readUshort(t, a)), a += 2;
+      for (var s = 0; s < i - 1; s++) r.chain.push(n.readUshort(t, a)), a += 2;
       return r;
     }, e.head = {}, e.head.parse = function(t, a, n) {
-      var r = e._bin, s = {};
-      return r.readFixed(t, a), a += 4, s.fontRevision = r.readFixed(t, a), a += 4, r.readUint(t, a), 
-      a += 4, r.readUint(t, a), a += 4, s.flags = r.readUshort(t, a), a += 2, s.unitsPerEm = r.readUshort(t, a), 
-      a += 2, s.created = r.readUint64(t, a), a += 8, s.modified = r.readUint64(t, a), 
-      a += 8, s.xMin = r.readShort(t, a), a += 2, s.yMin = r.readShort(t, a), a += 2, 
-      s.xMax = r.readShort(t, a), a += 2, s.yMax = r.readShort(t, a), a += 2, s.macStyle = r.readUshort(t, a), 
-      a += 2, s.lowestRecPPEM = r.readUshort(t, a), a += 2, s.fontDirectionHint = r.readShort(t, a), 
-      a += 2, s.indexToLocFormat = r.readShort(t, a), a += 2, s.glyphDataFormat = r.readShort(t, a), 
-      a += 2, s;
+      var r = e._bin, i = {};
+      return r.readFixed(t, a), a += 4, i.fontRevision = r.readFixed(t, a), a += 4, r.readUint(t, a), 
+      a += 4, r.readUint(t, a), a += 4, i.flags = r.readUshort(t, a), a += 2, i.unitsPerEm = r.readUshort(t, a), 
+      a += 2, i.created = r.readUint64(t, a), a += 8, i.modified = r.readUint64(t, a), 
+      a += 8, i.xMin = r.readShort(t, a), a += 2, i.yMin = r.readShort(t, a), a += 2, 
+      i.xMax = r.readShort(t, a), a += 2, i.yMax = r.readShort(t, a), a += 2, i.macStyle = r.readUshort(t, a), 
+      a += 2, i.lowestRecPPEM = r.readUshort(t, a), a += 2, i.fontDirectionHint = r.readShort(t, a), 
+      a += 2, i.indexToLocFormat = r.readShort(t, a), a += 2, i.glyphDataFormat = r.readShort(t, a), 
+      a += 2, i;
     }, e.hhea = {}, e.hhea.parse = function(t, a, n) {
-      var r = e._bin, s = {};
-      return r.readFixed(t, a), a += 4, s.ascender = r.readShort(t, a), a += 2, s.descender = r.readShort(t, a), 
-      a += 2, s.lineGap = r.readShort(t, a), a += 2, s.advanceWidthMax = r.readUshort(t, a), 
-      a += 2, s.minLeftSideBearing = r.readShort(t, a), a += 2, s.minRightSideBearing = r.readShort(t, a), 
-      a += 2, s.xMaxExtent = r.readShort(t, a), a += 2, s.caretSlopeRise = r.readShort(t, a), 
-      a += 2, s.caretSlopeRun = r.readShort(t, a), a += 2, s.caretOffset = r.readShort(t, a), 
-      a += 2, a += 8, s.metricDataFormat = r.readShort(t, a), a += 2, s.numberOfHMetrics = r.readUshort(t, a), 
-      a += 2, s;
+      var r = e._bin, i = {};
+      return r.readFixed(t, a), a += 4, i.ascender = r.readShort(t, a), a += 2, i.descender = r.readShort(t, a), 
+      a += 2, i.lineGap = r.readShort(t, a), a += 2, i.advanceWidthMax = r.readUshort(t, a), 
+      a += 2, i.minLeftSideBearing = r.readShort(t, a), a += 2, i.minRightSideBearing = r.readShort(t, a), 
+      a += 2, i.xMaxExtent = r.readShort(t, a), a += 2, i.caretSlopeRise = r.readShort(t, a), 
+      a += 2, i.caretSlopeRun = r.readShort(t, a), a += 2, i.caretOffset = r.readShort(t, a), 
+      a += 2, a += 8, i.metricDataFormat = r.readShort(t, a), a += 2, i.numberOfHMetrics = r.readUshort(t, a), 
+      a += 2, i;
     }, e.hmtx = {}, e.hmtx.parse = function(t, a, n, r) {
-      for (var s = e._bin, i = {
+      for (var i = e._bin, s = {
         aWidth: [],
         lsBearing: []
-      }, o = 0, l = 0, c = 0; c < r.maxp.numGlyphs; c++) c < r.hhea.numberOfHMetrics && (o = s.readUshort(t, a), 
-      a += 2, l = s.readShort(t, a), a += 2), i.aWidth.push(o), i.lsBearing.push(l);
-      return i;
+      }, o = 0, l = 0, c = 0; c < r.maxp.numGlyphs; c++) c < r.hhea.numberOfHMetrics && (o = i.readUshort(t, a), 
+      a += 2, l = i.readShort(t, a), a += 2), s.aWidth.push(o), s.lsBearing.push(l);
+      return s;
     }, e.kern = {}, e.kern.parse = function(t, a, n, r) {
-      var s = e._bin, i = s.readUshort(t, a);
-      if (a += 2, 1 == i) return e.kern.parseV1(t, a - 2, n, r);
-      var o = s.readUshort(t, a);
+      var i = e._bin, s = i.readUshort(t, a);
+      if (a += 2, 1 == s) return e.kern.parseV1(t, a - 2, n, r);
+      var o = i.readUshort(t, a);
       a += 2;
       for (var l = {
         glyph1: [],
         rval: []
       }, c = 0; c < o; c++) {
         a += 2;
-        n = s.readUshort(t, a);
+        n = i.readUshort(t, a);
         a += 2;
-        var p = s.readUshort(t, a);
+        var p = i.readUshort(t, a);
         a += 2;
         var u = p >>> 8;
         if (0 != (u &= 15)) throw "unknown kern table format: " + u;
@@ -4293,61 +4262,61 @@
       }
       return l;
     }, e.kern.parseV1 = function(t, a, n, r) {
-      var s = e._bin;
-      s.readFixed(t, a), a += 4;
-      var i = s.readUint(t, a);
+      var i = e._bin;
+      i.readFixed(t, a), a += 4;
+      var s = i.readUint(t, a);
       a += 4;
       for (var o = {
         glyph1: [],
         rval: []
-      }, l = 0; l < i; l++) {
-        s.readUint(t, a), a += 4;
-        var c = s.readUshort(t, a);
-        a += 2, s.readUshort(t, a), a += 2;
+      }, l = 0; l < s; l++) {
+        i.readUint(t, a), a += 4;
+        var c = i.readUshort(t, a);
+        a += 2, i.readUshort(t, a), a += 2;
         var p = c >>> 8;
         if (0 != (p &= 15)) throw "unknown kern table format: " + p;
         a = e.kern.readFormat0(t, a, o);
       }
       return o;
     }, e.kern.readFormat0 = function(t, a, n) {
-      var r = e._bin, s = -1, i = r.readUshort(t, a);
+      var r = e._bin, i = -1, s = r.readUshort(t, a);
       a += 2, r.readUshort(t, a), a += 2, r.readUshort(t, a), a += 2, r.readUshort(t, a), 
       a += 2;
-      for (var o = 0; o < i; o++) {
+      for (var o = 0; o < s; o++) {
         var l = r.readUshort(t, a);
         a += 2;
         var c = r.readUshort(t, a);
         a += 2;
         var p = r.readShort(t, a);
-        a += 2, l != s && (n.glyph1.push(l), n.rval.push({
+        a += 2, l != i && (n.glyph1.push(l), n.rval.push({
           glyph2: [],
           vals: []
         }));
         var u = n.rval[n.rval.length - 1];
-        u.glyph2.push(c), u.vals.push(p), s = l;
+        u.glyph2.push(c), u.vals.push(p), i = l;
       }
       return a;
     }, e.loca = {}, e.loca.parse = function(t, a, n, r) {
-      var s = e._bin, i = [], o = r.head.indexToLocFormat, l = r.maxp.numGlyphs + 1;
-      if (0 == o) for (var c = 0; c < l; c++) i.push(s.readUshort(t, a + (c << 1)) << 1);
-      if (1 == o) for (c = 0; c < l; c++) i.push(s.readUint(t, a + (c << 2)));
-      return i;
+      var i = e._bin, s = [], o = r.head.indexToLocFormat, l = r.maxp.numGlyphs + 1;
+      if (0 == o) for (var c = 0; c < l; c++) s.push(i.readUshort(t, a + (c << 1)) << 1);
+      if (1 == o) for (c = 0; c < l; c++) s.push(i.readUint(t, a + (c << 2)));
+      return s;
     }, e.maxp = {}, e.maxp.parse = function(t, a, n) {
-      var r = e._bin, s = {}, i = r.readUint(t, a);
-      return a += 4, s.numGlyphs = r.readUshort(t, a), a += 2, 65536 == i && (s.maxPoints = r.readUshort(t, a), 
-      a += 2, s.maxContours = r.readUshort(t, a), a += 2, s.maxCompositePoints = r.readUshort(t, a), 
-      a += 2, s.maxCompositeContours = r.readUshort(t, a), a += 2, s.maxZones = r.readUshort(t, a), 
-      a += 2, s.maxTwilightPoints = r.readUshort(t, a), a += 2, s.maxStorage = r.readUshort(t, a), 
-      a += 2, s.maxFunctionDefs = r.readUshort(t, a), a += 2, s.maxInstructionDefs = r.readUshort(t, a), 
-      a += 2, s.maxStackElements = r.readUshort(t, a), a += 2, s.maxSizeOfInstructions = r.readUshort(t, a), 
-      a += 2, s.maxComponentElements = r.readUshort(t, a), a += 2, s.maxComponentDepth = r.readUshort(t, a), 
-      a += 2), s;
+      var r = e._bin, i = {}, s = r.readUint(t, a);
+      return a += 4, i.numGlyphs = r.readUshort(t, a), a += 2, 65536 == s && (i.maxPoints = r.readUshort(t, a), 
+      a += 2, i.maxContours = r.readUshort(t, a), a += 2, i.maxCompositePoints = r.readUshort(t, a), 
+      a += 2, i.maxCompositeContours = r.readUshort(t, a), a += 2, i.maxZones = r.readUshort(t, a), 
+      a += 2, i.maxTwilightPoints = r.readUshort(t, a), a += 2, i.maxStorage = r.readUshort(t, a), 
+      a += 2, i.maxFunctionDefs = r.readUshort(t, a), a += 2, i.maxInstructionDefs = r.readUshort(t, a), 
+      a += 2, i.maxStackElements = r.readUshort(t, a), a += 2, i.maxSizeOfInstructions = r.readUshort(t, a), 
+      a += 2, i.maxComponentElements = r.readUshort(t, a), a += 2, i.maxComponentDepth = r.readUshort(t, a), 
+      a += 2), i;
     }, e.name = {}, e.name.parse = function(t, a, n) {
-      var r = e._bin, s = {};
+      var r = e._bin, i = {};
       r.readUshort(t, a), a += 2;
-      var i = r.readUshort(t, a);
+      var s = r.readUshort(t, a);
       a += 2, r.readUshort(t, a);
-      for (var o, l = a += 2, c = 0; c < i; c++) {
+      for (var o, l = a += 2, c = 0; c < s; c++) {
         var p = r.readUshort(t, a);
         a += 2;
         var u = r.readUshort(t, a);
@@ -4361,31 +4330,31 @@
         var h = r.readUshort(t, a);
         a += 2;
         var f = "p" + p;
-        null == s[f] && (s[f] = {});
-        var g, v = [ "copyright", "fontFamily", "fontSubfamily", "ID", "fullName", "version", "postScriptName", "trademark", "manufacturer", "designer", "description", "urlVendor", "urlDesigner", "licence", "licenceURL", "---", "typoFamilyName", "typoSubfamilyName", "compatibleFull", "sampleText", "postScriptCID", "wwsFamilyName", "wwsSubfamilyName", "lightPalette", "darkPalette" ][m], y = l + 12 * i + h;
+        null == i[f] && (i[f] = {});
+        var g, v = [ "copyright", "fontFamily", "fontSubfamily", "ID", "fullName", "version", "postScriptName", "trademark", "manufacturer", "designer", "description", "urlVendor", "urlDesigner", "licence", "licenceURL", "---", "typoFamilyName", "typoSubfamilyName", "compatibleFull", "sampleText", "postScriptCID", "wwsFamilyName", "wwsSubfamilyName", "lightPalette", "darkPalette" ][m], y = l + 12 * s + h;
         if (0 == p) g = r.readUnicode(t, y, n / 2); else if (3 == p && 0 == u) g = r.readUnicode(t, y, n / 2); else if (0 == u) g = r.readASCII(t, y, n); else if (1 == u) g = r.readUnicode(t, y, n / 2); else if (3 == u) g = r.readUnicode(t, y, n / 2); else {
           if (1 != p) throw "unknown encoding " + u + ", platformID: " + p;
           g = r.readASCII(t, y, n), console.log("reading unknown MAC encoding " + u + " as ASCII");
         }
-        s[f][v] = g, s[f]._lang = d;
+        i[f][v] = g, i[f]._lang = d;
       }
-      for (var b in s) if (null != s[b].postScriptName && 1033 == s[b]._lang) return s[b];
-      for (var b in s) if (null != s[b].postScriptName && 3084 == s[b]._lang) return s[b];
-      for (var b in s) if (null != s[b].postScriptName) return s[b];
-      for (var b in s) {
+      for (var b in i) if (null != i[b].postScriptName && 1033 == i[b]._lang) return i[b];
+      for (var b in i) if (null != i[b].postScriptName && 3084 == i[b]._lang) return i[b];
+      for (var b in i) if (null != i[b].postScriptName) return i[b];
+      for (var b in i) {
         o = b;
         break;
       }
-      return console.log("returning name table with languageID " + s[o]._lang), s[o];
+      return console.log("returning name table with languageID " + i[o]._lang), i[o];
     }, e["OS/2"] = {}, e["OS/2"].parse = function(t, a, n) {
       var r = e._bin.readUshort(t, a);
       a += 2;
-      var s = {};
-      if (0 == r) e["OS/2"].version0(t, a, s); else if (1 == r) e["OS/2"].version1(t, a, s); else if (2 == r || 3 == r || 4 == r) e["OS/2"].version2(t, a, s); else {
+      var i = {};
+      if (0 == r) e["OS/2"].version0(t, a, i); else if (1 == r) e["OS/2"].version1(t, a, i); else if (2 == r || 3 == r || 4 == r) e["OS/2"].version2(t, a, i); else {
         if (5 != r) throw "unknown OS/2 table version: " + r;
-        e["OS/2"].version5(t, a, s);
+        e["OS/2"].version5(t, a, i);
       }
-      return s;
+      return i;
     }, e["OS/2"].version0 = function(t, a, n) {
       var r = e._bin;
       return n.xAvgCharWidth = r.readShort(t, a), a += 2, n.usWeightClass = r.readUshort(t, a), 
@@ -4418,17 +4387,17 @@
       return a = e["OS/2"].version2(t, a, n), n.usLowerOpticalPointSize = r.readUshort(t, a), 
       a += 2, n.usUpperOpticalPointSize = r.readUshort(t, a), a += 2;
     }, e.post = {}, e.post.parse = function(t, a, n) {
-      var r = e._bin, s = {};
-      return s.version = r.readFixed(t, a), a += 4, s.italicAngle = r.readFixed(t, a), 
-      a += 4, s.underlinePosition = r.readShort(t, a), a += 2, s.underlineThickness = r.readShort(t, a), 
-      a += 2, s;
+      var r = e._bin, i = {};
+      return i.version = r.readFixed(t, a), a += 4, i.italicAngle = r.readFixed(t, a), 
+      a += 4, i.underlinePosition = r.readShort(t, a), a += 2, i.underlineThickness = r.readShort(t, a), 
+      a += 2, i;
     }, e.SVG = {}, e.SVG.parse = function(t, a, n) {
-      var r = e._bin, s = {
+      var r = e._bin, i = {
         entries: []
-      }, i = a;
+      }, s = a;
       r.readUshort(t, a), a += 2;
       var o = r.readUint(t, a);
-      a += 4, r.readUint(t, a), a += 4, a = o + i;
+      a += 4, r.readUint(t, a), a += 4, a = o + s;
       var l = r.readUshort(t, a);
       a += 2;
       for (var c = 0; c < l; c++) {
@@ -4440,9 +4409,9 @@
         a += 4;
         var m = r.readUint(t, a);
         a += 4;
-        for (var h = new Uint8Array(t.buffer, i + d + o, m), f = r.readUTF8(h, 0, h.length), g = p; g <= u; g++) s.entries[g] = f;
+        for (var h = new Uint8Array(t.buffer, s + d + o, m), f = r.readUTF8(h, 0, h.length), g = p; g <= u; g++) i.entries[g] = f;
       }
-      return s;
+      return i;
     }, e.SVG.toPath = function(t) {
       var a = {
         cmds: [],
@@ -4452,31 +4421,31 @@
       for (var n = (new DOMParser).parseFromString(t, "image/svg+xml").firstChild; "svg" != n.tagName; ) n = n.nextSibling;
       var r = n.getAttribute("viewBox");
       r = r ? r.trim().split(" ").map(parseFloat) : [ 0, 0, 1e3, 1e3 ], e.SVG._toPath(n.children, a);
-      for (var s = 0; s < a.crds.length; s += 2) {
-        var i = a.crds[s], o = a.crds[s + 1];
-        i -= r[0], o = -(o -= r[1]), a.crds[s] = i, a.crds[s + 1] = o;
+      for (var i = 0; i < a.crds.length; i += 2) {
+        var s = a.crds[i], o = a.crds[i + 1];
+        s -= r[0], o = -(o -= r[1]), a.crds[i] = s, a.crds[i + 1] = o;
       }
       return a;
     }, e.SVG._toPath = function(t, a, n) {
       for (var r = 0; r < t.length; r++) {
-        var s = t[r], i = s.tagName, o = s.getAttribute("fill");
-        if (null == o && (o = n), "g" == i) e.SVG._toPath(s.children, a, o); else if ("path" == i) {
+        var i = t[r], s = i.tagName, o = i.getAttribute("fill");
+        if (null == o && (o = n), "g" == s) e.SVG._toPath(i.children, a, o); else if ("path" == s) {
           a.cmds.push(o || "#000000");
-          var l = s.getAttribute("d"), c = e.SVG._tokens(l);
+          var l = i.getAttribute("d"), c = e.SVG._tokens(l);
           e.SVG._toksToPath(c, a), a.cmds.push("X");
-        } else "defs" == i || console.log(i, s);
+        } else "defs" == s || console.log(s, i);
       }
     }, e.SVG._tokens = function(e) {
       for (var t = [], a = 0, n = false, r = ""; a < e.length; ) {
-        var s = e.charCodeAt(a), i = e.charAt(a);
+        var i = e.charCodeAt(a), s = e.charAt(a);
         a++;
-        var o = 48 <= s && s <= 57 || "." == i || "-" == i;
-        n ? "-" == i ? (t.push(parseFloat(r)), r = i) : o ? r += i : (t.push(parseFloat(r)), 
-        "," != i && " " != i && t.push(i), n = false) : o ? (r = i, n = true) : "," != i && " " != i && t.push(i);
+        var o = 48 <= i && i <= 57 || "." == s || "-" == s;
+        n ? "-" == s ? (t.push(parseFloat(r)), r = s) : o ? r += s : (t.push(parseFloat(r)), 
+        "," != s && " " != s && t.push(s), n = false) : o ? (r = s, n = true) : "," != s && " " != s && t.push(s);
       }
       return n && t.push(parseFloat(r)), t;
     }, e.SVG._toksToPath = function(t, a) {
-      for (var n = 0, r = 0, s = 0, i = 0, o = 0, l = {
+      for (var n = 0, r = 0, i = 0, s = 0, o = 0, l = {
         M: 2,
         L: 2,
         H: 1,
@@ -4485,19 +4454,19 @@
         C: 6
       }, c = a.cmds, p = a.crds; n < t.length; ) {
         var u = t[n];
-        if (n++, "z" == u) c.push("Z"), r = i, s = o; else for (var d = u.toUpperCase(), m = l[d], h = e.SVG._reps(t, n, m), f = 0; f < h; f++) {
+        if (n++, "z" == u) c.push("Z"), r = s, i = o; else for (var d = u.toUpperCase(), m = l[d], h = e.SVG._reps(t, n, m), f = 0; f < h; f++) {
           var g = 0, v = 0;
-          if (u != d && (g = r, v = s), "M" == d) r = g + t[n++], s = v + t[n++], c.push("M"), 
-          p.push(r, s), i = r, o = s; else if ("L" == d) r = g + t[n++], s = v + t[n++], c.push("L"), 
-          p.push(r, s); else if ("H" == d) r = g + t[n++], c.push("L"), p.push(r, s); else if ("V" == d) s = v + t[n++], 
-          c.push("L"), p.push(r, s); else if ("C" == d) {
+          if (u != d && (g = r, v = i), "M" == d) r = g + t[n++], i = v + t[n++], c.push("M"), 
+          p.push(r, i), s = r, o = i; else if ("L" == d) r = g + t[n++], i = v + t[n++], c.push("L"), 
+          p.push(r, i); else if ("H" == d) r = g + t[n++], c.push("L"), p.push(r, i); else if ("V" == d) i = v + t[n++], 
+          c.push("L"), p.push(r, i); else if ("C" == d) {
             var y = g + t[n++], b = v + t[n++], w = g + t[n++], x = v + t[n++], k = g + t[n++], q = v + t[n++];
-            c.push("C"), p.push(y, b, w, x, k, q), r = k, s = q;
+            c.push("C"), p.push(y, b, w, x, k, q), r = k, i = q;
           } else if ("S" == d) {
             var _ = Math.max(p.length - 4, 0);
-            y = r + r - p[_], b = s + s - p[_ + 1], w = g + t[n++], x = v + t[n++], k = g + t[n++], 
+            y = r + r - p[_], b = i + i - p[_ + 1], w = g + t[n++], x = v + t[n++], k = g + t[n++], 
             q = v + t[n++];
-            c.push("C"), p.push(y, b, w, x, k, q), r = k, s = q;
+            c.push("C"), p.push(y, b, w, x, k, q), r = k, i = q;
           } else console.log("Unknown SVG command " + u);
         }
       }
@@ -4511,18 +4480,18 @@
       var r = a.tables[n];
       if (0 == r.format) return t >= r.map.length ? 0 : r.map[t];
       if (4 == r.format) {
-        for (var s = -1, i = 0; i < r.endCount.length; i++) if (t <= r.endCount[i]) {
-          s = i;
+        for (var i = -1, s = 0; s < r.endCount.length; s++) if (t <= r.endCount[s]) {
+          i = s;
           break;
         }
-        if (-1 == s) return 0;
-        if (r.startCount[s] > t) return 0;
-        return 65535 & (0 != r.idRangeOffset[s] ? r.glyphIdArray[t - r.startCount[s] + (r.idRangeOffset[s] >> 1) - (r.idRangeOffset.length - s)] : t + r.idDelta[s]);
+        if (-1 == i) return 0;
+        if (r.startCount[i] > t) return 0;
+        return 65535 & (0 != r.idRangeOffset[i] ? r.glyphIdArray[t - r.startCount[i] + (r.idRangeOffset[i] >> 1) - (r.idRangeOffset.length - i)] : t + r.idDelta[i]);
       }
       if (12 == r.format) {
         if (t > r.groups[r.groups.length - 1][1]) return 0;
-        for (i = 0; i < r.groups.length; i++) {
-          var o = r.groups[i];
+        for (s = 0; s < r.groups.length; s++) {
+          var o = r.groups[s];
           if (o[0] <= t && t <= o[1]) return o[2] + (t - o[0]);
         }
         return 0;
@@ -4539,7 +4508,7 @@
         r);
       }
       if (t.CFF) {
-        var s = {
+        var i = {
           x: 0,
           y: 0,
           stack: [],
@@ -4548,7 +4517,7 @@
           width: t.CFF.Private ? t.CFF.Private.defaultWidthX : 0,
           open: false
         };
-        e.U._drawCFF(t.CFF.CharStrings[a], s, t.CFF, n);
+        e.U._drawCFF(t.CFF.CharStrings[a], i, t.CFF, n);
       } else t.glyf && e.U._drawGlyf(a, t, n);
       return n;
     }, e.U._drawGlyf = function(t, a, n) {
@@ -4556,9 +4525,9 @@
       null == r && (r = a.glyf[t] = e.glyf._parseGlyf(a, t)), null != r && (r.noc > -1 ? e.U._simpleGlyph(r, n) : e.U._compoGlyph(r, a, n));
     }, e.U._simpleGlyph = function(t, a) {
       for (var n = 0; n < t.noc; n++) {
-        for (var r = 0 == n ? 0 : t.endPts[n - 1] + 1, s = t.endPts[n], i = r; i <= s; i++) {
-          var o = i == r ? s : i - 1, l = i == s ? r : i + 1, c = 1 & t.flags[i], p = 1 & t.flags[o], u = 1 & t.flags[l], d = t.xs[i], m = t.ys[i];
-          if (i == r) if (c) {
+        for (var r = 0 == n ? 0 : t.endPts[n - 1] + 1, i = t.endPts[n], s = r; s <= i; s++) {
+          var o = s == r ? i : s - 1, l = s == i ? r : s + 1, c = 1 & t.flags[s], p = 1 & t.flags[o], u = 1 & t.flags[l], d = t.xs[s], m = t.ys[s];
+          if (s == r) if (c) {
             if (!p) {
               e.U.P.moveTo(a, d, m);
               continue;
@@ -4571,28 +4540,28 @@
       }
     }, e.U._compoGlyph = function(t, a, n) {
       for (var r = 0; r < t.parts.length; r++) {
-        var s = {
+        var i = {
           cmds: [],
           crds: []
-        }, i = t.parts[r];
-        e.U._drawGlyf(i.glyphIndex, a, s);
-        for (var o = i.m, l = 0; l < s.crds.length; l += 2) {
-          var c = s.crds[l], p = s.crds[l + 1];
+        }, s = t.parts[r];
+        e.U._drawGlyf(s.glyphIndex, a, i);
+        for (var o = s.m, l = 0; l < i.crds.length; l += 2) {
+          var c = i.crds[l], p = i.crds[l + 1];
           n.crds.push(c * o.a + p * o.b + o.tx), n.crds.push(c * o.c + p * o.d + o.ty);
         }
-        for (l = 0; l < s.cmds.length; l++) n.cmds.push(s.cmds[l]);
+        for (l = 0; l < i.cmds.length; l++) n.cmds.push(i.cmds[l]);
       }
     }, e.U._getGlyphClass = function(t, a) {
       var n = e._lctf.getInterval(a, t);
       return -1 == n ? 0 : a[n + 2];
     }, e.U.getPairAdjustment = function(t, a, n) {
       if (t.GPOS) {
-        for (var r = null, s = 0; s < t.GPOS.featureList.length; s++) {
-          var i = t.GPOS.featureList[s];
-          if ("kern" == i.tag) for (var o = 0; o < i.tab.length; o++) 2 == t.GPOS.lookupList[i.tab[o]].ltype && (r = t.GPOS.lookupList[i.tab[o]]);
+        for (var r = null, i = 0; i < t.GPOS.featureList.length; i++) {
+          var s = t.GPOS.featureList[i];
+          if ("kern" == s.tag) for (var o = 0; o < s.tab.length; o++) 2 == t.GPOS.lookupList[s.tab[o]].ltype && (r = t.GPOS.lookupList[s.tab[o]]);
         }
-        if (r) for (s = 0; s < r.tabs.length; s++) {
-          var l = r.tabs[s], c = e._lctf.coverageIndex(l.coverage, a);
+        if (r) for (i = 0; i < r.tabs.length; i++) {
+          var l = r.tabs[i], c = e._lctf.coverageIndex(l.coverage, a);
           if (-1 != c) {
             if (1 == l.format) {
               var p = l.pairsets[c];
@@ -4613,12 +4582,12 @@
       return 0;
     }, e.U.stringToGlyphs = function(t, a) {
       for (var n = [], r = 0; r < a.length; r++) {
-        var s = a.codePointAt(r);
-        s > 65535 && r++, n.push(e.U.codeToGlyph(t, s));
+        var i = a.codePointAt(r);
+        i > 65535 && r++, n.push(e.U.codeToGlyph(t, i));
       }
-      var i = t.GSUB;
-      if (null == i) return n;
-      for (var o = i.lookupList, l = i.featureList, c = '\n\t" ,.:;!?()  \u060c', p = "\u0622\u0623\u0624\u0625\u0627\u0629\u062f\u0630\u0631\u0632\u0648\u0671\u0672\u0673\u0675\u0676\u0677\u0688\u0689\u068a\u068b\u068c\u068d\u068e\u068f\u0690\u0691\u0692\u0693\u0694\u0695\u0696\u0697\u0698\u0699\u06c0\u06c3\u06c4\u06c5\u06c6\u06c7\u06c8\u06c9\u06ca\u06cb\u06cd\u06cf\u06d2\u06d3\u06d5\u06ee\u06ef\u0710\u0715\u0716\u0717\u0718\u0719\u071e\u0728\u072a\u072c\u072f\u074d\u0759\u075a\u075b\u076b\u076c\u0771\u0773\u0774\u0778\u0779\u0840\u0846\u0847\u0849\u0854\u0867\u0869\u086a\u08aa\u08ab\u08ac\u08ae\u08b1\u08b2\u08b9\u0ac5\u0ac7\u0ac9\u0aca\u0ace\u0acf\u0ad0\u0ad1\u0ad2\u0add\u0ae1\u0ae4\u0aef\u0b81\u0b83\u0b84\u0b85\u0b89\u0b8c\u0b8e\u0b8f\u0b91\u0ba9\u0baa\u0bab\u0bac", u = 0; u < n.length; u++) {
+      var s = t.GSUB;
+      if (null == s) return n;
+      for (var o = s.lookupList, l = s.featureList, c = '\n\t" ,.:;!?()  \u060c', p = "\u0622\u0623\u0624\u0625\u0627\u0629\u062f\u0630\u0631\u0632\u0648\u0671\u0672\u0673\u0675\u0676\u0677\u0688\u0689\u068a\u068b\u068c\u068d\u068e\u068f\u0690\u0691\u0692\u0693\u0694\u0695\u0696\u0697\u0698\u0699\u06c0\u06c3\u06c4\u06c5\u06c6\u06c7\u06c8\u06c9\u06ca\u06cb\u06cd\u06cf\u06d2\u06d3\u06d5\u06ee\u06ef\u0710\u0715\u0716\u0717\u0718\u0719\u071e\u0728\u072a\u072c\u072f\u074d\u0759\u075a\u075b\u076b\u076c\u0771\u0773\u0774\u0778\u0779\u0840\u0846\u0847\u0849\u0854\u0867\u0869\u086a\u08aa\u08ab\u08ac\u08ae\u08b1\u08b2\u08b9\u0ac5\u0ac7\u0ac9\u0aca\u0ace\u0acf\u0ad0\u0ad1\u0ad2\u0add\u0ae1\u0ae4\u0aef\u0b81\u0b83\u0b84\u0b85\u0b89\u0b8c\u0b8e\u0b8f\u0b91\u0ba9\u0baa\u0bab\u0bac", u = 0; u < n.length; u++) {
         var d = n[u], m = 0 == u || -1 != c.indexOf(a[u - 1]), h = u == n.length - 1 || -1 != c.indexOf(a[u + 1]);
         m || -1 == p.indexOf(a[u - 1]) || (m = true), h || -1 == p.indexOf(a[u]) || (h = true), 
         h || -1 == "\ua872\u0acd\u0ad7".indexOf(a[u + 1]) || (h = true), m || -1 == "\ua872\u0acd\u0ad7".indexOf(a[u]) || (m = true);
@@ -4648,9 +4617,9 @@
             } else if (5 == x.ltype) {
               var E = x.tabs[k];
               if (2 != E.fmt) continue;
-              var U = e._lctf.getInterval(E.cDef, d), P = E.cDef[U + 2], H = E.scset[P];
-              for (r = 0; r < H.length; r++) {
-                var L = H[r], j = L.input;
+              var U = e._lctf.getInterval(E.cDef, d), H = E.cDef[U + 2], P = E.scset[H];
+              for (r = 0; r < P.length; r++) {
+                var L = P[r], j = L.input;
                 if (!(j.length > b)) {
                   for (S = true, I = 0; I < j.length; I++) {
                     var $ = e._lctf.getInterval(E.cDef, n[u + 1 + I]);
@@ -4671,22 +4640,22 @@
       }
       return n;
     }, e.U._applyType1 = function(t, a, n) {
-      for (var r = t[a], s = 0; s < n.tabs.length; s++) {
-        var i = n.tabs[s], o = e._lctf.coverageIndex(i.coverage, r);
-        -1 != o && (1 == i.fmt ? t[a] = t[a] + i.delta : t[a] = i.newg[o]);
+      for (var r = t[a], i = 0; i < n.tabs.length; i++) {
+        var s = n.tabs[i], o = e._lctf.coverageIndex(s.coverage, r);
+        -1 != o && (1 == s.fmt ? t[a] = t[a] + s.delta : t[a] = s.newg[o]);
       }
     }, e.U.glyphsToPath = function(t, a, n) {
       for (var r = {
         cmds: [],
         crds: []
-      }, s = 0, i = 0; i < a.length; i++) {
-        var o = a[i];
+      }, i = 0, s = 0; s < a.length; s++) {
+        var o = a[s];
         if (-1 != o) {
-          for (var l = i < a.length - 1 && -1 != a[i + 1] ? a[i + 1] : 0, c = e.U.glyphToPath(t, o), p = 0; p < c.crds.length; p += 2) r.crds.push(c.crds[p] + s), 
+          for (var l = s < a.length - 1 && -1 != a[s + 1] ? a[s + 1] : 0, c = e.U.glyphToPath(t, o), p = 0; p < c.crds.length; p += 2) r.crds.push(c.crds[p] + i), 
           r.crds.push(c.crds[p + 1]);
           n && r.cmds.push(n);
           for (p = 0; p < c.cmds.length; p++) r.cmds.push(c.cmds[p]);
-          n && r.cmds.push("X"), s += t.hmtx.aWidth[o], i < a.length - 1 && (s += e.U.getPairAdjustment(t, o, l));
+          n && r.cmds.push("X"), i += t.hmtx.aWidth[o], s < a.length - 1 && (i += e.U.getPairAdjustment(t, o, l));
         }
       }
       return r;
@@ -4697,9 +4666,9 @@
         L: 2,
         Q: 4,
         C: 6
-      }, s = 0; s < e.cmds.length; s++) {
-        var i = e.cmds[s], o = n + (r[i] ? r[i] : 0);
-        for (a.push(i); n < o; ) {
+      }, i = 0; i < e.cmds.length; i++) {
+        var s = e.cmds[i], o = n + (r[s] ? r[s] : 0);
+        for (a.push(s); n < o; ) {
           var l = e.crds[n++];
           a.push(parseFloat(l.toFixed(t)) + (n == o ? "" : " "));
         }
@@ -4707,99 +4676,99 @@
       return a.join("");
     }, e.U.pathToContext = function(e, t) {
       for (var a = 0, n = e.crds, r = 0; r < e.cmds.length; r++) {
-        var s = e.cmds[r];
-        "M" == s ? (t.moveTo(n[a], n[a + 1]), a += 2) : "L" == s ? (t.lineTo(n[a], n[a + 1]), 
-        a += 2) : "C" == s ? (t.bezierCurveTo(n[a], n[a + 1], n[a + 2], n[a + 3], n[a + 4], n[a + 5]), 
-        a += 6) : "Q" == s ? (t.quadraticCurveTo(n[a], n[a + 1], n[a + 2], n[a + 3]), a += 4) : "#" == s.charAt(0) ? (t.beginPath(), 
-        t.fillStyle = s) : "Z" == s ? t.closePath() : "X" == s && t.fill();
+        var i = e.cmds[r];
+        "M" == i ? (t.moveTo(n[a], n[a + 1]), a += 2) : "L" == i ? (t.lineTo(n[a], n[a + 1]), 
+        a += 2) : "C" == i ? (t.bezierCurveTo(n[a], n[a + 1], n[a + 2], n[a + 3], n[a + 4], n[a + 5]), 
+        a += 6) : "Q" == i ? (t.quadraticCurveTo(n[a], n[a + 1], n[a + 2], n[a + 3]), a += 4) : "#" == i.charAt(0) ? (t.beginPath(), 
+        t.fillStyle = i) : "Z" == i ? t.closePath() : "X" == i && t.fill();
       }
     }, e.U.P = {}, e.U.P.moveTo = function(e, t, a) {
       e.cmds.push("M"), e.crds.push(t, a);
     }, e.U.P.lineTo = function(e, t, a) {
       e.cmds.push("L"), e.crds.push(t, a);
-    }, e.U.P.curveTo = function(e, t, a, n, r, s, i) {
-      e.cmds.push("C"), e.crds.push(t, a, n, r, s, i);
+    }, e.U.P.curveTo = function(e, t, a, n, r, i, s) {
+      e.cmds.push("C"), e.crds.push(t, a, n, r, i, s);
     }, e.U.P.qcurveTo = function(e, t, a, n, r) {
       e.cmds.push("Q"), e.crds.push(t, a, n, r);
     }, e.U.P.closePath = function(e) {
       e.cmds.push("Z");
     }, e.U._drawCFF = function(t, a, n, r) {
-      for (var s = a.stack, i = a.nStems, o = a.haveWidth, l = a.width, c = a.open, p = 0, u = a.x, d = a.y, m = 0, h = 0, f = 0, g = 0, v = 0, y = 0, b = 0, w = 0, x = 0, k = 0, q = {
+      for (var i = a.stack, s = a.nStems, o = a.haveWidth, l = a.width, c = a.open, p = 0, u = a.x, d = a.y, m = 0, h = 0, f = 0, g = 0, v = 0, y = 0, b = 0, w = 0, x = 0, k = 0, q = {
         val: 0,
         size: 0
       }; p < t.length; ) {
         e.CFF.getCharString(t, p, q);
         var _ = q.val;
-        if (p += q.size, "o1" == _ || "o18" == _) s.length % 2 != 0 && !o && (l = s.shift() + n.Private.nominalWidthX), 
-        i += s.length >> 1, s.length = 0, o = true; else if ("o3" == _ || "o23" == _) {
-          s.length % 2 != 0 && !o && (l = s.shift() + n.Private.nominalWidthX), i += s.length >> 1, 
-          s.length = 0, o = true;
-        } else if ("o4" == _) s.length > 1 && !o && (l = s.shift() + n.Private.nominalWidthX, 
-        o = true), c && e.U.P.closePath(r), d += s.pop(), e.U.P.moveTo(r, u, d), c = true; else if ("o5" == _) for (;s.length > 0; ) u += s.shift(), 
-        d += s.shift(), e.U.P.lineTo(r, u, d); else if ("o6" == _ || "o7" == _) for (var A = s.length, T = "o6" == _, C = 0; C < A; C++) {
-          var S = s.shift();
+        if (p += q.size, "o1" == _ || "o18" == _) i.length % 2 != 0 && !o && (l = i.shift() + n.Private.nominalWidthX), 
+        s += i.length >> 1, i.length = 0, o = true; else if ("o3" == _ || "o23" == _) {
+          i.length % 2 != 0 && !o && (l = i.shift() + n.Private.nominalWidthX), s += i.length >> 1, 
+          i.length = 0, o = true;
+        } else if ("o4" == _) i.length > 1 && !o && (l = i.shift() + n.Private.nominalWidthX, 
+        o = true), c && e.U.P.closePath(r), d += i.pop(), e.U.P.moveTo(r, u, d), c = true; else if ("o5" == _) for (;i.length > 0; ) u += i.shift(), 
+        d += i.shift(), e.U.P.lineTo(r, u, d); else if ("o6" == _ || "o7" == _) for (var A = i.length, T = "o6" == _, C = 0; C < A; C++) {
+          var S = i.shift();
           T ? u += S : d += S, T = !T, e.U.P.lineTo(r, u, d);
         } else if ("o8" == _ || "o24" == _) {
-          A = s.length;
-          for (var I = 0; I + 6 <= A; ) m = u + s.shift(), h = d + s.shift(), f = m + s.shift(), 
-          g = h + s.shift(), u = f + s.shift(), d = g + s.shift(), e.U.P.curveTo(r, m, h, f, g, u, d), 
+          A = i.length;
+          for (var I = 0; I + 6 <= A; ) m = u + i.shift(), h = d + i.shift(), f = m + i.shift(), 
+          g = h + i.shift(), u = f + i.shift(), d = g + i.shift(), e.U.P.curveTo(r, m, h, f, g, u, d), 
           I += 6;
-          "o24" == _ && (u += s.shift(), d += s.shift(), e.U.P.lineTo(r, u, d));
+          "o24" == _ && (u += i.shift(), d += i.shift(), e.U.P.lineTo(r, u, d));
         } else {
           if ("o11" == _) break;
           if ("o1234" == _ || "o1235" == _ || "o1236" == _ || "o1237" == _) "o1234" == _ && (h = d, 
-          f = (m = u + s.shift()) + s.shift(), k = g = h + s.shift(), y = g, w = d, u = (b = (v = (x = f + s.shift()) + s.shift()) + s.shift()) + s.shift(), 
-          e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)), "o1235" == _ && (m = u + s.shift(), 
-          h = d + s.shift(), f = m + s.shift(), g = h + s.shift(), x = f + s.shift(), k = g + s.shift(), 
-          v = x + s.shift(), y = k + s.shift(), b = v + s.shift(), w = y + s.shift(), u = b + s.shift(), 
-          d = w + s.shift(), s.shift(), e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)), 
-          "o1236" == _ && (m = u + s.shift(), h = d + s.shift(), f = m + s.shift(), k = g = h + s.shift(), 
-          y = g, b = (v = (x = f + s.shift()) + s.shift()) + s.shift(), w = y + s.shift(), 
-          u = b + s.shift(), e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)), 
-          "o1237" == _ && (m = u + s.shift(), h = d + s.shift(), f = m + s.shift(), g = h + s.shift(), 
-          x = f + s.shift(), k = g + s.shift(), v = x + s.shift(), y = k + s.shift(), b = v + s.shift(), 
-          w = y + s.shift(), Math.abs(b - u) > Math.abs(w - d) ? u = b + s.shift() : d = w + s.shift(), 
+          f = (m = u + i.shift()) + i.shift(), k = g = h + i.shift(), y = g, w = d, u = (b = (v = (x = f + i.shift()) + i.shift()) + i.shift()) + i.shift(), 
+          e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)), "o1235" == _ && (m = u + i.shift(), 
+          h = d + i.shift(), f = m + i.shift(), g = h + i.shift(), x = f + i.shift(), k = g + i.shift(), 
+          v = x + i.shift(), y = k + i.shift(), b = v + i.shift(), w = y + i.shift(), u = b + i.shift(), 
+          d = w + i.shift(), i.shift(), e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)), 
+          "o1236" == _ && (m = u + i.shift(), h = d + i.shift(), f = m + i.shift(), k = g = h + i.shift(), 
+          y = g, b = (v = (x = f + i.shift()) + i.shift()) + i.shift(), w = y + i.shift(), 
+          u = b + i.shift(), e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)), 
+          "o1237" == _ && (m = u + i.shift(), h = d + i.shift(), f = m + i.shift(), g = h + i.shift(), 
+          x = f + i.shift(), k = g + i.shift(), v = x + i.shift(), y = k + i.shift(), b = v + i.shift(), 
+          w = y + i.shift(), Math.abs(b - u) > Math.abs(w - d) ? u = b + i.shift() : d = w + i.shift(), 
           e.U.P.curveTo(r, m, h, f, g, x, k), e.U.P.curveTo(r, v, y, b, w, u, d)); else if ("o14" == _) {
-            if (s.length > 0 && !o && (l = s.shift() + n.nominalWidthX, o = true), 4 == s.length) {
-              var E = s.shift(), U = s.shift(), P = s.shift(), H = s.shift(), L = e.CFF.glyphBySE(n, P), j = e.CFF.glyphBySE(n, H);
+            if (i.length > 0 && !o && (l = i.shift() + n.nominalWidthX, o = true), 4 == i.length) {
+              var E = i.shift(), U = i.shift(), H = i.shift(), P = i.shift(), L = e.CFF.glyphBySE(n, H), j = e.CFF.glyphBySE(n, P);
               e.U._drawCFF(n.CharStrings[L], a, n, r), a.x = E, a.y = U, e.U._drawCFF(n.CharStrings[j], a, n, r);
             }
             c && (e.U.P.closePath(r), c = false);
           } else if ("o19" == _ || "o20" == _) {
-            s.length % 2 != 0 && !o && (l = s.shift() + n.Private.nominalWidthX), i += s.length >> 1, 
-            s.length = 0, o = true, p += i + 7 >> 3;
-          } else if ("o21" == _) s.length > 2 && !o && (l = s.shift() + n.Private.nominalWidthX, 
-          o = true), d += s.pop(), u += s.pop(), c && e.U.P.closePath(r), e.U.P.moveTo(r, u, d), 
-          c = true; else if ("o22" == _) s.length > 1 && !o && (l = s.shift() + n.Private.nominalWidthX, 
-          o = true), u += s.pop(), c && e.U.P.closePath(r), e.U.P.moveTo(r, u, d), c = true; else if ("o25" == _) {
-            for (;s.length > 6; ) u += s.shift(), d += s.shift(), e.U.P.lineTo(r, u, d);
-            m = u + s.shift(), h = d + s.shift(), f = m + s.shift(), g = h + s.shift(), u = f + s.shift(), 
-            d = g + s.shift(), e.U.P.curveTo(r, m, h, f, g, u, d);
-          } else if ("o26" == _) for (s.length % 2 && (u += s.shift()); s.length > 0; ) m = u, 
-          h = d + s.shift(), u = f = m + s.shift(), d = (g = h + s.shift()) + s.shift(), e.U.P.curveTo(r, m, h, f, g, u, d); else if ("o27" == _) for (s.length % 2 && (d += s.shift()); s.length > 0; ) h = d, 
-          f = (m = u + s.shift()) + s.shift(), g = h + s.shift(), u = f + s.shift(), d = g, 
+            i.length % 2 != 0 && !o && (l = i.shift() + n.Private.nominalWidthX), s += i.length >> 1, 
+            i.length = 0, o = true, p += s + 7 >> 3;
+          } else if ("o21" == _) i.length > 2 && !o && (l = i.shift() + n.Private.nominalWidthX, 
+          o = true), d += i.pop(), u += i.pop(), c && e.U.P.closePath(r), e.U.P.moveTo(r, u, d), 
+          c = true; else if ("o22" == _) i.length > 1 && !o && (l = i.shift() + n.Private.nominalWidthX, 
+          o = true), u += i.pop(), c && e.U.P.closePath(r), e.U.P.moveTo(r, u, d), c = true; else if ("o25" == _) {
+            for (;i.length > 6; ) u += i.shift(), d += i.shift(), e.U.P.lineTo(r, u, d);
+            m = u + i.shift(), h = d + i.shift(), f = m + i.shift(), g = h + i.shift(), u = f + i.shift(), 
+            d = g + i.shift(), e.U.P.curveTo(r, m, h, f, g, u, d);
+          } else if ("o26" == _) for (i.length % 2 && (u += i.shift()); i.length > 0; ) m = u, 
+          h = d + i.shift(), u = f = m + i.shift(), d = (g = h + i.shift()) + i.shift(), e.U.P.curveTo(r, m, h, f, g, u, d); else if ("o27" == _) for (i.length % 2 && (d += i.shift()); i.length > 0; ) h = d, 
+          f = (m = u + i.shift()) + i.shift(), g = h + i.shift(), u = f + i.shift(), d = g, 
           e.U.P.curveTo(r, m, h, f, g, u, d); else if ("o10" == _ || "o29" == _) {
             var $ = "o10" == _ ? n.Private : n;
-            if (0 == s.length) console.log("error: empty stack"); else {
-              var z = s.pop(), M = $.Subrs[z + $.Bias];
-              a.x = u, a.y = d, a.nStems = i, a.haveWidth = o, a.width = l, a.open = c, e.U._drawCFF(M, a, n, r), 
-              u = a.x, d = a.y, i = a.nStems, o = a.haveWidth, l = a.width, c = a.open;
+            if (0 == i.length) console.log("error: empty stack"); else {
+              var z = i.pop(), M = $.Subrs[z + $.Bias];
+              a.x = u, a.y = d, a.nStems = s, a.haveWidth = o, a.width = l, a.open = c, e.U._drawCFF(M, a, n, r), 
+              u = a.x, d = a.y, s = a.nStems, o = a.haveWidth, l = a.width, c = a.open;
             }
           } else if ("o30" == _ || "o31" == _) {
-            var O = s.length, F = (I = 0, "o31" == _);
-            for (I += O - (A = -3 & O); I < A; ) F ? (h = d, f = (m = u + s.shift()) + s.shift(), 
-            d = (g = h + s.shift()) + s.shift(), A - I == 5 ? (u = f + s.shift(), I++) : u = f, 
-            F = false) : (m = u, h = d + s.shift(), f = m + s.shift(), g = h + s.shift(), u = f + s.shift(), 
-            A - I == 5 ? (d = g + s.shift(), I++) : d = g, F = true), e.U.P.curveTo(r, m, h, f, g, u, d), 
+            var O = i.length, F = (I = 0, "o31" == _);
+            for (I += O - (A = -3 & O); I < A; ) F ? (h = d, f = (m = u + i.shift()) + i.shift(), 
+            d = (g = h + i.shift()) + i.shift(), A - I == 5 ? (u = f + i.shift(), I++) : u = f, 
+            F = false) : (m = u, h = d + i.shift(), f = m + i.shift(), g = h + i.shift(), u = f + i.shift(), 
+            A - I == 5 ? (d = g + i.shift(), I++) : d = g, F = true), e.U.P.curveTo(r, m, h, f, g, u, d), 
             I += 4;
           } else {
             if ("o" == (_ + "").charAt(0)) throw console.log("Unknown operation: " + _, t), 
             _;
-            s.push(_);
+            i.push(_);
           }
         }
       }
-      a.x = u, a.y = d, a.nStems = i, a.haveWidth = o, a.width = l, a.open = c;
+      a.x = u, a.y = d, a.nStems = s, a.haveWidth = o, a.width = l, a.open = c;
     }, Xe = e;
   }();
 
@@ -4813,13 +4782,13 @@
     })), !a) return true;
     const n = null == (e = a.textContent) ? void 0 : e.match(/base64,([\w\W]+?)'/);
     if (!n) return;
-    const r = base64ToUint8Array(n[1]), s = et.parse(r);
-    let i = await ttfDownloadJson("https://www.forestpolice.org/ttf/2.0/table.json") || await ttfDownloadJson("https://jsd.vxo.im/gh/chengbianruan/staticfile/c.json") || await ttfDownloadJson("https://cdn.jsdelivr.net/gh/chengbianruan/staticfile/c.json");
-    if (!i) return false;
+    const r = base64ToUint8Array(n[1]), i = et.parse(r);
+    let s = await ttfDownloadJson("https://www.forestpolice.org/ttf/2.0/table.json") || await ttfDownloadJson("https://jsd.vxo.im/gh/chengbianruan/staticfile/c.json") || await ttfDownloadJson("https://cdn.jsdelivr.net/gh/chengbianruan/staticfile/c.json");
+    if (!s) return false;
     let o = {};
     for (let l = 19968; l < 40870; l++) {
-      let e = et.U.codeToGlyph(s, l);
-      e && (e = et.U.glyphToPath(s, e), e = somd5(JSON.stringify(e)).slice(24), o[l] = i[e]);
+      let e = et.U.codeToGlyph(i, l);
+      e && (e = et.U.glyphToPath(i, e), e = somd5(JSON.stringify(e)).slice(24), o[l] = s[e]);
     }
     return W.document.querySelectorAll(".font-cxsecret").forEach((e => {
       let t = e.innerHTML;
@@ -4918,27 +4887,27 @@
       e.type = a[1].split(",")[0], e.question = titleClean(e.question.split(t)[1].trim()).trim(), 
       e.options = removeStartChar(e.options);
       const n = D(e.html).find(".mark_score>.totalScore>i").text(), r = t.match(/(\d+(\.\d+)?)/);
-      let s, i = D(e.html).find(".marking_dui").length > 0 || Number(n) == ((null == r ? void 0 : r[0]) || 0) && 0 != Number(n), o = typeMatch(t);
-      if (!i) switch (o) {
+      let i, s = D(e.html).find(".marking_dui").length > 0 || Number(n) == ((null == r ? void 0 : r[0]) || 0) && 0 != Number(n), o = typeMatch(t);
+      if (!s) switch (o) {
        case "0":
        case "1":
        case "3":
-        0 != Number(n) && (i = true);
+        0 != Number(n) && (s = true);
       }
       switch (o) {
        case "0":
        case "1":
         e.type = o, e.answer = mapChaoxingChoiceLettersToOptions(D(e.html).find(".mark_answer>div>span.colorGreen:eq(0)").text().replace("\u6b63\u786e\u7b54\u6848:", ""), e.options), 
-        0 === e.answer.length && i && (e.answer = mapChaoxingChoiceLettersToOptions(D(e.html).find(".mark_answer>div>span.colorDeep:eq(0)").text().replace("\u6211\u7684\u7b54\u6848:", ""), e.options));
+        0 === e.answer.length && s && (e.answer = mapChaoxingChoiceLettersToOptions(D(e.html).find(".mark_answer>div>span.colorDeep:eq(0)").text().replace("\u6211\u7684\u7b54\u6848:", ""), e.options));
         break;
 
        case "3":
         if (e.type = "3", e.options = [], e.answer = judgeAnswer(D(e.html).find(".mark_answer>div>span.colorGreen:eq(0)").text().replace("\u6b63\u786e\u7b54\u6848", "")), 
         e.answer, 0 === e.answer.length) {
-          if (s = removeHtml(D(e.html).find(".mark_answer>div>span.colorDeep:eq(0)").html()), 
-          e.answer = judgeAnswer(s), 0 === e.answer.length) return null;
-          if (0 == Number(n) && !i && "3" == o) return null;
-          i || (e.answer = "\u6b63\u786e" === e.answer[0] ? [ "\u9519\u8bef" ] : [ "\u6b63\u786e" ]);
+          if (i = removeHtml(D(e.html).find(".mark_answer>div>span.colorDeep:eq(0)").html()), 
+          e.answer = judgeAnswer(i), 0 === e.answer.length) return null;
+          if (0 == Number(n) && !s && "3" == o) return null;
+          s || (e.answer = "\u6b63\u786e" === e.answer[0] ? [ "\u9519\u8bef" ] : [ "\u6b63\u786e" ]);
         }
         break;
 
@@ -5062,12 +5031,12 @@
         })).get();
         t = D(e.html).find(".correctAnswer >.fl.answerCon >.collectAnswer").map(((e, t) => removeHtml(D(t).text()))).get(), 
         e.options = [ n, r ];
-        let s = {};
+        let i = {};
         t.forEach((e => {
           let [t, a] = e.split("-");
-          const i = getChaoxingAnswerIndex(t), o = getChaoxingAnswerIndex(a);
-          null != i && null != o && null != n[i] && null != r[o] && (s[n[i]] = r[o]);
-        })), e.answer = s, e.answer;
+          const s = getChaoxingAnswerIndex(t), o = getChaoxingAnswerIndex(a);
+          null != s && null != o && null != n[s] && null != r[o] && (i[n[s]] = r[o]);
+        })), e.answer = i, e.answer;
         break;
 
        case "\u9009\u62e9\u9898":
@@ -5077,45 +5046,45 @@
           const a = D(e.html).find(".correctAnswerBx .correctAnswer .answerCon").text(), n = {};
           for (const e of a.matchAll(/\((\d+)\)\s*([A-Z]+)/g)) n[parseInt(e[1], 10)] = e[2];
           const r = [];
-          let s = false;
+          let i = false;
           if (t.each(((e, t) => {
-            if (s) return;
-            const a = D(t).find("label.selectLabel span.selectItem > p").map(((e, t) => removeHtml(D(t).html()))).get(), i = n[e + 1], o = a.length && i ? mapChaoxingChoiceLettersToOptions(i, a) : [];
+            if (i) return;
+            const a = D(t).find("label.selectLabel span.selectItem > p").map(((e, t) => removeHtml(D(t).html()))).get(), s = n[e + 1], o = a.length && s ? mapChaoxingChoiceLettersToOptions(s, a) : [];
             0 !== o.length ? r.push({
               type: "0",
               question: `\u7b2c${e + 1}\u7a7a`,
               options: a,
               answer: o
-            }) : s = true;
-          })), s || 0 === r.length) return null;
+            }) : i = true;
+          })), i || 0 === r.length) return null;
           e.answer = r.map((e => e.answer)), e.options = r.map((({answer: e, ...t}) => t)), 
           e.type = "15", e.answer;
           break;
         }
 
        case "\u9605\u8bfb\u7406\u89e3":
-        const i = D(e.html).find(".readCompreHensionItem").map(((e, t) => {
+        const s = D(e.html).find(".readCompreHensionItem").map(((e, t) => {
           let a = typeMatch(D(t).find("i.index").text()), n = removeHtml(D(t).find(".clearfix").html()), r = D(t).find("ul.Zy_ulTop>li").map(((e, t) => removeHtml(D(t).html()))).get();
           r = removeOptionsStartChar(r);
-          let s = removeHtml(D(t).find(".correctAnswerBx>.correctAnswer>.answerCon").text()), i = [];
+          let i = removeHtml(D(t).find(".correctAnswerBx>.correctAnswer>.answerCon").text()), s = [];
           switch (a) {
            case "0":
            case "1":
-            i = mapChaoxingChoiceLettersToOptions(s, r);
+            s = mapChaoxingChoiceLettersToOptions(i, r);
             break;
 
            default:
             return null;
           }
-          return 0 === i.length ? null : {
+          return 0 === s.length ? null : {
             type: a,
             question: n,
             options: r,
-            answer: i
+            answer: s
           };
         })).get();
-        if (null == i || 0 == i.length) return null;
-        e.answer = i.map((e => e.answer)), e.options = i.map((e => (delete e.answer, e))), 
+        if (null == s || 0 == s.length) return null;
+        e.answer = s.map((e => e.answer)), e.options = s.map((e => (delete e.answer, e))), 
         e.type = "15";
         break;
 
@@ -5227,9 +5196,9 @@
       switch (e.type) {
        case "11":
         return e.ques.$options.each(((t, a) => {
-          var n, r, s;
-          const i = null == (n = e.ques.options) ? void 0 : n[0], o = null == (r = e.ques.options) ? void 0 : r[1], l = null == (s = e.answer) ? void 0 : s[null == i ? void 0 : i[t]], c = Array.isArray(o) ? o.indexOf(l) : -1;
-          if (c < 0) return void (null == i || i[t]);
+          var n, r, i;
+          const s = null == (n = e.ques.options) ? void 0 : n[0], o = null == (r = e.ques.options) ? void 0 : r[1], l = null == (i = e.answer) ? void 0 : i[null == s ? void 0 : s[t]], c = Array.isArray(o) ? o.indexOf(l) : -1;
+          if (c < 0) return void (null == s || s[t]);
           const p = String.fromCharCode(c + 65), u = D(a).find("select");
           u.find("option").each(((e, t) => {
             D(t).prop("selected", D(t).val() == p);
@@ -5322,9 +5291,9 @@
       qc(e.html), qc1(e.html);
     },
     setAnswer: e => (e.ques.options, "11" !== e.type || (e.ques.$options.each(((t, a) => {
-      var n, r, s;
-      const i = null == (n = e.ques.options) ? void 0 : n[0], o = null == (r = e.ques.options) ? void 0 : r[1], l = null == (s = e.answer) ? void 0 : s[null == i ? void 0 : i[t]], c = Array.isArray(o) ? o.indexOf(l) : -1;
-      if (c < 0) return void (null == i || i[t]);
+      var n, r, i;
+      const s = null == (n = e.ques.options) ? void 0 : n[0], o = null == (r = e.ques.options) ? void 0 : r[1], l = null == (i = e.answer) ? void 0 : i[null == s ? void 0 : s[t]], c = Array.isArray(o) ? o.indexOf(l) : -1;
+      if (c < 0) return void (null == s || s[t]);
       const p = String.fromCharCode(c + 65);
       let u = W.$(a).find(".dept_select");
       u.val(p).trigger("change"), u.chosen().val(p).trigger("chosen:updated");
@@ -5386,11 +5355,11 @@
       }));
     },
     answerHook: e => {
-      const t = D(e.html)[0].__vue__, a = t.answerData[t.data.id], n = "1" === a.isCurrent ? a.answer.split(",") : [], r = t.data, s = t.answerImgMap[t.data.id] || "";
-      t.answerImgMap, t.data.id, somd5(s), e.type = typeMatch(r.questionType.name);
-      const i = [];
-      if (e.options = r.questionOptions.map((e => (n.includes(String(e.id)) && i.push(removeHtml(e.content)), 
-      removeHtml(e.content)))), e.answer = i, "3" === e.type) {
+      const t = D(e.html)[0].__vue__, a = t.answerData[t.data.id], n = "1" === a.isCurrent ? a.answer.split(",") : [], r = t.data, i = t.answerImgMap[t.data.id] || "";
+      t.answerImgMap, t.data.id, somd5(i), e.type = typeMatch(r.questionType.name);
+      const s = [];
+      if (e.options = r.questionOptions.map((e => (n.includes(String(e.id)) && s.push(removeHtml(e.content)), 
+      removeHtml(e.content)))), e.answer = s, "3" === e.type) {
         e.options = [];
         const t = e.answer[0];
         e.answer = isTrue(t) ? [ "\u6b63\u786e" ] : isFalse(t) ? [ "\u9519\u8bef" ] : [];
@@ -5520,29 +5489,29 @@
   }, buildAnalysisSubQuestion = e => {
     if (!e || "text" === e.type || "analysis" === e.type) return null;
     const t = parseFloat(e.point), a = parseFloat(e.score), n = 0 !== t && t === a;
-    let r = false, s = [];
-    if (e.correctOptions && e.correctOptions.length > 0 && (s = e.correctOptions.map((e => removeHtml(e.content))), 
-    r = true), e.correct_answers && e.correct_answers.length > 0 && (s = e.correct_answers.map((e => e.content)), 
+    let r = false, i = [];
+    if (e.correctOptions && e.correctOptions.length > 0 && (i = e.correctOptions.map((e => removeHtml(e.content))), 
+    r = true), e.correct_answers && e.correct_answers.length > 0 && (i = e.correct_answers.map((e => e.content)), 
     r = true), !r && !n) return null;
     if (!r) if ("single_selection" === e.type || "multiple_selection" === e.type || "true_or_false" === e.type) {
-      if (s = (e.options || []).filter((e => e.isChosen)).map((e => removeHtml(e.content))), 
-      0 === s.length) return null;
+      if (i = (e.options || []).filter((e => e.isChosen)).map((e => removeHtml(e.content))), 
+      0 === i.length) return null;
     } else {
       if ("fill_in_blank" !== e.type) return null;
-      if (s = (e.answers || []).map((e => e.content)), 0 === s.length) return null;
+      if (i = (e.answers || []).map((e => e.content)), 0 === i.length) return null;
     }
-    const i = D(`<div>${e.description || ""}</div>`).clone();
-    i.find("span.__blank__").remove();
-    const o = removeHtml(i.html());
+    const s = D(`<div>${e.description || ""}</div>`).clone();
+    s.find("span.__blank__").remove();
+    const o = removeHtml(s.html());
     let l = (e.options || []).map((e => removeHtml(e.content)));
     const c = typeConvert(rt[e.type]);
-    return "true_or_false" === e.type && (s = judgeAnswer(s[0]), l = [], 0 === s.length) ? null : {
+    return "true_or_false" === e.type && (i = judgeAnswer(i[0]), l = [], 0 === i.length) ? null : {
       type: c,
       question: o,
       options: l,
-      answer: s
+      answer: i
     };
-  }, st = [ {
+  }, it = [ {
     type: "hook",
     name: "\u56fd\u5f00hook",
     match: location.host.includes("ouchn.cn"),
@@ -5587,12 +5556,12 @@
         }))), e.answer = a.map((e => e.answer)), e;
       }
       let a = false;
-      const n = parseFloat(t.point), r = parseFloat(t.score), s = 0 !== n && n === r;
-      let i = D(`<div>${t.description}</div>`).clone();
-      if (i.find("span.__blank__").remove(), e.question = removeHtml(i.html()), e.options = t.options.map((e => removeHtml(e.content))), 
+      const n = parseFloat(t.point), r = parseFloat(t.score), i = 0 !== n && n === r;
+      let s = D(`<div>${t.description}</div>`).clone();
+      if (s.find("span.__blank__").remove(), e.question = removeHtml(s.html()), e.options = t.options.map((e => removeHtml(e.content))), 
       e.type = typeConvert(rt[t.type]), t.correctOptions && t.correctOptions.length > 0 && (e.answer = t.correctOptions.map((e => removeHtml(e.content))), 
       a = true), t.correct_answers && t.correct_answers.length > 0 && (e.answer = t.correct_answers.map((e => e.content)), 
-      a = true), a || s) {
+      a = true), a || i) {
         switch (t.type) {
          case "single_selection":
          case "multiple_selection":
@@ -5620,14 +5589,14 @@
     paper: e => {
       const t = W.globalData.course, a = W.angular.element(D("body")).scope(), n = W.angular.element(D(".hd")).scope().exam, r = a.submissionData.id;
       if (!a.examSubmissions.find((e => (e.id, String(e.id) === String(r))))) return;
-      const s = {
+      const i = {
         platform: "guokai"
       };
-      s.hash = t.id, s.name = t.name, s.info = {}, s.info.school = t.orgName, s.chapter = [ {
+      i.hash = t.id, i.name = t.name, i.info = {}, i.info.school = t.orgName, i.chapter = [ {
         hash: `${n.id}`,
         name: n.title,
         question: e
-      } ], Je.setPaper(s.hash, s);
+      } ], Je.setPaper(i.hash, i);
     }
   }, {
     type: "save",
@@ -5709,8 +5678,8 @@
         D(e.html).find(".subquestion").map(((e, t) => {
           let a = D(t).find("select>option").map(((e, t) => removeHtml(D(t).html()))).get();
           a = a.filter((e => "" !== e)), n.push(a);
-          let s = D(t).find("select>option:selected").map(((e, t) => removeHtml(D(t).html()))).get();
-          r.push(s[0]);
+          let i = D(t).find("select>option:selected").map(((e, t) => removeHtml(D(t).html()))).get();
+          r.push(i[0]);
         })), e.options = n;
         D(e.html).find(".text-success").length == e.options.length && (e.answer = r);
         break;
@@ -5727,19 +5696,19 @@
       }, n = W.document.body.outerHTML, r = ((e, t = {}) => {
         const a = String(t.courseId ?? t.courseid ?? "").trim();
         return (/^\d+$/.test(a) ? a : "") || (e.match(new RegExp("(?:[\"']courseId[\"']|(?<![A-Za-z_])courseId)\\s*:\\s*[\"']?(\\d+)", "i")) || [])[1] || (e.match(/\bdata-courseid\s*=\s*["']?(\d+)/i) || [])[1] || (e.match(/[?&]courseid=(\d+)/i) || [])[1] || (e.match(/\/course\/view\.php\?id=(\d+)/i) || [])[1] || "";
-      })(n, (null == (t = W.M) ? void 0 : t.cfg) || {}), s = ((e, t) => {
+      })(n, (null == (t = W.M) ? void 0 : t.cfg) || {}), i = ((e, t) => {
         try {
           const e = new URL(t).searchParams.get("cmid");
           if (e) return e;
         } catch (a) {}
         return (e.match(/[?&]cmid=(\d+)/i) || [])[1] || (e.match(/\/mod\/quiz\/view\.php\?id=(\d+)/i) || [])[1] || "";
       })(n, W.location.href);
-      a.hash = r.trim(), "" !== a.hash && "" !== s && (a.info = {}, a.name = ((e, t) => {
+      a.hash = r.trim(), "" !== a.hash && "" !== i && (a.info = {}, a.name = ((e, t) => {
         if (!t) return "";
         const a = t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), n = new RegExp(`<a\\b[^>]*href=["'][^"']*/course/view\\.php\\?id=${a}(?:[&#][^"']*)?["'][^>]*>([\\s\\S]*?)</a>`, "i");
         return (e => e.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim())((e.match(n) || [])[1] || "");
       })(n, r) || D("h1").text().trim() || W.document.title.trim(), a.chapter = [ {
-        hash: `${s}`,
+        hash: `${i}`,
         name: W.document.title.trim(),
         question: e
       } ], Je.setPaper(a.hash, a, {
@@ -5908,7 +5877,7 @@
        case "14":
         return e.ques.subject.sub_subjects.forEach(((t, a) => {
           let n = e.answer[a];
-          t.options.forEach(((r, s) => {
+          t.options.forEach(((r, i) => {
             r.content === n && (t.answeredOption = String(r.id), e.ques.scope.onChangeSubmission(t), 
             D(e.html).find(`input[value="${r.id}"]`).click(), D(e.html).find(`button:eq(${a})>span:eq(1)`).text(n));
           }));
@@ -5918,11 +5887,11 @@
         return e.ques.subject.sub_subjects.forEach(((t, a) => {
           const n = e.answer[a];
           if (!n || 0 === n.length) return;
-          const r = n[0], s = (t.options || []).find(((e, a) => {
+          const r = n[0], i = (t.options || []).find(((e, a) => {
             const n = removeHtml(e.content);
             return "number" == typeof r ? a === r : "true_or_false" === t.type ? isTrue(r) && isTrue(n) || isFalse(r) && isFalse(n) : n === r;
           }));
-          s && (t.answeredOption = String(s.id), e.ques.scope.onChangeSubmission(t), D(e.html).find(`input[value="${s.id}"]`).click());
+          i && (t.answeredOption = String(i.id), e.ques.scope.onChangeSubmission(t), D(e.html).find(`input[value="${i.id}"]`).click());
         })), false;
       }
       return true;
@@ -5968,20 +5937,20 @@
         const t = D(e.html).find(".e-q-quest form").map(((e, t) => {
           let a = removeHtml(D(t).find(".e-q-q .ErichText").html()), n = D(t).find("ul>li").map(((e, t) => removeHtml(D(t).find(".ErichText").html() || D(t).html()))).get(), r = "0";
           n = removeStartChar(n);
-          const s = D(t).find(".e-a-right").length > 0, i = D(t).find(".e-ans-ref .e-ans-r").map(((e, t) => removeHtml(D(t).html()))).get();
-          let o = i.map((e => {
+          const i = D(t).find(".e-a-right").length > 0, s = D(t).find(".e-ans-ref .e-ans-r").map(((e, t) => removeHtml(D(t).html()))).get();
+          let o = s.map((e => {
             let t = e.charCodeAt() - 65;
             return n[t];
           })).filter((e => "" !== e && void 0 !== e));
-          if (2 === n.length && 1 === i.length) {
-            let e = judgeAnswer(i[0]);
+          if (2 === n.length && 1 === s.length) {
+            let e = judgeAnswer(s[0]);
             e.length > 0 && (o = e, n = [], r = "3");
           }
           return o.length > 1 && (r = "1"), {
             question: a,
             options: n,
             answer: o,
-            isT: s,
+            isT: i,
             type: r
           };
         })).get();
@@ -6068,7 +6037,7 @@
       }
       return e;
     }
-  } ], it = [ {
+  } ], st = [ {
     type: "ask",
     name: "\u6210\u6559\u4e91\u8003\u8bd5",
     tips: "",
@@ -6329,9 +6298,9 @@
     questionHook: e => {
       var t, a;
       e.question = removeHtml(D(e.html).find(".divQuestionTitle").html());
-      let n = D(e.html).find("[name='quesId']").attr("id"), r = null == (a = null == (t = document.getElementById(`questionId[${n}]`)) ? void 0 : t.getAttribute("answertype")) ? void 0 : a.trim(), s = D(e.html).find("span[name^='questionIndex']").text().trim() + "\u3001", i = D(e.html).find(".q_score").text().trim();
+      let n = D(e.html).find("[name='quesId']").attr("id"), r = null == (a = null == (t = document.getElementById(`questionId[${n}]`)) ? void 0 : t.getAttribute("answertype")) ? void 0 : a.trim(), i = D(e.html).find("span[name^='questionIndex']").text().trim() + "\u3001", s = D(e.html).find(".q_score").text().trim();
       var o;
-      switch (e.question = (o = e.question.replace(s, "").replace(i, "").trim(), titleClean(String(o ?? "").replace(/\s*\u2691?\s*(?:\u6807\u8bb0\u5b58\u7591|\u53d6\u6d88\u5b58\u7591)\s*$/, "").replace(/\s*\uff08\d+(?:\.\d+)?\s*\u5206\uff09$/, "").trim())), 
+      switch (e.question = (o = e.question.replace(i, "").replace(s, "").trim(), titleClean(String(o ?? "").replace(/\s*\u2691?\s*(?:\u6807\u8bb0\u5b58\u7591|\u53d6\u6d88\u5b58\u7591)\s*$/, "").replace(/\s*\uff08\d+(?:\.\d+)?\s*\u5206\uff09$/, "").trim())), 
       e.options = D(e.html).find(".questionOptions>div").map(((e, t) => {
         let a = D(t).find(".option_index").text().trim();
         return removeHtml(D(t).html()).replace(a, "").trim();
@@ -6403,8 +6372,8 @@
       }));
     },
     answerHook: e => {
-      const t = D(e.html).find(".exam.icon_examright").length, a = D(e.html).find("input[name='quesId']:not([id='']").attr("id"), n = D(`input#qId${a}`).attr("qtype"), r = D(e.html).find("span[name^='questionIndex']").text().trim() + "\u3001", s = D(e.html).find(".q_score").text().trim();
-      switch (e.question = e.question.replace(r, "").replace(s, "").trim(), e.options = D(e.html).find(".questionOptions>div.q_option_readonly").map(((e, t) => {
+      const t = D(e.html).find(".exam.icon_examright").length, a = D(e.html).find("input[name='quesId']:not([id='']").attr("id"), n = D(`input#qId${a}`).attr("qtype"), r = D(e.html).find("span[name^='questionIndex']").text().trim() + "\u3001", i = D(e.html).find(".q_score").text().trim();
+      switch (e.question = e.question.replace(r, "").replace(i, "").trim(), e.options = D(e.html).find(".questionOptions>div.q_option_readonly").map(((e, t) => {
         let a = D(t).find("span[name='optionIndexName']").text().trim();
         return removeHtml(D(t).html()).replace(a, "").trim();
       })).get(), n) {
@@ -6503,10 +6472,10 @@
         e.options = [ t, n ];
         let r = {};
         a = D(e.html).find(".answer>span").map(((e, a) => {
-          let [s, i] = D(a).text().trim().split(".");
-          s.charCodeAt(0) >= 65 ? s = (s.charCodeAt(0) - 65).toString() : /^\d+$/.test(s) && (s = (parseInt(s) - 1).toString()), 
+          let [i, s] = D(a).text().trim().split(".");
           i.charCodeAt(0) >= 65 ? i = (i.charCodeAt(0) - 65).toString() : /^\d+$/.test(i) && (i = (parseInt(i) - 1).toString()), 
-          r[t[s]] = n[i];
+          s.charCodeAt(0) >= 65 ? s = (s.charCodeAt(0) - 65).toString() : /^\d+$/.test(s) && (s = (parseInt(s) - 1).toString()), 
+          r[t[i]] = n[s];
         })), e.answer = r;
       }
       return e;
@@ -6661,10 +6630,10 @@
           });
         }));
       }));
-      const s = (null == (t = r.find((e => e.id === a.id))) ? void 0 : t.type) || "\u5176\u4ed6";
-      e.type = typeMatch(s), e.question = titleClean(a.title);
-      const i = a.dataArr.map((e => removeHtml(e.Content)));
-      return e.options = i, e.answer = [], e.html = D(".content-center"), e.$options = () => D("label"), 
+      const i = (null == (t = r.find((e => e.id === a.id))) ? void 0 : t.type) || "\u5176\u4ed6";
+      e.type = typeMatch(i), e.question = titleClean(a.title);
+      const s = a.dataArr.map((e => removeHtml(e.Content)));
+      return e.options = s, e.answer = [], e.html = D(".content-center"), e.$options = () => D("label"), 
       e;
     }
   }, {
@@ -6761,26 +6730,26 @@
       e.question = titleClean(n);
       let r = t.prevAll(".test_item_type").first().text().trim();
       r || (r = t.parent().prevAll(".test_item_type").first().text().trim()), r.includes("\u591a\u9009") ? e.type = "1" : r.includes("\u5224\u65ad") ? e.type = "3" : r.includes("\u586b\u7a7a") ? e.type = "2" : r.includes("\u7b80\u7b54") || r.includes("\u95ee\u7b54") || r.includes("\u8bba\u8ff0") ? e.type = "4" : e.type = "0";
-      const s = t.find(".test_item_key_tit").text().replace(/^.*?[\uff1a:]\s*/, "").trim();
+      const i = t.find(".test_item_key_tit").text().replace(/^.*?[\uff1a:]\s*/, "").trim();
       switch (e.type) {
        case "0":
        case "1":
         e.options = t.find(".test_item_theme ul li").map(((e, t) => {
           const a = D(t).find(".zdh_op_con");
           return (a.length ? removeHtml(a.html() || "") : removeHtml(D(t).html() || "").replace(/^[A-Z][\uff0e\.\u3001]?\s*/, "")).trim();
-        })).get(), e.answer = s.split("").filter((e => /[A-Z]/.test(e))).map((t => e.options[t.charCodeAt(0) - 65])).filter((e => void 0 !== e));
+        })).get(), e.answer = i.split("").filter((e => /[A-Z]/.test(e))).map((t => e.options[t.charCodeAt(0) - 65])).filter((e => void 0 !== e));
         break;
 
        case "3":
-        e.options = [], e.answer = judgeAnswer(s);
+        e.options = [], e.answer = judgeAnswer(i);
         break;
 
        case "2":
-        e.options = [], e.answer = s.split(/[,\uff0c;\uff1b\s]+/).filter(Boolean);
+        e.options = [], e.answer = i.split(/[,\uff0c;\uff1b\s]+/).filter(Boolean);
         break;
 
        case "4":
-        e.options = [], e.answer = s;
+        e.options = [], e.answer = i;
       }
       return e;
     }
@@ -6932,9 +6901,9 @@
       let n = D(e.html).find("ul>li.checked").map(((e, t) => removeHtml(D(t).find(".ErichText").html()))).get();
       const r = D(e.html).find(".e-q-right").length > 0;
       e.answer = n.filter((e => "" !== e));
-      let s = D(e.html).find(".e-ans-ref .e-ans-r").map(((e, t) => removeHtml(D(t).html()))).get();
-      1 === s.length && s[0].length > 1 && (s = s[0].split("\u3001"));
-      let i = s.map((t => {
+      let i = D(e.html).find(".e-ans-ref .e-ans-r").map(((e, t) => removeHtml(D(t).html()))).get();
+      1 === i.length && i[0].length > 1 && (i = i[0].split("\u3001"));
+      let s = i.map((t => {
         let a = t.charCodeAt() - 65;
         return e.options[a];
       })).filter((e => "" !== e && void 0 !== e));
@@ -6957,7 +6926,7 @@
         break;
 
        case "5":
-        e.type = "4", i = [ removeHtml(D(e.html).find(".e-ans-ref>.e-ans-r").html()) ], 
+        e.type = "4", s = [ removeHtml(D(e.html).find(".e-ans-ref>.e-ans-r").html()) ], 
         e.options = [];
         break;
 
@@ -6968,12 +6937,12 @@
           question: removeHtml(D(t).find(".e-q-q .ErichText").html()),
           options: D(t).find("ul li .ErichText").map(((e, t) => removeHtml(D(t).html()))).get()
         }))).get();
-        i = i.length > 0 ? judgeAnswer(i[0]) : [], e.options = t;
+        s = s.length > 0 ? judgeAnswer(s[0]) : [], e.options = t;
 
        default:
         return void e.type;
       }
-      if (i.length > 0) return e.answer = i, e;
+      if (s.length > 0) return e.answer = s, e;
       if (!r && "3" === e.type && e.answer.length > 0) {
         if (e.answer = isTrue((o = e.answer)[0]) || isFalse(o[0]) ? isTrue(o[0]) ? [ "\u9519\u8bef" ] : [ "\u6b63\u786e" ] : [], 
         0 === e.answer.length) return;
@@ -7429,21 +7398,21 @@
     },
     answerHook: e => {
       var t, a, n;
-      const r = D(e.html).attr("queid"), s = e.html._ms_context_.el.questions.find((e => e.id === r));
-      s.questionTypeName.includes("\u5224\u65ad") && (s.questionTypeName = "\u5224\u65ad\u9898"), 
-      e.type = typeMatch(s.questionTypeName), e.question = removeHtml(s.stem);
-      const i = ((null == (t = s.answerArea) ? void 0 : t.optionList) || []).slice().sort(((e, t) => e.sequence - t.sequence));
-      e.options = i.map((e => removeHtml(e.content)));
-      if (!!!((null == (a = s.answer) ? void 0 : a.ans) || Array.isArray(null == (n = s.answer) ? void 0 : n.ansL) && s.answer.ansL.length) && 0 === s.answerScore) return;
-      const o = i.filter((e => e.isTrue)).map((e => removeHtml(e.content))), l = ((e, t, a, n) => {
-        const r = t || {}, s = r.ans || (Array.isArray(r.ansL) ? r.ansL.join("") : "");
+      const r = D(e.html).attr("queid"), i = e.html._ms_context_.el.questions.find((e => e.id === r));
+      i.questionTypeName.includes("\u5224\u65ad") && (i.questionTypeName = "\u5224\u65ad\u9898"), 
+      e.type = typeMatch(i.questionTypeName), e.question = removeHtml(i.stem);
+      const s = ((null == (t = i.answerArea) ? void 0 : t.optionList) || []).slice().sort(((e, t) => e.sequence - t.sequence));
+      e.options = s.map((e => removeHtml(e.content)));
+      if (!!!((null == (a = i.answer) ? void 0 : a.ans) || Array.isArray(null == (n = i.answer) ? void 0 : n.ansL) && i.answer.ansL.length) && 0 === i.answerScore) return;
+      const o = s.filter((e => e.isTrue)).map((e => removeHtml(e.content))), l = ((e, t, a, n) => {
+        const r = t || {}, i = r.ans || (Array.isArray(r.ansL) ? r.ansL.join("") : "");
         if ("3" === e) return {
-          answer: judgeAnswer(String(s)),
+          answer: judgeAnswer(String(i)),
           options: []
         };
         if ("0" === e || "1" === e) {
-          if (s) {
-            const e = String(s).split("").map((e => a[e.charCodeAt(0) - 65])).filter((e => void 0 !== e));
+          if (i) {
+            const e = String(i).split("").map((e => a[e.charCodeAt(0) - 65])).filter((e => void 0 !== e));
             if (e.length > 0) return {
               answer: e,
               options: a
@@ -7458,7 +7427,7 @@
           answer: (Array.isArray(r.ansL) && r.ansL.length > 0 ? r.ansL : r.ans ? [ r.ans ] : []).map((e => removeHtml(String(e)))).filter(Boolean),
           options: a
         };
-      })(e.type, s.answer, e.options, o);
+      })(e.type, i.answer, e.options, o);
       return e.answer = l.answer, e.options = l.options, e;
     },
     paper: e => {
@@ -7571,8 +7540,8 @@
       let t = [];
       const a = 0 == D(e.html).find(".option-title.error2").length;
       if (e.options = e.$options.map(((a, n) => {
-        let r = D(n).find(".numberCover").text().trim(), s = removeHtml(e.$options.eq(a).html()).replace(r, "").trim();
-        return D(n).hasClass("answer-title") && t.push(s), s;
+        let r = D(n).find(".numberCover").text().trim(), i = removeHtml(e.$options.eq(a).html()).replace(r, "").trim();
+        return D(n).hasClass("answer-title") && t.push(i), i;
       })).get(), e.type = typeConvert(D(e.html).find(".questionDiv>.float-l:eq(1)").text().trim()), 
       a) return e.answer = t, D(e.html).find(".option-title.error2"), e;
     },
@@ -8380,11 +8349,11 @@
       }));
       const n = a[t];
       e.question = titleClean(removeHtml(n.questionName));
-      const r = n.type, s = [];
+      const r = n.type, i = [];
       switch (e.options = removeStartChar(n.paperOptionRPS.map((e => removeHtml(e.context)))), 
       n.paperOptionRPS.forEach(((t, a) => {
-        1 == t.standardAnswer && s.push(e.options[a]);
-      })), e.answer = s, r) {
+        1 == t.standardAnswer && i.push(e.options[a]);
+      })), e.answer = i, r) {
        case 1:
         e.type = "3", e.options = [], e.answer = judgeAnswer(e.answer[0]);
         break;
@@ -8700,9 +8669,9 @@
         const t = removeOptionsStartChar(r.map((e => e.trim())));
         false !== t && (e.options = t);
       }
-      const s = D(e.html).find(".signDefault").attr("answer_control");
-      return "radio" === s && e.options.length > 1 && (e.type = "0"), "checkbox" === s && e.options.length > 1 && (e.type = "1"), 
-      "radio" === s && 0 === e.options.length && (e.type = "3"), e;
+      const i = D(e.html).find(".signDefault").attr("answer_control");
+      return "radio" === i && e.options.length > 1 && (e.type = "0"), "checkbox" === i && e.options.length > 1 && (e.type = "1"), 
+      "radio" === i && 0 === e.options.length && (e.type = "3"), e;
     },
     setAnswer: e => {
       if (console.log(e), "3" === e.type) {
@@ -8743,18 +8712,18 @@
         if (0 == t) return null;
         e.options = t;
       }
-      const s = D(e.html).find(".signDefault").attr("answer_control");
-      "radio" === s && e.options.length > 1 && (e.type = "0"), "checkbox" === s && e.options.length > 1 && (e.type = "1"), 
-      "radio" === s && 0 === e.options.length && (e.type = "3");
-      const i = D(e.html).find(".right_answer>font").text();
+      const i = D(e.html).find(".signDefault").attr("answer_control");
+      "radio" === i && e.options.length > 1 && (e.type = "0"), "checkbox" === i && e.options.length > 1 && (e.type = "1"), 
+      "radio" === i && 0 === e.options.length && (e.type = "3");
+      const s = D(e.html).find(".right_answer>font").text();
       switch (e.type) {
        case "0":
        case "1":
-        e.answer = i.split("").map((t => e.options[t.charCodeAt(0) - 65]));
+        e.answer = s.split("").map((t => e.options[t.charCodeAt(0) - 65]));
         break;
 
        case "3":
-        e.answer = isTrue(i) ? "\u6b63\u786e" : isFalse(i) ? "\u9519\u8bef" : "";
+        e.answer = isTrue(s) ? "\u6b63\u786e" : isFalse(s) ? "\u9519\u8bef" : "";
       }
       return e;
     }
@@ -8881,15 +8850,15 @@
     } else e.textContent = t;
     null == (n = null == (a = null == e ? void 0 : e.classList) ? void 0 : a.remove) || n.call(a, "ql-blank"), 
     ((e, t) => {
-      var a, n, r, s;
-      const i = null == (n = null == (a = null == e ? void 0 : e.ownerDocument) ? void 0 : a.defaultView) ? void 0 : n.InputEvent, o = i ? new i("input", {
+      var a, n, r, i;
+      const s = null == (n = null == (a = null == e ? void 0 : e.ownerDocument) ? void 0 : a.defaultView) ? void 0 : n.InputEvent, o = s ? new s("input", {
         bubbles: true,
         inputType: "insertText",
         data: t
       }) : new Event("input", {
         bubbles: true
       });
-      null == (r = null == e ? void 0 : e.dispatchEvent) || r.call(e, o), null == (s = null == e ? void 0 : e.dispatchEvent) || s.call(e, new Event("change", {
+      null == (r = null == e ? void 0 : e.dispatchEvent) || r.call(e, o), null == (i = null == e ? void 0 : e.dispatchEvent) || i.call(e, new Event("change", {
         bubbles: true
       }));
     })(e, t);
@@ -8899,11 +8868,11 @@
     if (!n) return false;
     const r = Array.from((null == (a = null == e ? void 0 : e.querySelectorAll) ? void 0 : a.call(e, ".quill-editor")) || []);
     return !r.length || (r.forEach(((e, a) => {
-      var r, s;
-      const i = String((null == t ? void 0 : t[a]) ?? n), o = null == (r = null == e ? void 0 : e.__vue__) ? void 0 : r.quill;
-      if (null == o ? void 0 : o.setText) return void o.setText(i, "user");
-      const l = null == (s = null == e ? void 0 : e.querySelector) ? void 0 : s.call(e, ".ql-editor");
-      l && setEditorText(l, i);
+      var r, i;
+      const s = String((null == t ? void 0 : t[a]) ?? n), o = null == (r = null == e ? void 0 : e.__vue__) ? void 0 : r.quill;
+      if (null == o ? void 0 : o.setText) return void o.setText(s, "user");
+      const l = null == (i = null == e ? void 0 : e.querySelector) ? void 0 : i.call(e, ".ql-editor");
+      l && setEditorText(l, s);
     })), false);
   }, Et = [ {
     type: "hook",
@@ -9019,7 +8988,7 @@
       }
       return true;
     }
-  } ], Ut = /^\/web\/cc-detail\/([^/]+)\/act\/quiz-answer\/([^/?#]+)/, Pt = /^\/web(?:-old)?\/index\.php$/, Ht = {
+  } ], Ut = /^\/web\/cc-detail\/([^/]+)\/act\/quiz-answer\/([^/?#]+)/, Ht = /^\/web(?:-old)?\/index\.php$/, Pt = {
     SINGLE: "0",
     MULTI: "1",
     TF: "3"
@@ -9038,7 +9007,7 @@
   }, isMosoteachQuizAnswerUrl = (e = location.href) => null !== getMosoteachQuizIds(e), isMosoteachLegacyQuizReplyUrl = (e = location.href) => {
     try {
       const t = new URL(e);
-      return "www.mosoteach.cn" === t.hostname && (!!Pt.test(t.pathname) && ("interaction_quiz" === t.searchParams.get("c") && "reply" === t.searchParams.get("m")));
+      return "www.mosoteach.cn" === t.hostname && (!!Ht.test(t.pathname) && ("interaction_quiz" === t.searchParams.get("c") && "reply" === t.searchParams.get("m")));
     } catch {
       return false;
     }
@@ -9051,7 +9020,7 @@
     cleanOptions: e => removeStartChar(e.map((e => removeHtml(e)))),
     judgeAnswer: judgeAnswer
   }, getMosoteachQuestionType = (e = "", t = []) => ((e = "", t = []) => {
-    const a = Ht[e.trim()];
+    const a = Pt[e.trim()];
     return "0" === a && (e => 2 === e.length && e.every((e => /^(\u6b63\u786e|\u9519\u8bef|\u5bf9|\u9519|\u662f|\u5426|T|F|true|false)$/i.test(e.trim()))))(t) ? "3" : a || "";
   })(e, t) || typeMatch(e), getMosoteachQuestionElements = () => isMosoteachLegacyQuizReplyUrl() ? D(".topic-item") : D(".pt-10.d-flex.list-item:has(.topic-subject):has(.topic-answer-align)"), getMosoteachLegacyTopics = () => {
     var e, t;
@@ -9059,10 +9028,10 @@
     return Array.isArray(n) ? n : [];
   }, cacheMosoteachAnswer = e => {
     const t = ((e, t, a, n) => {
-      const r = n.cleanText(e), s = ((e, t) => t(e).sort().join("\n"))(t, n.cleanOptions);
+      const r = n.cleanText(e), i = ((e, t) => t(e).sort().join("\n"))(t, n.cleanOptions);
       return a.find((e => {
         const t = getMosoteachTopicOptions(e, n.cleanOptions).sort().join("\n");
-        return n.cleanText(e.subject || "") === r && t === s;
+        return n.cleanText(e.subject || "") === r && t === i;
       }));
     })(e.question, e.options, Ot, Ft);
     if (!t) return;
@@ -9087,13 +9056,13 @@
     e.type = getMosoteachQuestionType(t.find(".v-chip__content").first().text(), e.options), 
     cacheMosoteachAnswer(e), e;
   }, parseMosoteachLegacyQuestion = (e, t) => {
-    const a = D(e.html), n = getMosoteachLegacyTopics()[t], r = a.find(Lt), s = r.map(((e, t) => D(t).text())).get();
+    const a = D(e.html), n = getMosoteachLegacyTopics()[t], r = a.find(Lt), i = r.map(((e, t) => D(t).text())).get();
     if (n) e.question = Ft.cleanText(n.subject || ""), e.options = ((e, t, a) => {
       const n = a(t);
       return n.length ? n : getMosoteachTopicOptions(e || {}, a);
-    })(n, s, Ft.cleanOptions), e.type = getMosoteachQuestionType(n.type, e.options); else {
+    })(n, i, Ft.cleanOptions), e.type = getMosoteachQuestionType(n.type, e.options); else {
       const t = a.find(".t-subject").first().text();
-      e.question = Ft.cleanText(t || e.question), e.options = Ft.cleanOptions(s.length ? s : e.options), 
+      e.question = Ft.cleanText(t || e.question), e.options = Ft.cleanOptions(i.length ? i : e.options), 
       e.type = getMosoteachQuestionType(a.find(jt).first().text() || e.type, e.options);
     }
     return r.length && (e.$options = r), cacheMosoteachAnswer(e), e;
@@ -10345,15 +10314,15 @@
       a && (e.options = a);
       const n = D(e.html).prevAll(".test_item_type").first().text().trim();
       e.type = typeMatch(n);
-      const r = D(e.html).find(".test_item_tit:eq(1)"), s = r.length ? removeHtml(r.html()).replace(/\u6b63\u786e\u7b54\u6848\uff1a/g, "").trim() : "";
-      if (s) switch (e.type) {
+      const r = D(e.html).find(".test_item_tit:eq(1)"), i = r.length ? removeHtml(r.html()).replace(/\u6b63\u786e\u7b54\u6848\uff1a/g, "").trim() : "";
+      if (i) switch (e.type) {
        case "0":
        case "1":
-        e.answer = s.split("").map((t => e.options[t.charCodeAt(0) - 65])).filter(Boolean);
+        e.answer = i.split("").map((t => e.options[t.charCodeAt(0) - 65])).filter(Boolean);
         break;
 
        case "3":
-        e.answer = judgeAnswer(s), e.options = [];
+        e.answer = judgeAnswer(i), e.options = [];
       } else switch (e.type) {
        case "0":
        case "1":
@@ -10499,12 +10468,12 @@
     return "11" != t.type && "15" != t.type && ((e, t) => {
       if (!Array.isArray(e.options) || 0 === e.options.length) return;
       if (!Array.isArray(t.options) || t.options.some((e => "string" != typeof e))) return;
-      const a = false !== e.preserveImageHtml ? cleanQuestionTextWithImageHtml : cleanQuestionText, n = e.options.map((e => a(e))), r = removeOptionPrefixes(n).map((e => e.trim())), s = new Map;
+      const a = false !== e.preserveImageHtml ? cleanQuestionTextWithImageHtml : cleanQuestionText, n = e.options.map((e => a(e))), r = removeOptionPrefixes(n).map((e => e.trim())), i = new Map;
       n.forEach(((e, t) => {
         const a = normalizeComparableText(e);
-        a && r[t] && !s.has(a) && s.set(a, r[t]);
+        a && r[t] && !i.has(a) && i.set(a, r[t]);
       }));
-      const remap = e => "string" != typeof e ? e : s.get(normalizeComparableText(e)) ?? e;
+      const remap = e => "string" != typeof e ? e : i.get(normalizeComparableText(e)) ?? e;
       "string" == typeof t.answer ? t.answer = remap(t.answer) : Array.isArray(t.answer) && (t.answer = t.answer.map(remap));
     })(e, t), null !== t.answer && void 0 !== t.answer && "object" != typeof t.answer && (t.answer = [ String(t.answer) ]), 
     t;
@@ -10515,19 +10484,19 @@
       a.push(removeHtml(t ? t[2] : e).trim());
     }));
     const n = (("string" == typeof e.answer ? e.answer : "").toUpperCase().match(/[A-Z]/g) || []).map((e => e.charCodeAt(0) - 65)).filter((e => e >= 0 && e < a.length)), r = n.map((e => a[e]));
-    let s;
-    1 === e.type ? s = "0" : 2 === e.type ? s = "3" : (s = r.length > 1 ? "1" : "0", 
+    let i;
+    1 === e.type ? i = "0" : 2 === e.type ? i = "3" : (i = r.length > 1 ? "1" : "0", 
     e.type);
-    const i = {
+    const s = {
       question: titleClean(removeHtml(e.content || "")),
       options: a,
       answer: r,
       answerIndexes: n,
-      type: s
+      type: i
     };
-    return "3" === s && (i.options = [], i.answer = judgeAnswer(r[0] || ""), i.answerIndexes = []), 
-    i;
-  }, isAntai = () => "antai.geovisearth.com" === location.host, sa = [ {
+    return "3" === i && (s.options = [], s.answer = judgeAnswer(r[0] || ""), s.answerIndexes = []), 
+    s;
+  }, isAntai = () => "antai.geovisearth.com" === location.host, ia = [ {
     type: "save",
     name: "\u5b89\u6cf0\u5b89\u57f9\u6536\u5f55",
     match: () => isAntai() && !!W.antaiques,
@@ -10583,15 +10552,15 @@
         type: n.type,
         question: titleClean(n.question),
         options: "3" === n.type ? [] : n.options
-      }), s = "3" === n.type ? n.answer : n.answerIndexes.map((e => r.options[e])).filter((e => null != e && "" !== e));
-      return s.length > 0 && Answer.cacheAnswer({
+      }), i = "3" === n.type ? n.answer : n.answerIndexes.map((e => r.options[e])).filter((e => null != e && "" !== e));
+      return i.length > 0 && Answer.cacheAnswer({
         type: r.type,
         question: r.question,
         options: r.options,
-        answer: s
+        answer: i
       }), e;
     }
-  } ], ia = {
+  } ], sa = {
     1: "0",
     2: "1",
     3: "4",
@@ -10604,20 +10573,20 @@
     11: "6",
     14: "14"
   }, parseBgzkQuestion = e => {
-    const t = (e => ia[Number(e.questionType)] || "8")(e), a = e.options ?? [], n = a.map((e => (null == e ? void 0 : e.description) ?? "")), r = ((e, t) => {
+    const t = (e => sa[Number(e.questionType)] || "8")(e), a = e.options ?? [], n = a.map((e => (null == e ? void 0 : e.description) ?? "")), r = ((e, t) => {
       const a = [];
       return e.forEach(((e, n) => {
-        const r = String((null == e ? void 0 : e.label) ?? "").trim().toUpperCase(), s = /^[A-Z]$/.test(r) ? r.charCodeAt(0) - 65 : n;
-        a[s] = t[n];
+        const r = String((null == e ? void 0 : e.label) ?? "").trim().toUpperCase(), i = /^[A-Z]$/.test(r) ? r.charCodeAt(0) - 65 : n;
+        a[i] = t[n];
       })), a;
-    })(a, n), s = buildQingshuAnswer(t, e, r), i = "0" === t || "1" === t ? (o = e.solution, 
+    })(a, n), i = buildQingshuAnswer(t, e, r), s = "0" === t || "1" === t ? (o = e.solution, 
     o ? o.split("").filter((e => /^[A-Za-z]$/.test(e))) : []).map((e => a.findIndex((t => String((null == t ? void 0 : t.label) ?? "").trim().toUpperCase() === e.toUpperCase())))).filter((e => e >= 0)) : [];
     var o;
     return {
       question: e.description ?? "",
       options: "3" === t ? [] : n,
-      answer: s.answer,
-      answerIndexes: i,
+      answer: i.answer,
+      answerIndexes: s,
       type: t
     };
   }, hasBgzkSolution = e => !!(null == e ? void 0 : e.solution) || ((null == e ? void 0 : e.subQuestions) ?? []).some((e => !!(null == e ? void 0 : e.solution))), oa = [ 2, 3, 4 ], la = [ -1, 0, 1 ], ca = [ /\/Student\/Course\/Quiz\/Detail/i, /\/Student\/course\/resource\/quizDetail/i, /\/Student\/exam\/quiz/i ], pa = ".question-quiz > .question-detail-container", isQuizPage = () => location.host.endsWith("bgzk-edu.cn") && ca.some((e => e.test(location.pathname))), getQuestions = () => W.bgzkques || [], hasSolutions = () => getQuestions().some(hasBgzkSolution), isAnalysisMode = () => (e => {
@@ -10706,11 +10675,11 @@
     __proto__: null,
     a21tb: It,
     ahjxjy: pt,
-    antai: sa,
+    antai: ia,
     bgzk: da,
     cfy: aa,
     chaoxing: tt,
-    chengjiaoyun: it,
+    chengjiaoyun: st,
     chutou: wt,
     cjedu: mt,
     cjnep: At,
@@ -10719,7 +10688,7 @@
     cqsdx: Qt,
     dufe: ea,
     gkks: gt,
-    guokai: st,
+    guokai: it,
     huayi: Ct,
     jhjypt: ra,
     jijiaool: na,
@@ -10767,7 +10736,7 @@
     };
   }, ha = [];
 
-  for (const ih in ma) ha.push(...ma[ih]);
+  for (const Wm in ma) ha.push(...ma[Wm]);
 
   const isRuleMatched = e => "function" == typeof e.match ? e.match() : Boolean(e.match), parseRule = async e => {
     await waitUntil((() => void 0 !== W[ne + "app"]));
@@ -10796,17 +10765,17 @@
     })).map((e => (e.question = titleClean(e.question), e)));
     n.saveQuestionData = r, r.forEach((e => {
       Answer.cacheAnswer(e);
-    })), await async function({questionList: e, pageType: t, paper: a, onPaperError: n, beforeSync: r, syncQuestionList: s}) {
+    })), await async function({questionList: e, pageType: t, paper: a, onPaperError: n, beforeSync: r, syncQuestionList: i}) {
       if (a) try {
         await a(e);
       } catch (o) {
         null == n || n(o);
       }
-      const i = {
+      const s = {
         questionList: e,
         pageType: t
       };
-      return null == r || r(i), e.length && await s(i), i;
+      return null == r || r(s), e.length && await i(s), s;
     }({
       questionList: r,
       pageType: e.question.pageType,
@@ -10823,8 +10792,8 @@
     e.optionDelay && (n.optionMinDelay = e.optionDelay, n.optionDelay < n.optionMinDelay && (n.optionDelay = n.optionMinDelay), 
     e.optionDelay = n.optionDelay), e.tips && (n.tips = e.tips), a.app.showFloat = !a.app.hideFloat, 
     a.setPage("ask"), n.clearQuestion();
-    var r, s;
-    (r = questionParser(e.question, e.questionHook || null), s = titleClean, r.filter((e => null != e)).map((e => (e.question = s(e.question), 
+    var r, i;
+    (r = questionParser(e.question, e.questionHook || null), i = titleClean, r.filter((e => null != e)).map((e => (e.question = i(e.question), 
     "3" == e.type && (e.options = []), e)))).map((e => normalizeQuestionForAsk(e))).forEach((e => {
       n.addQuestion(e);
     })), n.autoAnswer && n.toggleStart();
@@ -10838,17 +10807,17 @@
       };
       try {
         t && (r = t(r, a));
-      } catch (i) {
-        console.log("\u6536\u5f55hook\u62a5\u9519", i);
+      } catch (s) {
+        console.log("\u6536\u5f55hook\u62a5\u9519", s);
       }
       if (null == r || null == r) return null;
-      const s = normalizeQuestionForSave(r);
+      const i = normalizeQuestionForSave(r);
       return {
-        question: s.question,
-        options: s.options,
-        answer: s.answer,
-        type: s.type,
-        hash: questionHash(s.type, s.question, s.options)
+        question: i.question,
+        options: i.options,
+        answer: i.answer,
+        type: i.type,
+        hash: questionHash(i.type, i.question, i.options)
       };
     })).get();
   }, questionParser = (e, t) => {
@@ -10886,8 +10855,8 @@
     return ((null == (t = e.trim().replace(/^v/i, "").match(/\d+(?:\.\d+)*/)) ? void 0 : t[0]) || "0").split(".").map((e => Number(e) || 0));
   }, compareVersionOrder = (e, t) => {
     const a = normalizeVersionParts(e), n = normalizeVersionParts(t), r = Math.max(a.length, n.length);
-    for (let s = 0; s < r; s++) {
-      const e = a[s] || 0, t = n[s] || 0;
+    for (let i = 0; i < r; i++) {
+      const e = a[i] || 0, t = n[i] || 0;
       if (e > t) return 1;
       if (e < t) return -1;
     }
@@ -10961,12 +10930,12 @@
           home: "",
           checkedCount: 0
         };
-        const r = n.updateInfo.version, s = a.filter((e => 0 === compareVersionOrder(e.updateInfo.version, r)));
+        const r = n.updateInfo.version, i = a.filter((e => 0 === compareVersionOrder(e.updateInfo.version, r)));
         return {
           hasUpdate: compareVersions(e, r),
           latestVersion: r,
           latestUpdatedAt: n.updateInfo.code_updated_at,
-          sourceNames: s.map((e => e.script.name)),
+          sourceNames: i.map((e => e.script.name)),
           home: n.script.home,
           checkedCount: t.length
         };
@@ -11060,8 +11029,8 @@
         if (-1 !== n) return n;
         const r = e[a].replace(/^\s*[A-Z]\s*[.\u3001\uff0e)\uff09:\uff1a]\s*/, "");
         if (r === e[a]) return -1;
-        const s = normalizeComparableText(r);
-        return s ? findIndexFor(s) : -1;
+        const i = normalizeComparableText(r);
+        return i ? findIndexFor(i) : -1;
       }));
       return r.includes(-1) ? [] : r;
     })(a, t.options);
@@ -11098,18 +11067,18 @@
       const a = [];
       let n = 0;
       for (let r = 0; r < t.options.length; r++) {
-        const s = t.options[r];
-        if (!s || "object" != typeof s || !("options" in s)) {
+        const i = t.options[r];
+        if (!i || "object" != typeof i || !("options" in i)) {
           a.push({
             kind: "unsupported",
             reason: "\u5b50\u9898\u65e0\u6cd5\u5339\u914d"
           });
           continue;
         }
-        const i = {
+        const s = {
           ...e,
           answer: e.answer[r]
-        }, o = "3" === s.type ? matchJudgeCandidate(i) : va.has(s.type) ? matchBlankCandidate(i, s) : matchChoiceCandidate(i, s);
+        }, o = "3" === i.type ? matchJudgeCandidate(s) : va.has(i.type) ? matchBlankCandidate(s, i) : matchChoiceCandidate(s, i);
         o ? (n++, a.push(o)) : a.push({
           kind: "unsupported",
           reason: "\u5b50\u9898\u65e0\u7b54\u6848"
@@ -11160,7 +11129,7 @@
     const r = {
       action: "mark-no-answer",
       answer: []
-    }, s = {
+    }, i = {
       form: e,
       answer: [],
       msg: t,
@@ -11169,8 +11138,8 @@
       rawText: n
     };
     return {
-      res: s,
-      matchResult: noAnswerMatch(s),
+      res: i,
+      matchResult: noAnswerMatch(i),
       action: r
     };
   }, getBlankCount = e => {
@@ -11182,7 +11151,7 @@
     if ("8" !== e.type) return false;
     const n = getQuestionHtmlText(e);
     return /<textarea\b/i.test(n) || /ueditor/i.test(n) || Boolean(null == (a = null == (t = e.html) ? void 0 : t.querySelector) ? void 0 : a.call(t, 'textarea, iframe[id^="ueditor_"], iframe[name^="ueditor_"]'));
-  }, ya = /<\s*img\b[^>]*>/gi, ba = /\bsrc\s*=\s*["']([^"']+)["']/i, runAskAiFallback = async ({route: e, text: t, type: a, question: n, config: r, adoptionStrategy: s, usePureMatcher: i = false, runScene: o = runAiScene, matchAnswer: l, resolveImages: c = resolveQuestionImages}) => {
+  }, ya = /<\s*img\b[^>]*>/gi, ba = /\bsrc\s*=\s*["']([^"']+)["']/i, runAskAiFallback = async ({route: e, text: t, type: a, question: n, config: r, adoptionStrategy: i, usePureMatcher: s = false, runScene: o = runAiScene, matchAnswer: l, resolveImages: c = resolveQuestionImages}) => {
     const p = (null == r ? void 0 : r.name) || "AI", u = ((e, t) => hasQuestionImages(t, e))(t, n);
     if (u && !((e, t) => !!(null == e ? void 0 : e.enabled) && true === (e.capabilities || Me)[t])(r, "image")) return createFallbackResult(p, "\u5f53\u524d AI \u914d\u7f6e\u4e0d\u652f\u6301\u56fe\u7247\u9898\u76ee\uff0c\u8bf7\u5728 AI \u8bbe\u7f6e\u4e2d\u9009\u62e9\u56fe\u7247\u9898\u6a21\u578b");
     if (hasUnsupportedMedia(stripImageTags(t)) || hasUnsupportedMedia(stripImageTags(getQuestionHtmlText(n)))) return createFallbackResult(p, getAiErrorMessage(createAiError("AI_IMAGE_UNSUPPORTED")));
@@ -11209,27 +11178,27 @@
         parts: [],
         markers: new Map
       };
-      const r = new Set(n.map((e => resolveImageSrc(e.src)))), s = new Map;
+      const r = new Set(n.map((e => resolveImageSrc(e.src)))), i = new Map;
       a.forEach((e => {
-        e.url && s.set(resolveImageSrc(e.url), e);
+        e.url && i.set(resolveImageSrc(e.url), e);
       }));
-      const i = [], o = new Map, l = e.replace(ya, (e => {
+      const s = [], o = new Map, l = e.replace(ya, (e => {
         var t;
         const a = resolveImageSrc((null == (t = e.match(ba)) ? void 0 : t[1]) || "");
         if (!a) return "";
         if (o.has(a)) return `[\u56fe${o.get(a)}]`;
-        const n = s.get(a);
-        return n ? (s.delete(a), i.push(n), o.set(a, i.length), `[\u56fe${i.length}]`) : r.has(a) ? "[\u56fe\u7247\u83b7\u53d6\u5931\u8d25]" : "";
-      })), c = a.filter((e => !i.includes(e)));
+        const n = i.get(a);
+        return n ? (i.delete(a), s.push(n), o.set(a, s.length), `[\u56fe${s.length}]`) : r.has(a) ? "[\u56fe\u7247\u83b7\u53d6\u5931\u8d25]" : "";
+      })), c = a.filter((e => !s.includes(e)));
       if (!c.length) return {
         text: l,
-        parts: i,
+        parts: s,
         markers: o
       };
-      const p = c.map(((e, t) => `[\u56fe${i.length + t + 1}]`)).join("");
-      return i.push(...c), {
+      const p = c.map(((e, t) => `[\u56fe${s.length + t + 1}]`)).join("");
+      return s.push(...c), {
         text: `${l}\n\uff08\u53e6\u9644\u672a\u5b9a\u4f4d\u7684\u9898\u76ee\u56fe\u7247\uff1a${p}\uff09`,
-        parts: i,
+        parts: s,
         markers: o
       };
     })(t, {
@@ -11286,7 +11255,7 @@
     } : {
       action: "mark-no-answer",
       answer: []
-    })(s, b), x = {
+    })(i, b), x = {
       form: p,
       answer: b.answer,
       msg: [ b.error ? getAiErrorMessage(b.error) : "", h ].filter(Boolean).join("\uff1b"),
@@ -11302,7 +11271,7 @@
     try {
       return {
         res: x,
-        matchResult: i || !l ? matchAnswerCandidates(normalizeAnswerCandidates([ x ]), {
+        matchResult: s || !l ? matchAnswerCandidates(normalizeAnswerCandidates([ x ]), {
           ...n,
           type: v
         }) : await l([ x ], n, !1),
@@ -11311,7 +11280,7 @@
     } catch (k) {
       return createFallbackResult(p, "AI \u7b54\u6848\u586b\u5145\u5931\u8d25\uff0c\u8bf7\u624b\u52a8\u6838\u5bf9\u540e\u91cd\u8bd5", y.duration, y.text);
     }
-  }, getErrorMessage = (e, t) => e instanceof Error && e.message ? `${t}\uff1a${e.message}` : "string" == typeof e && e ? `${t}\uff1a${e}` : t, runQuestionPipelineFromSources = async ({task: e, question: t, runToken: a, isCurrentRun: n, askAiEnabled: r, randomAnswerEnabled: s, sources: i}) => {
+  }, getErrorMessage = (e, t) => e instanceof Error && e.message ? `${t}\uff1a${e.message}` : "string" == typeof e && e ? `${t}\uff1a${e}` : t, runQuestionPipelineFromSources = async ({task: e, question: t, runToken: a, isCurrentRun: n, askAiEnabled: r, randomAnswerEnabled: i, sources: s}) => {
     if ("confirm-ai-preview" === e.kind) return ((e, t) => {
       var a, n;
       const r = {
@@ -11321,24 +11290,24 @@
         msg: "",
         aiStatus: "confirmed",
         rawText: (null == (n = e.preview) ? void 0 : n.rawText) || ""
-      }, s = normalizeAnswerCandidates([ r ]), i = matchAnswerCandidates(s, t);
-      return i.haveAnswer && i.source && i.fillPlan ? {
+      }, i = normalizeAnswerCandidates([ r ]), s = matchAnswerCandidates(i, t);
+      return s.haveAnswer && s.source && s.fillPlan ? {
         status: "answered",
-        displayAnswers: s,
-        adoptedSource: i.source,
-        fillPlan: i.fillPlan
+        displayAnswers: i,
+        adoptedSource: s.source,
+        fillPlan: s.fillPlan
       } : {
         status: "failed",
-        displayAnswers: s,
+        displayAnswers: i,
         failureReason: "AI \u5efa\u8bae\u65e0\u6cd5\u5339\u914d\u5f53\u524d\u9898\u76ee"
       };
     })(e, t);
     const o = "manual-ai" === e.kind, l = "random" === e.kind;
-    return (async ({question: e, runToken: t, isCurrentRun: a, askAiEnabled: n, randomAnswerEnabled: r, getCacheAnswer: s, getRemoteAnswers: i, getAiAnswer: o, getRandomFillPlan: l}) => {
+    return (async ({question: e, runToken: t, isCurrentRun: a, askAiEnabled: n, randomAnswerEnabled: r, getCacheAnswer: i, getRemoteAnswers: s, getAiAnswer: o, getRandomFillPlan: l}) => {
       var c, p, u, d;
       let m = "", h = "", f = [];
       try {
-        const n = await s(e);
+        const n = await i(e);
         if (!a(t)) return {
           status: "stale",
           displayAnswers: []
@@ -11360,7 +11329,7 @@
       }
       let g = [];
       try {
-        const n = await i(e);
+        const n = await s(e);
         if (!a(t)) return {
           status: "stale",
           displayAnswers: []
@@ -11402,12 +11371,12 @@
         };
         const r = normalizeAnswerCandidates([ (y = n, y && "object" == typeof y && "res" in y ? y.res : y) ]);
         v = [ ...v, ...r ];
-        const s = matchAnswerCandidates(r, e);
-        if (s.haveAnswer && s.source && s.fillPlan) return {
+        const i = matchAnswerCandidates(r, e);
+        if (i.haveAnswer && i.source && i.fillPlan) return {
           status: "answered",
           displayAnswers: v,
-          adoptedSource: s.source,
-          fillPlan: s.fillPlan
+          adoptedSource: i.source,
+          fillPlan: i.fillPlan
         };
         h = (null == (d = r.find((e => e.msg))) ? void 0 : d.msg) || h;
       } catch (b) {
@@ -11443,25 +11412,25 @@
       runToken: a,
       isCurrentRun: n,
       askAiEnabled: !!o || r,
-      randomAnswerEnabled: !!l || s,
+      randomAnswerEnabled: !!l || i,
       getCacheAnswer: o || l ? async () => ({
         form: "\u672c\u5730\u7f13\u5b58",
         answer: "",
         duration: 0,
         msg: "\u624b\u52a8\u4efb\u52a1\u8df3\u8fc7\u7f13\u5b58"
-      }) : i.getCacheAnswer,
-      getRemoteAnswers: o || l ? async () => [] : i.getRemoteAnswers,
-      getAiAnswer: l ? void 0 : i.getAiAnswer,
-      getRandomFillPlan: i.getRandomFillPlan
+      }) : s.getCacheAnswer,
+      getRemoteAnswers: o || l ? async () => [] : s.getRemoteAnswers,
+      getAiAnswer: l ? void 0 : s.getAiAnswer,
+      getRandomFillPlan: s.getRandomFillPlan
     });
   };
 
   let wa = 0;
 
-  const createQuestionTaskId = (e, t, a, n) => `${e}:${t}:${a}:${n}`, createQuestionTask = ({kind: e, index: t, runToken: a, preview: n, now: r = Date.now, nextSeq: s = () => ++wa}) => {
-    const i = s();
+  const createQuestionTaskId = (e, t, a, n) => `${e}:${t}:${a}:${n}`, createQuestionTask = ({kind: e, index: t, runToken: a, preview: n, now: r = Date.now, nextSeq: i = () => ++wa}) => {
+    const s = i();
     return {
-      id: createQuestionTaskId(e, t, a, i),
+      id: createQuestionTaskId(e, t, a, s),
       kind: e,
       index: t,
       runToken: a,
@@ -11501,7 +11470,7 @@
       phase: "preview",
       reason: n.preview.reason
     };
-    const s = n.adoptedSource && n.fillPlan ? createLegacyMatchResult({
+    const i = n.adoptedSource && n.fillPlan ? createLegacyMatchResult({
       haveAnswer: true,
       source: n.adoptedSource,
       fillPlan: n.fillPlan,
@@ -11512,7 +11481,7 @@
     });
     if (n.fillPlan && t.setPhase(e.index, "matched", e), t.publishQuestion(e.index, {
       answer: r,
-      form: s.form,
+      form: i.form,
       error: n.failureReason || "",
       phase: "published",
       status: 0,
@@ -11552,12 +11521,6 @@
       noticeLoaded: false,
       noticeFetchedAt: 0,
       apiKey: xa.api_key || "",
-      stats: {
-        course_count: 0,
-        chapter_count: 0,
-        question_count: 0
-      },
-      afdianUrl: xa.afdian_url || "",
       isLoggedIn: !!xa.user,
       loginTime: xa.login_time || 0
     }),
@@ -11574,14 +11537,6 @@
       score: e => {
         var t;
         return (null == (t = e.user) ? void 0 : t.score) || 0;
-      },
-      level: e => {
-        var t;
-        return (null == (t = e.user) ? void 0 : t.level) || 0;
-      },
-      isVip: e => {
-        var t;
-        return ((null == (t = e.user) ? void 0 : t.level) || 0) > 0;
       }
     },
     actions: {
@@ -11593,8 +11548,8 @@
             login_type: "password"
           }), r = JSON.parse(n.responseText);
           return 200 === r.code ? (this.user = r.data.user, this.apiKey = r.data.api_key, 
-          this.afdianUrl = r.data.afdian_url || "", this.isLoggedIn = !0, this.loginTime = Date.now(), 
-          this.saveToCache(), await this.fetchUserInfo(), r.data, {
+          this.isLoggedIn = !0, this.loginTime = Date.now(), this.saveToCache(), await this.fetchUserInfo(), 
+          r.data, {
             success: !0,
             message: "\u767b\u5f55\u6210\u529f"
           }) : {
@@ -11615,8 +11570,8 @@
             login_type: "apikey"
           }), n = JSON.parse(a.responseText);
           return 200 === n.code ? (this.user = n.data.user, this.apiKey = n.data.api_key, 
-          this.afdianUrl = n.data.afdian_url || "", this.isLoggedIn = !0, this.loginTime = Date.now(), 
-          this.saveToCache(), await this.fetchUserInfo(), n.data, {
+          this.isLoggedIn = !0, this.loginTime = Date.now(), this.saveToCache(), await this.fetchUserInfo(), 
+          n.data, {
             success: !0,
             message: "\u767b\u5f55\u6210\u529f"
           }) : {
@@ -11630,32 +11585,12 @@
           };
         }
       },
-      async register(e) {
-        try {
-          const t = apiUrl("user/register"), [a] = await requestApi(t, "POST", e), n = JSON.parse(a.responseText);
-          return 200 === n.code ? (this.user = n.data.user, this.apiKey = n.data.api_key, 
-          this.afdianUrl = n.data.afdian_url || "", this.isLoggedIn = !0, this.loginTime = Date.now(), 
-          this.saveToCache(), n.data, {
-            success: !0,
-            message: "\u6ce8\u518c\u6210\u529f"
-          }) : {
-            success: !1,
-            message: n.message || "\u6ce8\u518c\u5931\u8d25"
-          };
-        } catch (t) {
-          return {
-            success: false,
-            message: t.message || "\u6ce8\u518c\u5931\u8d25\uff0c\u8bf7\u68c0\u67e5\u7f51\u7edc\u8fde\u63a5"
-          };
-        }
-      },
       async fetchUserInfo() {
         if (this.isLoggedIn) try {
           const e = apiUrl("user/info"), [t] = await requestApi(e, "GET", void 0, {
             Authorization: `Bearer ${this.apiKey}`
           }), a = JSON.parse(t.responseText);
-          200 === a.code && (this.user = a.data.user, this.stats = a.data.stats, this.afdianUrl = a.data.afdian_url || "", 
-          this.saveToCache(), a.data);
+          200 === a.code && (this.user = a.data.user, this.saveToCache(), a.data);
         } catch (e) {}
       },
       async logout() {
@@ -11667,11 +11602,7 @@
             });
           }
         } catch (e) {} finally {
-          this.user = null, this.apiKey = "", this.stats = {
-            course_count: 0,
-            chapter_count: 0,
-            question_count: 0
-          }, this.afdianUrl = "", this.isLoggedIn = false, this.loginTime = 0, Cache.remove("user");
+          this.user = null, this.apiKey = "", this.isLoggedIn = false, this.loginTime = 0, Cache.remove("user");
         }
       },
       async refreshApiKey() {
@@ -11695,50 +11626,6 @@
           };
         }
       },
-      async updateUserInfo(e) {
-        try {
-          const t = apiUrl("user/update"), [a] = await requestApi(t, "POST", e, {
-            Authorization: `Bearer ${this.apiKey}`
-          }), n = JSON.parse(a.responseText);
-          return 200 === n.code ? (this.user && (this.user = {
-            ...this.user,
-            ...n.data.user
-          }), this.saveToCache(), n.data, {
-            success: !0,
-            message: "\u66f4\u65b0\u6210\u529f"
-          }) : {
-            success: !1,
-            message: n.message || "\u66f4\u65b0\u5931\u8d25"
-          };
-        } catch (t) {
-          return {
-            success: false,
-            message: t.message || "\u66f4\u65b0\u5931\u8d25"
-          };
-        }
-      },
-      async changePassword(e, t) {
-        try {
-          const a = apiUrl("user/change-password"), [n] = await requestApi(a, "POST", {
-            old_password: e,
-            new_password: t
-          }, {
-            Authorization: `Bearer ${this.apiKey}`
-          }), r = JSON.parse(n.responseText);
-          return 200 === r.code ? {
-            success: !0,
-            message: "\u5bc6\u7801\u4fee\u6539\u6210\u529f"
-          } : {
-            success: !1,
-            message: r.message || "\u5bc6\u7801\u4fee\u6539\u5931\u8d25"
-          };
-        } catch (a) {
-          return {
-            success: false,
-            message: a.message || "\u5bc6\u7801\u4fee\u6539\u5931\u8d25"
-          };
-        }
-      },
       async fuzzySearchQuestion(e) {
         var t;
         try {
@@ -11746,12 +11633,12 @@
             question: e.question,
             type: e.type ?? 8,
             options: e.options ?? []
-          }, [n] = await requestApi(t, "POST", a), r = JSON.parse(n.responseText), s = 401 === r.code || 401 === n.status;
+          }, [n] = await requestApi(t, "POST", a), r = JSON.parse(n.responseText), i = 401 === r.code || 401 === n.status;
           return 200 === r.code ? {
             success: !0,
             message: r.message || "success",
             data: r.data || []
-          } : s ? {
+          } : i ? {
             success: !1,
             message: r.message || "\u767b\u5f55\u540e\u624d\u53ef\u4ee5\u4f7f\u7528\u5b98\u65b9\u9898\u5e93\uff0c\u8bf7\u5148\u767b\u5f55",
             data: [],
@@ -11801,15 +11688,14 @@
         const e = {
           user: this.user || void 0,
           api_key: this.apiKey || void 0,
-          login_time: this.loginTime || void 0,
-          afdian_url: this.afdianUrl || void 0
+          login_time: this.loginTime || void 0
         };
         Cache.set("user", e);
       },
       loadFromCache() {
         const e = Cache.get("user", {});
         e.user && (this.user = e.user, this.apiKey = e.api_key || "", this.loginTime = e.login_time || 0, 
-        this.afdianUrl = e.afdian_url || "", this.isLoggedIn = true);
+        this.isLoggedIn = true);
       }
     }
   }), qa = {
@@ -11821,11 +11707,11 @@
     state: () => ({
       aiMsg: "",
       aiLoading: false,
-      settings: loadAiSettingsFrom(qa, He, getApp),
+      settings: loadAiSettingsFrom(qa, Pe, getApp),
       catalog: {
         seq: 0,
         fetchedAt: 0,
-        channels: He
+        channels: Pe
       },
       catalogLoading: false,
       connectionTestingId: "",
@@ -11957,14 +11843,14 @@
   }), waitForAnswerRender = async () => {
     await vue.nextTick(), await function(e = {}, t = 120) {
       var a;
-      const n = e.requestAnimationFrame ?? (null == (a = globalThis.requestAnimationFrame) ? void 0 : a.bind(globalThis)), r = e.setTimeout ?? globalThis.setTimeout.bind(globalThis), s = e.clearTimeout ?? globalThis.clearTimeout.bind(globalThis);
+      const n = e.requestAnimationFrame ?? (null == (a = globalThis.requestAnimationFrame) ? void 0 : a.bind(globalThis)), r = e.setTimeout ?? globalThis.setTimeout.bind(globalThis), i = e.clearTimeout ?? globalThis.clearTimeout.bind(globalThis);
       return new Promise((e => {
-        let a, i = false;
+        let a, s = false;
         const finish = () => {
-          i || (i = true, e());
+          s || (s = true, e());
         };
         a = r(finish, t), n && n((() => {
-          void 0 !== a && s(a), finish();
+          void 0 !== a && i(a), finish();
         }));
       }));
     }();
@@ -12226,8 +12112,8 @@
           kind: void 0 === t ? "retry" : "auto",
           index: e,
           runToken: n
-        }), s = this.questionList[e];
-        if (s) {
+        }), i = this.questionList[e];
+        if (i) {
           delete this.aiFailureMap[e], (null == (a = this.aiPreview) ? void 0 : a.index) === e && (this.aiPreview = null), 
           this.loading = true, this.loadingRunToken = n;
           try {
@@ -12255,7 +12141,7 @@
         }))), a;
       })(e),
       async fetchAIAnswer(e, t) {
-        const a = _a(), n = hasQuestionImages(t, e) ? "image" : "text", r = a.selectTarget("ask", n), s = await runAskAiFallback({
+        const a = _a(), n = hasQuestionImages(t, e) ? "image" : "text", r = a.selectTarget("ask", n), i = await runAskAiFallback({
           text: e,
           type: t.type,
           question: t,
@@ -12264,7 +12150,7 @@
           adoptionStrategy: a.settings.adoptionStrategy,
           usePureMatcher: true
         });
-        return s;
+        return i;
       },
       async confirmAiPreview() {
         if (!this.aiPreview) return;
@@ -12303,20 +12189,20 @@
           kind: "manual-ai",
           index: e,
           runToken: n
-        }), s = this.questionList[e];
-        if (s) {
+        }), i = this.questionList[e];
+        if (i) {
           this.loadingText = "AI\u601d\u8003\u4e2d.....", this.loading = true, this.loadingRunToken = n, 
-          this.aiLoadingIndex = e, s.aiMsg = "";
+          this.aiLoadingIndex = e, i.aiMsg = "";
           try {
-            const i = await runQuestionTask(r, this.createQuestionRunnerDeps(n));
-            if ("preview" === i.phase && (null == (t = this.aiPreview) ? void 0 : t.index) === e) return void (s.aiMsg = this.aiPreview.rawText || i.reason || "");
-            if (i.reason) s.aiMsg = createManualAiDisplayMessage(!1, "", i.reason); else if (null == (a = s.answer) ? void 0 : a.length) {
-              const e = s.answer[s.answer.length - 1], t = (null == e ? void 0 : e.rawText) || (Array.isArray(null == e ? void 0 : e.answer) ? e.answer.join("\u3001") : "");
-              s.aiMsg = createManualAiDisplayMessage("done" === i.phase, t, "AI \u672a\u91c7\u7eb3\u8be5\u7b54\u6848");
+            const s = await runQuestionTask(r, this.createQuestionRunnerDeps(n));
+            if ("preview" === s.phase && (null == (t = this.aiPreview) ? void 0 : t.index) === e) return void (i.aiMsg = this.aiPreview.rawText || s.reason || "");
+            if (s.reason) i.aiMsg = createManualAiDisplayMessage(!1, "", s.reason); else if (null == (a = i.answer) ? void 0 : a.length) {
+              const e = i.answer[i.answer.length - 1], t = (null == e ? void 0 : e.rawText) || (Array.isArray(null == e ? void 0 : e.answer) ? e.answer.join("\u3001") : "");
+              i.aiMsg = createManualAiDisplayMessage("done" === s.phase, t, "AI \u672a\u91c7\u7eb3\u8be5\u7b54\u6848");
             }
           } catch {
             const t = "AI\u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u5148\u5728 AI \u8bbe\u7f6e\u4e2d\u586b\u5199 API Key\u3001\u6a21\u578b\u548c Base URL";
-            s.aiMsg = t, this.aiFailureMap[e] = t, this.setQuestionPhase(e, "failed", r, t);
+            i.aiMsg = t, this.aiFailureMap[e] = t, this.setQuestionPhase(e, "failed", r, t);
           } finally {
             this.loadingRunToken === n && (this.loading = false), this.aiLoadingIndex = -1;
           }
@@ -12402,9 +12288,9 @@
         width: e.progress + "%"
       })
     }, null, 4) ])) : vue.createCommentVNode("", true) ], 10, Ta))
-  }), Pa = {
+  }), Ha = {
     class: "overview-page"
-  }, Ha = {
+  }, Pa = {
     class: "aah-card overview-user"
   }, La = {
     class: "ov-avatar"
@@ -12416,23 +12302,20 @@
   }, Ma = {
     class: "aah-tag aah-tag-success"
   }, Oa = {
-    key: 0,
-    class: "aah-tag aah-tag-warning"
-  }, Fa = {
     key: 1,
     class: "ov-muted"
-  }, Da = {
+  }, Fa = {
     key: 0,
     class: "aah-card overview-notice"
-  }, Na = [ "innerHTML" ], Ra = {
+  }, Da = [ "innerHTML" ], Na = {
     class: "overview-stats"
-  }, Ba = {
+  }, Ra = {
     class: "overview-actions"
-  }, Ga = {
+  }, Ba = {
     class: "overview-version"
-  }, Va = {
+  }, Ga = {
     class: "ov-version-text"
-  }, Ka = vue.defineComponent({
+  }, Va = vue.defineComponent({
     __name: "Overview",
     setup(e) {
       const t = ce(), a = ka(), o = Aa(), g = _a(), v = vue.ref("");
@@ -12458,7 +12341,7 @@
           model: ((null == e ? void 0 : e.config.model) ?? "") || "\u672a\u914d\u7f6e"
         };
       }));
-      return (e, o) => (vue.openBlock(), vue.createElementBlock("div", Pa, [ vue.createElementVNode("div", Ha, [ vue.createElementVNode("div", La, [ vue.unref(a).avatar ? (vue.openBlock(), 
+      return (e, o) => (vue.openBlock(), vue.createElementBlock("div", Ha, [ vue.createElementVNode("div", Pa, [ vue.createElementVNode("div", La, [ vue.unref(a).avatar ? (vue.openBlock(), 
       vue.createElementBlock("img", {
         key: 0,
         src: vue.unref(a).avatar,
@@ -12467,15 +12350,14 @@
         key: 1,
         icon: "mdi:account"
       })) ]), vue.createElementVNode("div", $a, [ vue.createElementVNode("h3", null, vue.toDisplayString(vue.unref(a).nickname || "\u6e38\u5ba2"), 1), vue.unref(a).isLoggedIn ? (vue.openBlock(), 
-      vue.createElementBlock("p", za, [ vue.createElementVNode("span", Ma, "\u79ef\u5206 " + vue.toDisplayString(vue.unref(a).score), 1), vue.unref(a).isVip ? (vue.openBlock(), 
-      vue.createElementBlock("span", Oa, "VIP Lv." + vue.toDisplayString(vue.unref(a).level), 1)) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), vue.createElementBlock("p", Fa, "\u672a\u767b\u5f55\uff0c\u767b\u5f55\u540e\u53ef\u4eab\u53d7\u66f4\u591a\u529f\u80fd")) ]), vue.createElementVNode("button", {
+      vue.createElementBlock("p", za, [ vue.createElementVNode("span", Ma, "\u79ef\u5206 " + vue.toDisplayString(vue.unref(a).score), 1) ])) : (vue.openBlock(), vue.createElementBlock("p", Oa, "\u672a\u767b\u5f55\uff0c\u767b\u5f55\u540e\u53ef\u4eab\u53d7\u66f4\u591a\u529f\u80fd")) ]), vue.createElementVNode("button", {
         class: vue.normalizeClass([ "aah-btn", vue.unref(a).isLoggedIn ? "" : "aah-btn-primary" ]),
         onClick: o[0] || (o[0] = e => vue.unref(t).setPage("system", "account"))
       }, vue.toDisplayString(vue.unref(a).isLoggedIn ? "\u4e2a\u4eba\u4e2d\u5fc3" : "\u767b\u5f55 / \u6ce8\u518c"), 3) ]), v.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Da, [ vue.createElementVNode("div", {
+      vue.createElementBlock("div", Fa, [ vue.createElementVNode("div", {
         class: "ov-notice-content",
         innerHTML: v.value
-      }, null, 8, Na) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Ra, [ vue.createVNode(Ua, {
+      }, null, 8, Da) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Na, [ vue.createVNode(Ua, {
         label: "\u7b54\u9898",
         "icon-color": y.value.total ? "var(--c-success)" : "var(--c-text-muted)",
         value: b.value,
@@ -12497,7 +12379,7 @@
         meta: x.value.ready ? "\u5df2\u5c31\u7eea" : "\u672a\u914d\u7f6e",
         clickable: "",
         onClick: o[3] || (o[3] = e => vue.unref(t).setPage("ai"))
-      }, null, 8, [ "icon-color", "value", "meta" ]) ]), vue.createElementVNode("div", Ba, [ vue.createElementVNode("button", {
+      }, null, 8, [ "icon-color", "value", "meta" ]) ]), vue.createElementVNode("div", Ra, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary",
         onClick: o[4] || (o[4] = e => vue.unref(t).setPage("ask"))
       }, "\u5f00\u59cb\u7b54\u9898"), vue.createElementVNode("button", {
@@ -12506,20 +12388,20 @@
       }, "AI \u641c\u9898"), vue.createElementVNode("button", {
         class: "aah-btn",
         onClick: o[6] || (o[6] = e => vue.unref(t).setPage("library", "tool"))
-      }, "\u9898\u5e93\u5bfc\u5165") ]), vue.createElementVNode("div", Ga, [ vue.createElementVNode("span", Va, "v" + vue.toDisplayString(vue.unref(re).script.version), 1), vue.createElementVNode("button", {
+      }, "\u9898\u5e93\u5bfc\u5165") ]), vue.createElementVNode("div", Ba, [ vue.createElementVNode("span", Ga, "v" + vue.toDisplayString(vue.unref(re).script.version), 1), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         onClick: o[7] || (o[7] = e => vue.unref(updateFn)(false))
       }, "\u68c0\u67e5\u66f4\u65b0") ]) ]));
     }
-  }), Wa = {
+  }), Ka = {
     key: 0,
     class: "page-loader"
-  }, Qa = vue.createElementVNode("div", {
+  }, Wa = vue.createElementVNode("div", {
     class: "spinner"
-  }, null, -1), Ja = [ Qa ], Xa = {
+  }, null, -1), Qa = [ Wa ], Ja = {
     key: 0,
     class: "aah-page-footer"
-  }, Ya = vue.defineComponent({
+  }, Xa = vue.defineComponent({
     __name: "PageContainer",
     props: {
       loading: {
@@ -12539,19 +12421,19 @@
       class: vue.normalizeClass([ "aah-page-content", {
         "no-padding": e.noPadding
       } ])
-    }, [ vue.renderSlot(e.$slots, "default"), e.loading ? (vue.openBlock(), vue.createElementBlock("div", Wa, Ja)) : vue.createCommentVNode("", true) ], 2), e.$slots.footer ? (vue.openBlock(), 
-    vue.createElementBlock("footer", Xa, [ vue.renderSlot(e.$slots, "footer") ])) : vue.createCommentVNode("", true) ], 2))
-  }), Za = {
+    }, [ vue.renderSlot(e.$slots, "default"), e.loading ? (vue.openBlock(), vue.createElementBlock("div", Ka, Qa)) : vue.createCommentVNode("", true) ], 2), e.$slots.footer ? (vue.openBlock(), 
+    vue.createElementBlock("footer", Ja, [ vue.renderSlot(e.$slots, "footer") ])) : vue.createCommentVNode("", true) ], 2))
+  }), Ya = {
     class: "segmented",
     role: "tablist"
-  }, en = [ "aria-selected", "onClick" ], tn = vue.defineComponent({
+  }, Za = [ "aria-selected", "onClick" ], en = vue.defineComponent({
     __name: "SegmentedControl",
     props: {
       segments: {},
       modelValue: {}
     },
     emits: [ "update:modelValue" ],
-    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Za, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.segments, (t => (vue.openBlock(), 
+    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Ya, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.segments, (t => (vue.openBlock(), 
     vue.createElementBlock("button", {
       key: t.key,
       type: "button",
@@ -12561,11 +12443,11 @@
         active: e.modelValue === t.key
       } ]),
       onClick: a => e.$emit("update:modelValue", t.key)
-    }, vue.toDisplayString(t.label), 11, en)))), 128)) ]))
-  }), an = [ "checked", "disabled" ], nn = vue.createElementVNode("span", {
+    }, vue.toDisplayString(t.label), 11, Za)))), 128)) ]))
+  }), tn = [ "checked", "disabled" ], an = vue.createElementVNode("span", {
     class: "switch-slider",
     "aria-hidden": "true"
-  }, null, -1), rn = vue.defineComponent({
+  }, null, -1), nn = vue.defineComponent({
     __name: "Switch",
     props: {
       modelValue: {
@@ -12585,38 +12467,38 @@
       checked: e.modelValue,
       disabled: e.disabled,
       onChange: t[0] || (t[0] = t => e.$emit("update:modelValue", t.target.checked))
-    }, null, 40, an), nn ], 2))
-  }), sn = {
+    }, null, 40, tn), an ], 2))
+  }), rn = {
     class: "config-item"
-  }, on = {
+  }, sn = {
     class: "config-item-content"
-  }, ln = {
+  }, on = {
     class: "config-label"
-  }, cn = {
+  }, ln = {
     class: "label-wrapper"
-  }, pn = {
+  }, cn = {
     class: "label-text"
-  }, un = {
+  }, pn = {
     key: 0,
     class: "label-desc"
-  }, dn = {
+  }, un = {
     class: "config-control"
-  }, mn = [ "value" ], hn = {
+  }, dn = [ "value" ], mn = {
     key: 4,
     class: "hotkey-input-wrapper"
-  }, fn = [ "value", "placeholder" ], gn = {
+  }, hn = [ "value", "placeholder" ], fn = {
     key: 0,
     class: "hotkey-hint danger"
-  }, vn = {
+  }, gn = {
     key: 1,
     class: "hotkey-hint"
-  }, yn = {
+  }, vn = {
     key: 5,
     class: "checkbox-group"
-  }, bn = [ "value" ], wn = {
+  }, yn = [ "value" ], bn = {
     key: 6,
     class: "radio-group"
-  }, xn = [ "value" ], kn = [ "min", "max", "step" ], qn = vue.defineComponent({
+  }, wn = [ "value" ], xn = [ "min", "max", "step" ], kn = vue.defineComponent({
     __name: "ConfigItem",
     props: {
       item: {},
@@ -12629,9 +12511,9 @@
       }, handleHotkeyKeydown = e => {
         o("hotkey-keydown", e, a.item);
       };
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", sn, [ vue.createElementVNode("div", on, [ vue.createElementVNode("div", ln, [ vue.createElementVNode("div", cn, [ vue.createElementVNode("span", pn, vue.toDisplayString(e.item.label), 1), e.item.desc ? (vue.openBlock(), 
-      vue.createElementBlock("span", un, vue.toDisplayString(e.item.desc), 1)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("div", dn, [ "switch" === p.value ? (vue.openBlock(), 
-      vue.createBlock(rn, {
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", rn, [ vue.createElementVNode("div", sn, [ vue.createElementVNode("div", on, [ vue.createElementVNode("div", ln, [ vue.createElementVNode("span", cn, vue.toDisplayString(e.item.label), 1), e.item.desc ? (vue.openBlock(), 
+      vue.createElementBlock("span", pn, vue.toDisplayString(e.item.desc), 1)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("div", un, [ "switch" === p.value ? (vue.openBlock(), 
+      vue.createBlock(nn, {
         key: 0,
         modelValue: e.item.value,
         "onUpdate:modelValue": t[0] || (t[0] = t => e.item.value = t)
@@ -12654,8 +12536,8 @@
       }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (e => (vue.openBlock(), vue.createElementBlock("option", {
         key: e.value,
         value: e.value
-      }, vue.toDisplayString(e.label), 9, mn)))), 128)) ], 512)), [ [ vue.vModelSelect, e.item.value ] ]) : "hotkey" === p.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", hn, [ vue.createElementVNode("input", {
+      }, vue.toDisplayString(e.label), 9, dn)))), 128)) ], 512)), [ [ vue.vModelSelect, e.item.value ] ]) : "hotkey" === p.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", mn, [ vue.createElementVNode("input", {
         class: vue.normalizeClass([ "aah-input", {
           recording: e.recordingHotkey === e.item.name
         } ]),
@@ -12664,25 +12546,25 @@
         readonly: "",
         onFocus: handleStartRecording,
         onKeydown: handleHotkeyKeydown
-      }, null, 42, fn), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", gn, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
-      vue.createElementBlock("span", vn, "\u70b9\u51fb\u5f55\u5236")) ])) : "checkbox" === p.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", yn, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (a => (vue.openBlock(), vue.createElementBlock("label", {
+      }, null, 42, hn), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", fn, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
+      vue.createElementBlock("span", gn, "\u70b9\u51fb\u5f55\u5236")) ])) : "checkbox" === p.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", vn, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (a => (vue.openBlock(), vue.createElementBlock("label", {
         key: a.value,
         class: "checkbox-item"
       }, [ vue.withDirectives(vue.createElementVNode("input", {
         type: "checkbox",
         value: a.value,
         "onUpdate:modelValue": t[4] || (t[4] = t => e.item.value = t)
-      }, null, 8, bn), [ [ vue.vModelCheckbox, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(a.label), 1) ])))), 128)) ])) : "radio" === p.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", wn, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (a => (vue.openBlock(), vue.createElementBlock("label", {
+      }, null, 8, yn), [ [ vue.vModelCheckbox, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(a.label), 1) ])))), 128)) ])) : "radio" === p.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", bn, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (a => (vue.openBlock(), vue.createElementBlock("label", {
         key: a.value,
         class: "radio-item"
       }, [ vue.withDirectives(vue.createElementVNode("input", {
         type: "radio",
         value: a.value,
         "onUpdate:modelValue": t[5] || (t[5] = t => e.item.value = t)
-      }, null, 8, xn), [ [ vue.vModelRadio, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(a.label), 1) ])))), 128)) ])) : "segment" === p.value ? (vue.openBlock(), 
-      vue.createBlock(tn, {
+      }, null, 8, wn), [ [ vue.vModelRadio, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(a.label), 1) ])))), 128)) ])) : "segment" === p.value ? (vue.openBlock(), 
+      vue.createBlock(en, {
         key: 7,
         modelValue: e.item.value,
         "onUpdate:modelValue": t[6] || (t[6] = t => e.item.value = t),
@@ -12698,205 +12580,205 @@
         max: e.item.max ?? 100,
         step: e.item.step ?? 1,
         class: "aah-slider"
-      }, null, 8, kn)), [ [ vue.vModelText, e.item.value, void 0, {
+      }, null, 8, xn)), [ [ vue.vModelText, e.item.value, void 0, {
         number: true
       } ] ]) : vue.createCommentVNode("", true) ]) ]) ]));
     }
-  }), _n = {
+  }), qn = {
     class: "ai-config-panel"
-  }, An = {
+  }, _n = {
     key: 0,
     class: "aah-card ai-wizard"
-  }, Tn = {
+  }, An = {
     class: "ai-wizard-head"
-  }, Cn = vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, "\u5f00\u59cb\u4f7f\u7528 AI"), vue.createElementVNode("p", null, "\u4e09\u6b65\u914d\u597d\uff0c\u4e4b\u540e\u968f\u65f6\u80fd\u6539") ], -1), Sn = {
+  }, Tn = vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, "\u5f00\u59cb\u4f7f\u7528 AI"), vue.createElementVNode("p", null, "\u4e09\u6b65\u914d\u597d\uff0c\u4e4b\u540e\u968f\u65f6\u80fd\u6539") ], -1), Cn = {
     class: "ai-wizard-count"
-  }, In = {
+  }, Sn = {
     class: "ai-wizard-steps",
     "aria-label": "\u914d\u7f6e\u8fdb\u5ea6"
-  }, En = vue.createElementVNode("span", {
+  }, In = vue.createElementVNode("span", {
     class: "ai-wizard-dot",
     "aria-hidden": "true"
-  }, null, -1), Un = {
+  }, null, -1), En = {
     key: 0,
     class: "ai-wizard-body"
-  }, Pn = vue.createElementVNode("p", {
+  }, Un = vue.createElementVNode("p", {
     class: "ai-config-field-help"
   }, " \u4efb\u9009\u4e00\u5bb6\uff0c\u7528\u5b83\u81ea\u5df1\u7684 API Key\u3002\u5e26\u300c\u6709\u514d\u8d39\u989d\u5ea6\u300d\u7684\u6ce8\u518c\u540e\u5373\u53ef\u9886\u53d6\uff0c\u4e0d\u7528\u5145\u503c\u3002 ", -1), Hn = {
     class: "ai-config-channel-grid"
-  }, Ln = [ "onClick" ], jn = {
+  }, Pn = [ "onClick" ], Ln = {
     class: "ai-config-card-head"
-  }, $n = {
+  }, jn = {
     class: "ai-config-card-tags"
-  }, zn = {
+  }, $n = {
     key: 0,
     class: "ai-config-card-promo"
-  }, Mn = {
+  }, zn = {
     class: "ai-wizard-actions"
-  }, On = {
+  }, Mn = {
     key: 1,
     class: "ai-wizard-body"
-  }, Fn = {
+  }, On = {
     class: "ai-wizard-subject"
-  }, Dn = {
+  }, Fn = {
     class: "ai-config-field-help"
-  }, Nn = {
+  }, Dn = {
     key: 0,
     class: "ai-config-card-promo"
-  }, Rn = [ "href" ], Bn = {
+  }, Nn = [ "href" ], Rn = {
     class: "ai-wizard-actions"
-  }, Gn = {
+  }, Bn = {
     key: 2,
     class: "ai-wizard-body"
-  }, Vn = {
+  }, Gn = {
     class: "ai-wizard-subject"
-  }, Kn = {
+  }, Vn = {
     class: "ai-config-field"
-  }, Wn = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), Qn = [ "value" ], Jn = {
+  }, Kn = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), Wn = [ "value" ], Qn = {
     class: "ai-wizard-actions"
-  }, Xn = [ "disabled" ], Yn = [ "disabled" ], Zn = {
+  }, Jn = [ "disabled" ], Xn = [ "disabled" ], Yn = {
     key: 0,
     class: "aah-alert aah-alert-info"
-  }, er = {
+  }, Zn = {
     key: 1,
     class: "ai-config-manager"
-  }, tr = {
+  }, er = {
     class: "ai-config-side"
-  }, ar = {
+  }, tr = {
     class: "aah-card ai-config-list-panel"
-  }, nr = vue.createElementVNode("header", {
+  }, ar = vue.createElementVNode("header", {
     class: "ai-config-section-head"
-  }, [ vue.createElementVNode("h4", null, "\u6211\u7684\u6e20\u9053") ], -1), rr = {
+  }, [ vue.createElementVNode("h4", null, "\u6211\u7684\u6e20\u9053") ], -1), nr = {
     key: 0,
     class: "ai-config-channel-list"
-  }, sr = [ "onClick" ], ir = {
+  }, rr = [ "onClick" ], ir = {
     class: "ai-config-channel-text"
-  }, or = {
+  }, sr = {
     key: 0
-  }, lr = {
+  }, or = {
     key: 1
-  }, cr = {
+  }, lr = {
     key: 2
-  }, pr = {
+  }, cr = {
     key: 3
-  }, ur = {
+  }, pr = {
     key: 0,
     class: "aah-tag aah-tag-primary"
-  }, dr = {
+  }, ur = {
     key: 1,
     class: "ai-config-field-help"
-  }, mr = {
+  }, dr = {
     class: "ai-config-side-actions"
-  }, hr = {
+  }, mr = {
     class: "aah-card ai-config-global"
-  }, fr = [ "aria-expanded" ], gr = vue.createElementVNode("span", null, "\u5168\u5c40\u8bbe\u7f6e", -1), vr = {
+  }, hr = [ "aria-expanded" ], fr = vue.createElementVNode("span", null, "\u5168\u5c40\u8bbe\u7f6e", -1), gr = {
     key: 0,
     class: "ai-config-global-body"
-  }, yr = {
+  }, vr = {
     class: "native-checkbox"
-  }, br = vue.createElementVNode("span", null, [ vue.createTextVNode("\u542f\u7528 AI \u8f85\u52a9\u7b54\u9898 "), vue.createElementVNode("small", null, "\uff08AI \u6b63\u786e\u7387\u4e0d\u4fdd\u8bc1\uff09") ], -1), wr = {
+  }, yr = vue.createElementVNode("span", null, [ vue.createTextVNode("\u542f\u7528 AI \u8f85\u52a9\u7b54\u9898 "), vue.createElementVNode("small", null, "\uff08AI \u6b63\u786e\u7387\u4e0d\u4fdd\u8bc1\uff09") ], -1), br = {
     class: "ai-config-field"
-  }, xr = vue.createElementVNode("span", null, "AI \u91c7\u7eb3\u7b56\u7565", -1), kr = vue.createElementVNode("option", {
+  }, wr = vue.createElementVNode("span", null, "AI \u91c7\u7eb3\u7b56\u7565", -1), xr = vue.createElementVNode("option", {
     value: "conservative"
-  }, "\u4fdd\u5b88\u586b", -1), qr = vue.createElementVNode("option", {
+  }, "\u4fdd\u5b88\u586b", -1), kr = vue.createElementVNode("option", {
     value: "direct"
-  }, "\u76f4\u63a5\u586b", -1), _r = vue.createElementVNode("option", {
+  }, "\u76f4\u63a5\u586b", -1), qr = vue.createElementVNode("option", {
     value: "preview"
-  }, "\u9884\u89c8\u786e\u8ba4", -1), Ar = [ kr, qr, _r ], Tr = {
+  }, "\u9884\u89c8\u786e\u8ba4", -1), _r = [ xr, kr, qr ], Ar = {
     class: "ai-config-field"
-  }, Cr = vue.createElementVNode("span", null, "\u56fe\u7247\u9898\u6e20\u9053", -1), Sr = vue.createElementVNode("option", {
+  }, Tr = vue.createElementVNode("span", null, "\u56fe\u7247\u9898\u6e20\u9053", -1), Cr = vue.createElementVNode("option", {
     value: ""
-  }, "\u81ea\u52a8\u9009\u62e9", -1), Ir = [ "value" ], Er = {
+  }, "\u81ea\u52a8\u9009\u62e9", -1), Sr = [ "value" ], Ir = {
     key: 0,
     class: "ai-config-field-help"
-  }, Ur = {
+  }, Er = {
     class: "ai-config-field"
-  }, Pr = vue.createElementVNode("span", null, "\u8c03\u7528\u65b9\u5f0f", -1), Hr = vue.createElementVNode("option", {
+  }, Ur = vue.createElementVNode("span", null, "\u8c03\u7528\u65b9\u5f0f", -1), Hr = vue.createElementVNode("option", {
     value: "auto"
-  }, "\u81ea\u52a8\uff08\u4f18\u5148\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\uff0c\u5931\u8d25\u56de\u843d\u76f4\u8fde\uff09", -1), Lr = vue.createElementVNode("option", {
+  }, "\u81ea\u52a8\uff08\u4f18\u5148\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\uff0c\u5931\u8d25\u56de\u843d\u76f4\u8fde\uff09", -1), Pr = vue.createElementVNode("option", {
     value: "direct"
-  }, "\u4ec5\u76f4\u8fde\uff08\u4e0d\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\uff09", -1), jr = [ Hr, Lr ], $r = vue.createElementVNode("p", {
+  }, "\u4ec5\u76f4\u8fde\uff08\u4e0d\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\uff09", -1), Lr = [ Hr, Pr ], jr = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, " \u9009\u300c\u81ea\u52a8\u300d\u65f6\uff0c\u4f60\u7684 API Key \u4f1a\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\u8f6c\u53d1\u7ed9\u5382\u5546\uff1b\u6211\u4eec\u4e0d\u4fdd\u5b58\u5b83\u3002 \u4ecb\u610f\u7684\u8bdd\u9009\u300c\u4ec5\u76f4\u8fde\u300d\u3002 ", -1), zr = {
+  }, " \u9009\u300c\u81ea\u52a8\u300d\u65f6\uff0c\u4f60\u7684 API Key \u4f1a\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\u8f6c\u53d1\u7ed9\u5382\u5546\uff1b\u6211\u4eec\u4e0d\u4fdd\u5b58\u5b83\u3002 \u4ecb\u610f\u7684\u8bdd\u9009\u300c\u4ec5\u76f4\u8fde\u300d\u3002 ", -1), $r = {
     key: 0,
     class: "aah-card ai-config-detail"
-  }, Mr = {
+  }, zr = {
     class: "ai-config-section-head"
-  }, Or = {
+  }, Mr = {
     class: "ai-config-card-tags"
-  }, Fr = {
+  }, Or = {
     key: 0,
     class: "aah-tag aah-tag-success"
-  }, Dr = {
+  }, Fr = {
     key: 1,
     class: "aah-tag"
-  }, Nr = {
+  }, Dr = {
     class: "ai-config-field"
-  }, Rr = vue.createElementVNode("span", null, "API Key", -1), Br = [ "value" ], Gr = {
+  }, Nr = vue.createElementVNode("span", null, "API Key", -1), Rr = [ "value" ], Br = {
     class: "ai-config-field-help"
-  }, Vr = [ "href" ], Kr = {
+  }, Gr = [ "href" ], Vr = {
     class: "ai-config-field"
-  }, Wr = vue.createElementVNode("span", null, "\u6a21\u578b", -1), Qr = [ "value" ], Jr = [ "value" ], Xr = {
+  }, Kr = vue.createElementVNode("span", null, "\u6a21\u578b", -1), Wr = [ "value" ], Qr = [ "value" ], Jr = {
     key: 0,
+    class: "ai-config-field-help"
+  }, Xr = {
+    key: 1,
     class: "ai-config-field-help"
   }, Yr = {
-    key: 1,
-    class: "ai-config-field-help"
-  }, Zr = {
     class: "native-checkbox"
-  }, es = [ "checked" ], ts = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), as = {
+  }, Zr = [ "checked" ], ei = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), ti = {
     key: 0,
     class: "ai-config-field-help"
-  }, ns = {
+  }, ai = {
     key: 1,
     class: "ai-config-field-help"
-  }, rs = {
+  }, ni = {
     class: "ai-config-instance-actions"
-  }, ss = [ "disabled" ], is = {
+  }, ri = [ "disabled" ], ii = {
     key: 2,
     class: "aah-alert aah-alert-info"
-  }, os = {
+  }, si = {
     key: 1,
     class: "aah-card ai-config-detail ai-config-detail-empty"
-  }, ls = {
+  }, oi = {
     class: "ai-config-field-help"
-  }, cs = {
+  }, li = {
     class: "modal-panel ai-config-add-modal"
-  }, ps = {
+  }, ci = {
     class: "modal-header"
-  }, us = vue.createElementVNode("h3", {
+  }, pi = vue.createElementVNode("h3", {
     id: "ai-add-channel-title"
-  }, "\u6dfb\u52a0\u6e20\u9053", -1), ds = {
+  }, "\u6dfb\u52a0\u6e20\u9053", -1), ui = {
     class: "modal-body"
-  }, ms = {
+  }, di = {
     class: "ai-config-channel-grid"
-  }, hs = {
+  }, mi = {
     class: "ai-config-card-head"
-  }, fs = {
+  }, hi = {
     class: "ai-config-card-tags"
-  }, gs = {
+  }, fi = {
     key: 0,
     class: "ai-config-card-promo"
-  }, vs = {
+  }, gi = {
     class: "ai-config-card-actions"
-  }, ys = [ "href" ], bs = [ "onClick" ], ws = {
+  }, vi = [ "href" ], yi = [ "onClick" ], bi = {
     key: 0,
     class: "ai-config-field-help"
-  }, xs = {
+  }, wi = {
     class: "modal-footer"
-  }, ks = [ "disabled" ], qs = {
+  }, xi = [ "disabled" ], ki = {
     class: "modal-panel ai-config-delete-modal"
-  }, _s = {
+  }, qi = {
     class: "modal-header"
-  }, As = vue.createElementVNode("h3", {
+  }, _i = vue.createElementVNode("h3", {
     id: "ai-channel-delete-title"
-  }, "\u786e\u8ba4\u79fb\u9664", -1), Ts = {
+  }, "\u786e\u8ba4\u79fb\u9664", -1), Ai = {
     class: "modal-body"
-  }, Cs = {
+  }, Ti = {
     class: "ai-config-delete-text"
-  }, Ss = {
+  }, Ci = {
     class: "modal-footer"
-  }, Is = vue.defineComponent({
+  }, Si = vue.defineComponent({
     __name: "AiConfigPanel",
     setup(e) {
       const t = _a(), a = vue.ref(!t.settings.instances.some((e => {
@@ -12909,14 +12791,14 @@
       }, I = vue.computed((() => t.catalogForDisplay().filter((e => !t.settings.instances.some((t => t.channelId === e.id)))))), E = vue.computed((() => w.value ? I.value : I.value.slice(0, 6))), U = vue.computed((() => t.settings.instances.map((e => ({
         instance: e,
         channel: channelOf(e.channelId)
-      }))))), P = vue.computed((() => t.settings.instances.find((e => e.channelId === q.value)))), H = vue.computed((() => channelOf(q.value))), L = vue.computed((() => channelOf(g.value))), j = vue.computed((() => t.settings.instances.find((e => e.channelId === g.value)))), z = vue.computed((() => {
+      }))))), H = vue.computed((() => t.settings.instances.find((e => e.channelId === q.value)))), P = vue.computed((() => channelOf(q.value))), L = vue.computed((() => channelOf(g.value))), j = vue.computed((() => t.settings.instances.find((e => e.channelId === g.value)))), z = vue.computed((() => {
         var e, t;
         return Boolean(null == (t = null == (e = j.value) ? void 0 : e.credential) ? void 0 : t.value);
       })), M = vue.computed((() => U.value.filter((e => e.channel && hasVisionModel(e.channel))).map((e => ({
         ...e,
         readiness: imageReadiness(e.channel, e.instance)
-      }))))), O = vue.computed((() => H.value && P.value ? imageReadiness(H.value, P.value) : void 0)), useSuggestedVisionModel = () => {
-        const e = P.value, t = O.value;
+      }))))), O = vue.computed((() => P.value && H.value ? imageReadiness(P.value, H.value) : void 0)), useSuggestedVisionModel = () => {
+        const e = H.value, t = O.value;
         e && "switchable" === (null == t ? void 0 : t.state) && (e.modelId = t.suggestModelId, 
         save(), msg(`\u5df2\u5207\u6362\u5230 ${t.suggestModelId}`, "success"));
       }, testingFor = e => Boolean(t.connectionTestingIds[e]), messageFor = e => t.connectionMessages[e] || "", save = () => t.saveSettings(), setCredential = (e, a) => {
@@ -12936,10 +12818,10 @@
       }, restartWizard = () => {
         g.value = "", h.value = 1, w.value = false, a.value = true;
       }, updateModel = e => {
-        const t = P.value;
+        const t = H.value;
         t && (t.modelId = e.target.value, save());
       }, toggleEnabled = e => {
-        const t = P.value;
+        const t = H.value;
         t && (t.enabled = e.target.checked, save());
       }, setDefault = () => {
         q.value && (t.settings.defaultChannelId = q.value, save(), msg("\u5df2\u8bbe\u4e3a\u9ed8\u8ba4\u6e20\u9053", "success"));
@@ -12953,14 +12835,14 @@
         t.loadCatalog();
       })), (e, o) => {
         var p, u, d, F, D, N, R, B, G;
-        return vue.openBlock(), vue.createElementBlock("div", _n, [ a.value ? (vue.openBlock(), vue.createElementBlock("section", An, [ vue.createElementVNode("header", Tn, [ Cn, vue.createElementVNode("span", Sn, vue.toDisplayString(h.value) + " / 3", 1) ]), vue.createElementVNode("ol", In, [ (vue.openBlock(), 
+        return vue.openBlock(), vue.createElementBlock("div", qn, [ a.value ? (vue.openBlock(), vue.createElementBlock("section", _n, [ vue.createElementVNode("header", An, [ Tn, vue.createElementVNode("span", Cn, vue.toDisplayString(h.value) + " / 3", 1) ]), vue.createElementVNode("ol", Sn, [ (vue.openBlock(), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList([ "\u9009\u5e73\u53f0", "\u9886 Key", "\u7c98\u56de\u6765" ], ((e, t) => vue.createElementVNode("li", {
           key: e,
           class: vue.normalizeClass({
             done: h.value > t + 1,
             current: h.value === t + 1
           })
-        }, [ En, vue.createElementVNode("span", null, vue.toDisplayString(e), 1) ], 2))), 64)) ]), 1 === h.value ? (vue.openBlock(), vue.createElementBlock("div", Un, [ Pn, vue.createElementVNode("div", Hn, [ (vue.openBlock(true), 
+        }, [ In, vue.createElementVNode("span", null, vue.toDisplayString(e), 1) ], 2))), 64)) ]), 1 === h.value ? (vue.openBlock(), vue.createElementBlock("div", En, [ Un, vue.createElementVNode("div", Hn, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(E.value, (e => (vue.openBlock(), vue.createElementBlock("button", {
           key: e.id,
           type: "button",
@@ -12971,11 +12853,11 @@
             return n = e.id, t.addChannel(n), g.value = n, q.value = n, void (h.value = 2);
             var n;
           }
-        }, [ vue.createElementVNode("span", jn, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("span", $n, [ (vue.openBlock(true), 
+        }, [ vue.createElementVNode("span", Ln, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("span", jn, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(e), (e => (vue.openBlock(), vue.createElementBlock("span", {
           key: e.label,
           class: vue.normalizeClass([ "aah-tag", e.cls ])
-        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("span", zn, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true) ], 10, Ln)))), 128)) ]), vue.createElementVNode("div", Mn, [ !w.value && I.value.length > E.value.length ? (vue.openBlock(), 
+        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("span", $n, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true) ], 10, Pn)))), 128)) ]), vue.createElementVNode("div", zn, [ !w.value && I.value.length > E.value.length ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn aah-btn-plain",
@@ -12986,8 +12868,8 @@
           type: "button",
           onClick: skipWizard
         }, " \u8df3\u8fc7\uff0c\u76f4\u63a5\u8fdb\u8bbe\u7f6e ") ]) ])) : 2 === h.value && L.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", On, [ vue.createElementVNode("h5", Fn, vue.toDisplayString(L.value.name), 1), vue.createElementVNode("p", Dn, vue.toDisplayString(L.value.keyHelp), 1), L.value.promoText ? (vue.openBlock(), 
-        vue.createElementBlock("p", Nn, vue.toDisplayString(L.value.promoText), 1)) : vue.createCommentVNode("", true), L.value.signupUrl ? (vue.openBlock(), vue.createElementBlock("a", {
+        vue.createElementBlock("div", Mn, [ vue.createElementVNode("h5", On, vue.toDisplayString(L.value.name), 1), vue.createElementVNode("p", Fn, vue.toDisplayString(L.value.keyHelp), 1), L.value.promoText ? (vue.openBlock(), 
+        vue.createElementBlock("p", Dn, vue.toDisplayString(L.value.promoText), 1)) : vue.createCommentVNode("", true), L.value.signupUrl ? (vue.openBlock(), vue.createElementBlock("a", {
           key: 1,
           class: "aah-btn aah-btn-primary",
           href: L.value.signupUrl,
@@ -12996,7 +12878,7 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:open-in-new",
           class: "icon-inline"
-        }), vue.createTextVNode("\u53bb " + vue.toDisplayString(L.value.name) + " \u9886\u53d6 API Key ", 1) ], 8, Rn)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Bn, [ vue.createElementVNode("button", {
+        }), vue.createTextVNode("\u53bb " + vue.toDisplayString(L.value.name) + " \u9886\u53d6 API Key ", 1) ], 8, Nn)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Rn, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: backToPick
@@ -13005,14 +12887,14 @@
           type: "button",
           onClick: o[1] || (o[1] = e => h.value = 3)
         }, "\u6211\u5df2\u7ecf\u6709 Key \u4e86") ]) ])) : 3 === h.value && L.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Gn, [ vue.createElementVNode("h5", Vn, vue.toDisplayString(L.value.name), 1), vue.createElementVNode("label", Kn, [ Wn, vue.createElementVNode("input", {
+        vue.createElementBlock("div", Bn, [ vue.createElementVNode("h5", Gn, vue.toDisplayString(L.value.name), 1), vue.createElementVNode("label", Vn, [ Kn, vue.createElementVNode("input", {
           value: (null == (u = null == (p = j.value) ? void 0 : p.credential) ? void 0 : u.value) || "",
           class: "aah-input",
           type: "password",
           autocomplete: "off",
           placeholder: "\u7c98\u8d34\u540e\u4f1a\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u5730",
           onInput: o[2] || (o[2] = e => setCredential(g.value, e.target.value))
-        }, null, 40, Qn) ]), vue.createElementVNode("div", Jn, [ vue.createElementVNode("button", {
+        }, null, 40, Wn) ]), vue.createElementVNode("div", Qn, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: o[3] || (o[3] = e => h.value = 2)
@@ -13021,16 +12903,16 @@
           type: "button",
           disabled: !z.value || testingFor(g.value),
           onClick: o[4] || (o[4] = e => vue.unref(t).testConfig(g.value))
-        }, vue.toDisplayString(testingFor(g.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 9, Xn), vue.createElementVNode("button", {
+        }, vue.toDisplayString(testingFor(g.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 9, Jn), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary",
           type: "button",
           disabled: !z.value,
           onClick: finishWizard
-        }, " \u5b8c\u6210 ", 8, Yn) ]), messageFor(g.value) ? (vue.openBlock(), vue.createElementBlock("div", Zn, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, " \u5b8c\u6210 ", 8, Xn) ]), messageFor(g.value) ? (vue.openBlock(), vue.createElementBlock("div", Yn, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(g.value)), 1) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), 
-        vue.createElementBlock("div", er, [ vue.createElementVNode("aside", tr, [ vue.createElementVNode("section", ar, [ nr, U.value.length ? (vue.openBlock(), vue.createElementBlock("div", rr, [ (vue.openBlock(true), 
+        vue.createElementBlock("div", Zn, [ vue.createElementVNode("aside", er, [ vue.createElementVNode("section", tr, [ ar, U.value.length ? (vue.openBlock(), vue.createElementBlock("div", nr, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(U.value, (e => {
           var a, o;
           return vue.openBlock(), vue.createElementBlock("button", {
@@ -13045,10 +12927,10 @@
             icon: "mdi:robot",
             class: "icon-inline"
           }), vue.createElementVNode("span", ir, [ vue.createElementVNode("strong", null, vue.toDisplayString((null == (a = e.channel) ? void 0 : a.name) ?? e.instance.channelId), 1), e.channel ? (null == (o = e.instance.credential) ? void 0 : o.value) ? e.instance.enabled ? (vue.openBlock(), 
-          vue.createElementBlock("small", pr, vue.toDisplayString(e.instance.modelId || e.channel.defaultModelId), 1)) : (vue.openBlock(), vue.createElementBlock("small", cr, "\u5df2\u505c\u7528")) : (vue.openBlock(), 
-          vue.createElementBlock("small", lr, "\u5f85\u586b API Key")) : (vue.openBlock(), vue.createElementBlock("small", or, "\u6e20\u9053\u5df2\u4e0b\u7ebf\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9")) ]), e.instance.channelId === vue.unref(t).settings.defaultChannelId ? (vue.openBlock(), 
-          vue.createElementBlock("span", ur, "\u9ed8\u8ba4")) : vue.createCommentVNode("", true) ], 10, sr);
-        })), 128)) ])) : (vue.openBlock(), vue.createElementBlock("p", dr, "\u8fd8\u6ca1\u6709\u4efb\u4f55\u6e20\u9053\u3002")), vue.createElementVNode("div", mr, [ vue.createElementVNode("button", {
+          vue.createElementBlock("small", cr, vue.toDisplayString(e.instance.modelId || e.channel.defaultModelId), 1)) : (vue.openBlock(), vue.createElementBlock("small", lr, "\u5df2\u505c\u7528")) : (vue.openBlock(), 
+          vue.createElementBlock("small", or, "\u5f85\u586b API Key")) : (vue.openBlock(), vue.createElementBlock("small", sr, "\u6e20\u9053\u5df2\u4e0b\u7ebf\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9")) ]), e.instance.channelId === vue.unref(t).settings.defaultChannelId ? (vue.openBlock(), 
+          vue.createElementBlock("span", pr, "\u9ed8\u8ba4")) : vue.createCommentVNode("", true) ], 10, rr);
+        })), 128)) ])) : (vue.openBlock(), vue.createElementBlock("p", ur, "\u8fd8\u6ca1\u6709\u4efb\u4f55\u6e20\u9053\u3002")), vue.createElementVNode("div", dr, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
           onClick: o[5] || (o[5] = e => T.value = true)
@@ -13060,77 +12942,77 @@
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           onClick: restartWizard
-        }, " \u8ddf\u7740\u5f15\u5bfc\u8d70 ")) ]) ]), vue.createElementVNode("section", hr, [ vue.createElementVNode("button", {
+        }, " \u8ddf\u7740\u5f15\u5bfc\u8d70 ")) ]) ]), vue.createElementVNode("section", mr, [ vue.createElementVNode("button", {
           type: "button",
           class: "ai-config-collapse",
           "aria-expanded": C.value,
           onClick: o[6] || (o[6] = e => C.value = !C.value)
-        }, [ gr, vue.createVNode(vue.unref(vue$1.Icon), {
+        }, [ fr, vue.createVNode(vue.unref(vue$1.Icon), {
           icon: C.value ? "mdi:chevron-up" : "mdi:chevron-down",
           class: "icon-inline"
-        }, null, 8, [ "icon" ]) ], 8, fr), C.value ? (vue.openBlock(), vue.createElementBlock("div", vr, [ vue.createElementVNode("label", yr, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 8, [ "icon" ]) ], 8, hr), C.value ? (vue.openBlock(), vue.createElementBlock("div", gr, [ vue.createElementVNode("label", vr, [ vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "onUpdate:modelValue": o[7] || (o[7] = e => vue.unref(t).settings.enabledForAsk = e),
           onChange: save
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).settings.enabledForAsk ] ]), br ]), vue.createElementVNode("label", wr, [ xr, vue.withDirectives(vue.createElementVNode("select", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).settings.enabledForAsk ] ]), yr ]), vue.createElementVNode("label", br, [ wr, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": o[8] || (o[8] = e => vue.unref(t).settings.adoptionStrategy = e),
           class: "aah-select",
           onChange: save
-        }, Ar, 544), [ [ vue.vModelSelect, vue.unref(t).settings.adoptionStrategy ] ]) ]), vue.createElementVNode("label", Tr, [ Cr, vue.withDirectives(vue.createElementVNode("select", {
+        }, _r, 544), [ [ vue.vModelSelect, vue.unref(t).settings.adoptionStrategy ] ]) ]), vue.createElementVNode("label", Ar, [ Tr, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": o[9] || (o[9] = e => vue.unref(t).settings.defaultVisionChannelId = e),
           class: "aah-select",
           onChange: save
-        }, [ Sr, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(M.value, (e => {
+        }, [ Cr, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(M.value, (e => {
           var t;
           return vue.openBlock(), vue.createElementBlock("option", {
             key: e.instance.channelId,
             value: e.instance.channelId
-          }, vue.toDisplayString(null == (t = e.channel) ? void 0 : t.name) + vue.toDisplayString("switchable" === e.readiness.state ? "\uff08\u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\uff09" : ""), 9, Ir);
+          }, vue.toDisplayString(null == (t = e.channel) ? void 0 : t.name) + vue.toDisplayString("switchable" === e.readiness.state ? "\uff08\u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\uff09" : ""), 9, Sr);
         })), 128)) ], 544), [ [ vue.vModelSelect, vue.unref(t).settings.defaultVisionChannelId ] ]), M.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", Er, " \u5df2\u6dfb\u52a0\u7684\u6e20\u9053\u90fd\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u4f1a\u9000\u56de\u7eaf\u6587\u672c\u3002 ")) ]), vue.createElementVNode("label", Ur, [ Pr, vue.withDirectives(vue.createElementVNode("select", {
+        vue.createElementBlock("p", Ir, " \u5df2\u6dfb\u52a0\u7684\u6e20\u9053\u90fd\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u4f1a\u9000\u56de\u7eaf\u6587\u672c\u3002 ")) ]), vue.createElementVNode("label", Er, [ Ur, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": o[10] || (o[10] = e => vue.unref(t).settings.transport = e),
           class: "aah-select",
           onChange: save
-        }, jr, 544), [ [ vue.vModelSelect, vue.unref(t).settings.transport ] ]), $r ]) ])) : vue.createCommentVNode("", true) ]) ]), H.value && P.value ? (vue.openBlock(), 
-        vue.createElementBlock("section", zr, [ vue.createElementVNode("header", Mr, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, vue.toDisplayString(H.value.name), 1), vue.createElementVNode("p", null, vue.toDisplayString(H.value.providerKind) + " \xb7 " + vue.toDisplayString(H.value.baseUrl), 1) ]), vue.createElementVNode("span", {
-          class: vue.normalizeClass([ "aah-tag", (null == (d = P.value.credential) ? void 0 : d.value) ? "aah-tag-success" : "aah-tag-warning" ])
-        }, vue.toDisplayString((null == (F = P.value.credential) ? void 0 : F.value) ? "\u53ef\u7528" : "\u5f85\u586b API Key"), 3) ]), vue.createElementVNode("div", Or, [ (vue.openBlock(true), 
-        vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(H.value), (e => (vue.openBlock(), vue.createElementBlock("span", {
+        }, Lr, 544), [ [ vue.vModelSelect, vue.unref(t).settings.transport ] ]), jr ]) ])) : vue.createCommentVNode("", true) ]) ]), P.value && H.value ? (vue.openBlock(), 
+        vue.createElementBlock("section", $r, [ vue.createElementVNode("header", zr, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, vue.toDisplayString(P.value.name), 1), vue.createElementVNode("p", null, vue.toDisplayString(P.value.providerKind) + " \xb7 " + vue.toDisplayString(P.value.baseUrl), 1) ]), vue.createElementVNode("span", {
+          class: vue.normalizeClass([ "aah-tag", (null == (d = H.value.credential) ? void 0 : d.value) ? "aah-tag-success" : "aah-tag-warning" ])
+        }, vue.toDisplayString((null == (F = H.value.credential) ? void 0 : F.value) ? "\u53ef\u7528" : "\u5f85\u586b API Key"), 3) ]), vue.createElementVNode("div", Mr, [ (vue.openBlock(true), 
+        vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(P.value), (e => (vue.openBlock(), vue.createElementBlock("span", {
           key: e.label,
           class: vue.normalizeClass([ "aah-tag", e.cls ])
         }, vue.toDisplayString(e.label), 3)))), 128)), "ready" === (null == (D = O.value) ? void 0 : D.state) ? (vue.openBlock(), 
-        vue.createElementBlock("span", Fr, " \u5f53\u524d\u6a21\u578b\u53ef\u505a\u56fe\u7247\u9898 ")) : vue.createCommentVNode("", true), (G = H.value.id, 
-        t.settings.customChannels.some((e => e.id === G)) ? (vue.openBlock(), vue.createElementBlock("span", Dr, "\u81ea\u5efa\u63a5\u53e3")) : vue.createCommentVNode("", true)) ]), vue.createElementVNode("label", Nr, [ Rr, vue.createElementVNode("input", {
-          value: (null == (N = P.value.credential) ? void 0 : N.value) || "",
+        vue.createElementBlock("span", Or, " \u5f53\u524d\u6a21\u578b\u53ef\u505a\u56fe\u7247\u9898 ")) : vue.createCommentVNode("", true), (G = P.value.id, 
+        t.settings.customChannels.some((e => e.id === G)) ? (vue.openBlock(), vue.createElementBlock("span", Fr, "\u81ea\u5efa\u63a5\u53e3")) : vue.createCommentVNode("", true)) ]), vue.createElementVNode("label", Dr, [ Nr, vue.createElementVNode("input", {
+          value: (null == (N = H.value.credential) ? void 0 : N.value) || "",
           class: "aah-input",
           type: "password",
           autocomplete: "off",
           onInput: o[11] || (o[11] = e => setCredential(q.value, e.target.value))
-        }, null, 40, Br), vue.createElementVNode("p", Gr, [ vue.createTextVNode(vue.toDisplayString(H.value.keyHelp) + " ", 1), H.value.signupUrl ? (vue.openBlock(), 
+        }, null, 40, Rr), vue.createElementVNode("p", Br, [ vue.createTextVNode(vue.toDisplayString(P.value.keyHelp) + " ", 1), P.value.signupUrl ? (vue.openBlock(), 
         vue.createElementBlock("a", {
           key: 0,
-          href: H.value.signupUrl,
+          href: P.value.signupUrl,
           target: "_blank",
           rel: "noopener noreferrer"
-        }, " \u53bb\u83b7\u53d6 API Key ", 8, Vr)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("label", Kr, [ Wr, vue.createElementVNode("select", {
+        }, " \u53bb\u83b7\u53d6 API Key ", 8, Gr)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("label", Vr, [ Kr, vue.createElementVNode("select", {
           class: "aah-select",
-          value: P.value.modelId || H.value.defaultModelId,
+          value: H.value.modelId || P.value.defaultModelId,
           onChange: updateModel
-        }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(H.value.models, (e => (vue.openBlock(), vue.createElementBlock("option", {
+        }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(P.value.models, (e => (vue.openBlock(), vue.createElementBlock("option", {
           key: e.id,
           value: e.id
-        }, vue.toDisplayString(e.label || e.id) + vue.toDisplayString(e.capabilities.image ? "\uff08\u652f\u6301\u56fe\u7247\uff09" : ""), 9, Jr)))), 128)) ], 40, Qr), "switchable" === (null == (R = O.value) ? void 0 : R.state) ? (vue.openBlock(), 
-        vue.createElementBlock("p", Xr, [ vue.createTextVNode(" \u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\u9898\u3002 "), vue.createElementVNode("button", {
+        }, vue.toDisplayString(e.label || e.id) + vue.toDisplayString(e.capabilities.image ? "\uff08\u652f\u6301\u56fe\u7247\uff09" : ""), 9, Qr)))), 128)) ], 40, Wr), "switchable" === (null == (R = O.value) ? void 0 : R.state) ? (vue.openBlock(), 
+        vue.createElementBlock("p", Jr, [ vue.createTextVNode(" \u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\u9898\u3002 "), vue.createElementVNode("button", {
           type: "button",
           class: "ai-config-inline-action",
           onClick: useSuggestedVisionModel
         }, " \u5207\u6362\u5230 " + vue.toDisplayString(O.value.suggestModelId), 1) ])) : "unsupported" === (null == (B = O.value) ? void 0 : B.state) ? (vue.openBlock(), 
-        vue.createElementBlock("p", Yr, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("label", Zr, [ vue.createElementVNode("input", {
+        vue.createElementBlock("p", Xr, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("label", Yr, [ vue.createElementVNode("input", {
           type: "checkbox",
-          checked: P.value.enabled,
+          checked: H.value.enabled,
           onChange: toggleEnabled
-        }, null, 40, es), ts ]), "global" === H.value.region ? (vue.openBlock(), vue.createElementBlock("p", as, " \u8be5\u5e73\u53f0\u670d\u52a1\u5668\u5728\u5883\u5916\uff0c\u56fd\u5185\u7f51\u7edc\u901a\u5e38\u65e0\u6cd5\u76f4\u8fde\uff0c\u9700\u81ea\u5907\u4ee3\u7406\u540e\u518d\u4f7f\u7528\u3002 ")) : vue.unref(canDirectConnect)(H.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", ns, " \u8be5\u6e20\u9053\u4e0d\u5728\u672c\u7248\u672c\u7684\u76f4\u8fde\u767d\u540d\u5355\u91cc\uff0c\u53ea\u80fd\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\u2014\u2014\u9700\u8981\u5148\u767b\u5f55\u3002 ")), vue.createElementVNode("div", rs, [ vue.createElementVNode("button", {
+        }, null, 40, Zr), ei ]), "global" === P.value.region ? (vue.openBlock(), vue.createElementBlock("p", ti, " \u8be5\u5e73\u53f0\u670d\u52a1\u5668\u5728\u5883\u5916\uff0c\u56fd\u5185\u7f51\u7edc\u901a\u5e38\u65e0\u6cd5\u76f4\u8fde\uff0c\u9700\u81ea\u5907\u4ee3\u7406\u540e\u518d\u4f7f\u7528\u3002 ")) : vue.unref(canDirectConnect)(P.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("p", ai, " \u8be5\u6e20\u9053\u4e0d\u5728\u672c\u7248\u672c\u7684\u76f4\u8fde\u767d\u540d\u5355\u91cc\uff0c\u53ea\u80fd\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\u2014\u2014\u9700\u8981\u5148\u767b\u5f55\u3002 ")), vue.createElementVNode("div", ni, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: setDefault
@@ -13145,24 +13027,24 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:connection",
           class: "icon-inline"
-        }), vue.createTextVNode(vue.toDisplayString(testingFor(q.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, ss) ]), messageFor(q.value) ? (vue.openBlock(), 
-        vue.createElementBlock("div", is, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), vue.createTextVNode(vue.toDisplayString(testingFor(q.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, ri) ]), messageFor(q.value) ? (vue.openBlock(), 
+        vue.createElementBlock("div", ii, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(q.value)), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-danger aah-btn-small ai-config-instance-remove",
           type: "button",
           onClick: o[13] || (o[13] = e => S.value = {
-            id: H.value.id,
-            name: H.value.name
+            id: P.value.id,
+            name: P.value.name
           })
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:delete-outline",
           class: "icon-inline"
-        }), vue.createTextVNode("\u79fb\u9664\u8be5\u6e20\u9053 ") ]) ])) : (vue.openBlock(), vue.createElementBlock("section", os, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), vue.createTextVNode("\u79fb\u9664\u8be5\u6e20\u9053 ") ]) ])) : (vue.openBlock(), vue.createElementBlock("section", si, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:robot-outline",
           class: "ai-config-empty-icon"
-        }), vue.createElementVNode("p", ls, vue.toDisplayString(U.value.length ? "\u5728\u5de6\u4fa7\u9009\u4e00\u4e2a\u6e20\u9053\u8fdb\u884c\u914d\u7f6e" : "\u8fd8\u6ca1\u6709\u6e20\u9053\uff0c\u5148\u6dfb\u52a0\u4e00\u4e2a"), 1) ])) ])), T.value ? (vue.openBlock(), 
+        }), vue.createElementVNode("p", oi, vue.toDisplayString(U.value.length ? "\u5728\u5de6\u4fa7\u9009\u4e00\u4e2a\u6e20\u9053\u8fdb\u884c\u914d\u7f6e" : "\u8fd8\u6ca1\u6709\u6e20\u9053\uff0c\u5148\u6dfb\u52a0\u4e00\u4e2a"), 1) ])) ])), T.value ? (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: 2,
           class: "modal-mask",
@@ -13170,41 +13052,41 @@
           "aria-modal": "true",
           "aria-labelledby": "ai-add-channel-title",
           onClick: o[17] || (o[17] = vue.withModifiers((e => T.value = false), [ "self" ]))
-        }, [ vue.createElementVNode("div", cs, [ vue.createElementVNode("div", ps, [ us, vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", li, [ vue.createElementVNode("div", ci, [ pi, vue.createElementVNode("button", {
           class: "modal-close",
           type: "button",
           "aria-label": "\u5173\u95ed",
           onClick: o[14] || (o[14] = e => T.value = false)
-        }, "\xd7") ]), vue.createElementVNode("div", ds, [ vue.createElementVNode("div", ms, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(I.value, (e => (vue.openBlock(), 
+        }, "\xd7") ]), vue.createElementVNode("div", ui, [ vue.createElementVNode("div", di, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(I.value, (e => (vue.openBlock(), 
         vue.createElementBlock("article", {
           key: e.id,
           class: vue.normalizeClass([ "ai-config-card", {
             recommended: e.recommended
           } ])
-        }, [ vue.createElementVNode("div", hs, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("div", fs, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(e), (e => (vue.openBlock(), 
+        }, [ vue.createElementVNode("div", mi, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("div", hi, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(e), (e => (vue.openBlock(), 
         vue.createElementBlock("span", {
           key: e.label,
           class: vue.normalizeClass([ "aah-tag", e.cls ])
-        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("p", gs, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", vs, [ e.signupUrl ? (vue.openBlock(), 
+        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("p", fi, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", gi, [ e.signupUrl ? (vue.openBlock(), 
         vue.createElementBlock("a", {
           key: 0,
           class: "aah-btn aah-btn-small",
           href: e.signupUrl,
           target: "_blank",
           rel: "noopener noreferrer"
-        }, "\u53bb\u9886\u53d6", 8, ys)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+        }, "\u53bb\u9886\u53d6", 8, vi)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
           onClick: a => (e => {
             t.addChannel(e), q.value = e, T.value = false;
           })(e.id)
-        }, "\u6dfb\u52a0", 8, bs) ]) ], 2)))), 128)) ]), I.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", ws, "\u5168\u90e8\u6e20\u9053\u90fd\u5df2\u6dfb\u52a0\u3002")) ]), vue.createElementVNode("div", xs, [ vue.createElementVNode("button", {
+        }, "\u6dfb\u52a0", 8, yi) ]) ], 2)))), 128)) ]), I.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("p", bi, "\u5168\u90e8\u6e20\u9053\u90fd\u5df2\u6dfb\u52a0\u3002")) ]), vue.createElementVNode("div", wi, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           disabled: vue.unref(t).catalogLoading,
           onClick: o[15] || (o[15] = e => vue.unref(t).loadCatalog())
-        }, vue.toDisplayString(vue.unref(t).catalogLoading ? "\u5237\u65b0\u4e2d..." : "\u5237\u65b0\u5217\u8868"), 9, ks), vue.createElementVNode("button", {
+        }, vue.toDisplayString(vue.unref(t).catalogLoading ? "\u5237\u65b0\u4e2d..." : "\u5237\u65b0\u5217\u8868"), 9, xi), vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: o[16] || (o[16] = e => T.value = false)
@@ -13215,12 +13097,12 @@
           "aria-modal": "true",
           "aria-labelledby": "ai-channel-delete-title",
           onClick: o[20] || (o[20] = vue.withModifiers((e => S.value = null), [ "self" ]))
-        }, [ vue.createElementVNode("div", qs, [ vue.createElementVNode("div", _s, [ As, vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", ki, [ vue.createElementVNode("div", qi, [ _i, vue.createElementVNode("button", {
           class: "modal-close",
           type: "button",
           "aria-label": "\u5173\u95ed",
           onClick: o[18] || (o[18] = e => S.value = null)
-        }, "\xd7") ]), vue.createElementVNode("div", Ts, [ vue.createElementVNode("p", Cs, " \u786e\u5b9a\u8981\u79fb\u9664\u6e20\u9053\u300c" + vue.toDisplayString(S.value.name) + "\u300d\u5417\uff1f\u4fdd\u5b58\u5728\u672c\u5730\u7684 API Key \u4f1a\u4e00\u5e76\u5220\u9664\u3002 ", 1) ]), vue.createElementVNode("div", Ss, [ vue.createElementVNode("button", {
+        }, "\xd7") ]), vue.createElementVNode("div", Ai, [ vue.createElementVNode("p", Ti, " \u786e\u5b9a\u8981\u79fb\u9664\u6e20\u9053\u300c" + vue.toDisplayString(S.value.name) + "\u300d\u5417\uff1f\u4fdd\u5b58\u5728\u672c\u5730\u7684 API Key \u4f1a\u4e00\u5e76\u5220\u9664\u3002 ", 1) ]), vue.createElementVNode("div", Ci, [ vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: o[19] || (o[19] = e => S.value = null)
@@ -13231,41 +13113,41 @@
         }, "\u79fb\u9664") ]) ]) ])) : vue.createCommentVNode("", true) ]);
       };
     }
-  }), Es = {
+  }), Ii = {
     class: "settings-sidebar"
-  }, Us = {
+  }, Ei = {
     class: "sidebar-header"
-  }, Ps = {
+  }, Ui = {
     class: "settings-search-input-wrapper"
-  }, Hs = {
+  }, Hi = {
     class: "sidebar-nav custom-scroll",
     role: "tablist",
     "aria-orientation": "vertical"
-  }, Ls = [ "onClick", "aria-selected" ], js = {
+  }, Pi = [ "onClick", "aria-selected" ], Li = {
     class: "sidebar-footer"
-  }, $s = {
+  }, ji = {
     class: "aah-alert aah-alert-info"
-  }, zs = vue.createElementVNode("span", null, "\u914d\u7f6e\u81ea\u52a8\u4fdd\u5b58", -1), Ms = {
+  }, $i = vue.createElementVNode("span", null, "\u914d\u7f6e\u81ea\u52a8\u4fdd\u5b58", -1), zi = {
     class: "settings-content custom-scroll",
     role: "tabpanel"
-  }, Os = {
+  }, Mi = {
     class: "settings-content-header"
-  }, Fs = vue.createElementVNode("span", {
+  }, Oi = vue.createElementVNode("span", {
     class: "aah-tag aah-tag-success"
-  }, "\u81ea\u52a8\u4fdd\u5b58", -1), Ds = {
+  }, "\u81ea\u52a8\u4fdd\u5b58", -1), Fi = {
     key: 0,
     class: "group-header"
-  }, Ns = {
+  }, Di = {
     class: "group-title"
-  }, Rs = {
+  }, Ni = {
     key: 2,
     class: "aah-card settings-section settings-config-section"
-  }, Bs = {
+  }, Ri = {
     key: 0,
     class: "empty-search"
-  }, Gs = {
+  }, Bi = {
     class: "settings-empty-text"
-  }, Vs = "ai ai\u8bbe\u7f6e \u6a21\u578b \u5e73\u53f0 api key base url \u51ed\u8bc1 \u8f85\u52a9\u7b54\u9898 \u91c7\u7eb3\u7b56\u7565 \u6d4b\u8bd5\u8fde\u63a5", Ks = vue.defineComponent({
+  }, Gi = "ai ai\u8bbe\u7f6e \u6a21\u578b \u5e73\u53f0 api key base url \u51ed\u8bc1 \u8f85\u52a9\u7b54\u9898 \u91c7\u7eb3\u7b56\u7565 \u6d4b\u8bd5\u8fde\u63a5", Vi = vue.defineComponent({
     __name: "Base",
     setup(e) {
       const t = ce(), a = [ {
@@ -13299,12 +13181,12 @@
         const e = g.value.trim().toLowerCase(), n = t.ConfigInput;
         if (x.value) return a.map((t => {
           if ("ai" === t.id) {
-            const a = normalizeSearchText(e), n = normalizeSearchText(Vs), r = Vs.toLowerCase().includes(e) || n.includes(a) ? [ {
+            const a = normalizeSearchText(e), n = normalizeSearchText(Gi), r = Gi.toLowerCase().includes(e) || n.includes(a) ? [ {
               type: "switch",
               label: "AI\u8bbe\u7f6e",
               name: "aiSettingsSearch",
               value: false,
-              desc: Vs,
+              desc: Gi,
               options: []
             } ] : [];
             return {
@@ -13334,14 +13216,14 @@
         msg("\u914d\u7f6e\u4fee\u6539\u6210\u529f", "success"), t.app, t.setConfig(t.app);
       })), vue.onMounted((() => {
         t.activeSettingSection && (o.value = t.activeSettingSection, t.setActiveSettingSection(""));
-      })), (e, t) => (vue.openBlock(), vue.createBlock(Ya, {
+      })), (e, t) => (vue.openBlock(), vue.createBlock(Xa, {
         class: "settings-page"
       }, {
         default: vue.withCtx((() => [ vue.createElementVNode("div", {
           class: vue.normalizeClass([ "settings-layout", {
             "settings-layout-ai": !x.value && "ai" === o.value
           } ])
-        }, [ vue.createElementVNode("aside", Es, [ vue.createElementVNode("div", Us, [ vue.createElementVNode("div", Ps, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, [ vue.createElementVNode("aside", Ii, [ vue.createElementVNode("div", Ei, [ vue.createElementVNode("div", Ui, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:magnify",
           class: "search-icon"
         }), vue.withDirectives(vue.createElementVNode("input", {
@@ -13349,7 +13231,7 @@
           placeholder: "\u641c\u7d22\u8bbe\u7f6e...",
           class: "aah-input settings-search-input",
           "aria-label": "\u641c\u7d22\u8bbe\u7f6e"
-        }, null, 512), [ [ vue.vModelText, g.value ] ]) ]) ]), vue.withDirectives(vue.createElementVNode("nav", Hs, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(a, (e => vue.createElementVNode("button", {
+        }, null, 512), [ [ vue.vModelText, g.value ] ]) ]) ]), vue.withDirectives(vue.createElementVNode("nav", Hi, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(a, (e => vue.createElementVNode("button", {
           key: e.id,
           type: "button",
           class: vue.normalizeClass([ "nav-item", {
@@ -13361,53 +13243,53 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: e.icon,
           class: "nav-icon"
-        }, null, 8, [ "icon" ]), vue.createElementVNode("span", null, vue.toDisplayString(e.label), 1) ], 10, Ls))), 64)) ], 512), [ [ vue.vShow, !x.value ] ]), vue.createElementVNode("div", js, [ vue.createElementVNode("div", $s, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, [ "icon" ]), vue.createElementVNode("span", null, vue.toDisplayString(e.label), 1) ], 10, Pi))), 64)) ], 512), [ [ vue.vShow, !x.value ] ]), vue.createElementVNode("div", Li, [ vue.createElementVNode("div", ji, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information",
           class: "alert-icon"
-        }), zs ]) ]) ]), vue.createElementVNode("main", Ms, [ vue.createElementVNode("header", Os, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h2", null, vue.toDisplayString(x.value ? "\u641c\u7d22\u8bbe\u7f6e" : A.value.label), 1), vue.createElementVNode("p", null, vue.toDisplayString(x.value ? `\u6b63\u5728\u641c\u7d22\u201c${g.value}\u201d` : "\u4fee\u6539\u540e\u4f1a\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u5730\u7f13\u5b58"), 1) ]), Fs ]), (vue.openBlock(true), 
+        }), $i ]) ]) ]), vue.createElementVNode("main", zi, [ vue.createElementVNode("header", Mi, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h2", null, vue.toDisplayString(x.value ? "\u641c\u7d22\u8bbe\u7f6e" : A.value.label), 1), vue.createElementVNode("p", null, vue.toDisplayString(x.value ? `\u6b63\u5728\u641c\u7d22\u201c${g.value}\u201d` : "\u4fee\u6539\u540e\u4f1a\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u5730\u7f13\u5b58"), 1) ]), Oi ]), (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(q.value, (e => (vue.openBlock(), vue.createElementBlock("div", {
           key: e.id,
           class: "setting-group"
-        }, [ x.value ? (vue.openBlock(), vue.createElementBlock("div", Ds, [ vue.createElementVNode("h3", Ns, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, [ x.value ? (vue.openBlock(), vue.createElementBlock("div", Fi, [ vue.createElementVNode("h3", Di, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: e.icon,
           class: "icon-inline"
         }, null, 8, [ "icon" ]), vue.createTextVNode(" " + vue.toDisplayString(e.label), 1) ]) ])) : vue.createCommentVNode("", true), "ai" === e.id ? (vue.openBlock(), 
-        vue.createBlock(Is, {
+        vue.createBlock(Si, {
           key: 1
-        })) : (vue.openBlock(), vue.createElementBlock("div", Rs, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.items, ((e, t) => (vue.openBlock(), vue.createBlock(qn, {
+        })) : (vue.openBlock(), vue.createElementBlock("div", Ni, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.items, ((e, t) => (vue.openBlock(), vue.createBlock(kn, {
           key: t,
           item: e,
           "recording-hotkey": k.value,
           onStartRecording: startRecording,
           onHotkeyKeydown: handleHotkeyKeydown
         }, null, 8, [ "item", "recording-hotkey" ])))), 128)) ])) ])))), 128)), x.value && 0 === q.value.length ? (vue.openBlock(), 
-        vue.createElementBlock("div", Bs, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        vue.createElementBlock("div", Ri, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:magnify-close",
           class: "settings-empty-icon"
-        }), vue.createElementVNode("p", Gs, '\u672a\u627e\u5230\u4e0e "' + vue.toDisplayString(g.value) + '" \u76f8\u5173\u7684\u8bbe\u7f6e', 1) ])) : vue.createCommentVNode("", true) ]) ], 2) ])),
+        }), vue.createElementVNode("p", Bi, '\u672a\u627e\u5230\u4e0e "' + vue.toDisplayString(g.value) + '" \u76f8\u5173\u7684\u8bbe\u7f6e', 1) ])) : vue.createCommentVNode("", true) ]) ], 2) ])),
         _: 1
       }));
     }
-  }), Ws = {
+  }), Ki = {
     class: "ask-page"
-  }, Qs = {
+  }, Wi = {
     key: 0,
     class: "ask-toolbar"
-  }, Js = {
+  }, Qi = {
     class: "ask-toolbar__primary"
-  }, Xs = {
+  }, Ji = {
     class: "ask-toolbar__progress"
-  }, Ys = {
+  }, Xi = {
     class: "ask-progress-text"
-  }, Zs = {
+  }, Yi = {
     class: "ask-progress-bar"
-  }, ei = {
+  }, Zi = {
     class: "ask-toolbar__actions"
-  }, ti = {
+  }, es = {
     key: 1,
     class: "ask-nav",
     open: ""
-  }, ai = vue.createElementVNode("summary", null, "\u9898\u76ee\u5bfc\u822a", -1), ni = vue.createElementVNode("div", {
+  }, ts = vue.createElementVNode("summary", null, "\u9898\u76ee\u5bfc\u822a", -1), as = vue.createElementVNode("div", {
     class: "ask-nav-legend"
   }, [ vue.createElementVNode("span", {
     class: "legend-item legend-current"
@@ -13417,141 +13299,141 @@
     class: "legend-item legend-error"
   }, [ vue.createElementVNode("i"), vue.createTextVNode("\u65e0\u7b54\u6848") ]), vue.createElementVNode("span", {
     class: "legend-item legend-unanswered"
-  }, [ vue.createElementVNode("i"), vue.createTextVNode("\u672a\u7b54") ]) ], -1), ri = {
+  }, [ vue.createElementVNode("i"), vue.createTextVNode("\u672a\u7b54") ]) ], -1), ns = {
     class: "ask-nav-grid"
-  }, si = [ "onClick" ], ii = {
+  }, rs = [ "onClick" ], is = {
     key: 2,
     class: "ask-card"
-  }, oi = {
+  }, ss = {
     class: "ask-card__header"
-  }, li = vue.createElementVNode("h3", {
+  }, os = vue.createElementVNode("h3", {
     class: "ask-card__title"
-  }, "\u5f53\u524d\u9898\u76ee", -1), ci = {
+  }, "\u5f53\u524d\u9898\u76ee", -1), ls = {
     class: "ask-card__actions"
-  }, pi = {
+  }, cs = {
     class: "ask-card__body"
-  }, ui = [ "innerHTML" ], di = [ "innerHTML" ], mi = {
+  }, ps = [ "innerHTML" ], us = [ "innerHTML" ], ds = {
     class: "reading-questions"
-  }, hi = [ "innerHTML" ], fi = [ "innerHTML" ], gi = [ "innerHTML" ], vi = [ "innerHTML" ], yi = {
+  }, ms = [ "innerHTML" ], hs = [ "innerHTML" ], fs = [ "innerHTML" ], gs = [ "innerHTML" ], vs = {
     key: 0
-  }, bi = {
+  }, ys = {
     class: "ask-match-table"
-  }, wi = [ "innerHTML" ], xi = [ "value" ], ki = {
+  }, bs = [ "innerHTML" ], ws = [ "value" ], xs = {
     key: 2,
     class: "ask-form-note ask-form-note--success"
-  }, qi = {
+  }, ks = {
     key: 3,
     class: "ask-form-note ask-form-note--danger"
-  }, _i = {
+  }, qs = {
     key: 3,
     class: "ask-card"
-  }, Ai = {
+  }, _s = {
     class: "ask-loading"
-  }, Ti = {
+  }, As = {
     key: 4,
     class: "ask-card"
-  }, Ci = vue.createElementVNode("header", {
+  }, Ts = vue.createElementVNode("header", {
     class: "ask-card__header"
   }, [ vue.createElementVNode("h3", {
     class: "ask-card__title"
-  }, "\u7b54\u6848 / AI") ], -1), Si = {
+  }, "\u7b54\u6848 / AI") ], -1), Cs = {
     class: "ask-card__body"
-  }, Ii = {
+  }, Ss = {
     class: "answer-header"
-  }, Ei = {
+  }, Is = {
     class: "aah-tag aah-tag-primary"
-  }, Ui = {
+  }, Es = {
     key: 0,
     class: "answer-meta"
-  }, Pi = {
+  }, Us = {
     key: 0
-  }, Hi = [ "innerHTML" ], Li = {
+  }, Hs = [ "innerHTML" ], Ps = {
     key: 1
-  }, ji = {
+  }, Ls = {
     key: 0
-  }, $i = [ "innerHTML" ], zi = [ "innerHTML" ], Mi = {
+  }, js = [ "innerHTML" ], $s = [ "innerHTML" ], zs = {
     key: 1,
     class: "answer-block ai-preview-block"
-  }, Oi = {
+  }, Ms = {
     class: "answer-header"
-  }, Fi = vue.createElementVNode("span", {
+  }, Os = vue.createElementVNode("span", {
     class: "aah-tag aah-tag-warning"
-  }, "AI \u5efa\u8bae", -1), Di = {
+  }, "AI \u5efa\u8bae", -1), Fs = {
     class: "answer-meta"
-  }, Ni = {
+  }, Ds = {
     class: "ask-preview-actions"
-  }, Ri = {
+  }, Ns = {
     key: 2,
     class: "aah-alert aah-alert-warning"
-  }, Bi = {
+  }, Rs = {
     key: 3,
     class: "answer-block ai-answer-block"
-  }, Gi = {
+  }, Bs = {
     class: "ai-answer-divider"
-  }, Vi = {
+  }, Gs = {
     class: "ai-answer-title"
-  }, Ki = {
+  }, Vs = {
     key: 0,
     class: "ai-streaming-tag"
-  }, Wi = vue.createElementVNode("span", {
+  }, Ks = vue.createElementVNode("span", {
     class: "ai-dot"
-  }, null, -1), Qi = vue.createElementVNode("span", {
+  }, null, -1), Ws = vue.createElementVNode("span", {
     class: "ai-dot"
-  }, null, -1), Ji = vue.createElementVNode("span", {
+  }, null, -1), Qs = vue.createElementVNode("span", {
     class: "ai-dot"
-  }, null, -1), Xi = [ "innerHTML" ], Yi = {
+  }, null, -1), Js = [ "innerHTML" ], Xs = {
     key: 1,
     class: "ai-stream-placeholder"
-  }, Zi = {
+  }, Ys = {
     key: 5,
     class: "ask-empty"
-  }, eo = vue.createElementVNode("p", null, "\u6682\u65e0\u9898\u76ee\u6570\u636e", -1), to = {
+  }, Zs = vue.createElementVNode("p", null, "\u6682\u65e0\u9898\u76ee\u6570\u636e", -1), eo = {
     class: "modal-panel"
-  }, ao = {
+  }, to = {
     class: "modal-header"
-  }, no = vue.createElementVNode("h3", {
+  }, ao = vue.createElementVNode("h3", {
     id: "settings-title",
     class: "modal-title"
-  }, "\u7b54\u9898\u8bbe\u7f6e", -1), ro = {
+  }, "\u7b54\u9898\u8bbe\u7f6e", -1), no = {
     class: "modal-body"
-  }, so = {
+  }, ro = {
     class: "ask-settings"
   }, io = {
     class: "native-checkbox"
-  }, oo = vue.createElementVNode("span", null, "\u8df3\u8fc7\u5df2\u4f5c\u7b54", -1), lo = {
+  }, so = vue.createElementVNode("span", null, "\u8df3\u8fc7\u5df2\u4f5c\u7b54", -1), oo = {
     class: "native-checkbox"
-  }, co = vue.createElementVNode("span", null, "\u81ea\u52a8\u7b54\u9898", -1), po = {
+  }, lo = vue.createElementVNode("span", null, "\u81ea\u52a8\u7b54\u9898", -1), co = {
     class: "native-checkbox"
-  }, uo = vue.createElementVNode("span", null, "\u81ea\u52a8\u8df3\u8f6c", -1), mo = {
+  }, po = vue.createElementVNode("span", null, "\u81ea\u52a8\u8df3\u8f6c", -1), uo = {
     class: "native-checkbox"
-  }, ho = vue.createElementVNode("span", null, "\u65e0\u7b54\u6848\u968f\u673a\u7b54\u9898", -1), fo = {
+  }, mo = vue.createElementVNode("span", null, "\u65e0\u7b54\u6848\u968f\u673a\u7b54\u9898", -1), ho = {
     class: "native-checkbox"
-  }, go = vue.createElementVNode("span", null, [ vue.createTextVNode("\u4f7f\u7528AI\u8f85\u52a9\u7b54\u9898 "), vue.createElementVNode("small", null, "(AI\u6b63\u786e\u7387\u4e0d\u4fdd\u8bc1)") ], -1), vo = {
+  }, fo = vue.createElementVNode("span", null, [ vue.createTextVNode("\u4f7f\u7528AI\u8f85\u52a9\u7b54\u9898 "), vue.createElementVNode("small", null, "(AI\u6b63\u786e\u7387\u4e0d\u4fdd\u8bc1)") ], -1), go = {
     key: 0,
     class: "aah-alert aah-alert-warning"
-  }, yo = {
+  }, vo = {
     class: "range-row"
-  }, bo = [ "min" ], wo = {
+  }, yo = [ "min" ], bo = {
     class: "aah-alert aah-alert-warning"
-  }, xo = {
+  }, wo = {
     class: "range-row"
-  }, ko = [ "min" ], qo = {
+  }, xo = [ "min" ], ko = {
     key: 0,
     class: "ask-tags"
-  }, _o = {
+  }, qo = {
     class: "modal-panel"
-  }, Ao = {
+  }, _o = {
     class: "modal-header"
-  }, To = vue.createElementVNode("h3", {
+  }, Ao = vue.createElementVNode("h3", {
     id: "tips-title",
     class: "modal-title"
-  }, "\u4f7f\u7528\u63d0\u793a", -1), Co = {
+  }, "\u4f7f\u7528\u63d0\u793a", -1), To = {
     class: "modal-body"
-  }, So = {
+  }, Co = {
     class: "info-banner ask-info"
-  }, Io = [ "innerHTML" ], Eo = {
+  }, So = [ "innerHTML" ], Io = {
     class: "ask-types"
-  }, Uo = vue.createElementVNode("summary", null, "\u67e5\u770b\u652f\u6301\u9898\u578b", -1), Po = [ "innerHTML" ], Ho = vue.defineComponent({
+  }, Eo = vue.createElementVNode("summary", null, "\u67e5\u770b\u652f\u6301\u9898\u578b", -1), Uo = [ "innerHTML" ], Ho = vue.defineComponent({
     __name: "Ask",
     setup(e) {
       const t = Aa(), a = ce(), u = _a(), g = vue.ref(false), x = vue.ref(false), handleKeydown = e => {
@@ -13582,8 +13464,8 @@
         const e = t.rule;
         e && (e.optionDelay = t.optionDelay);
       };
-      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Ws, [ vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("div", Qs, [ vue.createElementVNode("div", Js, [ vue.createElementVNode("button", {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", Ki, [ vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("div", Wi, [ vue.createElementVNode("div", Qi, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary",
           type: "button",
           onClick: p[0] || (p[0] = e => vue.unref(t).start ? vue.unref(t).pause() : vue.unref(t).toggleStart())
@@ -13591,11 +13473,11 @@
           class: "aah-btn",
           type: "button",
           onClick: p[1] || (p[1] = e => vue.unref(t).restart())
-        }, "\u91cd\u65b0\u7b54\u9898") ]), vue.createElementVNode("div", Xs, [ vue.createElementVNode("span", Ys, vue.toDisplayString(vue.unref(t).questionInx + 1) + " / " + vue.toDisplayString(vue.unref(t).questionList.length), 1), vue.createElementVNode("div", Zs, [ vue.createElementVNode("i", {
+        }, "\u91cd\u65b0\u7b54\u9898") ]), vue.createElementVNode("div", Ji, [ vue.createElementVNode("span", Xi, vue.toDisplayString(vue.unref(t).questionInx + 1) + " / " + vue.toDisplayString(vue.unref(t).questionList.length), 1), vue.createElementVNode("div", Yi, [ vue.createElementVNode("i", {
           style: vue.normalizeStyle({
             width: vue.unref(t).questionList.length ? (vue.unref(t).questionInx + 1) / vue.unref(t).questionList.length * 100 + "%" : "0%"
           })
-        }, null, 4) ]) ]), vue.createElementVNode("div", ei, [ vue.createElementVNode("button", {
+        }, null, 4) ]) ]), vue.createElementVNode("div", Zi, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           onClick: p[2] || (p[2] = e => x.value = true),
@@ -13609,13 +13491,13 @@
           "aria-label": "\u7b54\u9898\u8bbe\u7f6e"
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:cog-outline"
-        }) ]) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("details", ti, [ ai, ni, vue.createElementVNode("div", ri, [ (vue.openBlock(true), 
+        }) ]) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("details", es, [ ts, as, vue.createElementVNode("div", ns, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).questionList, ((e, a) => (vue.openBlock(), vue.createElementBlock("button", {
           key: a,
           type: "button",
           class: vue.normalizeClass([ "ask-nav-cell", [ a === vue.unref(t).questionInx ? "is-current" : "", 1 === e.status ? "is-done" : 2 === e.status ? "is-error" : "" ] ]),
           onClick: e => vue.unref(t).toQuestion(a)
-        }, vue.toDisplayString(a + 1), 11, si)))), 128)) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("section", ii, [ vue.createElementVNode("header", oi, [ li, vue.createElementVNode("div", ci, [ vue.createElementVNode("button", {
+        }, vue.toDisplayString(a + 1), 11, rs)))), 128)) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("section", is, [ vue.createElementVNode("header", ss, [ os, vue.createElementVNode("div", ls, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           onClick: p[4] || (p[4] = e => vue.unref(t).reAnswer(vue.unref(t).questionInx))
@@ -13623,79 +13505,79 @@
           class: "aah-btn aah-btn-small",
           type: "button",
           onClick: p[5] || (p[5] = e => vue.unref(t).aiAnswer(vue.unref(t).questionInx))
-        }, "AI \u7b54\u9898") ]) ]), vue.createElementVNode("div", pi, [ "15" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        }, "AI \u7b54\u9898") ]) ]), vue.createElementVNode("div", cs, [ "15" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 0
         }, [ vue.createElementVNode("div", {
           class: "aah_title",
           innerHTML: "[" + vue.unref(typeConvert)(vue.unref(t).current.type ?? "", false) + "]\u9605\u8bfb\u7406\u89e3"
-        }, null, 8, ui), vue.createElementVNode("div", {
+        }, null, 8, ps), vue.createElementVNode("div", {
           class: "reading-passage",
           innerHTML: vue.unref(t).current.question
-        }, null, 8, di), vue.createElementVNode("div", mi, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, a) => (vue.openBlock(), 
+        }, null, 8, us), vue.createElementVNode("div", ds, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, a) => (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: a,
           class: "reading-sub-question"
         }, [ vue.createElementVNode("div", {
           class: "sub-question-title",
           innerHTML: a + 1 + ". " + e.question
-        }, null, 8, hi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, i) => (vue.openBlock(), vue.createElementBlock("p", {
+        }, null, 8, ms), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, s) => (vue.openBlock(), vue.createElementBlock("p", {
           class: vue.normalizeClass([ "aah_options", {
-            active: vue.unref(t).current.form && vue.unref(t).current.form.match && vue.unref(t).current.form.match[a] && vue.unref(t).current.form.match[a].includes(i)
+            active: vue.unref(t).current.form && vue.unref(t).current.form.match && vue.unref(t).current.form.match[a] && vue.unref(t).current.form.match[a].includes(s)
           } ]),
-          key: i,
-          innerHTML: getOptionIndex(i) + ". " + e
-        }, null, 10, fi)))), 128)) ])))), 128)) ]) ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+          key: s,
+          innerHTML: getOptionIndex(s) + ". " + e
+        }, null, 10, hs)))), 128)) ])))), 128)) ]) ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 1
         }, [ vue.createElementVNode("div", {
           class: "aah_title",
           innerHTML: "[" + vue.unref(typeConvert)(vue.unref(t).current.type ?? "", false) + "]" + vue.unref(t).current.question
-        }, null, 8, gi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, a) => (vue.openBlock(), vue.createElementBlock("p", {
+        }, null, 8, fs), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, a) => (vue.openBlock(), vue.createElementBlock("p", {
           class: vue.normalizeClass([ "aah_options", {
             active: vue.unref(t).current.form && vue.unref(t).current.form.match && vue.unref(t).current.form.match.includes(a)
           } ]),
           key: a,
           innerHTML: getOptionIndex(a) + ". " + e
-        }, null, 10, vi)))), 128)), "24" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock("div", yi, [ vue.createElementVNode("table", bi, [ (vue.openBlock(true), 
+        }, null, 10, gs)))), 128)), "24" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock("div", vs, [ vue.createElementVNode("table", ys, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.match, ((e, a) => (vue.openBlock(), vue.createElementBlock("tr", {
           key: a
         }, [ vue.createElementVNode("td", {
           innerHTML: e
-        }, null, 8, wi), vue.createElementVNode("td", null, [ vue.createElementVNode("select", null, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.selects[a], (e => (vue.openBlock(), 
+        }, null, 8, bs), vue.createElementVNode("td", null, [ vue.createElementVNode("select", null, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.selects[a], (e => (vue.openBlock(), 
         vue.createElementBlock("option", {
           key: e.value,
           value: e.value
-        }, vue.toDisplayString(e.text), 9, xi)))), 128)) ]) ]) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ], 64)), vue.unref(t).current.form ? (vue.openBlock(), 
-        vue.createElementBlock("p", ki, " \u91c7\u7528\u3010" + vue.toDisplayString(vue.unref(t).current.form.form) + "\u3011\u7684\u7b54\u6848 ", 1)) : vue.createCommentVNode("", true), "8" != vue.unref(t).current.type && vue.unref(t).current.type ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", qi, " \u5f53\u524d\u9898\u578b\u6682\u4e0d\u652f\u6301\uff0c\u8bf7\u53cd\u9988\u7ed9\u4f5c\u8005\u5427 ")) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).loading ? (vue.openBlock(), 
-        vue.createElementBlock("section", _i, [ vue.createElementVNode("div", Ai, vue.toDisplayString(vue.unref(t).loadingText), 1) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? (vue.openBlock(), 
-        vue.createElementBlock("section", Ti, [ Ci, vue.createElementVNode("div", Si, [ vue.unref(t).current.answer ? (vue.openBlock(true), vue.createElementBlock(vue.Fragment, {
+        }, vue.toDisplayString(e.text), 9, ws)))), 128)) ]) ]) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ], 64)), vue.unref(t).current.form ? (vue.openBlock(), 
+        vue.createElementBlock("p", xs, " \u91c7\u7528\u3010" + vue.toDisplayString(vue.unref(t).current.form.form) + "\u3011\u7684\u7b54\u6848 ", 1)) : vue.createCommentVNode("", true), "8" != vue.unref(t).current.type && vue.unref(t).current.type ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("p", ks, " \u5f53\u524d\u9898\u578b\u6682\u4e0d\u652f\u6301\uff0c\u8bf7\u53cd\u9988\u7ed9\u4f5c\u8005\u5427 ")) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).loading ? (vue.openBlock(), 
+        vue.createElementBlock("section", qs, [ vue.createElementVNode("div", _s, vue.toDisplayString(vue.unref(t).loadingText), 1) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? (vue.openBlock(), 
+        vue.createElementBlock("section", As, [ Ts, vue.createElementVNode("div", Cs, [ vue.unref(t).current.answer ? (vue.openBlock(true), vue.createElementBlock(vue.Fragment, {
           key: 0
         }, vue.renderList(vue.unref(t).current.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: t,
           class: "answer-block"
-        }, [ vue.createElementVNode("div", Ii, [ vue.createElementVNode("span", Ei, vue.toDisplayString(e.form), 1), e.duration ? (vue.openBlock(), vue.createElementBlock("span", Ui, vue.toDisplayString(e.duration) + "ms", 1)) : vue.createCommentVNode("", true) ]), "object" == typeof e.answer && e.answer ? (vue.openBlock(), 
-        vue.createElementBlock("div", Pi, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((e, t) => {
+        }, [ vue.createElementVNode("div", Ss, [ vue.createElementVNode("span", Is, vue.toDisplayString(e.form), 1), e.duration ? (vue.openBlock(), vue.createElementBlock("span", Es, vue.toDisplayString(e.duration) + "ms", 1)) : vue.createCommentVNode("", true) ]), "object" == typeof e.answer && e.answer ? (vue.openBlock(), 
+        vue.createElementBlock("div", Us, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((e, t) => {
           return vue.openBlock(), vue.createElementBlock("div", {
             key: t,
             class: "answer-field-html",
             innerHTML: (a = "string" == typeof e ? e : String(e), createSafeMarkdownHtml(a ?? ""))
-          }, null, 8, Hi);
+          }, null, 8, Hs);
           var a;
-        })), 128)) ])) : (vue.openBlock(), vue.createElementBlock("div", Li, [ e.needLogin ? (vue.openBlock(), vue.createElementBlock("div", ji, [ vue.createElementVNode("span", {
+        })), 128)) ])) : (vue.openBlock(), vue.createElementBlock("div", Ps, [ e.needLogin ? (vue.openBlock(), vue.createElementBlock("div", Ls, [ vue.createElementVNode("span", {
           innerHTML: e.msg
-        }, null, 8, $i), vue.createElementVNode("button", {
+        }, null, 8, js), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small aah-btn-primary",
           type: "button",
           onClick: p[6] || (p[6] = e => vue.unref(a).setPage("system", "account"))
         }, "\u70b9\u51fb\u767b\u5f55") ])) : (vue.openBlock(), vue.createElementBlock("div", {
           key: 1,
           innerHTML: e.answer ? e.answer : e.msg ?? "\u6682\u65e0\u7b54\u6848"
-        }, null, 8, zi)) ])) ])))), 128)) : vue.createCommentVNode("", true), vue.unref(t).aiPreview && vue.unref(t).aiPreview.index === vue.unref(t).questionInx ? (vue.openBlock(), 
-        vue.createElementBlock("div", Mi, [ vue.createElementVNode("div", Oi, [ Fi, vue.createElementVNode("span", Di, vue.toDisplayString(vue.unref(t).aiPreview.reason), 1) ]), (vue.openBlock(true), 
+        }, null, 8, $s)) ])) ])))), 128)) : vue.createCommentVNode("", true), vue.unref(t).aiPreview && vue.unref(t).aiPreview.index === vue.unref(t).questionInx ? (vue.openBlock(), 
+        vue.createElementBlock("div", zs, [ vue.createElementVNode("div", Ms, [ Os, vue.createElementVNode("span", Fs, vue.toDisplayString(vue.unref(t).aiPreview.reason), 1) ]), (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).aiPreview.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           class: "answer-field-html",
           key: t
-        }, vue.toDisplayString(e), 1)))), 128)), vue.createElementVNode("div", Ni, [ vue.createElementVNode("button", {
+        }, vue.toDisplayString(e), 1)))), 128)), vue.createElementVNode("div", Ds, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
           onClick: p[7] || (p[7] = e => vue.unref(t).confirmAiPreview())
@@ -13704,71 +13586,71 @@
           type: "button",
           onClick: p[8] || (p[8] = e => vue.unref(t).skipAiPreview())
         }, "\u8df3\u8fc7") ]) ])) : vue.createCommentVNode("", true), vue.unref(t).aiFailureMap[vue.unref(t).questionInx] ? (vue.openBlock(), 
-        vue.createElementBlock("div", Ri, vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1)) : vue.createCommentVNode("", true), S.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Bi, [ vue.createElementVNode("div", Gi, [ vue.createElementVNode("span", Vi, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        vue.createElementBlock("div", Ns, vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1)) : vue.createCommentVNode("", true), S.value ? (vue.openBlock(), 
+        vue.createElementBlock("div", Rs, [ vue.createElementVNode("div", Bs, [ vue.createElementVNode("span", Gs, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:sparkles",
           class: "ai-icon"
-        }), vue.createTextVNode(" AI \u6df1\u5ea6\u89e3\u6790 ") ]), q.value ? (vue.openBlock(), vue.createElementBlock("span", Ki, [ Wi, Qi, Ji, vue.createTextVNode(" \u6b63\u5728\u751f\u6210... ") ])) : vue.createCommentVNode("", true) ]), vue.unref(t).current.aiMsg ? (vue.openBlock(), 
+        }), vue.createTextVNode(" AI \u6df1\u5ea6\u89e3\u6790 ") ]), q.value ? (vue.openBlock(), vue.createElementBlock("span", Vs, [ Ks, Ws, Qs, vue.createTextVNode(" \u6b63\u5728\u751f\u6210... ") ])) : vue.createCommentVNode("", true) ]), vue.unref(t).current.aiMsg ? (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: 0,
           innerHTML: vue.unref(t).currentAiMd,
           class: "ai-answer-markdown"
-        }, null, 8, Xi)) : (vue.openBlock(), vue.createElementBlock("div", Yi, " AI \u6b63\u5728\u601d\u8003\uff0c\u6d41\u5f0f\u5185\u5bb9\u4f1a\u5b9e\u65f6\u586b\u5145\uff0c\u8bf7\u7a0d\u5019... ")) ])) : vue.createCommentVNode("", true) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("div", Zi, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, Js)) : (vue.openBlock(), vue.createElementBlock("div", Xs, " AI \u6b63\u5728\u601d\u8003\uff0c\u6d41\u5f0f\u5185\u5bb9\u4f1a\u5b9e\u65f6\u586b\u5145\uff0c\u8bf7\u7a0d\u5019... ")) ])) : vue.createCommentVNode("", true) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("div", Ys, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-edit",
           class: "ask-empty__icon"
-        }), eo ])) ]), g.value ? (vue.openBlock(), vue.createElementBlock("div", {
+        }), Zs ])) ]), g.value ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 0,
           class: "modal-mask",
           onClick: p[17] || (p[17] = vue.withModifiers((e => g.value = false), [ "self" ])),
           role: "dialog",
           "aria-modal": "true",
           "aria-labelledby": "settings-title"
-        }, [ vue.createElementVNode("div", to, [ vue.createElementVNode("div", ao, [ no, vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", eo, [ vue.createElementVNode("div", to, [ ao, vue.createElementVNode("button", {
           class: "modal-close",
           onClick: p[9] || (p[9] = e => g.value = false),
           "aria-label": "\u5173\u95ed\u8bbe\u7f6e"
-        }, "\xd7") ]), vue.createElementVNode("div", ro, [ vue.createElementVNode("div", so, [ vue.createElementVNode("label", io, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, "\xd7") ]), vue.createElementVNode("div", no, [ vue.createElementVNode("div", ro, [ vue.createElementVNode("label", io, [ vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "onUpdate:modelValue": p[10] || (p[10] = e => vue.unref(t).skipFinish = e),
           onChange: watchSkipFinish
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).skipFinish ] ]), oo ]), vue.createElementVNode("label", lo, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).skipFinish ] ]), so ]), vue.createElementVNode("label", oo, [ vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "onUpdate:modelValue": p[11] || (p[11] = e => vue.unref(t).autoAnswer = e),
           onChange: watchAutoAnswer
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).autoAnswer ] ]), co ]), vue.createElementVNode("label", po, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).autoAnswer ] ]), lo ]), vue.createElementVNode("label", co, [ vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "onUpdate:modelValue": p[12] || (p[12] = e => vue.unref(t).autoNext = e),
           onChange: watchAutoNext
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).autoNext ] ]), uo ]), vue.createElementVNode("label", mo, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).autoNext ] ]), po ]), vue.createElementVNode("label", uo, [ vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "onUpdate:modelValue": p[13] || (p[13] = e => vue.unref(t).randomAnswer = e),
           onChange: watchRandomAnswer
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).randomAnswer ] ]), ho ]), vue.createElementVNode("label", fo, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).randomAnswer ] ]), mo ]), vue.createElementVNode("label", ho, [ vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "onUpdate:modelValue": p[14] || (p[14] = e => vue.unref(a).app.askGpt = e),
           onChange: watchAskGpt
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(a).app.askGpt ] ]), go ]), vue.unref(t).minDelay > 0 ? (vue.openBlock(), vue.createElementBlock("div", vo, " \u7531\u4e8e\u89c4\u5219\u9650\u5236\uff0c\u5f53\u524d\u5e73\u53f0\u7b54\u9898\u95f4\u9694\u6700\u5c0f\u4e3a " + vue.toDisplayString(vue.unref(t).minDelay) + "ms ", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", yo, [ vue.createElementVNode("label", null, "\u95f4\u9694\uff08" + vue.toDisplayString(vue.unref(t).delay) + "ms\uff09", 1), vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(a).app.askGpt ] ]), fo ]), vue.unref(t).minDelay > 0 ? (vue.openBlock(), vue.createElementBlock("div", go, " \u7531\u4e8e\u89c4\u5219\u9650\u5236\uff0c\u5f53\u524d\u5e73\u53f0\u7b54\u9898\u95f4\u9694\u6700\u5c0f\u4e3a " + vue.toDisplayString(vue.unref(t).minDelay) + "ms ", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", vo, [ vue.createElementVNode("label", null, "\u95f4\u9694\uff08" + vue.toDisplayString(vue.unref(t).delay) + "ms\uff09", 1), vue.withDirectives(vue.createElementVNode("input", {
           type: "range",
           min: vue.unref(t).minDelay,
           max: 5e3,
           step: "100",
           "onUpdate:modelValue": p[15] || (p[15] = e => vue.unref(t).delay = e),
           onInput: watchDelay
-        }, null, 40, bo), [ [ vue.vModelText, vue.unref(t).delay, void 0, {
+        }, null, 40, yo), [ [ vue.vModelText, vue.unref(t).delay, void 0, {
           number: true
         } ] ]) ]), vue.unref(t).optionMinDelay > 0 ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 1
-        }, [ vue.createElementVNode("div", wo, " \u5f53\u524d\u5e73\u53f0\u591a\u9009\u9898\u6bcf\u9009\u4e00\u9879\u90fd\u4f1a\u8bf7\u6c42\u63a5\u53e3\uff0c\u9010\u9879\u70b9\u51fb\u95f4\u9694\u6700\u5c0f\u4e3a " + vue.toDisplayString(vue.unref(t).optionMinDelay) + "ms\uff0c\u8fc7\u5feb\u6613\u89e6\u53d1 403 ", 1), vue.createElementVNode("div", xo, [ vue.createElementVNode("label", null, "\u591a\u9009\u9010\u9879\u95f4\u9694\uff08" + vue.toDisplayString(vue.unref(t).optionDelay) + "ms\uff09", 1), vue.withDirectives(vue.createElementVNode("input", {
+        }, [ vue.createElementVNode("div", bo, " \u5f53\u524d\u5e73\u53f0\u591a\u9009\u9898\u6bcf\u9009\u4e00\u9879\u90fd\u4f1a\u8bf7\u6c42\u63a5\u53e3\uff0c\u9010\u9879\u70b9\u51fb\u95f4\u9694\u6700\u5c0f\u4e3a " + vue.toDisplayString(vue.unref(t).optionMinDelay) + "ms\uff0c\u8fc7\u5feb\u6613\u89e6\u53d1 403 ", 1), vue.createElementVNode("div", wo, [ vue.createElementVNode("label", null, "\u591a\u9009\u9010\u9879\u95f4\u9694\uff08" + vue.toDisplayString(vue.unref(t).optionDelay) + "ms\uff09", 1), vue.withDirectives(vue.createElementVNode("input", {
           type: "range",
           min: vue.unref(t).optionMinDelay,
           max: 8e3,
           step: "500",
           "onUpdate:modelValue": p[16] || (p[16] = e => vue.unref(t).optionDelay = e),
           onInput: watchOptionDelay
-        }, null, 40, ko), [ [ vue.vModelText, vue.unref(t).optionDelay, void 0, {
+        }, null, 40, xo), [ [ vue.vModelText, vue.unref(t).optionDelay, void 0, {
           number: true
-        } ] ]) ]) ], 64)) : vue.createCommentVNode("", true) ]), vue.unref(t).formMap ? (vue.openBlock(), vue.createElementBlock("div", qo, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).formMap, ((e, t) => (vue.openBlock(), 
+        } ] ]) ]) ], 64)) : vue.createCommentVNode("", true) ]), vue.unref(t).formMap ? (vue.openBlock(), vue.createElementBlock("div", ko, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).formMap, ((e, t) => (vue.openBlock(), 
         vue.createElementBlock("span", {
           class: "aah-tag",
           key: t
@@ -13780,40 +13662,40 @@
           role: "dialog",
           "aria-modal": "true",
           "aria-labelledby": "tips-title"
-        }, [ vue.createElementVNode("div", _o, [ vue.createElementVNode("div", Ao, [ To, vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", qo, [ vue.createElementVNode("div", _o, [ Ao, vue.createElementVNode("button", {
           class: "modal-close",
           onClick: p[18] || (p[18] = e => x.value = false),
           "aria-label": "\u5173\u95ed\u63d0\u793a"
-        }, "\xd7") ]), vue.createElementVNode("div", Co, [ vue.createElementVNode("div", So, [ vue.createElementVNode("div", {
+        }, "\xd7") ]), vue.createElementVNode("div", To, [ vue.createElementVNode("div", Co, [ vue.createElementVNode("div", {
           class: "info-body",
           innerHTML: vue.unref(t).tipsMd
-        }, null, 8, Io), vue.createElementVNode("details", Eo, [ Uo, vue.createElementVNode("div", {
+        }, null, 8, So), vue.createElementVNode("details", Io, [ Eo, vue.createElementVNode("div", {
           innerHTML: vue.unref(t).typesMd
-        }, null, 8, Po) ]) ]) ]) ]) ])) : vue.createCommentVNode("", true) ])),
+        }, null, 8, Uo) ]) ]) ]) ]) ])) : vue.createCommentVNode("", true) ])),
         _: 1
       }));
     }
-  }), Lo = {
+  }), Po = {
     class: "modal-panel"
-  }, jo = {
+  }, Lo = {
     class: "modal-header"
-  }, $o = {
+  }, jo = {
     class: "modal-body"
-  }, zo = {
+  }, $o = {
     class: "form-row"
-  }, Mo = vue.createElementVNode("label", null, "\u9898\u578b", -1), Oo = [ "value" ], Fo = {
+  }, zo = vue.createElementVNode("label", null, "\u9898\u578b", -1), Mo = [ "value" ], Oo = {
     class: "form-row"
-  }, Do = vue.createElementVNode("label", null, "\u9898\u5e72", -1), No = {
+  }, Fo = vue.createElementVNode("label", null, "\u9898\u5e72", -1), Do = {
     key: 0,
     class: "form-row"
-  }, Ro = vue.createElementVNode("label", null, "\u9009\u9879", -1), Bo = {
+  }, No = vue.createElementVNode("label", null, "\u9009\u9879", -1), Ro = {
     class: "option-list"
-  }, Go = [ "onClick" ], Vo = [ "onUpdate:modelValue" ], Ko = [ "onClick" ], Wo = {
+  }, Bo = [ "onClick" ], Go = [ "onUpdate:modelValue" ], Vo = [ "onClick" ], Ko = {
     key: 1,
     class: "form-row"
-  }, Qo = vue.createElementVNode("label", null, "\u7b54\u6848", -1), Jo = {
+  }, Wo = vue.createElementVNode("label", null, "\u7b54\u6848", -1), Qo = {
     class: "option-list"
-  }, Xo = [ "onUpdate:modelValue" ], Yo = [ "onClick" ], Zo = vue.defineComponent({
+  }, Jo = [ "onUpdate:modelValue" ], Xo = [ "onClick" ], Yo = vue.defineComponent({
     __name: "QuestionEdit",
     props: {
       ques: {},
@@ -13845,22 +13727,22 @@
           key: 0,
           class: "modal-mask",
           onClick: vue.withModifiers(handleCancel, [ "self" ])
-        }, [ vue.createElementVNode("div", Lo, [ vue.createElementVNode("div", jo, [ vue.createElementVNode("h3", null, "\u9898\u76ee\u7f16\u8f91 [" + vue.toDisplayString(null == (p = e.ques) ? void 0 : p.type) + "]", 1), vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", Po, [ vue.createElementVNode("div", Lo, [ vue.createElementVNode("h3", null, "\u9898\u76ee\u7f16\u8f91 [" + vue.toDisplayString(null == (p = e.ques) ? void 0 : p.type) + "]", 1), vue.createElementVNode("button", {
           class: "modal-close",
           type: "button",
           onClick: handleCancel
-        }, "\xd7") ]), vue.createElementVNode("div", $o, [ vue.createElementVNode("div", zo, [ Mo, vue.withDirectives(vue.createElementVNode("select", {
+        }, "\xd7") ]), vue.createElementVNode("div", jo, [ vue.createElementVNode("div", $o, [ zo, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": t[0] || (t[0] = t => e.ques.type = t),
           class: "base-select"
         }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(ae), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
           key: e,
           value: e
-        }, vue.toDisplayString(t), 9, Oo)))), 128)) ], 512), [ [ vue.vModelSelect, e.ques.type ] ]) ]), vue.createElementVNode("div", Fo, [ Do, vue.withDirectives(vue.createElementVNode("textarea", {
+        }, vue.toDisplayString(t), 9, Mo)))), 128)) ], 512), [ [ vue.vModelSelect, e.ques.type ] ]) ]), vue.createElementVNode("div", Oo, [ Fo, vue.withDirectives(vue.createElementVNode("textarea", {
           "onUpdate:modelValue": t[1] || (t[1] = t => e.ques.question = t),
           class: "base-input",
           rows: "5"
         }, null, 512), [ [ vue.vModelText, e.ques.question ] ]) ]), e.ques.options && Array.isArray(e.ques.options) && e.ques.options.length > 0 ? (vue.openBlock(), 
-        vue.createElementBlock("div", No, [ Ro, vue.createElementVNode("div", Bo, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.options, ((t, o) => (vue.openBlock(), 
+        vue.createElementBlock("div", Do, [ No, vue.createElementVNode("div", Ro, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.options, ((t, o) => (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: o,
           class: "option-row"
@@ -13873,30 +13755,30 @@
             a.ques.answer = a.ques.answer.includes(e) ? a.ques.answer.filter((t => t !== e)) : [ ...a.ques.answer, e ], 
             a.ques.answer.sort(((e, t) => a.ques.options.indexOf(e) - a.ques.options.indexOf(t)));
           })(t)
-        }, vue.toDisplayString(String.fromCharCode(65 + o)), 11, Go), vue.withDirectives(vue.createElementVNode("input", {
+        }, vue.toDisplayString(String.fromCharCode(65 + o)), 11, Bo), vue.withDirectives(vue.createElementVNode("input", {
           "onUpdate:modelValue": t => e.ques.options[o] = t,
           class: "base-input flex-grow"
-        }, null, 8, Vo), [ [ vue.vModelText, e.ques.options[o] ] ]), vue.createElementVNode("button", {
+        }, null, 8, Go), [ [ vue.vModelText, e.ques.options[o] ] ]), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           onClick: e => 0 !== o ? handleDelete(o) : handleAdd()
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: 0 !== o ? "mdi:minus" : "mdi:plus"
-        }, null, 8, [ "icon" ]) ], 8, Ko) ])))), 128)) ]) ])) : Array.isArray(e.ques.answer) && 0 === e.ques.options.length ? (vue.openBlock(), 
-        vue.createElementBlock("div", Wo, [ Qo, vue.createElementVNode("div", Jo, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.answer, ((t, a) => (vue.openBlock(), 
+        }, null, 8, [ "icon" ]) ], 8, Vo) ])))), 128)) ]) ])) : Array.isArray(e.ques.answer) && 0 === e.ques.options.length ? (vue.openBlock(), 
+        vue.createElementBlock("div", Ko, [ Wo, vue.createElementVNode("div", Qo, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.answer, ((t, a) => (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: a,
           class: "option-row"
         }, [ vue.withDirectives(vue.createElementVNode("input", {
           "onUpdate:modelValue": t => e.ques.answer[a] = t,
           class: "base-input flex-grow"
-        }, null, 8, Xo), [ [ vue.vModelText, e.ques.answer[a] ] ]), vue.createElementVNode("button", {
+        }, null, 8, Jo), [ [ vue.vModelText, e.ques.answer[a] ] ]), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           onClick: e => 0 !== a ? handleDelete(a) : handleAdd()
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: 0 !== a ? "mdi:minus" : "mdi:plus"
-        }, null, 8, [ "icon" ]) ], 8, Yo) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
+        }, null, 8, [ "icon" ]) ], 8, Xo) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
           class: "modal-footer"
         }, [ vue.createElementVNode("button", {
           class: "aah-btn",
@@ -13909,39 +13791,39 @@
         }, "\u4fdd\u5b58") ]) ]) ])) : vue.createCommentVNode("", true);
       };
     }
-  }), el = {
+  }), Zo = {
     class: "modal-panel modal-panel-large"
-  }, tl = vue.createElementVNode("h3", null, "\u9605\u8bfb\u7406\u89e3\u9898\u76ee\u7f16\u8f91", -1), al = {
+  }, el = vue.createElementVNode("h3", null, "\u9605\u8bfb\u7406\u89e3\u9898\u76ee\u7f16\u8f91", -1), tl = {
     class: "modal-body"
+  }, al = {
+    class: "reading-form-section"
   }, nl = {
-    class: "reading-form-section"
-  }, rl = {
     class: "reading-section-header"
-  }, sl = vue.createElementVNode("h4", null, "\u9605\u8bfb\u6750\u6599", -1), il = {
+  }, rl = vue.createElementVNode("h4", null, "\u9605\u8bfb\u6750\u6599", -1), il = {
     class: "form-row"
-  }, ol = vue.createElementVNode("label", null, "\u9898\u5e72\u5185\u5bb9", -1), ll = {
+  }, sl = vue.createElementVNode("label", null, "\u9898\u5e72\u5185\u5bb9", -1), ol = {
     class: "reading-form-section"
-  }, cl = {
+  }, ll = {
     class: "reading-section-header"
-  }, pl = vue.createElementVNode("h4", null, "\u5b50\u9898\u76ee\u5217\u8868", -1), ul = {
+  }, cl = vue.createElementVNode("h4", null, "\u5b50\u9898\u76ee\u5217\u8868", -1), pl = {
     class: "reading-sub-questions-editor"
-  }, dl = {
+  }, ul = {
     class: "reading-sub-question-header"
-  }, ml = {
+  }, dl = {
     class: "reading-sub-question-number"
-  }, hl = [ "onUpdate:modelValue" ], fl = [ "value" ], gl = [ "onClick", "disabled" ], vl = {
+  }, ml = [ "onUpdate:modelValue" ], hl = [ "value" ], fl = [ "onClick", "disabled" ], gl = {
     class: "form-row"
-  }, yl = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), bl = [ "onUpdate:modelValue", "placeholder" ], wl = {
+  }, vl = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), yl = [ "onUpdate:modelValue", "placeholder" ], bl = {
     key: 0,
     class: "form-row"
-  }, xl = vue.createElementVNode("label", null, "\u9009\u9879\u8bbe\u7f6e", -1), kl = {
+  }, wl = vue.createElementVNode("label", null, "\u9009\u9879\u8bbe\u7f6e", -1), xl = {
     class: "option-list"
-  }, ql = [ "onClick" ], _l = [ "onUpdate:modelValue", "placeholder" ], Al = [ "onClick" ], Tl = {
+  }, kl = [ "onClick" ], ql = [ "onUpdate:modelValue", "placeholder" ], _l = [ "onClick" ], Al = {
     key: 1,
     class: "form-row"
-  }, Cl = vue.createElementVNode("label", null, "\u53c2\u8003\u7b54\u6848", -1), Sl = {
+  }, Tl = vue.createElementVNode("label", null, "\u53c2\u8003\u7b54\u6848", -1), Cl = {
     class: "reading-answer-list"
-  }, Il = [ "onUpdate:modelValue", "placeholder" ], El = [ "onClick" ], Ul = vue.defineComponent({
+  }, Sl = [ "onUpdate:modelValue", "placeholder" ], Il = [ "onClick" ], El = vue.defineComponent({
     __name: "ReadingComprehensionEdit",
     props: {
       ques: {},
@@ -13986,53 +13868,53 @@
         key: 0,
         class: "modal-mask",
         onClick: vue.withModifiers(handleCancel, [ "self" ])
-      }, [ vue.createElementVNode("div", el, [ vue.createElementVNode("div", {
+      }, [ vue.createElementVNode("div", Zo, [ vue.createElementVNode("div", {
         class: "modal-header"
-      }, [ tl, vue.createElementVNode("button", {
+      }, [ el, vue.createElementVNode("button", {
         class: "modal-close",
         type: "button",
         onClick: handleCancel
-      }, "\xd7") ]), vue.createElementVNode("div", al, [ vue.createElementVNode("div", nl, [ vue.createElementVNode("div", rl, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, "\xd7") ]), vue.createElementVNode("div", tl, [ vue.createElementVNode("div", al, [ vue.createElementVNode("div", nl, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:book-open-variant",
         class: "reading-section-icon"
-      }), sl ]), vue.createElementVNode("div", il, [ ol, vue.withDirectives(vue.createElementVNode("textarea", {
+      }), rl ]), vue.createElementVNode("div", il, [ sl, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t[0] || (t[0] = e => d.value.question = e),
         class: "base-input",
         rows: "8",
         placeholder: "\u8bf7\u8f93\u5165\u9605\u8bfb\u7406\u89e3\u7684\u4e3b\u8981\u6750\u6599\u5185\u5bb9..."
-      }, "\n            ", 512), [ [ vue.vModelText, d.value.question ] ]) ]) ]), vue.createElementVNode("div", ll, [ vue.createElementVNode("div", cl, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, "\n            ", 512), [ [ vue.vModelText, d.value.question ] ]) ]) ]), vue.createElementVNode("div", ol, [ vue.createElementVNode("div", ll, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:help-circle",
         class: "reading-section-icon"
-      }), pl, vue.createElementVNode("button", {
+      }), cl, vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary aah-btn-small",
         type: "button",
         onClick: addSubQuestion
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:plus"
-      }), vue.createTextVNode(" \u6dfb\u52a0\u9898\u76ee ") ]) ]), vue.createElementVNode("div", ul, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(d.value.options, ((e, t) => (vue.openBlock(), 
+      }), vue.createTextVNode(" \u6dfb\u52a0\u9898\u76ee ") ]) ]), vue.createElementVNode("div", pl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(d.value.options, ((e, t) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: t,
         class: "reading-sub-question-editor"
-      }, [ vue.createElementVNode("div", dl, [ vue.createElementVNode("span", ml, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
+      }, [ vue.createElementVNode("div", ul, [ vue.createElementVNode("span", dl, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t => e.type = t,
         class: "base-select reading-base-select-small"
       }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(ae), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
-      }, vue.toDisplayString(t), 9, fl)))), 128)) ], 8, hl), [ [ vue.vModelSelect, e.type ] ]), vue.createElementVNode("button", {
+      }, vue.toDisplayString(t), 9, hl)))), 128)) ], 8, ml), [ [ vue.vModelSelect, e.type ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-danger aah-btn-small",
         type: "button",
         onClick: e => (e => {
           d.value.options.length > 1 && d.value.options.splice(e, 1);
         })(t),
         disabled: d.value.options.length <= 1
-      }, " \u5220\u9664 ", 8, gl) ]), vue.createElementVNode("div", vl, [ yl, vue.withDirectives(vue.createElementVNode("textarea", {
+      }, " \u5220\u9664 ", 8, fl) ]), vue.createElementVNode("div", gl, [ vl, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t => e.question = t,
         class: "base-input",
         rows: "3",
         placeholder: `\u8bf7\u8f93\u5165\u7b2c ${t + 1} \u9898\u7684\u9898\u76ee\u5185\u5bb9...`
-      }, "\n                ", 8, bl), [ [ vue.vModelText, e.question ] ]) ]), [ "0", "1" ].includes(e.type) ? (vue.openBlock(), 
-      vue.createElementBlock("div", wl, [ xl, vue.createElementVNode("div", kl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((a, o) => (vue.openBlock(), 
+      }, "\n                ", 8, yl), [ [ vue.vModelText, e.question ] ]) ]), [ "0", "1" ].includes(e.type) ? (vue.openBlock(), 
+      vue.createElementBlock("div", bl, [ wl, vue.createElementVNode("div", xl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((a, o) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: o,
         class: "option-row"
@@ -14046,11 +13928,11 @@
           n > -1 ? a.answer.splice(n, 1) : "0" === a.type ? a.answer = [ t ] : (a.answer.push(t), 
           a.answer.sort(((e, t) => a.options.indexOf(e) - a.options.indexOf(t))));
         })(t, a)
-      }, vue.toDisplayString(String.fromCharCode(65 + o)), 11, ql), vue.withDirectives(vue.createElementVNode("input", {
+      }, vue.toDisplayString(String.fromCharCode(65 + o)), 11, kl), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t => e.options[o] = t,
         class: "base-input flex-grow",
         placeholder: `\u9009\u9879 ${String.fromCharCode(65 + o)}`
-      }, null, 8, _l), [ [ vue.vModelText, e.options[o] ] ]), vue.createElementVNode("button", {
+      }, null, 8, ql), [ [ vue.vModelText, e.options[o] ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: e => {
@@ -14064,26 +13946,26 @@
         }
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: 0 === o ? "mdi:plus" : "mdi:minus"
-      }, null, 8, [ "icon" ]) ], 8, Al) ])))), 128)) ]) ])) : (vue.openBlock(), vue.createElementBlock("div", Tl, [ Cl, vue.createElementVNode("div", Sl, [ (vue.openBlock(true), 
-      vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((a, s) => (vue.openBlock(), vue.createElementBlock("div", {
-        key: s,
+      }, null, 8, [ "icon" ]) ], 8, _l) ])))), 128)) ]) ])) : (vue.openBlock(), vue.createElementBlock("div", Al, [ Tl, vue.createElementVNode("div", Cl, [ (vue.openBlock(true), 
+      vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((a, i) => (vue.openBlock(), vue.createElementBlock("div", {
+        key: i,
         class: "reading-answer-row"
       }, [ vue.withDirectives(vue.createElementVNode("input", {
-        "onUpdate:modelValue": t => e.answer[s] = t,
+        "onUpdate:modelValue": t => e.answer[i] = t,
         class: "base-input flex-grow",
-        placeholder: `\u7b54\u6848 ${s + 1}`
-      }, null, 8, Il), [ [ vue.vModelText, e.answer[s] ] ]), vue.createElementVNode("button", {
+        placeholder: `\u7b54\u6848 ${i + 1}`
+      }, null, 8, Sl), [ [ vue.vModelText, e.answer[i] ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: e => {
-          return 0 === s ? (a = t, void d.value.options[a].answer.push("")) : ((e, t) => {
+          return 0 === i ? (a = t, void d.value.options[a].answer.push("")) : ((e, t) => {
             d.value.options[e].answer.length > 1 && d.value.options[e].answer.splice(t, 1);
-          })(t, s);
+          })(t, i);
           var a;
         }
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
-        icon: 0 === s ? "mdi:plus" : "mdi:minus"
-      }, null, 8, [ "icon" ]) ], 8, El) ])))), 128)) ]) ])) ])))), 128)) ]) ]) ]), vue.createElementVNode("div", {
+        icon: 0 === i ? "mdi:plus" : "mdi:minus"
+      }, null, 8, [ "icon" ]) ], 8, Il) ])))), 128)) ]) ])) ])))), 128)) ]) ]) ]), vue.createElementVNode("div", {
         class: "modal-footer"
       }, [ vue.createElementVNode("button", {
         class: "aah-btn",
@@ -14097,111 +13979,111 @@
     }
   });
 
-  const Pl = {
+  const Ul = {
     class: "question-page"
   }, Hl = vue.createElementVNode("div", {
     class: "watermark-bg"
-  }, [ vue.createElementVNode("span", null, "AiAskHelper"), vue.createElementVNode("span", null, "\u7231\u95ee\u7b54\u52a9\u624b") ], -1), Ll = {
+  }, [ vue.createElementVNode("span", null, "AiAskHelper"), vue.createElementVNode("span", null, "\u7231\u95ee\u7b54\u52a9\u624b") ], -1), Pl = {
     class: "qc-toolbar"
-  }, jl = {
+  }, Ll = {
     class: "qc-toolbar-info"
-  }, $l = {
+  }, jl = {
     class: "qc-toolbar-count"
-  }, zl = {
+  }, $l = {
     key: 0,
     class: "qc-toolbar-count qc-toolbar-count-filter"
-  }, Ml = {
+  }, zl = {
     key: 1,
     class: "qc-toolbar-count qc-toolbar-count-uploading"
-  }, Ol = {
+  }, Ml = {
     class: "qc-toolbar-actions"
-  }, Fl = [ "disabled" ], Dl = vue.createElementVNode("span", null, "\u5bfc\u5165\u5907\u4efd", -1), Nl = vue.createElementVNode("span", null, "\u5bfc\u51fa\u5907\u4efd", -1), Rl = vue.createElementVNode("span", null, "\u6e05\u9664\u7f13\u5b58", -1), Bl = vue.createElementVNode("span", null, "\u8bf4\u660e", -1), Gl = {
+  }, Ol = [ "disabled" ], Fl = vue.createElementVNode("span", null, "\u5bfc\u5165\u5907\u4efd", -1), Dl = vue.createElementVNode("span", null, "\u5bfc\u51fa\u5907\u4efd", -1), Nl = vue.createElementVNode("span", null, "\u6e05\u9664\u7f13\u5b58", -1), Rl = vue.createElementVNode("span", null, "\u8bf4\u660e", -1), Bl = {
     key: 0,
     class: "qc-info-collapse"
-  }, Vl = vue.createElementVNode("div", {
+  }, Gl = vue.createElementVNode("div", {
     class: "info-body"
   }, [ vue.createTextVNode(" \u672c\u811a\u672c\u652f\u6301\u5c06\u5b58\u5728\u7b54\u6848\u7684\u9898\u76ee\u6536\u5f55\u5230\u672c\u5730\uff0c\u4ee5\u4f9b\u540e\u7eed\u7b54\u9898\u68c0\u7d22\uff0c\u53ef\u51cf\u5c11\u63a5\u53e3\u8bf7\u6c42\u6b21\u6570\uff0c\u63d0\u9ad8\u7b54\u6848\u6b63\u786e\u7387\u3002"), vue.createElementVNode("br"), vue.createTextVNode(" \u5728\u652f\u6301\u91cd\u590d\u7b54\u9898\u4e14\u7b54\u5b8c\u9898\u663e\u793a\u7b54\u6848\u7684\u60c5\u51b5\u4e0b\u53ef\u4ee5\u65e0\u9700\u4f7f\u7528\u63a5\u53e3\u641c\u7d22\u7b54\u6848\u3002"), vue.createElementVNode("br"), vue.createElementVNode("span", {
     class: "warn-text"
-  }, "\u5e76\u975e\u6240\u6709\u7f51\u7ad9\u90fd\u652f\u6301\uff0c\u9700\u8981\u4f5c\u8005\u9002\u914d\uff0c\u5982\u9047\u4e0d\u652f\u6301\u7684\u5e73\u53f0\u8bf7\u53cd\u9988\u3002"), vue.createElementVNode("br"), vue.createTextVNode(" \u63d0\u793a\uff1a\u53ef\u76f4\u63a5\u5c06 .bak \u5907\u4efd\u6587\u4ef6\u62d6\u5230\u672c\u9875\u9762\u4efb\u610f\u4f4d\u7f6e\u4ee5\u5bfc\u5165\u3002 ") ], -1), Kl = [ Vl ], Wl = {
+  }, "\u5e76\u975e\u6240\u6709\u7f51\u7ad9\u90fd\u652f\u6301\uff0c\u9700\u8981\u4f5c\u8005\u9002\u914d\uff0c\u5982\u9047\u4e0d\u652f\u6301\u7684\u5e73\u53f0\u8bf7\u53cd\u9988\u3002"), vue.createElementVNode("br"), vue.createTextVNode(" \u63d0\u793a\uff1a\u53ef\u76f4\u63a5\u5c06 .bak \u5907\u4efd\u6587\u4ef6\u62d6\u5230\u672c\u9875\u9762\u4efb\u610f\u4f4d\u7f6e\u4ee5\u5bfc\u5165\u3002 ") ], -1), Vl = [ Gl ], Kl = {
     class: "search-filter-row"
-  }, Ql = {
+  }, Wl = {
     class: "question-search-box"
-  }, Jl = {
+  }, Ql = {
     key: 1,
     class: "filter-chips"
-  }, Xl = [ "onClick" ], Yl = {
+  }, Jl = [ "onClick" ], Xl = {
     class: "question-table-wrapper"
-  }, Zl = {
+  }, Yl = {
     key: 0,
     class: "table-empty"
-  }, ec = {
+  }, Zl = {
     class: "table-empty-text"
-  }, tc = {
+  }, ec = {
     key: 1,
     class: "qc-cards"
-  }, ac = {
+  }, tc = {
     class: "qc-row qc-row-meta"
-  }, nc = {
+  }, ac = {
     class: "aah-tag aah-tag-primary"
-  }, rc = {
+  }, nc = {
     class: "qc-num"
-  }, sc = [ "onClick" ], ic = vue.createElementVNode("span", null, "\u7f16\u8f91", -1), oc = [ "innerHTML" ], lc = {
+  }, rc = [ "onClick" ], ic = vue.createElementVNode("span", null, "\u7f16\u8f91", -1), sc = [ "innerHTML" ], oc = {
     key: 0,
     class: "qc-sub-questions"
-  }, cc = {
+  }, lc = {
     class: "qc-sub-question-title"
-  }, pc = [ "innerHTML" ], uc = {
+  }, cc = [ "innerHTML" ], pc = {
     key: 0,
     class: "qc-sub-question-options"
-  }, dc = {
+  }, uc = {
     class: "qc-option-letter"
-  }, mc = [ "innerHTML" ], hc = {
+  }, dc = [ "innerHTML" ], mc = {
     key: 1,
     class: "qc-sub-question-answer"
-  }, fc = {
+  }, hc = {
     key: 1,
     class: "qc-options-list"
-  }, gc = {
+  }, fc = {
     class: "qc-option-letter"
-  }, vc = [ "innerHTML" ], yc = {
+  }, gc = [ "innerHTML" ], vc = {
     class: "qc-answer"
-  }, bc = vue.createElementVNode("span", {
+  }, yc = vue.createElementVNode("span", {
     class: "qc-answer-label"
-  }, "\u7b54\u6848", -1), wc = [ "innerHTML" ], xc = {
+  }, "\u7b54\u6848", -1), bc = [ "innerHTML" ], wc = {
     key: 2,
     class: "question-pagination-wrapper"
-  }, kc = {
+  }, xc = {
     class: "question-pagination"
-  }, _c = [ "disabled" ], Ac = {
+  }, kc = [ "disabled" ], _c = {
     class: "page-numbers"
-  }, Tc = [ "onClick" ], Cc = {
+  }, Ac = [ "onClick" ], Tc = {
     key: 0,
     class: "page-ellipsis"
-  }, Sc = [ "disabled" ], Ic = {
+  }, Cc = [ "disabled" ], Sc = {
     class: "page-size-selector"
-  }, Ec = vue.createElementVNode("label", null, "\u6bcf\u9875\u663e\u793a\uff1a", -1), Uc = vue.createElementVNode("option", {
+  }, Ic = vue.createElementVNode("label", null, "\u6bcf\u9875\u663e\u793a\uff1a", -1), Ec = vue.createElementVNode("option", {
     value: 10
-  }, "10 \u6761", -1), Pc = vue.createElementVNode("option", {
+  }, "10 \u6761", -1), Uc = vue.createElementVNode("option", {
     value: 20
   }, "20 \u6761", -1), Hc = vue.createElementVNode("option", {
     value: 50
-  }, "50 \u6761", -1), Lc = vue.createElementVNode("option", {
+  }, "50 \u6761", -1), Pc = vue.createElementVNode("option", {
     value: 100
-  }, "100 \u6761", -1), jc = [ Uc, Pc, Hc, Lc ], $c = {
+  }, "100 \u6761", -1), Lc = [ Ec, Uc, Hc, Pc ], jc = {
     key: 0,
     class: "qc-drop-overlay"
-  }, zc = {
+  }, $c = {
     class: "qc-drop-overlay-card"
-  }, Mc = vue.createElementVNode("div", {
+  }, zc = vue.createElementVNode("div", {
     class: "qc-drop-overlay-text"
-  }, "\u677e\u5f00\u4ee5\u5bfc\u5165 .bak \u5907\u4efd\u6587\u4ef6", -1), Oc = vue.defineComponent({
+  }, "\u677e\u5f00\u4ee5\u5bfc\u5165 .bak \u5907\u4efd\u6587\u4ef6", -1), Mc = vue.defineComponent({
     __name: "Question",
     setup(e) {
       const t = vue.ref(null), a = vue.ref(false), o = vue.ref(false), handleEditClose = () => {
         a.value = false;
       }, handleReadingEditClose = () => {
         o.value = false;
-      }, g = vue.ref(0), k = vue.ref(null), q = vue.ref(false), A = vue.ref(1), T = vue.ref(20), S = vue.ref(""), U = vue.ref(""), P = vue.ref(false), H = vue.ref(false);
+      }, g = vue.ref(0), k = vue.ref(null), q = vue.ref(false), A = vue.ref(1), T = vue.ref(20), S = vue.ref(""), U = vue.ref(""), H = vue.ref(false), P = vue.ref(false);
       let L, j = 0;
       window.addEventListener("keydown", (e => {
         "`" === e.key && g.value++;
@@ -14309,15 +14191,15 @@
       }, onDragEnter = e => {
         var t, a;
         (null == (a = null == (t = e.dataTransfer) ? void 0 : t.types) ? void 0 : a.includes("Files")) && (j++, 
-        H.value = true);
+        P.value = true);
       }, onDragLeave = e => {
-        j = Math.max(0, j - 1), 0 === j && (H.value = false);
+        j = Math.max(0, j - 1), 0 === j && (P.value = false);
       }, onDragOver = e => {
-        H.value && e.preventDefault();
+        P.value && e.preventDefault();
       }, onDrop = e => {
         var t, a;
-        if (!H.value) return;
-        e.preventDefault(), j = 0, H.value = false;
+        if (!P.value) return;
+        e.preventDefault(), j = 0, P.value = false;
         const n = null == (a = null == (t = e.dataTransfer) ? void 0 : t.files) ? void 0 : a[0];
         n && beforeUpload(n);
       };
@@ -14358,12 +14240,12 @@
       }, handlePageChange = e => {
         A.value = e;
       }, B = vue.computed((() => !!S.value || !!U.value));
-      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Pl, [ Hl, vue.createElementVNode("div", Ll, [ vue.createElementVNode("div", jl, [ vue.createElementVNode("span", $l, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", Ul, [ Hl, vue.createElementVNode("div", Pl, [ vue.createElementVNode("div", Ll, [ vue.createElementVNode("span", jl, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:database-outline"
         }), vue.createTextVNode(" \u5df2\u7f13\u5b58 "), vue.createElementVNode("strong", null, vue.toDisplayString(vue.unref(M).saveQuestionData.length), 1), vue.createTextVNode(" \u9898 ") ]), B.value ? (vue.openBlock(), 
-        vue.createElementBlock("span", zl, [ vue.createTextVNode(" \uff08\u7b5b\u9009\u540e "), vue.createElementVNode("strong", null, vue.toDisplayString(F.value.length), 1), vue.createTextVNode(" \u9898\uff09 ") ])) : vue.createCommentVNode("", true), q.value ? (vue.openBlock(), 
-        vue.createElementBlock("span", Ml, "\u5bfc\u5165\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ol, [ vue.createElementVNode("input", {
+        vue.createElementBlock("span", $l, [ vue.createTextVNode(" \uff08\u7b5b\u9009\u540e "), vue.createElementVNode("strong", null, vue.toDisplayString(F.value.length), 1), vue.createTextVNode(" \u9898\uff09 ") ])) : vue.createCommentVNode("", true), q.value ? (vue.openBlock(), 
+        vue.createElementBlock("span", zl, "\u5bfc\u5165\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ml, [ vue.createElementVNode("input", {
           ref_key: "uploadInput",
           ref: k,
           type: "file",
@@ -14380,13 +14262,13 @@
           })
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:upload-outline"
-        }), Dl ], 8, Fl), vue.createElementVNode("button", {
+        }), Fl ], 8, Ol), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small aah-btn-primary",
           type: "button",
           onClick: exportData
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:download-outline"
-        }), Nl ]), g.value > 10 ? (vue.openBlock(), vue.createElementBlock("button", {
+        }), Dl ]), g.value > 10 ? (vue.openBlock(), vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn aah-btn-small",
           type: "button",
@@ -14403,13 +14285,13 @@
           void msg("\u6e05\u9664\u6210\u529f", "success")))
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:trash-can-outline"
-        }), Rl ]), vue.createElementVNode("button", {
+        }), Nl ]), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small aah-btn-plain",
           type: "button",
-          onClick: p[2] || (p[2] = e => P.value = !P.value)
-        }, [ Bl, vue.createVNode(vue.unref(vue$1.Icon), {
-          icon: P.value ? "mdi:chevron-up" : "mdi:chevron-down"
-        }, null, 8, [ "icon" ]) ]) ]) ]), P.value ? (vue.openBlock(), vue.createElementBlock("div", Gl, Kl)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Wl, [ vue.createElementVNode("div", Ql, [ vue.withDirectives(vue.createElementVNode("input", {
+          onClick: p[2] || (p[2] = e => H.value = !H.value)
+        }, [ Rl, vue.createVNode(vue.unref(vue$1.Icon), {
+          icon: H.value ? "mdi:chevron-up" : "mdi:chevron-down"
+        }, null, 8, [ "icon" ]) ]) ]) ]), H.value ? (vue.openBlock(), vue.createElementBlock("div", Bl, Vl)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Kl, [ vue.createElementVNode("div", Wl, [ vue.withDirectives(vue.createElementVNode("input", {
           "onUpdate:modelValue": p[3] || (p[3] = e => S.value = e),
           type: "text",
           placeholder: "\u641c\u7d22\u9898\u76ee\u3001\u9009\u9879\u6216\u7b54\u6848...",
@@ -14421,7 +14303,7 @@
         }, "\xd7")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("button", {
           onClick: resetSearch,
           class: "aah-btn aah-btn-plain aah-btn-small"
-        }, "\u91cd\u7f6e") ]), R.length ? (vue.openBlock(), vue.createElementBlock("div", Jl, [ vue.createElementVNode("button", {
+        }, "\u91cd\u7f6e") ]), R.length ? (vue.openBlock(), vue.createElementBlock("div", Ql, [ vue.createElementVNode("button", {
           type: "button",
           class: vue.normalizeClass([ "aah-tag", U.value ? "" : "aah-tag-primary" ]),
           onClick: p[5] || (p[5] = e => U.value = "")
@@ -14430,20 +14312,20 @@
           type: "button",
           class: vue.normalizeClass([ "aah-tag", U.value === e.value ? "aah-tag-primary" : "" ]),
           onClick: t => U.value = e.value
-        }, vue.toDisplayString(e.label), 11, Xl))), 64)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Yl, [ 0 === D.value.length ? (vue.openBlock(), 
-        vue.createElementBlock("div", Zl, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, vue.toDisplayString(e.label), 11, Jl))), 64)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Xl, [ 0 === D.value.length ? (vue.openBlock(), 
+        vue.createElementBlock("div", Yl, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-edit",
           class: "table-empty-icon"
-        }), vue.createElementVNode("div", ec, vue.toDisplayString(B.value ? "\u6ca1\u6709\u627e\u5230\u5339\u914d\u7684\u9898\u76ee" : "\u5f53\u524d\u9875\u6682\u65e0\u6570\u636e"), 1), B.value ? (vue.openBlock(), 
+        }), vue.createElementVNode("div", Zl, vue.toDisplayString(B.value ? "\u6ca1\u6709\u627e\u5230\u5339\u914d\u7684\u9898\u76ee" : "\u5f53\u524d\u9875\u6682\u65e0\u6570\u636e"), 1), B.value ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 0,
           onClick: resetSearch,
           class: "aah-btn aah-btn-primary aah-btn-small"
-        }, "\u6e05\u9664\u7b5b\u9009")) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), vue.createElementBlock("div", tc, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, ((e, p) => {
+        }, "\u6e05\u9664\u7b5b\u9009")) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), vue.createElementBlock("div", ec, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, ((e, p) => {
           return vue.openBlock(), vue.createElementBlock("div", {
             key: p,
             class: "aah-card aah-card-compact qc-card"
-          }, [ vue.createElementVNode("div", ac, [ vue.createElementVNode("span", nc, vue.toDisplayString((u = e, typeConvert(u.type, false))), 1), vue.createElementVNode("span", rc, "# " + vue.toDisplayString((A.value - 1) * T.value + p + 1), 1), vue.createElementVNode("button", {
+          }, [ vue.createElementVNode("div", tc, [ vue.createElementVNode("span", ac, vue.toDisplayString((u = e, typeConvert(u.type, false))), 1), vue.createElementVNode("span", nc, "# " + vue.toDisplayString((A.value - 1) * T.value + p + 1), 1), vue.createElementVNode("button", {
             class: "aah-btn aah-btn-small qc-edit-btn",
             onClick: n => (e => {
               t.value = e, "15" === e.type ? o.value = true : a.value = true;
@@ -14451,16 +14333,16 @@
             type: "button"
           }, [ vue.createVNode(vue.unref(vue$1.Icon), {
             icon: "mdi:pencil-outline"
-          }), ic ], 8, sc) ]), vue.createElementVNode("div", {
+          }), ic ], 8, rc) ]), vue.createElementVNode("div", {
             class: "qc-question",
             innerHTML: e.question
-          }, null, 8, oc), "15" === e.type && Array.isArray(e.options) && e.options.length && "object" == typeof e.options[0] ? (vue.openBlock(), 
-          vue.createElementBlock("div", lc, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
+          }, null, 8, sc), "15" === e.type && Array.isArray(e.options) && e.options.length && "object" == typeof e.options[0] ? (vue.openBlock(), 
+          vue.createElementBlock("div", oc, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
             key: t,
             class: "qc-sub-question"
-          }, [ vue.createElementVNode("div", cc, [ vue.createTextVNode(vue.toDisplayString(t + 1) + ". ", 1), vue.createElementVNode("span", {
+          }, [ vue.createElementVNode("div", lc, [ vue.createTextVNode(vue.toDisplayString(t + 1) + ". ", 1), vue.createElementVNode("span", {
             innerHTML: e.question || ""
-          }, null, 8, pc) ]), Array.isArray(e.options) && e.options.length ? (vue.openBlock(), vue.createElementBlock("div", uc, [ (vue.openBlock(true), 
+          }, null, 8, cc) ]), Array.isArray(e.options) && e.options.length ? (vue.openBlock(), vue.createElementBlock("div", pc, [ (vue.openBlock(true), 
           vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((t, a) => (vue.openBlock(), vue.createElementBlock("div", {
             key: a,
             class: vue.normalizeClass([ "sub-option", isCorrectSubOption(e, a, String(t)) ? "sub-option-correct" : "" ])
@@ -14468,38 +14350,38 @@
             key: 0,
             icon: "mdi:check-circle",
             class: "qc-option-icon"
-          })) : vue.createCommentVNode("", true), vue.createElementVNode("span", dc, vue.toDisplayString(String.fromCharCode(65 + a)) + ".", 1), vue.createElementVNode("span", {
+          })) : vue.createCommentVNode("", true), vue.createElementVNode("span", uc, vue.toDisplayString(String.fromCharCode(65 + a)) + ".", 1), vue.createElementVNode("span", {
             class: "qc-option-text",
             innerHTML: t
-          }, null, 8, mc) ], 2)))), 128)) ])) : vue.createCommentVNode("", true), Array.isArray(e.answer) && e.answer.length ? (vue.openBlock(), 
-          vue.createElementBlock("div", hc, " \u7b54\u6848\uff1a" + vue.toDisplayString(e.answer.join(", ")), 1)) : vue.createCommentVNode("", true) ])))), 128)) ])) : visibleOptions(e).length ? (vue.openBlock(), 
-          vue.createElementBlock("div", fc, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(visibleOptions(e), ((t, a) => (vue.openBlock(), vue.createElementBlock("div", {
+          }, null, 8, dc) ], 2)))), 128)) ])) : vue.createCommentVNode("", true), Array.isArray(e.answer) && e.answer.length ? (vue.openBlock(), 
+          vue.createElementBlock("div", mc, " \u7b54\u6848\uff1a" + vue.toDisplayString(e.answer.join(", ")), 1)) : vue.createCommentVNode("", true) ])))), 128)) ])) : visibleOptions(e).length ? (vue.openBlock(), 
+          vue.createElementBlock("div", hc, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(visibleOptions(e), ((t, a) => (vue.openBlock(), vue.createElementBlock("div", {
             key: a,
             class: vue.normalizeClass([ "qc-option", isCorrectOption(e, a, t) ? "qc-option-correct" : "" ])
           }, [ isCorrectOption(e, a, t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
             key: 0,
             icon: "mdi:check-circle",
             class: "qc-option-icon"
-          })) : vue.createCommentVNode("", true), vue.createElementVNode("span", gc, vue.toDisplayString(String.fromCharCode(65 + a)) + ".", 1), vue.createElementVNode("span", {
+          })) : vue.createCommentVNode("", true), vue.createElementVNode("span", fc, vue.toDisplayString(String.fromCharCode(65 + a)) + ".", 1), vue.createElementVNode("span", {
             class: "qc-option-text",
             innerHTML: t
-          }, null, 8, vc) ], 2)))), 128)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", yc, [ bc, vue.createElementVNode("span", {
+          }, null, 8, gc) ], 2)))), 128)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", vc, [ yc, vue.createElementVNode("span", {
             class: "qc-answer-value",
             innerHTML: formatAnswerWithText(e)
-          }, null, 8, wc) ]) ]);
+          }, null, 8, bc) ]) ]);
           var u;
-        })), 128)) ])) ]), N.value > 1 ? (vue.openBlock(), vue.createElementBlock("div", xc, [ vue.createElementVNode("div", kc, [ vue.createElementVNode("button", {
+        })), 128)) ])) ]), N.value > 1 ? (vue.openBlock(), vue.createElementBlock("div", wc, [ vue.createElementVNode("div", xc, [ vue.createElementVNode("button", {
           onClick: p[6] || (p[6] = e => handlePageChange(A.value - 1)),
           disabled: A.value <= 1,
           class: "question-page-btn page-prev"
-        }, " \u2039 \u4e0a\u4e00\u9875 ", 8, _c), vue.createElementVNode("div", Ac, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(Math.min(N.value, 7), (e => (vue.openBlock(), 
+        }, " \u2039 \u4e0a\u4e00\u9875 ", 8, kc), vue.createElementVNode("div", _c, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(Math.min(N.value, 7), (e => (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: e,
           onClick: t => handlePageChange(e),
           class: vue.normalizeClass([ "page-number", {
             active: e === A.value
           } ])
-        }, vue.toDisplayString(e), 11, Tc)))), 128)), N.value > 7 ? (vue.openBlock(), vue.createElementBlock("span", Cc, "...")) : vue.createCommentVNode("", true), N.value > 7 ? (vue.openBlock(), 
+        }, vue.toDisplayString(e), 11, Ac)))), 128)), N.value > 7 ? (vue.openBlock(), vue.createElementBlock("span", Tc, "...")) : vue.createCommentVNode("", true), N.value > 7 ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 1,
           onClick: p[7] || (p[7] = e => handlePageChange(N.value)),
@@ -14510,19 +14392,19 @@
           onClick: p[8] || (p[8] = e => handlePageChange(A.value + 1)),
           disabled: A.value >= N.value,
           class: "question-page-btn page-next"
-        }, " \u4e0b\u4e00\u9875 \u203a ", 8, Sc) ]), vue.createElementVNode("div", Ic, [ Ec, vue.withDirectives(vue.createElementVNode("select", {
+        }, " \u4e0b\u4e00\u9875 \u203a ", 8, Cc) ]), vue.createElementVNode("div", Sc, [ Ic, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": p[9] || (p[9] = e => T.value = e),
           onChange: p[10] || (p[10] = e => A.value = 1)
-        }, jc, 544), [ [ vue.vModelSelect, T.value ] ]) ]) ])) : vue.createCommentVNode("", true), (vue.openBlock(), vue.createBlock(vue.Teleport, {
+        }, Lc, 544), [ [ vue.vModelSelect, T.value ] ]) ]) ])) : vue.createCommentVNode("", true), (vue.openBlock(), vue.createBlock(vue.Teleport, {
           to: "body"
-        }, [ H.value ? (vue.openBlock(), vue.createElementBlock("div", $c, [ vue.createElementVNode("div", zc, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, [ P.value ? (vue.openBlock(), vue.createElementBlock("div", jc, [ vue.createElementVNode("div", $c, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:cloud-upload-outline",
           class: "qc-drop-overlay-icon"
-        }), Mc ]) ])) : vue.createCommentVNode("", true) ])) ]), vue.createVNode(Zo, {
+        }), zc ]) ])) : vue.createCommentVNode("", true) ])) ]), vue.createVNode(Yo, {
           visible: a.value,
           ques: t.value,
           onHandleClose: handleEditClose
-        }, null, 8, [ "visible", "ques" ]), vue.createVNode(Ul, {
+        }, null, 8, [ "visible", "ques" ]), vue.createVNode(El, {
           visible: o.value,
           ques: t.value,
           onHandleClose: handleReadingEditClose
@@ -14530,98 +14412,98 @@
         _: 1
       }));
     }
-  }), Fc = {
+  }), Oc = {
     class: "preview-container"
-  }, Dc = {
+  }, Fc = {
     class: "toolbar"
-  }, Nc = {
+  }, Dc = {
     class: "toolbar-left"
-  }, Rc = {
+  }, Nc = {
     class: "page-title"
-  }, Bc = {
+  }, Rc = {
     class: "toolbar-right"
-  }, Gc = {
+  }, Bc = {
     class: "preview-search-box"
-  }, Vc = vue.createElementVNode("option", {
+  }, Gc = vue.createElementVNode("option", {
     value: 5
-  }, "5\u9898/\u9875", -1), Kc = vue.createElementVNode("option", {
+  }, "5\u9898/\u9875", -1), Vc = vue.createElementVNode("option", {
     value: 10
-  }, "10\u9898/\u9875", -1), Wc = vue.createElementVNode("option", {
+  }, "10\u9898/\u9875", -1), Kc = vue.createElementVNode("option", {
     value: 20
-  }, "20\u9898/\u9875", -1), Qc = [ Vc, Kc, Wc ], Jc = {
+  }, "20\u9898/\u9875", -1), Wc = [ Gc, Vc, Kc ], Qc = {
     key: 0,
     class: "search-info"
-  }, Xc = {
+  }, Jc = {
     class: "preview-questions-container"
-  }, Yc = {
+  }, Xc = {
     key: 0,
     class: "loading"
-  }, Zc = vue.createElementVNode("div", {
+  }, Yc = vue.createElementVNode("div", {
     class: "preview-spinner"
-  }, null, -1), ep = vue.createElementVNode("span", null, "\u641c\u7d22\u4e2d...", -1), tp = [ Zc, ep ], ap = {
+  }, null, -1), Zc = vue.createElementVNode("span", null, "\u641c\u7d22\u4e2d...", -1), ep = [ Yc, Zc ], tp = {
     key: 1,
     class: "empty"
-  }, np = {
+  }, ap = {
     key: 2,
     class: "questions-list"
-  }, rp = {
+  }, np = {
     class: "question-header"
-  }, sp = {
+  }, rp = {
     class: "question-info"
   }, ip = {
     class: "question-num"
-  }, op = {
+  }, sp = {
     class: "question-type"
-  }, lp = {
+  }, op = {
     class: "question-actions"
-  }, cp = [ "onClick" ], pp = [ "onClick" ], up = {
+  }, lp = [ "onClick" ], cp = [ "onClick" ], pp = {
     class: "preview-question-content"
-  }, dp = [ "innerHTML" ], mp = {
+  }, up = [ "innerHTML" ], dp = {
     key: 0,
     class: "options"
-  }, hp = {
+  }, mp = {
     key: 0,
     class: "reading-type"
-  }, fp = {
+  }, hp = {
     class: "reading-title"
-  }, gp = {
+  }, fp = {
     class: "preview-sub-questions"
-  }, vp = {
+  }, gp = {
     class: "sub-num"
-  }, yp = {
+  }, vp = {
     class: "sub-type"
-  }, bp = [ "innerHTML" ], wp = {
+  }, yp = [ "innerHTML" ], bp = {
     key: 0,
     class: "more-subs"
-  }, xp = {
+  }, wp = {
     key: 1,
     class: "complex-type"
-  }, kp = {
+  }, xp = {
     key: 2,
     class: "normal-options"
-  }, qp = {
+  }, kp = {
     class: "option-label"
-  }, _p = [ "innerHTML" ], Ap = {
+  }, qp = [ "innerHTML" ], _p = {
     key: 0,
     class: "correct-mark"
-  }, Tp = {
+  }, Ap = {
     class: "answer"
-  }, Cp = vue.createElementVNode("span", {
+  }, Tp = vue.createElementVNode("span", {
     class: "preview-answer-label"
-  }, "\u7b54\u6848\uff1a", -1), Sp = {
+  }, "\u7b54\u6848\uff1a", -1), Cp = {
     key: 0,
     class: "preview-answer-list"
-  }, Ip = [ "innerHTML" ], Ep = {
+  }, Sp = [ "innerHTML" ], Ip = {
     key: 2,
     class: "no-answer"
-  }, Up = {
+  }, Ep = {
     key: 1,
     class: "preview-pagination"
-  }, Pp = [ "disabled" ], Hp = {
+  }, Up = [ "disabled" ], Hp = {
     class: "page-info"
-  }, Lp = [ "max" ], jp = [ "disabled" ], $p = {
+  }, Pp = [ "max" ], Lp = [ "disabled" ], jp = {
     class: "total-info"
-  }, zp = vue.defineComponent({
+  }, $p = vue.defineComponent({
     __name: "Preview",
     setup(e) {
       const t = vue.ref(Cache.matchGet("ques1_") || []), a = vue.ref(false), o = vue.ref(""), g = vue.ref(1), k = vue.ref(10), q = function(e) {
@@ -14667,24 +14549,24 @@
           options: e,
           keyword: n
         })) : (t.value = Cache.matchGet("ques1_") || [], a.value = false, g.value = 1);
-      }, I = vue.ref(null), E = vue.ref(false), P = vue.ref(false), handleClose = () => {
+      }, I = vue.ref(null), E = vue.ref(false), H = vue.ref(false), handleClose = () => {
         E.value = false;
       }, handleReadingClose = () => {
-        P.value = false;
+        H.value = false;
       };
-      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Fc, [ vue.createVNode(Zo, {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", Oc, [ vue.createVNode(Yo, {
           visible: E.value,
           ques: I.value,
           onHandleClose: handleClose
-        }, null, 8, [ "visible", "ques" ]), vue.createVNode(Ul, {
-          visible: P.value,
+        }, null, 8, [ "visible", "ques" ]), vue.createVNode(El, {
+          visible: H.value,
           ques: I.value,
           onHandleClose: handleReadingClose
-        }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", Dc, [ vue.createElementVNode("div", Nc, [ vue.createElementVNode("h3", Rc, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", Fc, [ vue.createElementVNode("div", Dc, [ vue.createElementVNode("h3", Nc, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:book-open-page-variant",
           class: "icon-inline"
-        }), vue.createTextVNode(" \u9898\u5e93\u9884\u89c8 (" + vue.toDisplayString(A.value) + " \u9898)", 1) ]) ]), vue.createElementVNode("div", Bc, [ vue.createElementVNode("div", Gc, [ vue.withDirectives(vue.createElementVNode("input", {
+        }), vue.createTextVNode(" \u9898\u5e93\u9884\u89c8 (" + vue.toDisplayString(A.value) + " \u9898)", 1) ]) ]), vue.createElementVNode("div", Rc, [ vue.createElementVNode("div", Bc, [ vue.withDirectives(vue.createElementVNode("input", {
           "onUpdate:modelValue": p[0] || (p[0] = e => o.value = e),
           class: "preview-search-input",
           type: "text",
@@ -14700,8 +14582,8 @@
           "onUpdate:modelValue": p[2] || (p[2] = e => k.value = e),
           onChange: p[3] || (p[3] = e => g.value = 1),
           class: "page-size"
-        }, Qc, 544), [ [ vue.vModelSelect, k.value ] ]) ]) ]), o.value ? (vue.openBlock(), vue.createElementBlock("div", Jc, [ vue.createTextVNode(" \u627e\u5230 "), vue.createElementVNode("strong", null, vue.toDisplayString(t.value.length), 1), vue.createTextVNode(" \u9053\u76f8\u5173\u9898\u76ee ") ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Xc, [ a.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Yc, tp)) : 0 === S.value.length ? (vue.openBlock(), vue.createElementBlock("div", ap, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, Wc, 544), [ [ vue.vModelSelect, k.value ] ]) ]) ]), o.value ? (vue.openBlock(), vue.createElementBlock("div", Qc, [ vue.createTextVNode(" \u627e\u5230 "), vue.createElementVNode("strong", null, vue.toDisplayString(t.value.length), 1), vue.createTextVNode(" \u9053\u76f8\u5173\u9898\u76ee ") ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Jc, [ a.value ? (vue.openBlock(), 
+        vue.createElementBlock("div", Xc, ep)) : 0 === S.value.length ? (vue.openBlock(), vue.createElementBlock("div", tp, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-edit",
           class: "preview-empty-icon"
         }), vue.createElementVNode("p", null, vue.toDisplayString(o.value ? "\u6ca1\u6709\u627e\u5230\u5339\u914d\u7684\u9898\u76ee" : "\u6682\u65e0\u9898\u76ee\u6570\u636e"), 1), o.value ? (vue.openBlock(), 
@@ -14711,19 +14593,19 @@
           onClick: p[4] || (p[4] = e => {
             o.value = "", search();
           })
-        }, "\u6e05\u9664\u641c\u7d22")) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), vue.createElementBlock("div", np, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(S.value, ((e, a) => (vue.openBlock(), 
+        }, "\u6e05\u9664\u641c\u7d22")) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), vue.createElementBlock("div", ap, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(S.value, ((e, a) => (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: e.key || a,
           class: "question-item"
-        }, [ vue.createElementVNode("div", rp, [ vue.createElementVNode("div", sp, [ vue.createElementVNode("span", ip, vue.toDisplayString((g.value - 1) * k.value + a + 1), 1), vue.createElementVNode("span", op, vue.toDisplayString(vue.unref(typeConvert)(e.type ?? "", false)), 1) ]), vue.createElementVNode("div", lp, [ vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", np, [ vue.createElementVNode("div", rp, [ vue.createElementVNode("span", ip, vue.toDisplayString((g.value - 1) * k.value + a + 1), 1), vue.createElementVNode("span", sp, vue.toDisplayString(vue.unref(typeConvert)(e.type ?? "", false)), 1) ]), vue.createElementVNode("div", op, [ vue.createElementVNode("button", {
           class: "btn-edit",
           onClick: t => (e => {
-            I.value = e, "15" === e.type ? P.value = true : E.value = true;
+            I.value = e, "15" === e.type ? H.value = true : E.value = true;
           })(e),
           title: "\u7f16\u8f91"
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:pencil"
-        }) ], 8, cp), vue.createElementVNode("button", {
+        }) ], 8, lp), vue.createElementVNode("button", {
           class: "btn-delete",
           onClick: a => (e => {
             t.value = t.value.filter((t => t.key !== e.key)), Cache.matchRemove(e.key);
@@ -14731,83 +14613,83 @@
           title: "\u5220\u9664"
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:delete"
-        }) ], 8, pp) ]) ]), vue.createElementVNode("div", up, [ vue.createElementVNode("div", {
+        }) ], 8, cp) ]) ]), vue.createElementVNode("div", pp, [ vue.createElementVNode("div", {
           class: "preview-question-text",
           innerHTML: cl_img_format(e.question1 || e.question)
-        }, null, 8, dp), e.options && e.options.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", mp, [ "15" === e.type && "object" == typeof e.options[0] ? (vue.openBlock(), 
-        vue.createElementBlock("div", hp, [ vue.createElementVNode("div", fp, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, up), e.options && e.options.length > 0 ? (vue.openBlock(), vue.createElementBlock("div", dp, [ "15" === e.type && "object" == typeof e.options[0] ? (vue.openBlock(), 
+        vue.createElementBlock("div", mp, [ vue.createElementVNode("div", hp, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:book-open-variant",
           class: "icon-inline"
-        }), vue.createTextVNode(" \u9605\u8bfb\u7406\u89e3 (" + vue.toDisplayString(e.options.length) + " \u9898)", 1) ]), vue.createElementVNode("div", gp, [ (vue.openBlock(true), 
+        }), vue.createTextVNode(" \u9605\u8bfb\u7406\u89e3 (" + vue.toDisplayString(e.options.length) + " \u9898)", 1) ]), vue.createElementVNode("div", fp, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options.slice(0, 3), ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: t,
           class: "preview-sub-question"
-        }, [ vue.createElementVNode("span", vp, vue.toDisplayString(t + 1) + ".", 1), vue.createElementVNode("span", yp, "[" + vue.toDisplayString(vue.unref(typeConvert)(e.type ?? "", false)) + "]", 1), vue.createElementVNode("div", {
+        }, [ vue.createElementVNode("span", gp, vue.toDisplayString(t + 1) + ".", 1), vue.createElementVNode("span", vp, "[" + vue.toDisplayString(vue.unref(typeConvert)(e.type ?? "", false)) + "]", 1), vue.createElementVNode("div", {
           class: "sub-text",
           innerHTML: cl_img_format(e.question)
-        }, null, 8, bp) ])))), 128)), e.options.length > 3 ? (vue.openBlock(), vue.createElementBlock("div", wp, " \u8fd8\u6709 " + vue.toDisplayString(e.options.length - 3) + " \u4e2a\u5b50\u9898\u76ee... ", 1)) : vue.createCommentVNode("", true) ]) ])) : "object" == typeof e.options[0] ? (vue.openBlock(), 
-        vue.createElementBlock("div", xp, " \u26a0\ufe0f \u590d\u5408\u9898\u578b\uff0c\u70b9\u51fb\u7f16\u8f91\u67e5\u770b\u8be6\u60c5 ")) : (vue.openBlock(), 
-        vue.createElementBlock("div", kp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((t, a) => (vue.openBlock(), vue.createElementBlock("div", {
+        }, null, 8, yp) ])))), 128)), e.options.length > 3 ? (vue.openBlock(), vue.createElementBlock("div", bp, " \u8fd8\u6709 " + vue.toDisplayString(e.options.length - 3) + " \u4e2a\u5b50\u9898\u76ee... ", 1)) : vue.createCommentVNode("", true) ]) ])) : "object" == typeof e.options[0] ? (vue.openBlock(), 
+        vue.createElementBlock("div", wp, " \u26a0\ufe0f \u590d\u5408\u9898\u578b\uff0c\u70b9\u51fb\u7f16\u8f91\u67e5\u770b\u8be6\u60c5 ")) : (vue.openBlock(), 
+        vue.createElementBlock("div", xp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((t, a) => (vue.openBlock(), vue.createElementBlock("div", {
           key: a,
           class: vue.normalizeClass([ "option", {
             correct: e.answer && e.answer.includes(t)
           } ])
-        }, [ vue.createElementVNode("span", qp, vue.toDisplayString(getOptionIndex(a)) + ".", 1), vue.createElementVNode("span", {
+        }, [ vue.createElementVNode("span", kp, vue.toDisplayString(getOptionIndex(a)) + ".", 1), vue.createElementVNode("span", {
           class: "option-text",
           innerHTML: cl_img_format(t)
-        }, null, 8, _p), e.answer && e.answer.includes(t) ? (vue.openBlock(), vue.createElementBlock("span", Ap, "\u2713")) : vue.createCommentVNode("", true) ], 2)))), 128)) ])) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Tp, [ Cp, Array.isArray(e.answer) ? (vue.openBlock(), 
-        vue.createElementBlock("div", Sp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("span", {
+        }, null, 8, qp), e.answer && e.answer.includes(t) ? (vue.openBlock(), vue.createElementBlock("span", _p, "\u2713")) : vue.createCommentVNode("", true) ], 2)))), 128)) ])) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Ap, [ Tp, Array.isArray(e.answer) ? (vue.openBlock(), 
+        vue.createElementBlock("div", Cp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("span", {
           key: t,
           class: "preview-answer-item"
         }, vue.toDisplayString(e), 1)))), 128)) ])) : e.answer ? (vue.openBlock(), vue.createElementBlock("div", {
           key: 1,
           class: "preview-answer-text",
           innerHTML: cl_img_format(e.answer)
-        }, null, 8, Ip)) : (vue.openBlock(), vue.createElementBlock("span", Ep, "\u6682\u65e0\u7b54\u6848")) ]) ]) ])))), 128)) ])) ]), A.value > 0 ? (vue.openBlock(), 
-        vue.createElementBlock("div", Up, [ vue.createElementVNode("button", {
+        }, null, 8, Sp)) : (vue.openBlock(), vue.createElementBlock("span", Ip, "\u6682\u65e0\u7b54\u6848")) ]) ]) ])))), 128)) ])) ]), A.value > 0 ? (vue.openBlock(), 
+        vue.createElementBlock("div", Ep, [ vue.createElementVNode("button", {
           class: "preview-page-btn",
           disabled: g.value <= 1,
           onClick: goPrev
-        }, "\u4e0a\u4e00\u9875", 8, Pp), vue.createElementVNode("span", Hp, [ vue.createTextVNode(" \u7b2c "), vue.withDirectives(vue.createElementVNode("input", {
+        }, "\u4e0a\u4e00\u9875", 8, Up), vue.createElementVNode("span", Hp, [ vue.createTextVNode(" \u7b2c "), vue.withDirectives(vue.createElementVNode("input", {
           type: "number",
           class: "page-input",
           min: 1,
           max: T.value || 1,
           "onUpdate:modelValue": p[5] || (p[5] = e => g.value = e),
           onChange: p[6] || (p[6] = e => handlePageChange(g.value))
-        }, null, 40, Lp), [ [ vue.vModelText, g.value, void 0, {
+        }, null, 40, Pp), [ [ vue.vModelText, g.value, void 0, {
           number: true
         } ] ]), vue.createTextVNode(" / " + vue.toDisplayString(T.value || 1) + " \u9875 ", 1) ]), vue.createElementVNode("button", {
           class: "preview-page-btn",
           disabled: g.value >= (T.value || 1),
           onClick: goNext
-        }, "\u4e0b\u4e00\u9875", 8, jp), vue.createElementVNode("span", $p, "\u5171 " + vue.toDisplayString(A.value) + " \u9898", 1) ])) : vue.createCommentVNode("", true) ]) ])),
+        }, "\u4e0b\u4e00\u9875", 8, Lp), vue.createElementVNode("span", jp, "\u5171 " + vue.toDisplayString(A.value) + " \u9898", 1) ])) : vue.createCommentVNode("", true) ]) ])),
         _: 1
       }));
     }
-  }), Mp = {
+  }), zp = {
     class: "log-page"
-  }, Op = {
+  }, Mp = {
     class: "log-header"
-  }, Fp = vue.createElementVNode("h2", null, "\u8fd0\u884c\u65e5\u5fd7", -1), Dp = {
+  }, Op = vue.createElementVNode("h2", null, "\u8fd0\u884c\u65e5\u5fd7", -1), Fp = {
     class: "log-actions"
-  }, Np = {
+  }, Dp = {
     class: "log-toolbar"
-  }, Rp = {
+  }, Np = {
     class: "log-filter"
-  }, Bp = [ "onClick" ], Gp = {
+  }, Rp = [ "onClick" ], Bp = {
     key: 0,
     class: "log-list custom-scroll"
-  }, Vp = {
+  }, Gp = {
     class: "log-time"
-  }, Kp = {
+  }, Vp = {
     class: "log-msg"
-  }, Wp = {
+  }, Kp = {
     key: 1,
     class: "log-empty"
-  }, Qp = [ vue.createElementVNode("span", {
+  }, Wp = [ vue.createElementVNode("span", {
     class: "log-empty-icon"
-  }, "i", -1), vue.createElementVNode("p", null, "\u5f53\u524d\u6ca1\u6709\u65e5\u5fd7\u8bb0\u5f55", -1) ], Jp = vue.defineComponent({
+  }, "i", -1), vue.createElementVNode("p", null, "\u5f53\u524d\u6ca1\u6709\u65e5\u5fd7\u8bb0\u5f55", -1) ], Qp = vue.defineComponent({
     __name: "Log",
     setup(e) {
       const t = ce(), a = [ {
@@ -14835,137 +14717,137 @@
         }), a = URL.createObjectURL(e), n = document.createElement("a");
         n.href = a, n.download = `aiask-logs-${Date.now()}.json`, n.click(), URL.revokeObjectURL(a);
       };
-      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, {
         "no-padding": true
       }, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Mp, [ vue.createElementVNode("header", Op, [ vue.createElementVNode("div", null, [ Fp, vue.createElementVNode("p", null, "\u5171 " + vue.toDisplayString(f.value) + " \u6761\u8bb0\u5f55\uff0c\u5f53\u524d\u7b5b\u9009\uff1a" + vue.toDisplayString(u.value), 1) ]), vue.createElementVNode("div", Dp, [ vue.createElementVNode("button", {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", zp, [ vue.createElementVNode("header", Mp, [ vue.createElementVNode("div", null, [ Op, vue.createElementVNode("p", null, "\u5171 " + vue.toDisplayString(f.value) + " \u6761\u8bb0\u5f55\uff0c\u5f53\u524d\u7b5b\u9009\uff1a" + vue.toDisplayString(u.value), 1) ]), vue.createElementVNode("div", Fp, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           onClick: p[0] || (p[0] = e => vue.unref(t).logs = [])
         }, "\u6e05\u7a7a"), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           onClick: exportLogs
-        }, "\u5bfc\u51fa") ]) ]), vue.createElementVNode("div", Np, [ vue.createElementVNode("div", Rp, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(a, (e => vue.createElementVNode("button", {
+        }, "\u5bfc\u51fa") ]) ]), vue.createElementVNode("div", Dp, [ vue.createElementVNode("div", Np, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(a, (e => vue.createElementVNode("button", {
           key: e.key,
           class: vue.normalizeClass([ "aah-tag", o.value === e.key ? `aah-tag-${e.tone}` : "" ]),
           type: "button",
           onClick: t => o.value = e.key
-        }, vue.toDisplayString(e.label), 11, Bp))), 64)) ]) ]), c.value.length ? (vue.openBlock(), vue.createElementBlock("ul", Gp, [ (vue.openBlock(true), 
+        }, vue.toDisplayString(e.label), 11, Rp))), 64)) ]) ]), c.value.length ? (vue.openBlock(), vue.createElementBlock("ul", Bp, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(c.value, ((e, t) => (vue.openBlock(), vue.createElementBlock("li", {
           key: t,
           class: vue.normalizeClass([ "log-row", `log-row-${e.type}` ])
-        }, [ vue.createElementVNode("span", Vp, vue.toDisplayString(e.time), 1), vue.createElementVNode("span", {
+        }, [ vue.createElementVNode("span", Gp, vue.toDisplayString(e.time), 1), vue.createElementVNode("span", {
           class: vue.normalizeClass([ "aah-tag", "aah-tag-" + ("error" === e.type ? "danger" : "warning" === e.type ? "warning" : "success") ])
-        }, vue.toDisplayString(e.type), 3), vue.createElementVNode("span", Kp, vue.toDisplayString(e.content), 1) ], 2)))), 128)) ])) : (vue.openBlock(), vue.createElementBlock("div", Wp, Qp)) ]) ])),
+        }, vue.toDisplayString(e.type), 3), vue.createElementVNode("span", Vp, vue.toDisplayString(e.content), 1) ], 2)))), 128)) ])) : (vue.openBlock(), vue.createElementBlock("div", Kp, Wp)) ]) ])),
         _: 1
       }));
     }
-  }), Xp = {
+  }), Jp = {
     class: "ai-workbench"
-  }, Yp = {
+  }, Xp = {
     class: "ai-status-panel"
-  }, Zp = {
+  }, Yp = {
     class: "ai-status-main"
-  }, eu = {
+  }, Zp = {
     class: "aah-card ai-input-panel"
-  }, tu = {
+  }, eu = {
     class: "ai-section-heading"
-  }, au = vue.createElementVNode("div", null, [ vue.createElementVNode("h3", null, "\u9898\u76ee\u8f93\u5165"), vue.createElementVNode("p", null, "\u7c98\u8d34\u9898\u5e72\u3001\u9009\u9879\u6216\u5b8c\u6574\u9898\u76ee\u5185\u5bb9") ], -1), nu = {
+  }, tu = vue.createElementVNode("div", null, [ vue.createElementVNode("h3", null, "\u9898\u76ee\u8f93\u5165"), vue.createElementVNode("p", null, "\u7c98\u8d34\u9898\u5e72\u3001\u9009\u9879\u6216\u5b8c\u6574\u9898\u76ee\u5185\u5bb9") ], -1), au = {
     class: "ai-mode-switch"
-  }, ru = [ "onClick" ], su = {
+  }, nu = [ "onClick" ], ru = {
     key: 0,
     class: "ai-question-type-row"
   }, iu = {
     class: "ai-config-field"
-  }, ou = vue.createElementVNode("span", null, "\u9898\u578b\u9009\u62e9", -1), lu = [ "value" ], cu = vue.createElementVNode("p", {
+  }, su = vue.createElementVNode("span", null, "\u9898\u578b\u9009\u62e9", -1), ou = [ "value" ], lu = vue.createElementVNode("p", {
     class: "ai-helper-text"
-  }, "\u7c98\u8d34\u9898\u5e72\u53ca\u9009\u9879\uff0c\u7cfb\u7edf\u4f1a\u81ea\u52a8\u89e3\u6790\u5e76\u641c\u7d22\u5b98\u65b9\u9898\u5e93", -1), pu = {
+  }, "\u7c98\u8d34\u9898\u5e72\u53ca\u9009\u9879\uff0c\u7cfb\u7edf\u4f1a\u81ea\u52a8\u89e3\u6790\u5e76\u641c\u7d22\u5b98\u65b9\u9898\u5e93", -1), cu = {
     class: "ai-command-row"
-  }, uu = [ "disabled" ], du = {
+  }, pu = [ "disabled" ], uu = {
     class: "aah-card ai-result-panel"
-  }, mu = {
+  }, du = {
     class: "ai-section-heading"
-  }, hu = {
+  }, mu = {
     class: "ai-result-actions"
-  }, fu = {
+  }, hu = {
     key: 1,
     class: "aah-tag aah-tag-success"
-  }, gu = {
+  }, fu = {
     key: 0,
     class: "ai-loading-text"
-  }, vu = [ "innerHTML" ], yu = {
+  }, gu = [ "innerHTML" ], vu = {
     key: 2,
     class: "ai-empty"
-  }, bu = vue.createElementVNode("p", {
+  }, yu = vue.createElementVNode("p", {
     class: "ai-empty-text"
-  }, "\u8f93\u5165\u9898\u76ee\u540e\u5f00\u59cb\u641c\u7d22\uff0cAI \u89e3\u7b54\u4f1a\u663e\u793a\u5728\u8fd9\u91cc", -1), wu = {
+  }, "\u8f93\u5165\u9898\u76ee\u540e\u5f00\u59cb\u641c\u7d22\uff0cAI \u89e3\u7b54\u4f1a\u663e\u793a\u5728\u8fd9\u91cc", -1), bu = {
     key: 0,
     class: "ai-loading-text"
-  }, xu = {
+  }, wu = {
     key: 1,
     class: "aah-alert aah-alert-warning"
-  }, ku = [ "innerHTML" ], qu = {
+  }, xu = [ "innerHTML" ], ku = {
     key: 2,
     class: "official-meta"
-  }, _u = {
+  }, qu = {
     class: "official-meta-row"
-  }, Au = vue.createElementVNode("div", {
+  }, _u = vue.createElementVNode("div", {
     class: "official-meta-label"
-  }, "\u89e3\u6790\u9898\u5e72", -1), Tu = [ "innerHTML" ], Cu = {
+  }, "\u89e3\u6790\u9898\u5e72", -1), Au = [ "innerHTML" ], Tu = {
     key: 0,
     class: "official-meta-row"
-  }, Su = vue.createElementVNode("div", {
+  }, Cu = vue.createElementVNode("div", {
     class: "official-meta-label"
-  }, "\u89e3\u6790\u9009\u9879", -1), Iu = {
+  }, "\u89e3\u6790\u9009\u9879", -1), Su = {
     class: "official-meta-options"
-  }, Eu = {
+  }, Iu = {
     class: "official-option-label"
-  }, Uu = [ "innerHTML" ], Pu = {
+  }, Eu = [ "innerHTML" ], Uu = {
     key: 3,
     class: "official-result-list"
   }, Hu = {
     class: "official-result-header"
-  }, Lu = {
+  }, Pu = {
     class: "official-result-title"
-  }, ju = vue.createElementVNode("span", {
+  }, Lu = vue.createElementVNode("span", {
     class: "official-result-subtitle"
-  }, "\u6839\u636e\u9898\u5e72\u76f8\u4f3c\u5ea6\u6392\u5e8f", -1), $u = {
+  }, "\u6839\u636e\u9898\u5e72\u76f8\u4f3c\u5ea6\u6392\u5e8f", -1), ju = {
     class: "aah-tag aah-tag-primary"
-  }, zu = {
+  }, $u = {
     class: "official-section"
-  }, Mu = vue.createElementVNode("div", {
+  }, zu = vue.createElementVNode("div", {
     class: "official-section-label"
-  }, "\u9898\u5e72", -1), Ou = [ "innerHTML" ], Fu = {
+  }, "\u9898\u5e72", -1), Mu = [ "innerHTML" ], Ou = {
     key: 0,
     class: "official-section"
-  }, Du = vue.createElementVNode("div", {
+  }, Fu = vue.createElementVNode("div", {
     class: "official-section-label"
-  }, "\u9009\u9879", -1), Nu = {
+  }, "\u9009\u9879", -1), Du = {
     class: "official-options"
-  }, Ru = {
+  }, Nu = {
     class: "official-option-label"
-  }, Bu = [ "innerHTML" ], Gu = {
+  }, Ru = [ "innerHTML" ], Bu = {
     class: "official-section"
-  }, Vu = vue.createElementVNode("div", {
+  }, Gu = vue.createElementVNode("div", {
     class: "official-section-label"
-  }, "\u53c2\u8003\u7b54\u6848", -1), Ku = {
+  }, "\u53c2\u8003\u7b54\u6848", -1), Vu = {
     class: "official-answer-chips"
-  }, Wu = {
+  }, Ku = {
     key: 0,
     class: "official-answer-empty"
-  }, Qu = {
+  }, Wu = {
     key: 4,
     class: "ai-empty"
-  }, Ju = vue.createElementVNode("p", {
+  }, Qu = vue.createElementVNode("p", {
     class: "ai-empty-text"
-  }, "\u672a\u5339\u914d\u5230\u7ed3\u679c\uff0c\u8bd5\u8bd5\u4f18\u5316\u9898\u5e72\u6216\u8c03\u6574\u9898\u578b", -1), Xu = {
+  }, "\u672a\u5339\u914d\u5230\u7ed3\u679c\uff0c\u8bd5\u8bd5\u4f18\u5316\u9898\u5e72\u6216\u8c03\u6574\u9898\u578b", -1), Ju = {
     key: 5,
     class: "ai-empty"
-  }, Yu = vue.createElementVNode("p", {
+  }, Xu = vue.createElementVNode("p", {
     class: "ai-empty-text"
-  }, "\u8f93\u5165\u9898\u5e72\u5e76\u70b9\u51fb\u641c\u7d22\uff0c\u5373\u53ef\u5339\u914d\u5b98\u65b9\u9898\u5e93", -1), Zu = {
+  }, "\u8f93\u5165\u9898\u5e72\u5e76\u70b9\u51fb\u641c\u7d22\uff0c\u5373\u53ef\u5339\u914d\u5b98\u65b9\u9898\u5e93", -1), Yu = {
     key: 0,
     class: "ai-service-details"
-  }, ed = vue.createElementVNode("summary", null, "\u670d\u52a1\u8bf4\u660e", -1), td = [ "innerHTML" ], ad = vue.defineComponent({
+  }, Zu = vue.createElementVNode("summary", null, "\u670d\u52a1\u8bf4\u660e", -1), ed = [ "innerHTML" ], td = vue.defineComponent({
     __name: "Ai",
     setup(e) {
       const t = _a(), a = ce(), o = ka(), u = vue.ref(""), g = vue.ref("1"), k = vue.ref(""), q = [ {
@@ -14986,7 +14868,7 @@
       }, {
         label: "\u5176\u5b83/\u81ea\u52a8",
         value: "8"
-      } ], A = vue.ref(q[0].value), S = vue.ref(false), I = vue.ref([]), E = vue.ref(false), U = vue.ref(""), P = vue.ref(false), H = vue.ref({
+      } ], A = vue.ref(q[0].value), S = vue.ref(false), I = vue.ref([]), E = vue.ref(false), U = vue.ref(""), H = vue.ref(false), P = vue.ref({
         question: "",
         options: []
       }), L = vue.ref(false), j = vue.computed((() => "1" === g.value)), z = vue.computed((() => j.value ? t.aiLoading : E.value)), M = vue.computed((() => z.value ? "\u641c\u7d22\u4e2d..." : "\u5f00\u59cb\u641c\u7d22")), O = vue.computed((() => t.selectTarget("search"))), F = vue.computed((() => {
@@ -15009,7 +14891,7 @@
           desc: `${e.channel.name} \xb7 ${e.channel.baseUrl}`,
           model: e.config.model
         };
-      })), N = vue.computed((() => Boolean(t.aiMsg || t.aiLoading))), R = vue.computed((() => E.value || U.value || H.value.question || I.value.length || P.value)), B = vue.computed((() => {
+      })), N = vue.computed((() => Boolean(t.aiMsg || t.aiLoading))), R = vue.computed((() => E.value || U.value || P.value.question || I.value.length || H.value)), B = vue.computed((() => {
         const e = O.value;
         if (!e) return "\u5f53\u524d\u6ca1\u6709\u53ef\u7528\u7684 AI \u641c\u9898\u6e20\u9053\uff0c\u8bf7\u5148\u8fdb\u5165 AI \u8bbe\u7f6e\u6dfb\u52a0\u5e76\u586b\u5199 API Key\u3002";
         const t = e.channel.docUrl || e.channel.baseUrl;
@@ -15028,7 +14910,7 @@
         return [];
       };
       vue.watch(g, (e => {
-        "1" === e ? (I.value = [], U.value = "", P.value = false, H.value = {
+        "1" === e ? (I.value = [], U.value = "", H.value = false, P.value = {
           question: "",
           options: []
         }, E.value = false, S.value = false, A.value = q[0].value, L.value = false) : (k.value = `${Date.now()}-${Math.random()}`, 
@@ -15043,20 +14925,20 @@
         k.value = a, t.resetAi(), t.aiLoading = true;
         try {
           const n = O.value, r = await (async ({query: e, config: t, route: a, onToken: n, runScene: r = runAiScene}) => {
-            let s = "";
-            const i = await r("search", t, e, {
+            let i = "";
+            const s = await r("search", t, e, {
               route: a,
               stream: (null == t ? void 0 : t.stream) ?? !0,
               onToken: e => {
-                s += e, null == n || n(e);
+                i += e, null == n || n(e);
               }
             });
-            return i.success ? (!s && i.text && (s = i.text, null == n || n(i.text)), {
-              ...i,
-              text: s || i.text
+            return s.success ? (!i && s.text && (i = s.text, null == n || n(s.text)), {
+              ...s,
+              text: i || s.text
             }) : {
-              ...i,
-              displayMessage: i.displayMessage || "AI \u641c\u9898\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5"
+              ...s,
+              displayMessage: s.displayMessage || "AI \u641c\u9898\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5"
             };
           })({
             query: e,
@@ -15077,10 +14959,10 @@
       }, handleOfficialSearch = async e => {
         const t = (e => {
           const t = e.replace(/\r\n?/g, "\n").split("\n").map((e => e.trim())).filter(Boolean), a = [], n = [];
-          let r = false, s = false;
+          let r = false, i = false;
           return t.forEach((e => {
-            if (s) return;
-            if (r && Ie.test(e)) return void (s = true);
+            if (i) return;
+            if (r && Ie.test(e)) return void (i = true);
             const t = e.match(Se);
             if (t) return r = true, void n.push(t[2].trim());
             r && n.length ? n[n.length - 1] = `${n[n.length - 1]} ${e}`.trim() : a.push(e);
@@ -15092,7 +14974,7 @@
         if (t.question) {
           var a, n;
           a = t.question, n = t.options, S.value || (A.value = detectAiQuestionType(a, n)), 
-          H.value = t, P.value = true, E.value = true, U.value = "", L.value = false, I.value = [];
+          P.value = t, H.value = true, E.value = true, U.value = "", L.value = false, I.value = [];
           try {
             const {success: e, message: a, data: n, needLogin: r} = await o.fuzzySearchQuestion({
               question: t.question,
@@ -15128,8 +15010,8 @@
         value: "2",
         key: "ask"
       } ];
-      return (e, o) => (vue.openBlock(), vue.createBlock(Ya, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Xp, [ vue.createElementVNode("section", Yp, [ vue.createElementVNode("div", Zp, [ vue.createElementVNode("span", {
+      return (e, o) => (vue.openBlock(), vue.createBlock(Xa, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", Jp, [ vue.createElementVNode("section", Xp, [ vue.createElementVNode("div", Yp, [ vue.createElementVNode("span", {
           class: vue.normalizeClass([ "aah-tag", "success" === D.value.tone ? "aah-tag-success" : "aah-tag-warning" ])
         }, vue.toDisplayString(D.value.title), 3), vue.createElementVNode("strong", null, vue.toDisplayString(D.value.model), 1), vue.createElementVNode("p", null, vue.toDisplayString(D.value.desc), 1) ]), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
@@ -15138,7 +15020,7 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:cog-outline",
           class: "icon-inline"
-        }), vue.createTextVNode(" AI \u8bbe\u7f6e ") ]) ]), vue.createElementVNode("section", eu, [ vue.createElementVNode("div", tu, [ au, vue.createElementVNode("div", nu, [ (vue.openBlock(), 
+        }), vue.createTextVNode(" AI \u8bbe\u7f6e ") ]) ]), vue.createElementVNode("section", Zp, [ vue.createElementVNode("div", eu, [ tu, vue.createElementVNode("div", au, [ (vue.openBlock(), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(V, (e => vue.createElementVNode("button", {
           key: e.value,
           type: "button",
@@ -15146,19 +15028,19 @@
             active: g.value === e.value
           } ]),
           onClick: t => g.value = e.value
-        }, vue.toDisplayString(e.label), 11, ru))), 64)) ]) ]), vue.withDirectives(vue.createElementVNode("textarea", {
+        }, vue.toDisplayString(e.label), 11, nu))), 64)) ]) ]), vue.withDirectives(vue.createElementVNode("textarea", {
           "onUpdate:modelValue": o[0] || (o[0] = e => u.value = e),
           class: "ai-textarea",
           placeholder: "\u8bf7\u8f93\u5165\u9898\u76ee\u6216\u95ee\u9898\uff0cAI \u5c06\u4e3a\u60a8\u63d0\u4f9b\u8be6\u7ec6\u89e3\u7b54...",
           rows: "7"
-        }, null, 512), [ [ vue.vModelText, u.value ] ]), "2" === g.value ? (vue.openBlock(), vue.createElementBlock("div", su, [ vue.createElementVNode("label", iu, [ ou, vue.withDirectives(vue.createElementVNode("select", {
+        }, null, 512), [ [ vue.vModelText, u.value ] ]), "2" === g.value ? (vue.openBlock(), vue.createElementBlock("div", ru, [ vue.createElementVNode("label", iu, [ su, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": o[1] || (o[1] = e => A.value = e),
           class: "aah-select",
           onChange: onQuestionTypeChange
         }, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(q, (e => vue.createElementVNode("option", {
           key: e.value,
           value: e.value
-        }, vue.toDisplayString(e.label), 9, lu))), 64)) ], 544), [ [ vue.vModelSelect, A.value ] ]) ]), cu ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", pu, [ vue.createElementVNode("button", {
+        }, vue.toDisplayString(e.label), 9, ou))), 64)) ], 544), [ [ vue.vModelSelect, A.value ] ]) ]), lu ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", cu, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary",
           type: "button",
           onClick: search,
@@ -15166,19 +15048,19 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:magnify",
           class: "icon-inline"
-        }), vue.createElementVNode("span", null, vue.toDisplayString(M.value), 1) ], 8, uu), "1" === g.value ? (vue.openBlock(), vue.createElementBlock("button", {
+        }), vue.createElementVNode("span", null, vue.toDisplayString(M.value), 1) ], 8, pu), "1" === g.value ? (vue.openBlock(), vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: clearAiResult
-        }, "\u6e05\u7a7a\u7ed3\u679c")) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("section", du, [ vue.createElementVNode("div", mu, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h3", null, vue.toDisplayString("1" === g.value ? "AI \u89e3\u7b54" : "\u7231\u95ee\u7b54\u9898\u5e93"), 1), vue.createElementVNode("p", null, vue.toDisplayString("1" === g.value ? "\u7ed3\u679c\u4ec5\u4f9b\u53c2\u8003\uff0c\u8bf7\u7ed3\u5408\u9898\u76ee\u81ea\u884c\u6838\u5bf9" : "\u6839\u636e\u9898\u5e72\u76f8\u4f3c\u5ea6\u8fd4\u56de\u5b98\u65b9\u9898\u5e93\u5339\u914d\u7ed3\u679c"), 1) ]), vue.createElementVNode("div", hu, [ "1" === g.value && vue.unref(t).aiMsg ? (vue.openBlock(), 
+        }, "\u6e05\u7a7a\u7ed3\u679c")) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("section", uu, [ vue.createElementVNode("div", du, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h3", null, vue.toDisplayString("1" === g.value ? "AI \u89e3\u7b54" : "\u7231\u95ee\u7b54\u9898\u5e93"), 1), vue.createElementVNode("p", null, vue.toDisplayString("1" === g.value ? "\u7ed3\u679c\u4ec5\u4f9b\u53c2\u8003\uff0c\u8bf7\u7ed3\u5408\u9898\u76ee\u81ea\u884c\u6838\u5bf9" : "\u6839\u636e\u9898\u5e72\u76f8\u4f3c\u5ea6\u8fd4\u56de\u5b98\u65b9\u9898\u5e93\u5339\u914d\u7ed3\u679c"), 1) ]), vue.createElementVNode("div", mu, [ "1" === g.value && vue.unref(t).aiMsg ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           onClick: copyAiResult
         }, "\u590d\u5236\u7ed3\u679c")) : vue.createCommentVNode("", true), "1" === g.value && vue.unref(t).aiMsg && !vue.unref(t).aiLoading ? (vue.openBlock(), 
-        vue.createElementBlock("span", fu, "\u89e3\u7b54\u5b8c\u6210")) : vue.createCommentVNode("", true), "2" === g.value ? (vue.openBlock(), 
+        vue.createElementBlock("span", hu, "\u89e3\u7b54\u5b8c\u6210")) : vue.createCommentVNode("", true), "2" === g.value ? (vue.openBlock(), 
         vue.createElementBlock("span", {
           key: 2,
           class: vue.normalizeClass([ "aah-tag", I.value.length ? "aah-tag-success" : "aah-tag-primary" ])
@@ -15188,185 +15070,157 @@
           class: vue.normalizeClass([ "ai-result-content", {
             "ai-result-content-active": N.value
           } ])
-        }, [ vue.unref(t).aiLoading ? (vue.openBlock(), vue.createElementBlock("div", gu, "AI \u6b63\u5728\u751f\u6210...")) : vue.unref(t).aiMsg ? (vue.openBlock(), 
+        }, [ vue.unref(t).aiLoading ? (vue.openBlock(), vue.createElementBlock("div", fu, "AI \u6b63\u5728\u751f\u6210...")) : vue.unref(t).aiMsg ? (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: 1,
           innerHTML: vue.unref(t).currentAiMd(),
           class: "markdown-body"
-        }, null, 8, vu)) : (vue.openBlock(), vue.createElementBlock("div", yu, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, gu)) : (vue.openBlock(), vue.createElementBlock("div", vu, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:robot-outline",
           class: "ai-empty-icon"
-        }), bu ])) ], 2)) : (vue.openBlock(), vue.createElementBlock("div", {
+        }), yu ])) ], 2)) : (vue.openBlock(), vue.createElementBlock("div", {
           key: 1,
           class: vue.normalizeClass([ "ai-result-content", {
             "ai-result-content-active": R.value
           } ])
-        }, [ E.value ? (vue.openBlock(), vue.createElementBlock("div", wu, "\u641c\u7d22\u4e2d...")) : vue.createCommentVNode("", true), U.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", xu, [ vue.createElementVNode("span", {
+        }, [ E.value ? (vue.openBlock(), vue.createElementBlock("div", bu, "\u641c\u7d22\u4e2d...")) : vue.createCommentVNode("", true), U.value ? (vue.openBlock(), 
+        vue.createElementBlock("div", wu, [ vue.createElementVNode("span", {
           innerHTML: U.value
-        }, null, 8, ku), L.value ? (vue.openBlock(), vue.createElementBlock("button", {
+        }, null, 8, xu), L.value ? (vue.openBlock(), vue.createElementBlock("button", {
           key: 0,
           class: "ai-link-btn",
           type: "button",
           onClick: o[2] || (o[2] = e => vue.unref(a).setPage("system", "account"))
-        }, " \u70b9\u51fb\u767b\u5f55 ")) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), H.value.question ? (vue.openBlock(), 
-        vue.createElementBlock("div", qu, [ vue.createElementVNode("div", _u, [ Au, vue.createElementVNode("div", {
+        }, " \u70b9\u51fb\u767b\u5f55 ")) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), P.value.question ? (vue.openBlock(), 
+        vue.createElementBlock("div", ku, [ vue.createElementVNode("div", qu, [ _u, vue.createElementVNode("div", {
           class: "official-meta-value",
-          innerHTML: H.value.question
-        }, null, 8, Tu) ]), H.value.options.length ? (vue.openBlock(), vue.createElementBlock("div", Cu, [ Su, vue.createElementVNode("div", Iu, [ (vue.openBlock(true), 
-        vue.createElementBlock(vue.Fragment, null, vue.renderList(H.value.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
+          innerHTML: P.value.question
+        }, null, 8, Au) ]), P.value.options.length ? (vue.openBlock(), vue.createElementBlock("div", Tu, [ Cu, vue.createElementVNode("div", Su, [ (vue.openBlock(true), 
+        vue.createElementBlock(vue.Fragment, null, vue.renderList(P.value.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: `parsed-${t}`,
           class: "official-meta-option"
-        }, [ vue.createElementVNode("span", Eu, vue.toDisplayString(String.fromCharCode(65 + t)) + ".", 1), vue.createElementVNode("span", {
+        }, [ vue.createElementVNode("span", Iu, vue.toDisplayString(String.fromCharCode(65 + t)) + ".", 1), vue.createElementVNode("span", {
           class: "official-option-text",
           innerHTML: e
-        }, null, 8, Uu) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), I.value.length ? (vue.openBlock(), 
-        vue.createElementBlock("div", Pu, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(I.value, ((e, t) => {
+        }, null, 8, Eu) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), I.value.length ? (vue.openBlock(), 
+        vue.createElementBlock("div", Uu, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(I.value, ((e, t) => {
           return vue.openBlock(), vue.createElementBlock("div", {
             key: `official-${t}`,
             class: "official-result-item"
-          }, [ vue.createElementVNode("div", Hu, [ vue.createElementVNode("div", null, [ vue.createElementVNode("span", Lu, "\u5339\u914d\u9898\u76ee " + vue.toDisplayString(t + 1), 1), ju ]), vue.createElementVNode("span", $u, vue.toDisplayString((a = e.type, 
-          G[String(a)] || "\u5176\u5b83\u9898\u578b")), 1) ]), vue.createElementVNode("div", zu, [ Mu, vue.createElementVNode("div", {
+          }, [ vue.createElementVNode("div", Hu, [ vue.createElementVNode("div", null, [ vue.createElementVNode("span", Pu, "\u5339\u914d\u9898\u76ee " + vue.toDisplayString(t + 1), 1), Lu ]), vue.createElementVNode("span", ju, vue.toDisplayString((a = e.type, 
+          G[String(a)] || "\u5176\u5b83\u9898\u578b")), 1) ]), vue.createElementVNode("div", $u, [ zu, vue.createElementVNode("div", {
             class: "official-question",
             innerHTML: e.question
-          }, null, 8, Ou) ]), e.options && e.options.length ? (vue.openBlock(), vue.createElementBlock("div", Fu, [ Du, vue.createElementVNode("ul", Nu, [ (vue.openBlock(true), 
+          }, null, 8, Mu) ]), e.options && e.options.length ? (vue.openBlock(), vue.createElementBlock("div", Ou, [ Fu, vue.createElementVNode("ul", Du, [ (vue.openBlock(true), 
           vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, a) => (vue.openBlock(), vue.createElementBlock("li", {
             key: `opt-${t}-${a}`
-          }, [ vue.createElementVNode("span", Ru, vue.toDisplayString(String.fromCharCode(65 + a)) + ".", 1), vue.createElementVNode("span", {
+          }, [ vue.createElementVNode("span", Nu, vue.toDisplayString(String.fromCharCode(65 + a)) + ".", 1), vue.createElementVNode("span", {
             class: "official-option-text",
             innerHTML: e
-          }, null, 8, Bu) ])))), 128)) ]) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Gu, [ Vu, vue.createElementVNode("div", Ku, [ (vue.openBlock(true), 
+          }, null, 8, Ru) ])))), 128)) ]) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Bu, [ Gu, vue.createElementVNode("div", Vu, [ (vue.openBlock(true), 
           vue.createElementBlock(vue.Fragment, null, vue.renderList(formatAnswer(e.answer), ((e, a) => (vue.openBlock(), vue.createElementBlock("span", {
             key: `answer-${t}-${a}`,
             class: "aah-tag aah-tag-success"
-          }, vue.toDisplayString(e), 1)))), 128)), formatAnswer(e.answer).length ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock("span", Wu, "\u6682\u65e0\u7b54\u6848\u4fe1\u606f")) ]) ]) ]);
+          }, vue.toDisplayString(e), 1)))), 128)), formatAnswer(e.answer).length ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock("span", Ku, "\u6682\u65e0\u7b54\u6848\u4fe1\u606f")) ]) ]) ]);
           var a;
-        })), 128)) ])) : !P.value || U.value || E.value ? U.value || E.value ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("div", Xu, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        })), 128)) ])) : !H.value || U.value || E.value ? U.value || E.value ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("div", Ju, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-document-outline",
           class: "ai-empty-icon"
-        }), Yu ])) : (vue.openBlock(), vue.createElementBlock("div", Qu, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), Xu ])) : (vue.openBlock(), vue.createElementBlock("div", Wu, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:magnify",
           class: "ai-empty-icon"
-        }), Ju ])) ], 2)) ]), "1" === g.value ? (vue.openBlock(), vue.createElementBlock("details", Zu, [ ed, vue.createElementVNode("div", {
+        }), Qu ])) ], 2)) ]), "1" === g.value ? (vue.openBlock(), vue.createElementBlock("details", Yu, [ Zu, vue.createElementVNode("div", {
           class: "copyright-content",
           innerHTML: vue.unref(createSafeMarkdownHtml)(B.value)
-        }, null, 8, td) ])) : vue.createCommentVNode("", true) ]) ])),
+        }, null, 8, ed) ])) : vue.createCommentVNode("", true) ]) ])),
         _: 1
       }));
     }
-  }), nd = {
-    class: "user-page"
+  }), ad = "https://www.aiask.site", nd = {
+    account: `${ad}/account.html`,
+    register: `${ad}/account.html#register`,
+    reset: `${ad}/reset.html`,
+    feedback: `${ad}/feedback.html`
   }, rd = {
+    class: "user-page"
+  }, id = {
     key: 0,
     class: "user-page__login-section"
   }, sd = {
     class: "user-page__login-box"
-  }, id = {
+  }, od = {
     class: "user-page__login-header"
-  }, od = vue.createElementVNode("span", {
+  }, ld = vue.createElementVNode("span", {
     class: "aah-tag aah-tag-primary"
-  }, "\u7528\u6237\u4e2d\u5fc3", -1), ld = vue.createElementVNode("h2", null, "\u767b\u5f55\u7231\u95ee\u7b54\u8d26\u53f7", -1), cd = vue.createElementVNode("p", null, "\u767b\u5f55\u540e\u53ef\u4f7f\u7528\u4e91\u540c\u6b65\u3001\u79ef\u5206\u548c\u4f1a\u5458\u6743\u76ca", -1), pd = {
+  }, "\u7528\u6237\u4e2d\u5fc3", -1), cd = vue.createElementVNode("h2", null, "\u767b\u5f55\u7231\u95ee\u7b54\u8d26\u53f7", -1), pd = vue.createElementVNode("p", null, "\u767b\u5f55\u540e\u53ef\u4f7f\u7528\u4e91\u540c\u6b65\u3001\u79ef\u5206\u548c\u4f1a\u5458\u6743\u76ca", -1), ud = {
     class: "user-page__login-switch"
-  }, ud = {
-    key: 0
   }, dd = {
-    class: "form-item"
+    key: 0
   }, md = {
     class: "form-item"
   }, hd = {
-    key: 1
-  }, fd = {
     class: "form-item"
-  }, gd = vue.createElementVNode("p", {
+  }, fd = {
+    key: 1
+  }, gd = {
+    class: "form-item"
+  }, vd = vue.createElementVNode("p", {
     class: "user-page__helper"
-  }, "\u5bc6\u7801\u767b\u5f55\u540e\u53ef\u5728\u672c\u9875\u300c\u5237\u65b0 API Key\u300d\u53d6\u5f97\uff0c\u6362\u8bbe\u5907\u65f6\u7c98\u8d34\u4f7f\u7528", -1), vd = [ "disabled" ], yd = {
+  }, "\u5bc6\u7801\u767b\u5f55\u540e\u53ef\u5728\u672c\u9875\u300c\u5237\u65b0 API Key\u300d\u53d6\u5f97\uff0c\u6362\u8bbe\u5907\u65f6\u7c98\u8d34\u4f7f\u7528", -1), yd = [ "disabled" ], bd = {
+    class: "user-page__register-tip"
+  }, wd = {
+    class: "user-page__helper"
+  }, xd = {
     key: 1,
     class: "user-page__dashboard"
-  }, bd = {
-    class: "user-page__top-row"
-  }, wd = {
-    class: "user-page__header-card"
-  }, xd = {
-    class: "user-page__profile-main"
   }, kd = {
-    class: "user-page__avatar"
-  }, qd = [ "src" ], _d = {
-    class: "user-page__info-text"
+    class: "user-page__top-row"
+  }, qd = {
+    class: "user-page__header-card"
+  }, _d = {
+    class: "user-page__profile-main"
   }, Ad = {
-    class: "user-page__username"
-  }, Td = {
-    key: 0,
-    class: "aah-tag aah-tag-warning"
-  }, Cd = {
-    key: 1,
-    class: "aah-tag"
+    class: "user-page__avatar"
+  }, Td = [ "src" ], Cd = {
+    class: "user-page__info-text"
   }, Sd = {
-    class: "user-page__stats-grid"
+    class: "user-page__username"
   }, Id = {
-    class: "user-page__stat-card"
+    class: "user-page__stats-grid"
   }, Ed = {
-    class: "user-page__stat-icon user-page__stat-icon--coin"
+    class: "user-page__stat-card"
   }, Ud = {
+    class: "user-page__stat-icon user-page__stat-icon--coin"
+  }, Hd = {
     class: "user-page__stat-content"
   }, Pd = vue.createElementVNode("p", {
     class: "user-page__stat-label"
-  }, "\u79ef\u5206", -1), Hd = {
+  }, "\u79ef\u5206", -1), Ld = {
     class: "user-page__stat-value"
-  }, Ld = {
-    class: "user-page__stat-card"
   }, jd = {
-    class: "user-page__stat-icon user-page__stat-icon--course"
-  }, $d = {
-    class: "user-page__stat-content"
-  }, zd = vue.createElementVNode("p", {
-    class: "user-page__stat-label"
-  }, "\u8d21\u732e\u8bfe\u7a0b", -1), Md = {
-    class: "user-page__stat-value"
-  }, Od = {
-    class: "user-page__stat-card"
-  }, Fd = {
-    class: "user-page__stat-icon user-page__stat-icon--question"
-  }, Dd = {
-    class: "user-page__stat-content"
-  }, Nd = vue.createElementVNode("p", {
-    class: "user-page__stat-label"
-  }, "\u8d21\u732e\u9898\u76ee", -1), Rd = {
-    class: "user-page__stat-value"
-  }, Bd = {
     class: "user-page__apikey-section"
-  }, Gd = vue.createElementVNode("div", {
+  }, $d = vue.createElementVNode("div", {
     class: "user-page__section-header"
-  }, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h3", null, "API Key"), vue.createElementVNode("p", null, "\u7528\u4e8e API Key \u767b\u5f55\u548c\u5b98\u65b9\u9898\u5e93\u8bf7\u6c42\u9274\u6743\uff0c\u8bf7\u52ff\u6cc4\u9732\u7ed9\u4ed6\u4eba") ]) ], -1), Vd = {
+  }, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h3", null, "API Key"), vue.createElementVNode("p", null, "\u7528\u4e8e API Key \u767b\u5f55\u548c\u5b98\u65b9\u9898\u5e93\u8bf7\u6c42\u9274\u6743\uff0c\u8bf7\u52ff\u6cc4\u9732\u7ed9\u4ed6\u4eba") ]) ], -1), zd = {
     class: "user-page__apikey-display"
-  }, Kd = {
+  }, Md = {
     class: "user-page__apikey-value"
-  }, Wd = {
+  }, Od = {
     class: "user-page__apikey-actions"
-  }, Qd = [ "disabled" ], Jd = {
-    key: 0,
-    class: "user-page__support-card"
-  }, Xd = {
-    class: "user-page__support-icon"
-  }, Yd = vue.createElementVNode("div", {
-    class: "user-page__support-content"
-  }, [ vue.createElementVNode("p", {
-    class: "user-page__support-title"
-  }, "\u7231\u53d1\u7535\u8ba2\u9605"), vue.createElementVNode("p", {
-    class: "user-page__support-desc"
-  }, "\u652f\u6301\u9879\u76ee\u6301\u7eed\u8fed\u4ee3\uff0c\u89e3\u9501\u66f4\u591a\u4f1a\u5458\u6743\u76ca") ], -1), Zd = [ "href" ], em = vue.createElementVNode("div", {
+  }, Fd = [ "disabled" ], Dd = {
     class: "user-page__tips"
-  }, [ vue.createElementVNode("p", null, "\u5f53\u524d\u7528\u6237\u4f53\u7cfb\u4ec5\u7528\u4e8e\u9898\u5e93\u7f13\u5b58\u4e91\u540c\u6b65\uff0c\u66f4\u591a\u529f\u80fd\u5f00\u53d1\u4e2d") ], -1), tm = vue.defineComponent({
+  }, Nd = vue.createElementVNode("p", null, "\u79ef\u5206\u7528\u4e8e\u5b98\u65b9\u9898\u5e93\u641c\u9898\uff1b\u4f59\u989d\u3001\u5361\u5bc6\u5151\u6362\u4e0e\u6d88\u8d39\u6d41\u6c34\u90fd\u5728\u5b98\u7f51\u300c\u6211\u7684\u8d26\u6237\u300d\u9875\u3002", -1), Rd = vue.defineComponent({
     __name: "User",
     setup(e) {
       const t = ka(), a = vue.ref("password"), o = vue.ref({
         username: "",
         password: ""
-      }), g = vue.ref(""), v = vue.ref(false), y = vue.ref(false), x = vue.computed((() => t.isLoggedIn)), k = vue.computed((() => {
+      }), c = vue.ref(""), g = vue.ref(false), v = vue.ref(false), y = vue.computed((() => t.isLoggedIn)), x = vue.computed((() => {
         const e = t.apiKey || "";
         return e ? e.length <= 12 ? e : `${e.slice(0, 6)}...${e.slice(-6)}` : "\u672a\u83b7\u53d6";
       })), handleLogin = async () => {
-        v.value = true;
+        g.value = true;
         try {
           if ("password" === a.value) {
             if (!o.value.username || !o.value.password) return void msg("\u8bf7\u8f93\u5165\u7528\u6237\u540d\u548c\u5bc6\u7801", "warning");
@@ -15376,72 +15230,62 @@
               password: ""
             }) : msg(e.message, "error");
           } else {
-            if (!g.value) return void msg("\u8bf7\u8f93\u5165 API Key", "warning");
-            const e = await t.loginByApiKey(g.value.trim());
-            e.success ? (msg(e.message, "success"), g.value = "") : msg(e.message, "error");
+            if (!c.value) return void msg("\u8bf7\u8f93\u5165 API Key", "warning");
+            const e = await t.loginByApiKey(c.value.trim());
+            e.success ? (msg(e.message, "success"), c.value = "") : msg(e.message, "error");
           }
         } finally {
-          v.value = false;
+          g.value = false;
         }
       }, handleLogout = async () => {
         window.confirm("\u786e\u5b9a\u8981\u9000\u51fa\u767b\u5f55\u5417\uff1f") && (await t.logout(), 
         msg("\u5df2\u9000\u51fa\u767b\u5f55", "success"));
       }, handleRefreshApiKey = async () => {
         if (window.confirm("\u786e\u5b9a\u8981\u5237\u65b0 API Key \u5417\uff1f\u65e7 Key \u5c06\u5931\u6548\u3002")) {
-          y.value = true;
+          v.value = true;
           try {
             const e = await t.refreshApiKey();
             msg(e.message, e.success ? "success" : "error");
           } finally {
-            y.value = false;
+            v.value = false;
           }
         }
-      }, goToRegister = () => {
-        window.open("https://www.aiask.site/account.html#register", "_blank");
-      }, goToPasswordReset = () => {
-        window.open("https://www.aiask.site/reset.html", "_blank");
+      }, openSite = e => {
+        window.open(e, "_blank");
       }, switchMethod = e => {
         a.value = e;
       };
       return vue.onMounted((() => {
-        x.value && t.fetchUserInfo();
-      })), (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", nd, [ x.value ? (vue.openBlock(), vue.createElementBlock("div", yd, [ vue.createElementVNode("div", bd, [ vue.createElementVNode("div", wd, [ vue.createElementVNode("div", xd, [ vue.createElementVNode("div", kd, [ vue.unref(t).avatar ? (vue.openBlock(), 
+        y.value && t.fetchUserInfo();
+      })), (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", rd, [ y.value ? (vue.openBlock(), vue.createElementBlock("div", xd, [ vue.createElementVNode("div", kd, [ vue.createElementVNode("div", qd, [ vue.createElementVNode("div", _d, [ vue.createElementVNode("div", Ad, [ vue.unref(t).avatar ? (vue.openBlock(), 
         vue.createElementBlock("img", {
           key: 0,
           src: vue.unref(t).avatar,
           alt: "avatar"
-        }, null, 8, qd)) : (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
+        }, null, 8, Td)) : (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
           key: 1,
           icon: "mdi:account",
           class: "user-page__avatar-icon"
-        })) ]), vue.createElementVNode("div", _d, [ vue.createElementVNode("h2", null, vue.toDisplayString(vue.unref(t).nickname), 1), vue.createElementVNode("p", Ad, "@" + vue.toDisplayString(vue.unref(t).username), 1), vue.unref(t).isVip ? (vue.openBlock(), 
-        vue.createElementBlock("span", Td, " VIP Lv." + vue.toDisplayString(vue.unref(t).level), 1)) : (vue.openBlock(), vue.createElementBlock("span", Cd, "\u666e\u901a\u7528\u6237")) ]) ]), vue.createElementVNode("div", {
+        })) ]), vue.createElementVNode("div", Cd, [ vue.createElementVNode("h2", null, vue.toDisplayString(vue.unref(t).nickname), 1), vue.createElementVNode("p", Sd, "@" + vue.toDisplayString(vue.unref(t).username), 1) ]) ]), vue.createElementVNode("div", {
           class: "user-page__actions"
         }, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-danger aah-btn-small",
           type: "button",
           onClick: handleLogout
-        }, "\u9000\u51fa\u767b\u5f55") ]) ]), vue.createElementVNode("div", Sd, [ vue.createElementVNode("div", Id, [ vue.createElementVNode("div", Ed, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, "\u9000\u51fa\u767b\u5f55") ]) ]), vue.createElementVNode("div", Id, [ vue.createElementVNode("div", Ed, [ vue.createElementVNode("div", Ud, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:star"
-        }) ]), vue.createElementVNode("div", Ud, [ Pd, vue.createElementVNode("p", Hd, vue.toDisplayString(vue.unref(t).score), 1) ]) ]), vue.createElementVNode("div", Ld, [ vue.createElementVNode("div", jd, [ vue.createVNode(vue.unref(vue$1.Icon), {
-          icon: "mdi:book-open-page-variant"
-        }) ]), vue.createElementVNode("div", $d, [ zd, vue.createElementVNode("p", Md, vue.toDisplayString(vue.unref(t).stats.course_count), 1) ]) ]), vue.createElementVNode("div", Od, [ vue.createElementVNode("div", Fd, [ vue.createVNode(vue.unref(vue$1.Icon), {
-          icon: "mdi:file-edit"
-        }) ]), vue.createElementVNode("div", Dd, [ Nd, vue.createElementVNode("p", Rd, vue.toDisplayString(vue.unref(t).stats.question_count), 1) ]) ]) ]) ]), vue.createElementVNode("div", Bd, [ Gd, vue.createElementVNode("div", Vd, [ vue.createElementVNode("div", Kd, vue.toDisplayString(k.value), 1), vue.createElementVNode("div", Wd, [ vue.createElementVNode("button", {
+        }) ]), vue.createElementVNode("div", Hd, [ Pd, vue.createElementVNode("p", Ld, vue.toDisplayString(vue.unref(t).score), 1), vue.createElementVNode("button", {
+          class: "user-page__link-btn",
+          type: "button",
+          onClick: p[7] || (p[7] = e => openSite(vue.unref(nd).account))
+        }, " \u67e5\u770b\u79ef\u5206\u660e\u7ec6 ") ]) ]) ]) ]), vue.createElementVNode("div", jd, [ $d, vue.createElementVNode("div", zd, [ vue.createElementVNode("div", Md, vue.toDisplayString(x.value), 1), vue.createElementVNode("div", Od, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
-          disabled: y.value,
+          disabled: v.value,
           onClick: handleRefreshApiKey
-        }, vue.toDisplayString(y.value ? "\u5237\u65b0\u4e2d..." : "\u5237\u65b0 API Key"), 9, Qd) ]) ]) ]), vue.unref(t).afdianUrl ? (vue.openBlock(), 
-        vue.createElementBlock("div", Jd, [ vue.createElementVNode("div", Xd, [ vue.createVNode(vue.unref(vue$1.Icon), {
-          icon: "mdi:gift-outline"
-        }) ]), Yd, vue.createElementVNode("a", {
-          class: "aah-btn aah-btn-primary aah-btn-small user-page__support-btn",
-          href: vue.unref(t).afdianUrl,
-          target: "_blank",
-          rel: "noopener noreferrer"
-        }, " \u524d\u5f80\u67e5\u770b ", 8, Zd) ])) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), vue.createElementBlock("div", rd, [ vue.createElementVNode("div", sd, [ vue.createElementVNode("div", id, [ od, ld, cd, vue.createElementVNode("div", pd, [ vue.createElementVNode("button", {
+        }, vue.toDisplayString(v.value ? "\u5237\u65b0\u4e2d..." : "\u5237\u65b0 API Key"), 9, Fd) ]) ]) ]) ])) : (vue.openBlock(), 
+        vue.createElementBlock("div", id, [ vue.createElementVNode("div", sd, [ vue.createElementVNode("div", od, [ ld, cd, pd, vue.createElementVNode("div", ud, [ vue.createElementVNode("button", {
           type: "button",
           class: vue.normalizeClass([ "aah-btn aah-btn-plain aah-btn-small", {
             "is-active": "password" === a.value
@@ -15456,50 +15300,50 @@
         }, " API Key \u767b\u5f55 ", 2) ]) ]), vue.createElementVNode("form", {
           class: "user-page__login-form",
           onSubmit: vue.withModifiers(handleLogin, [ "prevent" ])
-        }, [ "password" === a.value ? (vue.openBlock(), vue.createElementBlock("div", ud, [ vue.createElementVNode("div", dd, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, [ "password" === a.value ? (vue.openBlock(), vue.createElementBlock("div", dd, [ vue.createElementVNode("div", md, [ vue.withDirectives(vue.createElementVNode("input", {
           "onUpdate:modelValue": p[2] || (p[2] = e => o.value.username = e),
           class: "aah-input",
           type: "text",
           placeholder: "\u8bf7\u8f93\u5165\u7528\u6237\u540d"
-        }, null, 512), [ [ vue.vModelText, o.value.username ] ]) ]), vue.createElementVNode("div", md, [ vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 512), [ [ vue.vModelText, o.value.username ] ]) ]), vue.createElementVNode("div", hd, [ vue.withDirectives(vue.createElementVNode("input", {
           "onUpdate:modelValue": p[3] || (p[3] = e => o.value.password = e),
           class: "aah-input",
           type: "password",
           placeholder: "\u8bf7\u8f93\u5165\u5bc6\u7801",
           onKeyup: vue.withKeys(handleLogin, [ "enter" ])
-        }, null, 544), [ [ vue.vModelText, o.value.password ] ]) ]) ])) : (vue.openBlock(), vue.createElementBlock("div", hd, [ vue.createElementVNode("div", fd, [ vue.withDirectives(vue.createElementVNode("input", {
-          "onUpdate:modelValue": p[4] || (p[4] = e => g.value = e),
+        }, null, 544), [ [ vue.vModelText, o.value.password ] ]) ]) ])) : (vue.openBlock(), vue.createElementBlock("div", fd, [ vue.createElementVNode("div", gd, [ vue.withDirectives(vue.createElementVNode("input", {
+          "onUpdate:modelValue": p[4] || (p[4] = e => c.value = e),
           class: "aah-input",
           type: "text",
           placeholder: "\u8bf7\u8f93\u5165 API Key"
-        }, null, 512), [ [ vue.vModelText, g.value ] ]), gd ]) ])), vue.createElementVNode("button", {
+        }, null, 512), [ [ vue.vModelText, c.value ] ]), vd ]) ])), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary user-page__login-btn",
           type: "submit",
-          disabled: v.value
-        }, vue.toDisplayString(v.value ? "\u767b\u5f55\u4e2d..." : "\u7acb\u5373\u767b\u5f55"), 9, vd) ], 32), vue.createElementVNode("div", {
-          class: "user-page__register-tip"
-        }, [ vue.createTextVNode(" \u8fd8\u6ca1\u6709\u8d26\u53f7\uff1f "), vue.createElementVNode("button", {
+          disabled: g.value
+        }, vue.toDisplayString(g.value ? "\u767b\u5f55\u4e2d..." : "\u7acb\u5373\u767b\u5f55"), 9, yd) ], 32), vue.createElementVNode("div", bd, [ vue.createTextVNode(" \u8fd8\u6ca1\u6709\u8d26\u53f7\uff1f "), vue.createElementVNode("button", {
           class: "user-page__link-btn",
           type: "button",
-          onClick: goToRegister
-        }, "\u524d\u5f80\u5b98\u7f51\u6ce8\u518c"), vue.createElementVNode("p", {
-          class: "user-page__helper"
-        }, [ vue.createTextVNode(" \u5fd8\u8bb0\u5bc6\u7801\uff1f"), vue.createElementVNode("button", {
+          onClick: p[5] || (p[5] = e => openSite(vue.unref(nd).register))
+        }, "\u524d\u5f80\u5b98\u7f51\u6ce8\u518c"), vue.createElementVNode("p", wd, [ vue.createTextVNode(" \u5fd8\u8bb0\u5bc6\u7801\uff1f"), vue.createElementVNode("button", {
           class: "user-page__link-btn",
           type: "button",
-          onClick: goToPasswordReset
-        }, "\u5728\u5b98\u7f51\u627e\u56de"), vue.createTextVNode("\uff1b\u4e5f\u53ef\u4f7f\u7528 API Key \u5feb\u901f\u767b\u5f55 ") ]) ]) ]) ])), em ]) ])),
+          onClick: p[6] || (p[6] = e => openSite(vue.unref(nd).reset))
+        }, "\u5728\u5b98\u7f51\u627e\u56de"), vue.createTextVNode("\uff1b\u4e5f\u53ef\u4f7f\u7528 API Key \u5feb\u901f\u767b\u5f55 ") ]) ]) ]) ])), vue.createElementVNode("div", Dd, [ Nd, vue.createElementVNode("p", null, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
+          class: "user-page__link-btn",
+          type: "button",
+          onClick: p[8] || (p[8] = e => openSite(vue.unref(nd).feedback))
+        }, "\u610f\u89c1\u53cd\u9988"), vue.createTextVNode("\u9875\u767b\u5f55\u540e\u63d0\u4ea4\u3002 ") ]) ]) ]) ])),
         _: 1
       }));
     }
-  }), am = {
+  }), Bd = {
     0: "\u5355\u9009\u9898",
     1: "\u591a\u9009\u9898",
     2: "\u586b\u7a7a\u9898",
     3: "\u5224\u65ad\u9898",
     4: "\u7b80\u7b54\u9898",
     8: "\u5176\u5b83"
-  }, nm = /^\s*(?:(\d+)[.\u3001\uff0e)]|[\uff08(](\d+)[\uff09)])\s*(.*)$/, rm = /^(?:[\[\u3010]\s*)?(?:\u53c2\u8003\u7b54\u6848|\u6807\u51c6\u7b54\u6848|\u6b63\u786e\u7b54\u6848|\u7b54\u6848)(?:\s*[\]\u3011])?\s*[\uff1a:]\s*(.*)$/, sm = /^\s*([\[\u3010]\s*([^\]\u3011]+?)\s*[\]\u3011])\s*/, im = /^\s*(\u5355\u9009\u9898|\u5355\u9879\u9009\u62e9\u9898|\u591a\u9009\u9898|\u591a\u9879\u9009\u62e9\u9898|\u5224\u65ad\u9898|\u586b\u7a7a\u9898|\u7b80\u7b54\u9898|\u7b80\u7b54|\u95ee\u7b54\u9898|\u95ee\u7b54|\u5176\u5b83|\u5176\u4ed6)\s*[\uff1a:]\s*/, om = /([A-Za-z])\s*[.\u3001\uff0e)\uff09]\s*/g, splitQuestionBlocks = e => {
+  }, Gd = /^\s*(?:(\d+)[.\u3001\uff0e)]|[\uff08(](\d+)[\uff09)])\s*(.*)$/, Vd = /^(?:[\[\u3010]\s*)?(?:\u53c2\u8003\u7b54\u6848|\u6807\u51c6\u7b54\u6848|\u6b63\u786e\u7b54\u6848|\u7b54\u6848)(?:\s*[\]\u3011])?\s*[\uff1a:]\s*(.*)$/, Kd = /^\s*([\[\u3010]\s*([^\]\u3011]+?)\s*[\]\u3011])\s*/, Wd = /^\s*(\u5355\u9009\u9898|\u5355\u9879\u9009\u62e9\u9898|\u591a\u9009\u9898|\u591a\u9879\u9009\u62e9\u9898|\u5224\u65ad\u9898|\u586b\u7a7a\u9898|\u7b80\u7b54\u9898|\u7b80\u7b54|\u95ee\u7b54\u9898|\u95ee\u7b54|\u5176\u5b83|\u5176\u4ed6)\s*[\uff1a:]\s*/, Qd = /([A-Za-z])\s*[.\u3001\uff0e)\uff09]\s*/g, splitQuestionBlocks = e => {
     var t;
     const a = [];
     let n = null;
@@ -15514,14 +15358,14 @@
     for (const r of e.replace(/\r\n?/g, "\n").split("\n")) {
       const e = r.trim();
       if (!e) {
-        (null == n ? void 0 : n.lines.some((e => rm.test(e)))) && pushCurrent();
+        (null == n ? void 0 : n.lines.some((e => Vd.test(e)))) && pushCurrent();
         continue;
       }
-      const a = e.match(nm);
+      const a = e.match(Gd);
       a ? (pushCurrent(), n = {
         titleNo: a[1] || a[2] || "",
         lines: [ (null == (t = a[3]) ? void 0 : t.trim()) || "" ]
-      }) : (n ? n.lines.some((e => rm.test(e))) && (pushCurrent(), n = {
+      }) : (n ? n.lines.some((e => Vd.test(e))) && (pushCurrent(), n = {
         titleNo: "",
         lines: []
       }) : n = {
@@ -15532,33 +15376,33 @@
     return pushCurrent(), a;
   }, parseQuestionBlock = (e, t) => {
     const a = [], n = [], r = [];
-    let s = "", i = {
+    let i = "", s = {
       type: null,
       label: ""
     };
     e.lines.forEach(((e, t) => {
       var a;
-      const o = e.match(rm);
-      if (o) return void (s = (null == (a = o[1]) ? void 0 : a.trim()) || "");
+      const o = e.match(Vd);
+      if (o) return void (i = (null == (a = o[1]) ? void 0 : a.trim()) || "");
       let l = e;
       if (0 === t) {
         const e = extractTypeLabel(l);
-        i = e.typeInfo, l = e.content;
+        s = e.typeInfo, l = e.content;
       }
-      !i.type || isChoiceType$1(i.type) ? appendQuestionAndOptions(l, r, n) : r.push(l);
+      !s.type || isChoiceType$1(s.type) ? appendQuestionAndOptions(l, r, n) : r.push(l);
     }));
-    const o = normalizeSpaces(r.join(" ")), l = i.type || inferQuestionType(o, n, s), c = normalizeAnswer(l, s, n, a);
-    return validateParsedQuestion(o, l, n, c, a), s || a.push("\u7f3a\u5c11\u7b54\u6848"), 
+    const o = normalizeSpaces(r.join(" ")), l = s.type || inferQuestionType(o, n, i), c = normalizeAnswer(l, i, n, a);
+    return validateParsedQuestion(o, l, n, c, a), i || a.push("\u7f3a\u5c11\u7b54\u6848"), 
     {
       id: `question-import-${t + 1}`,
       sourceIndex: t,
       titleNo: e.titleNo,
       type: l,
-      typeLabel: i.label || am[l],
+      typeLabel: s.label || Bd[l],
       question: o,
       options: n,
       answer: c,
-      rawAnswer: s,
+      rawAnswer: i,
       errors: a
     };
   }, validateParsedQuestion = (e, t, a, n, r) => {
@@ -15571,7 +15415,7 @@
     let t = e.trim();
     const a = [];
     for (;t; ) {
-      const e = t.match(sm);
+      const e = t.match(Kd);
       if (e) {
         const n = (e[2] || "").trim(), r = typeFromLabel(n);
         if (t = t.slice(e[0].length).trim(), r) return {
@@ -15584,7 +15428,7 @@
         a.push((e[1] || "").trim());
         continue;
       }
-      const n = t.match(im);
+      const n = t.match(Wd);
       if (n) {
         const e = (n[1] || "").trim(), r = typeFromLabel(e);
         if (t = t.slice(n[0].length).trim(), r) return {
@@ -15607,23 +15451,23 @@
   }, joinQuestionParts = (e, t) => [ ...e, t ].filter(Boolean).join(" ").trim(), typeFromLabel = e => /\u591a\u9009|\u591a\u9879/.test(e) ? "1" : /\u5355\u9009|\u5355\u9879/.test(e) ? "0" : /\u586b\u7a7a/.test(e) ? "2" : /\u5224\u65ad/.test(e) ? "3" : /\u7b80\u7b54|\u95ee\u7b54/.test(e) ? "4" : /\u5176\u5b83|\u5176\u4ed6/.test(e) ? "8" : null, isChoiceType$1 = e => "0" === e || "1" === e, appendQuestionAndOptions = (e, t, a) => {
     const n = parseOptionsFromLine(e);
     if (0 === n.length) return void t.push(e);
-    const r = n[0], s = e.slice(0, r.start).trim();
-    s && t.push(s), n.forEach((e => {
+    const r = n[0], i = e.slice(0, r.start).trim();
+    i && t.push(i), n.forEach((e => {
       e.value && a.push({
         label: e.label,
         value: e.value
       });
     }));
   }, parseOptionsFromLine = e => {
-    const t = Array.from(e.matchAll(om)).filter((t => {
+    const t = Array.from(e.matchAll(Qd)).filter((t => {
       const a = t.index || 0;
       return 0 === a || !/[A-Za-z0-9]/.test(e[a - 1] || "");
     }));
     return 0 === t.length ? [] : t.map(((a, n) => {
-      const r = a.index || 0, s = (a.index || 0) + a[0].length, i = n + 1 < t.length && t[n + 1].index || e.length;
+      const r = a.index || 0, i = (a.index || 0) + a[0].length, s = n + 1 < t.length && t[n + 1].index || e.length;
       return {
         label: (a[1] || "").toUpperCase(),
-        value: e.slice(s, i).trim(),
+        value: e.slice(i, s).trim(),
         start: r
       };
     }));
@@ -15644,14 +15488,14 @@
   }, normalizeChoiceAnswer = (e, t, a) => {
     const n = matchChoiceAnswerTexts(e, t);
     if (n.length > 0) return n;
-    const r = parseChoiceAnswerLabels(e), s = [];
+    const r = parseChoiceAnswerLabels(e), i = [];
     return r.length > 0 ? (r.forEach((e => {
       const n = t.find((t => t.label === e));
-      n ? s.push(n.value) : a.push(`\u7b54\u6848\u4e0d\u5728\u9009\u9879\u4e2d\uff1a${e}`);
-    })), s) : (splitAnswerText(e, /[|,\uff0c\u3001;\uff1b]/).forEach((e => {
+      n ? i.push(n.value) : a.push(`\u7b54\u6848\u4e0d\u5728\u9009\u9879\u4e2d\uff1a${e}`);
+    })), i) : (splitAnswerText(e, /[|,\uff0c\u3001;\uff1b]/).forEach((e => {
       const n = t.find((t => t.value === e));
-      n ? s.push(n.value) : a.push(`\u7b54\u6848\u4e0d\u5728\u9009\u9879\u4e2d\uff1a${e}`);
-    })), s);
+      n ? i.push(n.value) : a.push(`\u7b54\u6848\u4e0d\u5728\u9009\u9879\u4e2d\uff1a${e}`);
+    })), i);
   }, countChoiceAnswers = (e, t) => {
     const a = matchChoiceAnswerTexts(e, t);
     if (a.length > 0) return a.length;
@@ -15662,20 +15506,20 @@
     if (n) return [ n.value ];
     const r = splitAnswerText(e, /[|,\uff0c\u3001;\uff1b]/);
     if (0 === r.length) return [];
-    const s = [];
-    for (const i of r) {
-      const e = t.find((e => e.value === i));
+    const i = [];
+    for (const s of r) {
+      const e = t.find((e => e.value === s));
       if (!e) return [];
-      s.push(e.value);
+      i.push(e.value);
     }
-    return s;
+    return i;
   }, parseChoiceAnswerLabels = e => {
     const t = e.trim().toUpperCase();
     if (!t) return [];
     if (/^[A-Z]+$/.test(t)) return Array.from(t);
     const a = t.split(/[\s|,\uff0c\u3001;\uff1b]+/).map((e => e.trim())).filter(Boolean);
     return a.every((e => /^[A-Z]$/.test(e))) ? a : [];
-  }, hasBlankPlaceholder = e => countBlankPlaceholders(e) > 0, countBlankPlaceholders = e => Array.from(e.matchAll(/\uff08\s*\uff09|\(\s*\)|_{2,}|-{2,}|\[\s*\]/g)).length, normalizeSpaces = e => e.replace(/\s+/g, " ").trim(), isChoiceType = e => "0" === e || "1" === e, normalizeImportText = e => e.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim(), lm = "ques1_", cm = "AiAsk_ques1_", buildQuestionImportPlan = (e, t, a) => {
+  }, hasBlankPlaceholder = e => countBlankPlaceholders(e) > 0, countBlankPlaceholders = e => Array.from(e.matchAll(/\uff08\s*\uff09|\(\s*\)|_{2,}|-{2,}|\[\s*\]/g)).length, normalizeSpaces = e => e.replace(/\s+/g, " ").trim(), isChoiceType = e => "0" === e || "1" === e, normalizeImportText = e => e.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim(), Jd = "ques1_", Xd = "AiAsk_ques1_", buildQuestionImportPlan = (e, t, a) => {
     const n = new Set(t.map(getHashFromCacheKey).filter(Boolean)), r = {
       total: e.length,
       valid: 0,
@@ -15683,7 +15527,7 @@
       create: 0,
       overwrite: 0,
       skip: 0
-    }, s = e.map((e => {
+    }, i = e.map((e => {
       const t = (e => {
         if (e.errors.length > 0) return null;
         const t = normalizeImportText(e.question), a = isChoiceType(e.type) ? e.options.map((e => normalizeImportText(e.value))).filter(Boolean) : [], n = e.answer.map((e => normalizeImportText(e))).filter(Boolean);
@@ -15702,88 +15546,88 @@
         errors: e.errors.length > 0 ? e.errors : [ "\u9898\u5e72\u6216\u7b54\u6848\u4e3a\u7a7a" ]
       };
       r.valid += 1;
-      const s = (e => {
+      const i = (e => {
         const t = Array.from(e.options);
         return t.sort(), md5(`${e.type}${e.question}${t.join("")}`.replace(/\s/g, ""));
-      })(t), i = `${lm}${s}`, o = n.has(s) ? a : "create";
-      return r[o] += 1, n.add(s), {
+      })(t), s = `${Jd}${i}`, o = n.has(i) ? a : "create";
+      return r[o] += 1, n.add(i), {
         parsed: e,
         question: t,
-        cacheKey: i,
+        cacheKey: s,
         status: o,
         errors: []
       };
     }));
     return {
       strategy: a,
-      items: s,
+      items: i,
       stats: r
     };
-  }, getHashFromCacheKey = e => e.startsWith(cm) ? e.slice(12) : e.startsWith(lm) ? e.slice(6) : "", pm = {
+  }, getHashFromCacheKey = e => e.startsWith(Xd) ? e.slice(12) : e.startsWith(Jd) ? e.slice(6) : "", Yd = {
     class: "question-tool"
-  }, um = vue.createElementVNode("div", {
+  }, Zd = vue.createElementVNode("div", {
     class: "info-banner"
   }, [ vue.createElementVNode("div", {
     class: "info-title"
   }, "\u9898\u5e93\u5bfc\u5165\u8bf4\u660e"), vue.createElementVNode("div", {
     class: "info-body"
-  }, " \u9898\u5e93\u5bfc\u5165\u540e\u53ef\u5728\u672c\u5730\u7f13\u5b58\u4e2d\u5339\u914d\u641c\u7d22\uff0c\u8bf7\u786e\u4fdd\u9898\u5e93\u4e0e\u7b54\u9898\u4e00\u81f4\uff0c\u5426\u5219\u65e0\u6cd5\u5339\u914d\u3002 ") ], -1), dm = {
+  }, " \u9898\u5e93\u5bfc\u5165\u540e\u53ef\u5728\u672c\u5730\u7f13\u5b58\u4e2d\u5339\u914d\u641c\u7d22\uff0c\u8bf7\u786e\u4fdd\u9898\u5e93\u4e0e\u7b54\u9898\u4e00\u81f4\uff0c\u5426\u5219\u65e0\u6cd5\u5339\u914d\u3002 ") ], -1), em = {
     class: "qt-toolbar"
-  }, mm = {
+  }, tm = {
     class: "qt-strategy"
-  }, hm = vue.createElementVNode("span", {
+  }, am = vue.createElementVNode("span", {
     class: "qt-strategy-label"
-  }, "\u91cd\u590d\u9898", -1), fm = {
+  }, "\u91cd\u590d\u9898", -1), nm = {
     class: "qt-radio"
-  }, gm = {
+  }, rm = {
     class: "qt-radio"
-  }, vm = [ "disabled" ], ym = [ "disabled" ], bm = {
+  }, im = [ "disabled" ], sm = [ "disabled" ], om = {
     class: "qt-stats"
-  }, wm = {
+  }, lm = {
     class: "qt-stat"
-  }, xm = {
+  }, cm = {
     class: "qt-stat success"
-  }, km = {
+  }, pm = {
     class: "qt-stat danger"
-  }, qm = {
+  }, um = {
     class: "qt-stat"
-  }, _m = {
+  }, dm = {
     class: "qt-stat warning"
-  }, Am = {
+  }, mm = {
     class: "qt-stat muted"
-  }, Tm = {
+  }, hm = {
     class: "qt-grid"
-  }, Cm = {
+  }, fm = {
     class: "qt-editor"
-  }, Sm = {
+  }, gm = {
     class: "qt-preview"
-  }, Im = {
+  }, vm = {
     class: "import_question"
-  }, Em = {
+  }, ym = {
     key: 0,
     class: "qt-empty"
-  }, Um = {
+  }, bm = {
     class: "qt-card-head"
-  }, Pm = {
+  }, wm = {
     class: "qt-title-no"
-  }, Hm = {
+  }, xm = {
     class: "qt-tag danger"
-  }, Lm = {
+  }, km = {
     class: "qt-question"
-  }, jm = vue.createElementVNode("span", {
+  }, qm = vue.createElementVNode("span", {
     class: "label"
-  }, "\u9898\u76ee:", -1), $m = {
+  }, "\u9898\u76ee:", -1), _m = {
     key: 0,
     class: "qt-options"
-  }, zm = {
+  }, Am = {
     key: 1,
     class: "qt-answer"
-  }, Mm = vue.createElementVNode("span", {
+  }, Tm = vue.createElementVNode("span", {
     class: "label"
-  }, "\u7b54\u6848:", -1), Om = {
+  }, "\u7b54\u6848:", -1), Cm = {
     key: 2,
     class: "qt-error"
-  }, Fm = vue.defineComponent({
+  }, Sm = vue.defineComponent({
     __name: "QuestionTool",
     setup(e) {
       const t = vue.ref(""), a = _a(), o = vue.ref(false), u = vue.ref("overwrite"), m = vue.ref(Cache.match("ques1_")), h = vue.computed((() => (e => splitQuestionBlocks(e).map(((e, t) => parseQuestionBlock(e, t))))(t.value))), f = vue.computed((() => buildQuestionImportPlan(h.value, m.value, u.value))), g = vue.computed((() => f.value.items.filter((e => e.question && "skip" !== e.status)))), x = {
@@ -15820,13 +15664,13 @@
                 message: r.displayMessage || "AI \u6574\u7406\u9898\u5e93\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5",
                 duration: r.duration
               };
-              const s = (e => {
+              const i = (e => {
                 const t = e.trim(), a = t.match(/^```(?:\w+)?\s*([\s\S]*?)\s*```$/);
                 return ((null == a ? void 0 : a[1]) || t).trim();
               })(r.text);
-              return s ? {
+              return i ? {
                 success: !0,
-                text: s,
+                text: i,
                 message: "",
                 duration: r.duration
               } : {
@@ -15856,11 +15700,11 @@
         const a = e.stats;
         msg(`\u5bfc\u5165\u5b8c\u6210\uff1a\u65b0\u589e ${a.create} \u9898\uff0c\u8986\u76d6 ${a.overwrite} \u9898\uff0c\u8df3\u8fc7 ${a.skip} \u9898\uff0c\u9519\u8bef ${a.error} \u9898`, "success");
       };
-      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", pm, [ um, vue.createElementVNode("div", dm, [ vue.createElementVNode("div", mm, [ hm, vue.createElementVNode("label", fm, [ vue.withDirectives(vue.createElementVNode("input", {
+      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", Yd, [ Zd, vue.createElementVNode("div", em, [ vue.createElementVNode("div", tm, [ am, vue.createElementVNode("label", nm, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": a[0] || (a[0] = e => u.value = e),
         type: "radio",
         value: "overwrite"
-      }, null, 512), [ [ vue.vModelRadio, u.value ] ]), vue.createTextVNode(" \u8986\u76d6 ") ]), vue.createElementVNode("label", gm, [ vue.withDirectives(vue.createElementVNode("input", {
+      }, null, 512), [ [ vue.vModelRadio, u.value ] ]), vue.createTextVNode(" \u8986\u76d6 ") ]), vue.createElementVNode("label", rm, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": a[1] || (a[1] = e => u.value = e),
         type: "radio",
         value: "skip"
@@ -15869,45 +15713,45 @@
         type: "button",
         disabled: o.value || !t.value.trim(),
         onClick: repairQuestionText
-      }, vue.toDisplayString(o.value ? "AI \u6574\u7406\u4e2d..." : "AI \u6574\u7406\u9898\u5e93"), 9, vm), vue.createElementVNode("button", {
+      }, vue.toDisplayString(o.value ? "AI \u6574\u7406\u4e2d..." : "AI \u6574\u7406\u9898\u5e93"), 9, im), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary",
         type: "button",
         disabled: 0 === g.value.length,
         onClick: importQuestion
-      }, "\u5bfc\u5165\u6709\u6548\u9898", 8, ym) ]), vue.createElementVNode("div", bm, [ vue.createElementVNode("span", wm, "\u5171 " + vue.toDisplayString(f.value.stats.total) + " \u9898", 1), vue.createElementVNode("span", xm, "\u6709\u6548 " + vue.toDisplayString(f.value.stats.valid) + " \u9898", 1), vue.createElementVNode("span", km, "\u9519\u8bef " + vue.toDisplayString(f.value.stats.error) + " \u9898", 1), vue.createElementVNode("span", qm, "\u65b0\u589e " + vue.toDisplayString(f.value.stats.create) + " \u9898", 1), vue.createElementVNode("span", _m, "\u8986\u76d6 " + vue.toDisplayString(f.value.stats.overwrite) + " \u9898", 1), vue.createElementVNode("span", Am, "\u8df3\u8fc7 " + vue.toDisplayString(f.value.stats.skip) + " \u9898", 1) ]), vue.createElementVNode("div", Tm, [ vue.createElementVNode("div", Cm, [ vue.withDirectives(vue.createElementVNode("textarea", {
+      }, "\u5bfc\u5165\u6709\u6548\u9898", 8, sm) ]), vue.createElementVNode("div", om, [ vue.createElementVNode("span", lm, "\u5171 " + vue.toDisplayString(f.value.stats.total) + " \u9898", 1), vue.createElementVNode("span", cm, "\u6709\u6548 " + vue.toDisplayString(f.value.stats.valid) + " \u9898", 1), vue.createElementVNode("span", pm, "\u9519\u8bef " + vue.toDisplayString(f.value.stats.error) + " \u9898", 1), vue.createElementVNode("span", um, "\u65b0\u589e " + vue.toDisplayString(f.value.stats.create) + " \u9898", 1), vue.createElementVNode("span", dm, "\u8986\u76d6 " + vue.toDisplayString(f.value.stats.overwrite) + " \u9898", 1), vue.createElementVNode("span", mm, "\u8df3\u8fc7 " + vue.toDisplayString(f.value.stats.skip) + " \u9898", 1) ]), vue.createElementVNode("div", hm, [ vue.createElementVNode("div", fm, [ vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": a[2] || (a[2] = e => t.value = e),
         class: "qt-textarea",
         placeholder: "\u652f\u6301\u9898\u578b\uff1a\u5355\u9009\u3001\u591a\u9009\u3001\u5224\u65ad\u3001\u586b\u7a7a\u3001\u7b80\u7b54\n\n\u57fa\u7840\u89c4\u5219\uff1a\n1. \u63a8\u8350\u4f7f\u7528\u9898\u53f7\uff0c\u5982 1. 1\u30011\uff0e\uff081\uff09\u6216 (1)\n2. \u65e0\u9898\u53f7\u65f6\uff0c\u7cfb\u7edf\u4f1a\u6309\u7a7a\u884c\u548c\u7b54\u6848\u884c\u63a8\u65ad\u9898\u5757\n3. \u7b54\u6848\u884c\u652f\u6301\uff1a\u7b54\u6848\uff1a\u53c2\u8003\u7b54\u6848\uff1a\u6b63\u786e\u7b54\u6848\uff1a\u6807\u51c6\u7b54\u6848\uff1a\n4. \u9009\u9879\u652f\u6301\uff1aA. A\u3001A\uff0eA) A\uff09\n5. \u652f\u6301\u884c\u5185\u9009\u9879\uff1aA.\u7532 B.\u4e59 C.\u4e19 D.\u4e01\n6. \u586b\u7a7a\u9898\u591a\u4e2a\u7b54\u6848\u7528 | \u5206\u9694\n7. \u5224\u65ad\u9898\u652f\u6301\uff1a\u6b63\u786e\u3001\u9519\u8bef\u3001\u5bf9\u3001\u9519\u3001\u662f\u3001\u5426\u3001\u221a\u3001\xd7\u3001T\u3001F\n\n\u793a\u4f8b\uff1a\n1. [\u5355\u9009\u9898] \u9a7e\u9a76\u4eba\u6709\u4e0b\u5217\u54ea\u79cd\u8fdd\u6cd5\u884c\u4e3a\u4e00\u6b21\u8bb06\u5206\uff1f\nA\u3001\u4f7f\u7528\u5176\u4ed6\u8f66\u8f86\u884c\u9a76\u8bc1\nB\u3001\u996e\u9152\u540e\u9a7e\u9a76\u673a\u52a8\u8f66\nC\u3001\u8f66\u901f\u8d85\u8fc7\u89c4\u5b9a\u65f6\u901f50%\u4ee5\u4e0a\nD\u3001\u8fdd\u6cd5\u5360\u7528\u5e94\u6025\u8f66\u9053\u884c\u9a76\n\u7b54\u6848:D\n\n2\u3001\u3010\u591a\u9009\u9898\u3011 \u4e0b\u5217\u5c5e\u4e8e\u6625\u5b63\u7684\u6708\u4efd\u662f\uff1f\nA.\u4e00\u6708 B.\u4e09\u6708 C.\u56db\u6708 D.\u5341\u4e8c\u6708\n\u53c2\u8003\u7b54\u6848\uff1aBC\n\n3\uff0e\u56fd\u9645\u8c61\u68cb\u8d77\u6e90\u4e8e\u82f1\u56fd\u5417\uff1f\n\u7b54\u6848: \u5bf9\n\n\uff084\uff09\u6211\u56fd\u53e4\u5178\u56db\u5927\u540d\u8457\u662f\uff08\uff09\uff08\uff09\uff08\uff09\uff08\uff09\n\u7b54\u6848: \u7ea2\u697c\u68a6|\u6c34\u6d52\u4f20|\u4e09\u56fd\u6f14\u4e49|\u897f\u6e38\u8bb0\n\n(5) \u5982\u4f55\u4fdd\u6301\u8eab\u4f53\u5065\u5eb7\uff1f\n\u6807\u51c6\u7b54\u6848: \u89c4\u5f8b\u996e\u98df\u3001\u575a\u6301\u953b\u70bc\uff0c\u65e9\u7761\u65e9\u8d77\uff0c\u5b9a\u671f\u4f53\u68c0\u3002",
         rows: "24"
-      }, null, 512), [ [ vue.vModelText, t.value ] ]) ]), vue.createElementVNode("div", Sm, [ vue.createElementVNode("div", Im, [ 0 === f.value.items.length ? (vue.openBlock(), 
-      vue.createElementBlock("div", Em, "\u8f93\u5165\u9898\u76ee\u540e\u5c06\u81ea\u52a8\u89e3\u6790\u5e76\u9884\u89c8")) : vue.createCommentVNode("", true), (vue.openBlock(true), 
+      }, null, 512), [ [ vue.vModelText, t.value ] ]) ]), vue.createElementVNode("div", gm, [ vue.createElementVNode("div", vm, [ 0 === f.value.items.length ? (vue.openBlock(), 
+      vue.createElementBlock("div", ym, "\u8f93\u5165\u9898\u76ee\u540e\u5c06\u81ea\u52a8\u89e3\u6790\u5e76\u9884\u89c8")) : vue.createCommentVNode("", true), (vue.openBlock(true), 
       vue.createElementBlock(vue.Fragment, null, vue.renderList(f.value.items, (e => (vue.openBlock(), vue.createElementBlock("div", {
         key: e.parsed.id,
         class: vue.normalizeClass([ "qt-card", statusClass(e) ])
-      }, [ vue.createElementVNode("div", Um, [ vue.createElementVNode("span", Pm, "#" + vue.toDisplayString(e.parsed.titleNo || e.parsed.sourceIndex + 1), 1), vue.createElementVNode("span", Hm, vue.toDisplayString(e.parsed.typeLabel), 1), vue.createElementVNode("span", {
+      }, [ vue.createElementVNode("div", bm, [ vue.createElementVNode("span", wm, "#" + vue.toDisplayString(e.parsed.titleNo || e.parsed.sourceIndex + 1), 1), vue.createElementVNode("span", xm, vue.toDisplayString(e.parsed.typeLabel), 1), vue.createElementVNode("span", {
         class: vue.normalizeClass([ "qt-tag", e.status ])
-      }, vue.toDisplayString(x[e.status]), 3) ]), vue.createElementVNode("p", Lm, [ jm, vue.createTextVNode(vue.toDisplayString(e.parsed.question), 1) ]), e.parsed.options.length ? (vue.openBlock(), 
-      vue.createElementBlock("div", $m, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(formatOptions(e), (e => (vue.openBlock(), vue.createElementBlock("span", {
+      }, vue.toDisplayString(x[e.status]), 3) ]), vue.createElementVNode("p", km, [ qm, vue.createTextVNode(vue.toDisplayString(e.parsed.question), 1) ]), e.parsed.options.length ? (vue.openBlock(), 
+      vue.createElementBlock("div", _m, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(formatOptions(e), (e => (vue.openBlock(), vue.createElementBlock("span", {
         key: e.label,
         class: vue.normalizeClass([ "qt-tag", {
           success: e.isTrue
         } ])
-      }, vue.toDisplayString(e.label), 3)))), 128)) ])) : vue.createCommentVNode("", true), e.parsed.answer.length ? (vue.openBlock(), vue.createElementBlock("p", zm, [ Mm, vue.createTextVNode(vue.toDisplayString(e.parsed.answer.join(" | ")), 1) ])) : vue.createCommentVNode("", true), e.errors.length ? (vue.openBlock(), 
-      vue.createElementBlock("div", Om, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.errors, (e => (vue.openBlock(), vue.createElementBlock("p", {
+      }, vue.toDisplayString(e.label), 3)))), 128)) ])) : vue.createCommentVNode("", true), e.parsed.answer.length ? (vue.openBlock(), vue.createElementBlock("p", Am, [ Tm, vue.createTextVNode(vue.toDisplayString(e.parsed.answer.join(" | ")), 1) ])) : vue.createCommentVNode("", true), e.errors.length ? (vue.openBlock(), 
+      vue.createElementBlock("div", Cm, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.errors, (e => (vue.openBlock(), vue.createElementBlock("p", {
         key: e
       }, vue.toDisplayString(e), 1)))), 128)) ])) : vue.createCommentVNode("", true) ], 2)))), 128)) ]) ]) ]) ]));
     }
-  }), Dm = {
+  }), Im = {
     class: "tabs-bar",
     role: "tablist"
-  }, Nm = [ "aria-selected", "onClick" ], Rm = vue.defineComponent({
+  }, Em = [ "aria-selected", "onClick" ], Um = vue.defineComponent({
     __name: "TabsBar",
     props: {
       tabs: {},
       modelValue: {}
     },
     emits: [ "update:modelValue" ],
-    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Dm, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.tabs, (t => (vue.openBlock(), 
+    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Im, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.tabs, (t => (vue.openBlock(), 
     vue.createElementBlock("button", {
       key: t.key,
       type: "button",
@@ -15917,8 +15761,8 @@
         active: e.modelValue === t.key
       } ]),
       onClick: a => e.$emit("update:modelValue", t.key)
-    }, vue.toDisplayString(t.label), 11, Nm)))), 128)) ]))
-  }), Bm = vue.defineComponent({
+    }, vue.toDisplayString(t.label), 11, Em)))), 128)) ]))
+  }), Hm = vue.defineComponent({
     __name: "ThemeSwitcher",
     props: {
       compact: {
@@ -15927,7 +15771,7 @@
       }
     },
     setup(e) {
-      const t = e, a = ce(), i = [ {
+      const t = e, a = ce(), s = [ {
         key: "light",
         label: "\u6d45\u8272"
       }, {
@@ -15945,7 +15789,7 @@
       }, {
         key: "auto",
         label: "\u7cfb\u7edf"
-      } ], l = vue.computed((() => t.compact ? o : i)), c = vue.computed({
+      } ], l = vue.computed((() => t.compact ? o : s)), c = vue.computed({
         get: () => a.app.theme,
         set: e => a.setConfig({
           theme: e
@@ -15955,7 +15799,7 @@
         class: vue.normalizeClass([ "theme-switcher", {
           "theme-switcher-compact": e.compact
         } ])
-      }, [ vue.createVNode(tn, {
+      }, [ vue.createVNode(en, {
         modelValue: c.value,
         "onUpdate:modelValue": t[0] || (t[0] = e => c.value = e),
         segments: l.value
@@ -15986,8 +15830,8 @@
       a.attach(), vue.watchEffect((() => {
         const n = e.value;
         if (!n) return;
-        const r = (s = t.app.theme, i = a.isDark.value, "light" === s || "dark" === s ? s : i ? "dark" : "light");
-        var s, i;
+        const r = (i = t.app.theme, s = a.isDark.value, "light" === i || "dark" === i ? i : s ? "dark" : "light");
+        var i, s;
         n.setAttribute("data-theme", r), n.style.visibility = "visible";
       }));
     })), vue.onBeforeUnmount((() => {
@@ -15995,35 +15839,35 @@
     }));
   }
 
-  const Gm = {
+  const Pm = {
     class: "el_wrapper",
     style: {
       "z-index": "9999999 !important"
     }
-  }, Vm = {
+  }, Lm = {
     class: "floating-title"
-  }, Km = [ "src" ], Wm = {
+  }, jm = [ "src" ], $m = {
     class: "floating-name"
-  }, Qm = {
+  }, zm = {
     class: "floating-version"
-  }, Jm = {
+  }, Mm = {
     class: "floating-actions"
-  }, Xm = {
+  }, Om = {
     key: 0,
     class: "sub-segmented-row"
-  }, Ym = {
+  }, Fm = {
     class: "floating-body"
-  }, Zm = {
+  }, Dm = {
     class: "floating-scroll custom-scroll"
-  }, eh = {
+  }, Nm = {
     class: "mini-tooltip-wrapper"
-  }, th = [ "src" ], ah = {
+  }, Rm = [ "src" ], Bm = {
     key: 0,
     class: "mini-tooltip"
-  }, nh = vue.defineComponent({
+  }, Gm = vue.defineComponent({
     __name: "App",
     setup(e) {
-      const t = ce(), a = Aa(), s = de(), u = ka(), g = _a();
+      const t = ce(), a = Aa(), i = de(), u = ka(), g = _a();
       g.loadCatalog(), t.app.showFloat = t.app.defaultShowFloat;
       const y = vue.ref(null), w = vue.ref(null);
       useTheme(w);
@@ -16080,7 +15924,7 @@
         left: "50%",
         useTransform: true
       });
-      W[ne + "app"] = t, W[ne + "ask"] = a, W[ne + "api"] = s, W[ne + "user"] = u, W[ne + "ai"] = g;
+      W[ne + "app"] = t, W[ne + "ask"] = a, W[ne + "api"] = i, W[ne + "user"] = u, W[ne + "ai"] = g;
       const showOrHide = () => {
         t.app.showFloat = !t.app.showFloat;
       };
@@ -16109,26 +15953,26 @@
         top: E.top,
         left: E.left,
         transform: E.useTransform ? "translateX(-50%)" : "none"
-      }))), P = vue.reactive({
+      }))), H = vue.reactive({
         resizing: false,
         startX: 0,
         startWidth: 0
       }), handleResizeMove = e => {
-        if (!P.resizing) return;
-        const a = e.clientX - P.startX;
-        t.setDialogWidth(P.startWidth + a);
+        if (!H.resizing) return;
+        const a = e.clientX - H.startX;
+        t.setDialogWidth(H.startWidth + a);
       }, stopResize = () => {
-        P.resizing && (P.resizing = false, window.removeEventListener("pointermove", handleResizeMove), 
+        H.resizing && (H.resizing = false, window.removeEventListener("pointermove", handleResizeMove), 
         window.removeEventListener("pointerup", stopResize));
       }, startResize = e => {
-        e.preventDefault(), e.stopPropagation(), P.resizing = true, P.startX = e.clientX, 
-        P.startWidth = t.app.dialogWidth, window.addEventListener("pointermove", handleResizeMove), 
+        e.preventDefault(), e.stopPropagation(), H.resizing = true, H.startX = e.clientX, 
+        H.startWidth = t.app.dialogWidth, window.addEventListener("pointermove", handleResizeMove), 
         window.addEventListener("pointerup", stopResize);
       }, handleDragMove = e => {
         if (!C.dragging || !y.value) return;
-        const t = y.value, {clientX: a, clientY: n} = e, r = t.offsetWidth, s = t.offsetHeight, i = window.innerWidth - r, o = window.innerHeight - s;
+        const t = y.value, {clientX: a, clientY: n} = e, r = t.offsetWidth, i = t.offsetHeight, s = window.innerWidth - r, o = window.innerHeight - i;
         let l = a - C.offsetX, c = n - C.offsetY;
-        l = Math.min(Math.max(0, l), Math.max(0, i)), c = Math.min(Math.max(0, c), Math.max(0, o)), 
+        l = Math.min(Math.max(0, l), Math.max(0, s)), c = Math.min(Math.max(0, c), Math.max(0, o)), 
         E.left = `${l}px`, E.top = `${c}px`, E.useTransform = false;
       }, stopDrag = () => {
         C.dragging && (C.dragging = false, window.removeEventListener("pointermove", handleDragMove), 
@@ -16151,7 +15995,7 @@
       })), vue.onBeforeUnmount((() => {
         window.removeEventListener("pointermove", handleDragMove), window.removeEventListener("pointerup", stopDrag), 
         window.removeEventListener("pointermove", handleResizeMove), window.removeEventListener("pointerup", stopResize);
-      })), updateFn(), (e, a) => (vue.openBlock(), vue.createElementBlock("div", Gm, [ vue.withDirectives(vue.createElementVNode("div", {
+      })), updateFn(), (e, a) => (vue.openBlock(), vue.createElementBlock("div", Pm, [ vue.withDirectives(vue.createElementVNode("div", {
         ref_key: "wrapperRef",
         ref: w,
         class: "floating-wrapper"
@@ -16163,53 +16007,53 @@
       }, [ vue.createElementVNode("div", {
         class: "floating-header",
         onPointerdown: startDrag
-      }, [ vue.createElementVNode("div", Vm, [ vue.createElementVNode("img", {
+      }, [ vue.createElementVNode("div", Lm, [ vue.createElementVNode("img", {
         src: vue.unref(re).script.icon,
         alt: "icon"
-      }, null, 8, Km), vue.createElementVNode("span", Wm, vue.toDisplayString(vue.unref(re).script.name), 1), vue.createElementVNode("span", Qm, "v" + vue.toDisplayString(vue.unref(re).script.version), 1) ]), vue.createElementVNode("div", Jm, [ vue.createVNode(Bm, {
+      }, null, 8, jm), vue.createElementVNode("span", $m, vue.toDisplayString(vue.unref(re).script.name), 1), vue.createElementVNode("span", zm, "v" + vue.toDisplayString(vue.unref(re).script.version), 1) ]), vue.createElementVNode("div", Mm, [ vue.createVNode(Hm, {
         compact: ""
       }), vue.createElementVNode("button", {
         class: "floating-close",
         "aria-label": "\u5173\u95ed",
         onClick: a[0] || (a[0] = e => vue.unref(t).app.showFloat = false),
         type: "button"
-      }, "\xd7") ]) ], 32), vue.createVNode(Rm, {
+      }, "\xd7") ]) ], 32), vue.createVNode(Um, {
         modelValue: _.value,
         "onUpdate:modelValue": a[1] || (a[1] = e => _.value = e),
         tabs: x
       }, null, 8, [ "modelValue" ]), "library" === vue.unref(t).page || "system" === vue.unref(t).page ? (vue.openBlock(), 
-      vue.createElementBlock("div", Xm, [ "library" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(tn, {
+      vue.createElementBlock("div", Om, [ "library" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(en, {
         key: 0,
         modelValue: A.value,
         "onUpdate:modelValue": a[2] || (a[2] = e => A.value = e),
         segments: k
-      }, null, 8, [ "modelValue" ])) : (vue.openBlock(), vue.createBlock(tn, {
+      }, null, 8, [ "modelValue" ])) : (vue.openBlock(), vue.createBlock(en, {
         key: 1,
         modelValue: A.value,
         "onUpdate:modelValue": a[3] || (a[3] = e => A.value = e),
         segments: q
-      }, null, 8, [ "modelValue" ])) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Ym, [ vue.createElementVNode("div", Zm, [ "overview" === vue.unref(t).page ? (vue.openBlock(), 
-      vue.createBlock(Ka, {
+      }, null, 8, [ "modelValue" ])) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Fm, [ vue.createElementVNode("div", Dm, [ "overview" === vue.unref(t).page ? (vue.openBlock(), 
+      vue.createBlock(Va, {
         key: 0
       })) : "ask" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(Ho, {
         key: 1
       })) : "library" === vue.unref(t).page ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 2
-      }, [ "manage" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Oc, {
+      }, [ "manage" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Mc, {
         key: 0
-      })) : "preview" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(zp, {
+      })) : "preview" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock($p, {
         key: 1
-      })) : "tool" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Fm, {
+      })) : "tool" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Sm, {
         key: 2
-      })) : vue.createCommentVNode("", true) ], 64)) : "ai" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(ad, {
+      })) : vue.createCommentVNode("", true) ], 64)) : "ai" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(td, {
         key: 3
       })) : "system" === vue.unref(t).page ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 4
-      }, [ "settings" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Ks, {
+      }, [ "settings" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Vi, {
         key: 0
-      })) : "logs" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Jp, {
+      })) : "logs" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Qp, {
         key: 1
-      })) : "account" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(tm, {
+      })) : "account" === vue.unref(t).subPage ? (vue.openBlock(), vue.createBlock(Rd, {
         key: 2
       })) : vue.createCommentVNode("", true) ], 64)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("div", {
         class: "floating-resize-handle",
@@ -16221,23 +16065,23 @@
         onClick: showOrHide
       }, [ vue.createElementVNode("div", {
         onClick: showOrHide
-      }, [ vue.createElementVNode("div", eh, [ vue.createElementVNode("img", {
+      }, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("img", {
         src: vue.unref("data:image/svg+xml,%3csvg%20class='icon'%20viewBox='0%200%201024%201024'%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3e%3cpath%20d='m253.36%201024-115.278-58.836v-53.206c-64.889-68.266-62.918-94.729%2014.075-153.424-23.506-17.594-63.762%202.675-77.275-36.315%2047.435-42.93%2070.378-101.063%2087.973-162.01a326.695%20326.695%200%200%201%20208.037-226.617c4.645-89.38%2086.847-143.43%20178.479-112.605l-35.612%2090.365c105.145%207.32%20192.414%2045.042%20256.317%20123.303%2040.538%2015.483%2038.849-34.767%2069.252-40.82l11.964%2058.273%2050.391-27.306c28.151%2018.72-5.208%2031.951-10.416%2052.22%2014.78%2020.128%2028.996%2040.538%2044.479%2060.244a142.867%20142.867%200%200%201%2028.996%20114.153c-12.528%2077.838-30.263%20154.831-41.101%20233.092A1276.939%201276.939%200%200%200%20918.433%201024H897.32l-89.24-70.378%209.994-10.416-17.735%2036.878-68.408-20.128-39.411%2023.788-42.227-21.114c-28.151%2014.076-52.502%2036.034-86.565%2027.307l-9.009-37.863H332.747L306.144%201024zm-9.993-380.041-.844.985%20126.68%2019.706%2010.838%2010.979c-29.277%2032.374-19.846%2074.178-29.7%20110.493l34.064%2030.263-35.19%2094.87a412.274%20412.274%200%200%200%20233.515%202.11l9.712-26.602%2012.809%2015.905-11.824%2050.672%205.35%204.645c16.749-11.682%2033.218-24.21%2050.812-34.626a84.454%2084.454%200%200%201%2026.04-5.348l7.46%2033.922%2048.842-23.788%2052.925%2014.076c-1.83-43.212-2.956-80.935-5.912-118.517%200-4.926-9.853-9.29-15.061-14.075l-5.63-23.225%2014.075-100.922h18.72l3.238-1.267c-11.964%20106.412%208.023%20202.266%2087.128%20281.512%208.727-48.842%2016.61-93.321%2024.632-137.66%207.46-40.96%2015.061-81.92%2022.521-122.88%2010.557-48.42%2025.477-97.262-10.979-140.755l-30.825%2038.004c0-16.469%201.126-33.078%201.126-49.546%200-70.378-53.206-104.723-115.983-76.29a232.951%20232.951%200%200%201-32.937%209.43c16.046-32.373-3.519-52.924-25.477-70.377a292.21%20292.21%200%200%200-209.304-70.378c-11.401.703-22.802%200-40.256%200l45.183-104.582c-40.397%2010.979-74.038%2014.78-94.73%2045.464s14.92%2045.886%2020.833%2069.674c-110.212%204.364-202.69%2080.513-236.611%20193.117l-70.378%20172.708%2049.124%203.519%205.63%2054.191c32.514-26.04%2026.04-61.088%2030.262-92.899h17.876v58.414l30.967%206.334c1.407-6.616%202.393-11.683%203.66-16.469%209.148-34.626-19.706-59.117-22.38-91.491zm-37.863%20178.9-6.475%2020.833-25.336%2084.453c1.548%208.868%200%2023.225%205.067%2025.477%2032.374%2016.046%2065.733%2029.277%20104.16%2045.746%2021.113-65.452%2063.621-114.435%2069.533-180.872-37.3-16.187-70.941-31.53-104.722-44.338-17.032-6.756-36.315-10.979-35.049%2019.002zm121.754-38.848%2010.556-90.225-48.138-6.193v78.964zm-168.907%2096.98%2023.084-73.474c-28.152-10.416-47.576-9.29-56.303%2015.483s2.674%2042.79%2032.937%2057.992z'%20fill='%23353947'/%3e%3cpath%20d='M198.607%20548.948c33.922-112.604%20126.68-188.472%20235.907-192.272-5.912-23.788-41.1-39.553-20.832-69.674s54.332-34.486%2094.729-45.465L463.228%20346.12h40.256a292.21%20292.21%200%200%201%20209.304%2070.378c21.958%2017.735%2042.227%2038.286%2025.477%2070.378l.986-.985c-30.967%2026.743-32.797%2059.399-19.847%2095.15L744.599%20622l-40.819-6.192-103.174-14.076-62.214-93.04-31.67%2050.672c-19.425-5.63-26.603.845-20.691%2020.692l-21.536-.845a165.67%20165.67%200%200%200-100.078-17.172l-10.416-86.565-37.44%2031.248-44.339%2042.226zm255.19-62.917-10.556-10.557c-17.173-17.032-35.049-15.061-47.294%203.378s-4.786%2036.737%2012.105%2050.25c20.128%2016.046%2034.907%209.712%2045.745-11.542%2014.217-10.838%2015.202-21.395%200-31.811z'%20fill='%23F5F5F6'%20data-spm-anchor-id='a313x.search_index.0.i5.dc0f3a810XA6r8'%20class='selected'/%3e%3cpath%20d='m592.442%20886.763-9.712%2026.603a412.274%20412.274%200%200%201-233.514-2.112l35.189-94.87-34.063-30.543c9.853-36.315%200-78.12%2029.7-110.494a198.184%20198.184%200%200%200%20105.425-94.87c16.328%202.394%2026.04-1.688%2020.692-20.69l31.67-4.927%2063.058%2078.542c0%207.882-1.97%2018.017%201.971%2023.084%2030.966%2038.708%2023.788%2080.935%2014.076%20123.865-8.587%2036.034-16.469%2071.364-24.492%20106.412zm-149.624-223.24c0%2014.076-2.815%2023.648%200%2026.885%2020.27%2020.691%2020.832%2045.605%2019.566%2071.927a96.84%2096.84%200%200%200%203.237%2031.107c5.912%2020.41%2012.668%2041.382%2038.426%2044.056a48.56%2048.56%200%200%200%2053.347-35.189%20696.602%20696.602%200%200%200%2018.58-80.371c6.052-6.475%2035.47-2.534%2018.157-36.597z'%20fill='%23F5F5F6'/%3e%3cpath%20d='M600.606%20602.013%20703.78%20616.09l40.82%205.349c37.863%209.993%2022.943%2041.241%2026.461%2065.17L756.986%20787.53l-49.828%2078.12-21.395%2031.529-10.134%2021.395a84.454%2084.454%200%200%200-26.04%205.348c-17.594%2010.416-34.063%2022.944-50.813%2034.626v-5.208h-5.067l11.823-50.672c16.047-61.932%2032.937-123.724%2047.717-185.938%205.348-22.662-25.477-68.267-51.94-82.624zM927.3%20706.736c-7.46%2040.96-15.061%2081.92-22.521%20122.88-8.023%2044.338-15.906%2088.817-24.633%20137.66-79.105-79.387-98.529-175.242-87.128-281.513z'%20fill='%23B3DCF8'/%3e%3cpath%20d='m199.029%20843.692%206.475-20.832h45.605c2.111-39.271-20.973-30.263-38.427-30.122-1.548-29.981%2018.017-25.758%2035.049-18.58%2034.063%2013.231%2067.422%2028.151%20104.722%2044.479-5.912%2066.437-48.42%20115.42-69.533%20180.871-38.427-16.186-71.927-29.418-104.16-45.182-4.786-2.252-3.519-16.61-5.067-25.477h33.5l26.321-70.378z'%20fill='%2387BC85'/%3e%3cpath%20d='M738.265%20486.03a232.951%20232.951%200%200%200%2032.937-9.43c62.777-28.151%20116.405%206.615%20115.983%2076.29%200%2016.468-.704%2033.077-1.126%2049.546l1.126-.986-12.105-2.674-21.536%2016.75-29.98%208.305a86.565%2086.565%200%200%201-91.633-59.259c2.393-26.462%204.645-52.924%207.038-79.527zm113.731%2061.792-61.37-52.502c-3.94%2035.752-6.615%2059.822-10.275%2093.18z'%20fill='%23F5F5F6'%20data-spm-anchor-id='a313x.search_index.0.i3.dc0f3a810XA6r8'/%3e%3cpath%20d='M198.607%20548.948h73.615c-28.151%2042.227-74.178%2076.853-59.117%20137.66-4.223%2031.81%202.252%2066.859-30.263%2092.899l-6.052-54.473-49.124-3.519z'%20fill='%23AED4EF'/%3e%3cpath%20d='m927.3%20706.736-134.28-21.113-3.238%201.266%206.897-37.863%2027.025-7.742%2031.248-8.867%2029.84-20.691%202.393-10.276-.422.986%2030.262-36.738c35.752%2043.776%2020.832%2092.618%2010.276%20141.038zm-557.675-42.79-126.68-19.706a171.3%20171.3%200%200%201%2016.75-41.1c21.817-29.278%2046.168-56.303%2069.533-84.454%203.238%209.15%206.757%2018.157%209.572%2027.307q15.624%2049.123%2030.966%2098.529z'%20fill='%23F5F5F6'/%3e%3cpath%20d='M763.18%20810.473c5.207%204.645%2014.075%209.009%2015.06%2014.076%202.956%2037.582%204.082%2075.304%205.912%20118.516l-52.925-14.075-47.997%2023.787-7.601-34.766c14.075-1.97%2020.55-7.883%2010.979-21.817%2021.395%2011.682%2023.788-9.994%2033.359-19.003z'%20fill='%23AED4EF'/%3e%3cpath%20d='M601.169%20634.106c26.462%2014.075%2057.288%2059.962%2051.939%2082.624-14.076%2062.214-31.67%20124.006-47.716%20185.938l-12.95-15.905c8.023-35.33%2015.905-70.378%2024.35-105.99%2010.135-42.93%2017.314-85.157-14.075-123.865-3.519-4.785-.985-14.92-1.548-22.802zM328.806%20518.404c-23.365%2028.152-47.716%2055.458-69.533%2084.454a171.3%20171.3%200%200%200-16.75%2041.1l.844-.985-12.386%2043.072h-17.876c-15.061-60.385%2030.403-94.87%2059.117-137.097l44.338-42.226z'%20fill='%23484F5E'/%3e%3cpath%20d='m327.258%20784.011-37.582-17.454v-78.964l48.138%206.193z'%20fill='%23D55375'/%3e%3cpath%20d='m823.704%20641.284-27.025%207.742-6.897%2037.863h-18.72c-3.52-23.928%2011.4-55.176-26.463-65.17l-25.195-40.96%2012.527-16.187a86.565%2086.565%200%200%200%2091.35%2059.259zm-454.079%2022.662V644.1l12.246-12.95c8.445%201.267%2020.41%206.897%2024.773%203.237%2020.55-17.031%2038.99-36.455%2058.132-55.176l20.973%201.548a198.184%20198.184%200%200%201-105.708%2094.87z'%20fill='%23484F5E'/%3e%3cpath%20d='m199.029%20843.692%2034.485%2014.075-26.321%2070.378h-33.5z'%20fill='%23CAE7AF'/%3e%3cpath%20d='m230.98%20686.326%2012.387-43.071c2.675%2031.67%2031.53%2056.302%2022.24%2091.35-1.267%204.786-2.252%209.854-3.66%2016.47l-30.966-6.335z'%20fill='%23F5F5F6'/%3e%3cpath%20d='m763.18%20810.473-44.058%2067.704-11.964-12.528%2050.39-78.4z'%20fill='%23484F5E'/%3e%3cpath%20d='M212.682%20792.738c17.454%200%2040.538-9.15%2038.427%2030.122h-45.605z'%20fill='%23CDEAB1'/%3e%3cpath%20d='m598.917%20957.985-5.349-4.645h5.067z'%20fill='%23484F5E'/%3e%3cpath%20d='M464.495%20579.211c-19.143%2018.72-37.582%2038.145-58.132%2055.176-4.364%203.66-16.328-1.97-24.773-3.237l-17.173-69.111a165.67%20165.67%200%200%201%20100.078%2017.172z'%20fill='%23AED4EF'/%3e%3cpath%20d='m364.417%20562.039%2017.173%2069.111-12.246%2012.95Q354%20594.976%20338.377%20545.57c-2.815-9.149-6.334-18.157-9.571-27.306l-12.246-11.542%2037.441-30.967z'%20fill='%23353947'/%3e%3cpath%20d='M600.606%20602.013v31.67l-62.214-79.245-31.67%204.926%2031.388-50.39z'%20fill='%23484F5E'/%3e%3cpath%20d='M453.797%20517.278c-10.838%2021.255-25.617%2028.152-45.745%2011.542-16.891-14.075-24.633-31.529-12.105-50.25s30.121-20.41%2047.294-3.378c-23.507.986-34.767%2011.542-29.137%2039.412l39.693%203.097z'%20fill='%23AED4EF'/%3e%3cpath%20d='m731.931%20564.572-12.809%2015.624c-12.95-35.752-11.12-68.407%2019.847-95.15-2.111%2026.602-4.363%2053.064-7.038%2079.526z'%20fill='%23353947'/%3e%3cpath%20d='M506.722%20559.787c5.348%2019.002-4.364%2023.084-20.691%2020.69-6.194-19.846.985-26.32%2020.69-20.69z'%20fill='%23484F5E'/%3e%3cpath%20d='M453.797%20485.749c15.202%2010.416%2014.076%2020.973%200%2031.53v-31.812zm-10.556-10.557%2010.556%2010.557-10.556-10.557z'%20fill='%23AED4EF'/%3e%3cpath%20d='m442.818%20663.524%20151.313%2022.099c17.313%2034.062-12.105%2030.121-18.157%2036.596a696.602%20696.602%200%200%201-18.58%2080.09%2048.56%2048.56%200%200%201-52.784%2034.908c-25.758-2.675-32.514-23.647-38.426-44.057a96.84%2096.84%200%200%201-3.237-31.107c1.266-26.321%200-51.235-19.566-71.926-3.378-2.956-.563-12.387-.563-26.603zm66.297%20153.987c41.523-26.462%2042.226-60.384%2034.766-98.53l-55.317-10.274c-.422%2038.707-15.202%2075.163%2020.55%20108.804zm198.043%2048.138%2011.964%2012.528c-9.57%209.008-11.964%2030.685-33.359%2019.002z'%20fill='%23353947'/%3e%3cpath%20d='M686.186%20896.757c9.571%2014.075%202.955%2019.846-10.98%2021.817zm165.81-348.935-71.645%2040.679c3.66-33.36%206.334-57.429%2010.276-93.18z'%20fill='%23353947'/%3e%3cpath%20d='m884.792%20611.726-29.84%2020.69-1.408-16.89%2021.536-16.75z'%20fill='%23484F5E'%20data-spm-anchor-id='a313x.search_index.0.i4.dc0f3a810XA6r8'%20class='selected'/%3e%3cpath%20d='m853.544%20615.526%201.408%2016.89-31.248%208.868v-17.453zm31.248-3.8-9.712-12.95%2012.105%202.674z'%20fill='%23353947'/%3e%3cpath%20d='m443.522%20474.91%2010.557%2010.557v31.952l-39.693-3.097c-6.194-27.87%205.63-38.426%2029.136-39.411z'%20fill='%23F5F5F6'/%3e%3cpath%20d='M509.115%20817.51c-35.753-33.64-20.973-70.377-20.55-108.803l55.316%2010.275c7.883%2038.145%206.757%2072.067-34.766%2098.529z'%20fill='%23E25679'/%3e%3c/svg%3e"),
         onClick: showOrHide
-      }, null, 8, th), !vue.unref(t).app.showFloat && vue.unref(t).app.alertBubble ? (vue.openBlock(), vue.createElementBlock("div", ah, vue.toDisplayString(vue.unref(t).app.alert), 1)) : vue.createCommentVNode("", true) ]) ]) ], 512), [ [ vue.vShow, !vue.unref(t).app.showFloat ] ]) ]));
+      }, null, 8, Rm), !vue.unref(t).app.showFloat && vue.unref(t).app.alertBubble ? (vue.openBlock(), vue.createElementBlock("div", Bm, vue.toDisplayString(vue.unref(t).app.alert), 1)) : vue.createCommentVNode("", true) ]) ]) ], 512), [ [ vue.vShow, !vue.unref(t).app.showFloat ] ]) ]));
     }
-  }), rh = [ '.floating-wrapper{--c-primary: #0071e3;--c-primary-hover: #0077ed;--c-primary-active: #0062cc;--c-primary-soft: rgba(0, 113, 227, .1);--c-primary-ring: rgba(0, 113, 227, .18);--c-success: #34c759;--c-success-soft: rgba(52, 199, 89, .12);--c-warning: #ff9f0a;--c-warning-soft: rgba(255, 159, 10, .12);--c-danger: #ff3b30;--c-danger-soft: rgba(255, 59, 48, .1);--c-info: #5ac8fa;--c-info-soft: rgba(90, 200, 250, .12);--c-bg-base: #f5f5f7;--c-bg-surface: #ffffff;--c-bg-subtle: #fbfbfd;--c-bg-hover: #f0f0f3;--c-text-primary: #1d1d1f;--c-text-secondary: #424245;--c-text-muted: #86868b;--c-text-disabled: #c7c7cc;--c-border-subtle: rgba(0, 0, 0, .06);--c-border-base: rgba(0, 0, 0, .1);--c-border-strong: rgba(0, 0, 0, .16);--s-1: 4px;--s-2: 8px;--s-3: 10px;--s-4: 12px;--s-5: 16px;--s-6: 20px;--s-8: 24px;--s-10: 32px;--r-xs: 4px;--r-sm: 8px;--r-md: 12px;--r-lg: 16px;--r-full: 9999px;--shadow-1: 0 1px 2px rgba(0, 0, 0, .04);--shadow-2: 0 2px 8px rgba(0, 0, 0, .06);--shadow-3: 0 4px 16px rgba(0, 0, 0, .1);--shadow-4: 0 12px 32px rgba(0, 0, 0, .16);--font-xs: 11px;--font-sm: 12px;--font-base: 13px;--font-md: 14px;--font-lg: 16px;--font-xl: 19px;--fw-regular: 400;--fw-medium: 500;--fw-semibold: 600;--font-numeric: tabular-nums;--ease-out: cubic-bezier(.33, 1, .68, 1);--ease-spring: cubic-bezier(.34, 1.56, .64, 1);--dur-fast: .15s;--dur-base: .2s;--dur-slow: .28s;--z-base: 1;--z-sticky: 10;--z-overlay: 20;--z-modal: 30;--z-toast: 40;--z-tooltip: 50;color:var(--c-text-primary);color-scheme:light;font-size:var(--font-base);line-height:1.5;text-align:left}.floating-wrapper[data-theme=dark]{color-scheme:dark;--c-primary: #0a84ff;--c-primary-hover: #409cff;--c-primary-active: #0a6acf;--c-primary-soft: rgba(10, 132, 255, .18);--c-primary-ring: rgba(10, 132, 255, .28);--c-success: #30d158;--c-success-soft: rgba(48, 209, 88, .18);--c-warning: #ffd60a;--c-warning-soft: rgba(255, 214, 10, .18);--c-danger: #ff453a;--c-danger-soft: rgba(255, 69, 58, .18);--c-info: #64d2ff;--c-info-soft: rgba(100, 210, 255, .18);--c-bg-base: #1c1c1e;--c-bg-surface: #2c2c2e;--c-bg-subtle: #232325;--c-bg-hover: #3a3a3c;--c-text-primary: #f5f5f7;--c-text-secondary: #d1d1d6;--c-text-muted: #98989d;--c-text-disabled: #48484a;--c-border-subtle: rgba(255, 255, 255, .08);--c-border-base: rgba(255, 255, 255, .14);--c-border-strong: rgba(255, 255, 255, .22);--shadow-1: 0 1px 2px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(255, 255, 255, .04);--shadow-2: 0 2px 8px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(255, 255, 255, .06);--shadow-3: 0 4px 16px rgba(0, 0, 0, .6), inset 0 0 0 1px rgba(255, 255, 255, .06);--shadow-4: 0 12px 32px rgba(0, 0, 0, .7),inset 0 0 0 1px rgba(255, 255, 255, .08)}.floating-wrapper:not([data-theme]){visibility:hidden}.floating-wrapper,.floating-wrapper *{box-sizing:border-box}.floating-wrapper button,.floating-wrapper input,.floating-wrapper select,.floating-wrapper textarea{font:inherit}.custom-scroll{scrollbar-width:thin;scrollbar-color:var(--c-border-strong) transparent}.custom-scroll::-webkit-scrollbar-thumb{background:var(--c-border-strong)}.custom-scroll::-webkit-scrollbar-thumb:hover{background:var(--c-text-muted)}*{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}@keyframes fadeIn{0%{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeIn .3s cubic-bezier(.25,.1,.25,1)}.fade-slide-enter-active,.fade-slide-leave-active{transition:all .25s ease}.fade-slide-enter-from,.fade-slide-leave-to{opacity:0;transform:translateY(6px)}@keyframes pulse{0%,to{box-shadow:0 0 #cc33334d}50%{box-shadow:0 0 0 6px #c330}}@keyframes ai-bounce{0%,80%,to{transform:scale(.8);opacity:.6}40%{transform:scale(1.15);opacity:1}}.mb-10{margin-bottom:10px!important}.mt-10{margin-top:10px!important}.mt-20{margin-top:20px!important}.small{font-size:13px}.muted-text{color:#6b7280;font-size:13px}.green{color:#059669}.red{color:#dc2626}.flex-grow{flex:1}.ghost{box-shadow:none}.aah_breadcrumb{margin-bottom:24px;padding:0;background:transparent;border:none;border-radius:0}.breadcrumb{display:inline-flex;align-items:center;gap:8px;font-size:14px;white-space:nowrap;line-height:1.2}.breadcrumb-link{color:#0071e3;cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;white-space:nowrap}.breadcrumb-link:hover{color:#0077ed;text-decoration:underline}.breadcrumb-sep,.breadcrumb-text{color:#86868b}.aah_title{font-size:var(--font-md);font-weight:var(--fw-medium);line-height:1.6;color:var(--c-text-primary);margin-bottom:var(--s-3);padding:var(--s-3);background:var(--c-bg-subtle);border-radius:var(--r-sm);border:1px solid var(--c-border-subtle);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical}.aah_title img{max-width:100%;height:auto;overflow:hidden;border-radius:var(--r-sm);margin:var(--s-3) 0}.aah_options{transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);cursor:pointer;color:var(--c-text-primary)}.aah_options:hover{border-color:var(--c-primary-ring);background:var(--c-bg-hover)}.aah_options[style*="color:green"]{background:var(--c-success-soft)!important;border-color:var(--c-success)!important;font-weight:var(--fw-medium);color:var(--c-success)!important}.aah_active{box-shadow:0 0 0 2px var(--c-primary)}.aah_bomHet50{padding:13px 0 13px 10px}.aah_bomHet50 span{display:inline-block;line-height:24px;padding-left:14px;color:#86868b;font-size:13px}.aah_bomHet50 span i{display:inline-block;width:10px;height:10px;border:1px solid #d2d2d7;border-radius:2px;vertical-align:middle;margin-right:4px;margin-top:-2px}.aah_bomHet50 .dq i{background-color:#0071e31a;box-shadow:0 0 0 2px #0071e34d;border-color:#0071e3}.aah_bomHet50 .yp i{background-color:#00cc331a;border-color:#0c3}.aah_bomHet50 .wp i{background-color:#cc33331a;border-color:#c33}.is-error{box-shadow:0 0 0 2px #cc33334d inset!important}.error-message{color:#c33;margin-top:8px;font-size:13px;font-weight:400}.icon-inline{display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:middle;position:relative;top:-.05em}.home-avatar-icon{width:48px;height:48px;color:#9ca3af}.home-page-icon{width:24px;height:24px;flex-shrink:0}.aah-card{background:var(--c-bg-surface);border-radius:var(--r-md);border:1px solid var(--c-border-subtle);box-shadow:var(--shadow-1);padding:var(--s-3);transition:box-shadow var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}.aah-card:hover{box-shadow:var(--shadow-2);border-color:var(--c-border-base)}.aah-card-compact{padding:var(--s-2) var(--s-3)}.aah-card-spacious{padding:var(--s-4) var(--s-5)}.aah-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-md);border:1px solid var(--c-border-base);background:var(--c-bg-base);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);cursor:pointer;transition:all var(--dur-base) var(--ease-out)}.aah-btn:hover:enabled{box-shadow:var(--shadow-2)}.aah-btn:disabled{opacity:.6;cursor:not-allowed}.aah-btn-primary{background:linear-gradient(135deg,#6fb1fc,#4364f7);color:#fff;border-color:transparent}.aah-btn-primary:hover:enabled{filter:brightness(.95);box-shadow:var(--shadow-4)}.aah-btn-plain{background:var(--c-bg-surface)}.aah-btn-small{padding:var(--s-2) var(--s-3);font-size:var(--font-sm);border-radius:var(--r-sm)}.aah-btn-danger{background:var(--c-danger-soft);color:var(--c-danger);border-color:var(--c-border-base)}.aah-tag{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);font-weight:var(--fw-semibold);border:1px solid transparent}.aah-tag-primary{background:#0071e31a;color:var(--c-primary);border-color:#0071e329}.aah-tag-success{background:#34c7591f;color:var(--c-success);border-color:#34c75933}.aah-tag-warning{background:#ff9f0a1f;color:var(--c-warning);border-color:#ff9f0a33}.aah-input{width:100%;padding:var(--s-2) var(--s-3);border-radius:var(--r-md);border:1px solid var(--c-border-base);background:var(--c-bg-subtle);color:var(--c-text-primary);font-size:var(--font-base);transition:all var(--dur-base) var(--ease-out)}.aah-input:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px #0071e31a}.aah-input:disabled{opacity:.6;cursor:not-allowed;background:var(--c-bg-base)}.aah-input.recording{border-color:var(--c-primary);box-shadow:0 0 0 3px #0071e326}.aah-select{width:100%;padding:var(--s-2) var(--s-3);border-radius:var(--r-md);border:1px solid var(--c-border-base);background:var(--c-bg-subtle);color:var(--c-text-primary);font-size:var(--font-base);cursor:pointer;transition:all var(--dur-base) var(--ease-out)}.aah-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px #0071e31a}.aah-select:disabled{opacity:.6;cursor:not-allowed;background:var(--c-bg-base)}.aah-alert{display:flex;align-items:flex-start;gap:var(--s-3);padding:var(--s-3);border-radius:var(--r-md);font-size:var(--font-base);line-height:1.6;border:1px solid transparent}.aah-alert-info{background:#3b82f61a;color:#1d4ed8;border-color:#3b82f633}.aah-alert-success{background:#34c7591a;color:#0f5132;border-color:#34c75933}.aah-alert-warning{background:#ff9f0a1a;color:#92400e;border-color:#ff9f0a33}.aah-alert-danger{background:#ef44441a;color:#b91c1c;border-color:#ef444433}.aah-page{display:flex;flex-direction:column;height:100%;overflow:hidden}.page-title{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary);letter-spacing:-.022em}.aah-page-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:var(--s-3)}.aah-page-content.no-padding{padding:0}.aah-page-footer{padding:var(--s-3) var(--s-4);border-top:1px solid var(--c-border-subtle);background:var(--c-bg-surface);flex-shrink:0}.aah-page.is-loading .aah-page-content{position:relative;pointer-events:none;opacity:.6}.page-loader{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;background:#fffc;z-index:100}.spinner{width:32px;height:32px;border:3px solid var(--c-border-subtle);border-top-color:var(--c-primary);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.aah-slider{width:100%;accent-color:var(--c-primary)}.radio-group{display:flex;gap:var(--s-3)}.radio-item{display:inline-flex;align-items:center;gap:var(--s-1);cursor:pointer}', ".floating-wrapper{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:999999}.el_wrapper>.floating-wrapper{pointer-events:none!important}.el_wrapper>div{pointer-events:none;z-index:999999!important}.el_wrapper>div>div{pointer-events:none;z-index:999999!important}.el_wrapper>.minimized-dialog{pointer-events:auto!important}.minimized-dialog{position:fixed;bottom:20px;right:20px;z-index:9999999}.floating-dialog{position:fixed;display:flex;flex-direction:column;pointer-events:auto;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-3);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);max-width:calc(100vw - 32px);max-height:calc(100vh - 80px);z-index:999999}.floating-dialog:has(.ai-config-panel){width:min(960px,calc(100vw - 32px))!important}.el_wrapper>.floating-wrapper>.floating-dialog{pointer-events:auto!important}.floating-header{display:flex;align-items:center;justify-content:space-between;background:var(--c-bg-subtle);color:var(--c-text-primary);padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--c-border-subtle);cursor:move;-webkit-user-select:none;user-select:none;gap:var(--s-2)}.floating-title{display:flex;align-items:center;gap:var(--s-2);min-width:0;font-size:var(--font-base);font-weight:var(--fw-semibold);color:var(--c-text-primary);letter-spacing:-.022em}.floating-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.floating-title img{width:16px;height:16px;vertical-align:middle;border-radius:4px}.floating-version{margin-left:var(--s-2);background:transparent;border:none;color:var(--c-text-muted);padding:0;font-size:var(--font-xs);font-weight:var(--fw-regular);font-variant-numeric:var(--font-numeric)}.floating-actions{display:flex;align-items:center;gap:var(--s-1);flex-shrink:0}.floating-actions .theme-switcher{display:inline-flex}.floating-actions .segmented{background:var(--c-bg-surface)}.floating-actions .segment-item{padding:2px 6px;font-size:var(--font-xs);line-height:1.4}.floating-close{width:28px;height:28px;border:none;border-radius:50%;background:var(--c-bg-hover);color:var(--c-text-secondary);font-size:var(--font-lg);line-height:1;cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.floating-close:hover{background:var(--c-border-base);color:var(--c-text-primary)}.floating-body{flex:1 1 auto;min-height:0;overflow:hidden;background:var(--c-bg-base)}.floating-resize-handle{position:absolute;right:0;bottom:0;width:16px;height:16px;cursor:ew-resize;-webkit-user-select:none;user-select:none;background-image:linear-gradient(135deg,transparent 50%,var(--c-text-muted) 50%,var(--c-text-muted) 60%,transparent 60%);background-size:6px 6px;background-position:bottom right;background-repeat:no-repeat;opacity:.45;transition:opacity var(--dur-fast) var(--ease-out)}.floating-resize-handle:hover{opacity:.9}.floating-scroll{min-height:0;background:var(--c-bg-base);padding:0;max-height:50vh;overflow:auto}@media(max-width:600px){.floating-scroll{max-height:45vh}}@media(min-width:601px){.floating-scroll{max-height:62vh}}.minimized-dialog img{pointer-events:auto;width:56px!important;height:56px!important;z-index:9999999!important;display:block;cursor:pointer}.mini-tooltip-wrapper{position:relative;display:inline-block}.mini-tooltip{position:absolute;bottom:calc(100% + 10px);right:0;background:var(--c-text-primary);color:var(--c-bg-surface);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);box-shadow:var(--shadow-2);white-space:nowrap}", ".modal-mask{position:fixed;top:0;right:0;bottom:0;left:0;background:#0006;display:grid;place-items:center;z-index:var(--z-modal, 1000000);padding:var(--s-4)}.modal-panel{background:var(--c-bg-surface);border-radius:var(--r-md);width:min(600px,100%);max-height:80vh;display:flex;flex-direction:column;box-shadow:var(--shadow-4);border:1px solid var(--c-border-subtle)}.modal-header{display:flex;align-items:center;justify-content:space-between;padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.modal-header h3{margin:0;color:var(--c-text-primary);font-size:var(--font-lg);font-weight:var(--fw-semibold)}.modal-close{border:none;background:transparent;font-size:var(--font-xl);cursor:pointer;color:var(--c-text-muted);transition:color var(--dur-fast) var(--ease-out)}.modal-close:hover{color:var(--c-text-primary)}.modal-body{padding:var(--s-3);overflow-y:auto;display:flex;flex-direction:column;gap:var(--s-3)}.modal-footer{padding:var(--s-2) var(--s-3);border-top:1px solid var(--c-border-subtle);display:flex;justify-content:flex-end;gap:var(--s-2)}.modal-panel-large{width:min(1000px,90vw);max-height:90vh}.form-row{display:flex;flex-direction:column;gap:var(--s-1)}.form-row label{color:var(--c-text-secondary);font-size:var(--font-sm);font-weight:var(--fw-medium)}.option-list{display:flex;flex-direction:column;gap:var(--s-2)}.option-row{display:flex;gap:var(--s-2);align-items:center}.option-selector{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%;border:1px solid var(--c-border-base);background:var(--c-bg-base);color:var(--c-text-muted);font-weight:var(--fw-semibold);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.option-selector:hover{border-color:var(--c-primary);color:var(--c-primary)}.option-selector.active{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}.reading-form-section{padding:var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-md)}.reading-section-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.reading-section-icon{font-size:var(--font-xl);color:var(--c-primary)}.reading-section-header h4{margin:0;color:var(--c-text-primary);font-size:var(--font-md);font-weight:var(--fw-semibold)}.reading-sub-questions-editor{display:flex;flex-direction:column;gap:var(--s-3)}.reading-sub-question-editor{padding:var(--s-3);background:var(--c-bg-surface);border:1px solid var(--c-border-base);border-radius:var(--r-md)}.reading-sub-question-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.reading-sub-question-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex-shrink:0;background:var(--c-primary);color:#fff;border-radius:var(--r-full);font-size:var(--font-sm);font-weight:var(--fw-semibold);font-variant-numeric:var(--font-numeric)}.reading-base-select-small{min-width:120px;padding:6px var(--s-2);font-size:var(--font-sm)}.reading-answer-list{display:flex;flex-direction:column;gap:var(--s-2)}.reading-answer-row{display:flex;align-items:center;gap:var(--s-2)}", ".hljs{display:block;overflow-x:auto;padding:var(--s-3);border-radius:var(--r-sm);font-family:ui-monospace,SF Mono,Consolas,monospace;font-size:var(--font-sm);line-height:1.5}.floating-wrapper:not([data-theme=dark]) .hljs{background:#f6f8fa;color:#24292f;box-shadow:var(--shadow-1)}.floating-wrapper:not([data-theme=dark]) .hljs-keyword,.floating-wrapper:not([data-theme=dark]) .hljs-selector-tag,.floating-wrapper:not([data-theme=dark]) .hljs-built_in{color:#cf222e}.floating-wrapper:not([data-theme=dark]) .hljs-string,.floating-wrapper:not([data-theme=dark]) .hljs-attr{color:#0a3069}.floating-wrapper:not([data-theme=dark]) .hljs-number,.floating-wrapper:not([data-theme=dark]) .hljs-literal{color:#0550ae}.floating-wrapper:not([data-theme=dark]) .hljs-comment{color:#6e7781;font-style:italic}.floating-wrapper:not([data-theme=dark]) .hljs-title,.floating-wrapper:not([data-theme=dark]) .hljs-name{color:#8250df}.floating-wrapper[data-theme=dark] .hljs{background:#1f1f23;color:#f0f6fc;box-shadow:var(--shadow-1)}.floating-wrapper[data-theme=dark] .hljs-keyword,.floating-wrapper[data-theme=dark] .hljs-selector-tag,.floating-wrapper[data-theme=dark] .hljs-built_in{color:#ff7b72}.floating-wrapper[data-theme=dark] .hljs-string,.floating-wrapper[data-theme=dark] .hljs-attr{color:#a5d6ff}.floating-wrapper[data-theme=dark] .hljs-number,.floating-wrapper[data-theme=dark] .hljs-literal{color:#79c0ff}.floating-wrapper[data-theme=dark] .hljs-comment{color:#8b949e;font-style:italic}.floating-wrapper[data-theme=dark] .hljs-title,.floating-wrapper[data-theme=dark] .hljs-name{color:#d2a8ff}", ".tabs-bar{display:flex;gap:3px;padding:5px 8px;border-bottom:1px solid var(--c-border-subtle);background:var(--c-bg-subtle);overflow-x:auto}.tabs-bar::-webkit-scrollbar{display:none}.tab-item{flex-shrink:0;padding:4px 8px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:color var(--dur-fast) var(--ease-out),background-color var(--dur-fast) var(--ease-out)}.tab-item:hover:not(.active){color:var(--c-text-secondary)}.tab-item.active{background:var(--c-bg-surface);color:var(--c-primary);border-color:var(--c-primary-soft);box-shadow:var(--shadow-1)}.tab-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}.sub-segmented-row{padding:6px var(--s-2) 0}", ".segmented{display:inline-flex;padding:2px;gap:2px;background:var(--c-bg-base);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm)}.segment-item{padding:var(--s-1) var(--s-3);border:none;border-radius:calc(var(--r-sm) - 2px);background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.segment-item.active{background:var(--c-bg-surface);color:var(--c-primary);box-shadow:var(--shadow-1)}.segment-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}", ".stat-card{text-align:left;padding:10px 12px;background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:10px;cursor:default;box-shadow:var(--shadow-1);transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out)}.stat-card-clickable{cursor:pointer}.stat-card-clickable:hover{transform:translateY(-1px);box-shadow:var(--shadow-2)}.stat-card-clickable:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}.stat-label{display:flex;align-items:center;gap:var(--s-1);font-size:var(--font-xs);color:var(--c-text-muted)}.stat-icon{width:12px;height:12px;border-radius:3px;flex-shrink:0}.stat-value{font-size:18px;font-weight:var(--fw-semibold);margin-top:var(--s-1);font-variant-numeric:var(--font-numeric);line-height:1.3}.stat-meta{font-size:var(--font-xs);color:var(--c-text-muted);margin-top:2px}.stat-progress{height:4px;border-radius:2px;background:var(--c-bg-hover);overflow:hidden;margin-top:var(--s-2)}.stat-progress>i{display:block;height:100%;background:var(--c-primary);transition:width var(--dur-base) var(--ease-out)}", '.switch{position:relative;display:inline-block;width:44px;height:26px;cursor:pointer}.switch.disabled{cursor:not-allowed;opacity:.6}.switch input{opacity:0;width:0;height:0}.switch-slider{position:absolute;top:0;right:0;bottom:0;left:0;background:var(--c-bg-hover);border-radius:var(--r-full);transition:background-color var(--dur-base) var(--ease-out)}.switch-slider:before{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;background:#fff;border-radius:50%;box-shadow:var(--shadow-1);transition:transform var(--dur-base) var(--ease-spring)}.switch input:checked+.switch-slider{background:var(--c-primary)}.switch input:checked+.switch-slider:before{transform:translate(18px)}.switch input:focus-visible+.switch-slider{box-shadow:0 0 0 3px var(--c-primary-ring)}', '.overview-page{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.overview-user{display:flex;align-items:center;gap:var(--s-3)}.ov-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--c-primary-soft),var(--c-bg-subtle));border:1px solid var(--c-border-subtle);display:grid;place-items:center;color:var(--c-primary);overflow:hidden;font-weight:var(--fw-semibold);flex-shrink:0}.ov-avatar img{width:100%;height:100%;object-fit:cover}.ov-user-meta{flex:1;min-width:0}.ov-user-meta h3{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ov-user-meta p{margin:var(--s-1) 0 0;font-size:var(--font-sm);color:var(--c-text-muted)}.ov-tags{display:flex;gap:var(--s-1);flex-wrap:wrap}.ov-muted{color:var(--c-text-muted)}.overview-notice{background:var(--c-primary-soft);border:1px solid var(--c-primary-ring);padding:10px 12px}.ov-notice-content{font-size:var(--font-sm);color:var(--c-text-secondary);line-height:1.5}.ov-notice-content a{color:var(--c-primary)}.ov-notice-content:before{content:"\ud83d\udce3 "}.overview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-2)}.overview-actions{display:flex;flex-wrap:wrap;gap:var(--s-2)}.overview-actions .aah-btn{flex:1;min-width:96px}.overview-version{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:10px}.ov-version-text{font-size:var(--font-sm);color:var(--c-text-muted);font-variant-numeric:var(--font-numeric)}@media(max-width:480px){.overview-stats{grid-template-columns:1fr}.overview-actions .aah-btn{flex:1 0 100%}}', ".settings-layout{display:grid;grid-template-columns:minmax(112px,124px) minmax(0,1fr);flex:1;min-height:0;gap:1px;background:var(--c-border-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-lg);overflow:hidden}.settings-page .aah-page-content{overflow-x:auto}.settings-sidebar{display:flex;flex-direction:column;background:var(--c-bg-surface);height:100%;min-width:0;overflow-y:auto}.sidebar-header{padding:var(--s-2);border-bottom:1px solid var(--c-border-subtle);flex-shrink:0}.settings-search-input-wrapper{position:relative;display:flex;align-items:center}.search-icon{position:absolute;left:var(--s-2);color:var(--c-text-muted);font-size:16px;pointer-events:none}.settings-search-input{padding-left:28px!important;width:100%}.sidebar-nav{flex:1;padding:var(--s-1);overflow-y:auto}.sidebar-nav .nav-item{display:flex;align-items:center;gap:var(--s-1);padding:var(--s-2);border-radius:var(--r-md);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);cursor:pointer;transition:all var(--dur-base) var(--ease-out);text-decoration:none;margin-bottom:var(--s-1);width:100%;text-align:left;border:none;background:transparent}.sidebar-nav .nav-item:hover{background:var(--c-bg-hover)}.sidebar-nav .nav-item.active{background:var(--c-primary-soft);color:var(--c-primary);font-weight:var(--fw-semibold)}.nav-icon{font-size:20px;flex-shrink:0}.sidebar-footer{padding:var(--s-3);border-top:1px solid var(--c-border-subtle);flex-shrink:0}.sidebar-footer .aah-alert{font-size:var(--font-sm);padding:var(--s-2) var(--s-3)}.settings-content{background:var(--c-bg-surface);height:100%;min-width:0;overflow-y:auto;padding:var(--s-4)}.settings-content-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.settings-content-header h2{margin:0;color:var(--c-text-primary);font-size:var(--font-xl);font-weight:var(--fw-semibold)}.settings-content-header p{margin:var(--s-1) 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.settings-section.settings-config-section{gap:var(--s-3)}.setting-group{margin-bottom:var(--s-4)}.group-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s-3);padding-bottom:var(--s-2);border-bottom:1px solid var(--c-border-subtle)}.group-title{display:flex;align-items:center;gap:var(--s-2);margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary);letter-spacing:-.022em}.group-items{display:flex;flex-direction:column;gap:var(--s-2)}.empty-search{text-align:center;padding:var(--s-6) var(--s-3);color:var(--c-text-muted)}.settings-empty-icon{font-size:48px;margin-bottom:var(--s-3);opacity:.5}.settings-empty-text{margin:0;font-size:var(--font-base)}.config-item{padding:10px;background:var(--c-bg-surface);border-radius:10px;transition:all .3s cubic-bezier(.25,.1,.25,1);border:1px solid var(--c-border-subtle)}.config-item:hover{background:var(--c-bg-subtle);box-shadow:0 2px 8px var(--c-border-subtle);border-color:var(--c-border-base)}.config-item-content{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.config-label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:180px}.label-wrapper{display:flex;flex-direction:column;gap:4px}.label-text{font-size:15px;font-weight:500;color:var(--c-text-primary)}.label-desc{font-size:13px;font-weight:400;color:var(--c-text-muted);line-height:1.5}.info-icon{color:var(--c-text-muted);cursor:help;font-size:16px;transition:color .2s ease}.info-icon:hover{color:var(--c-primary)}.config-control{display:flex;align-items:center;flex-shrink:0;gap:10px;flex-wrap:wrap;justify-content:flex-end}.checkbox-group{display:flex;flex-wrap:wrap;gap:10px}.base-alert{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid var(--c-border-subtle);background:var(--c-bg-subtle);color:var(--c-text-primary);font-size:14px}.base-alert-info{background:var(--c-primary-soft);border-color:var(--c-primary-ring)}.alert-icon{font-size:16px}.base-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid transparent}.base-tag-success{background:var(--c-success-soft);color:var(--c-success);border-color:var(--c-success-soft)}.base-input,.base-select{min-width:180px;padding:8px 10px;border:1px solid var(--c-border-base);border-radius:8px;background:var(--c-bg-surface);color:var(--c-text-primary);font-size:14px;transition:border-color .2s ease,box-shadow .2s ease}.base-input:focus,.base-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.base-select{min-width:160px}.checkbox-item{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle)}.hotkey-input-wrapper{position:relative;display:inline-flex;align-items:center;gap:8px}.hotkey-input-wrapper .hotkey-hint{font-size:12px;color:var(--c-text-muted);background:var(--c-bg-subtle);padding:4px 8px;border-radius:8px}.hotkey-input-wrapper .hotkey-hint.danger{color:var(--c-danger);background:var(--c-danger-soft)}.hotkey-input-wrapper .base-input.recording{border-color:var(--c-danger);box-shadow:0 0 0 3px var(--c-danger-soft)}.hotkey-input-wrapper .base-input{cursor:pointer}.ai-config-panel{container-type:inline-size;container-name:aipanel;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2);flex-wrap:wrap}.ai-config-section-head h4{margin:0;color:var(--c-text-primary)}.ai-config-section-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-wizard{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.ai-wizard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2)}.ai-wizard-head h4{margin:0;color:var(--c-text-primary)}.ai-wizard-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-wizard-count{color:var(--c-text-muted);font-size:var(--font-xs);font-variant-numeric:tabular-nums}.ai-wizard-steps{display:flex;align-items:center;gap:var(--s-3);margin:0;padding:0;list-style:none;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-wizard-steps li{display:flex;align-items:center;gap:6px}.ai-wizard-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--c-border-subtle)}.ai-wizard-steps li.done .ai-wizard-dot{background:var(--c-success)}.ai-wizard-steps li.current{color:var(--c-text-primary);font-weight:var(--fw-semibold)}.ai-wizard-steps li.current .ai-wizard-dot{background:var(--c-primary)}.ai-wizard-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-wizard-subject{margin:0;color:var(--c-text-primary)}.ai-wizard-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-pick{text-align:left;cursor:pointer;font:inherit;color:inherit}.ai-config-card-pick:hover{border-color:var(--c-primary)}.ai-config-card-tags{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ai-config-channel-list{display:flex;flex-direction:column;gap:var(--s-2)}.ai-config-channel-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--s-2);padding:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-secondary);text-align:left;cursor:pointer}.ai-config-channel-item.active{border-color:var(--c-primary);background:var(--c-primary-soft);color:var(--c-text-primary)}.ai-config-channel-item.orphan{opacity:.6}.ai-config-channel-text{min-width:0;display:flex;flex-direction:column;gap:2px}.ai-config-channel-text strong,.ai-config-channel-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-config-channel-text small{color:var(--c-text-muted)}.ai-config-channel-grid{display:flex;flex-direction:column;gap:var(--s-2)}.ai-config-card{display:flex;flex-direction:column;gap:var(--s-2);padding:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-surface)}.ai-config-card.recommended{border-color:var(--c-primary)}.ai-config-card-head{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-promo{margin:0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-config-card-actions,.ai-config-instance-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-instance-remove{align-self:flex-start}@container aipanel (min-width: 560px){.ai-config-channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}@container aipanel (min-width: 820px){.ai-config-channel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}.ai-config-manager{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-side{min-width:0;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-list-panel,.ai-config-global,.ai-config-detail{min-width:0;display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.ai-config-side-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-inline-action{padding:0;border:none;background:none;color:var(--c-primary);font:inherit;font-weight:var(--fw-medium);cursor:pointer;text-decoration:underline}.ai-config-collapse{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);padding:0;border:none;background:none;color:var(--c-text-primary);font:inherit;font-weight:var(--fw-semibold);cursor:pointer}.ai-config-global-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-detail-empty{min-height:200px;align-items:center;justify-content:center;text-align:center}.ai-config-empty-icon{font-size:36px;color:var(--c-primary)}.ai-config-add-modal{width:min(760px,100%)}@container aipanel (min-width: 720px){.ai-config-manager{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);align-items:start}}.ai-config-delete-modal{width:min(420px,100%)}.ai-config-delete-text{margin:0;color:var(--c-text-secondary);line-height:1.6}.ai-config-field{min-width:0;display:flex;flex-direction:column;gap:6px}.ai-config-field span{color:var(--c-text-secondary);font-size:var(--font-xs);font-weight:var(--fw-medium)}.ai-config-field-help{margin:0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.ai-config-field-help a{margin-left:var(--s-1);color:var(--c-primary);font-weight:var(--fw-medium);text-decoration:none}.ai-config-field-help a:hover{text-decoration:underline}@media(max-width:768px){.settings-layout{display:flex;flex-direction:column;height:auto;min-width:0;border:none;background:transparent}.settings-sidebar{position:sticky;top:0;z-index:10;height:auto;border-bottom:1px solid var(--c-border-subtle);border-radius:var(--r-lg) var(--r-lg) 0 0}.sidebar-footer{display:none}.sidebar-nav{flex-direction:row;overflow-x:auto;padding:0 var(--s-4);gap:var(--s-4)}.sidebar-nav .nav-item{white-space:nowrap;border-radius:0;border-bottom:2px solid transparent;padding:var(--s-4) var(--s-2);margin-bottom:0}.sidebar-nav .nav-item.active{background:transparent;border-bottom-color:var(--c-primary);color:var(--c-primary)}.settings-content{padding:var(--s-4)}.settings-content-header,.config-item-content{flex-direction:column;align-items:flex-start}.config-control{width:100%;justify-content:flex-start}}.settings-section{display:flex;flex-direction:column;gap:var(--s-2);margin-bottom:var(--s-3)}", ".user-page{display:flex;flex-direction:column;gap:var(--s-4);padding:0;max-width:100%}.user-page__login-section{display:flex;justify-content:center;padding:var(--s-4) 0;background:transparent}.user-page__login-box,.user-page__header-card,.user-page__apikey-section,.user-page__support-card,.user-page__tips{border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface);box-shadow:var(--shadow-1)}.user-page__login-box{width:min(100%,460px);padding:var(--s-4)}.user-page__login-header{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3);text-align:center}.user-page__login-header h2{margin:var(--s-1) 0 0;color:var(--c-text-primary);font-size:var(--font-xl);font-weight:600}.user-page__login-header p{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.user-page__login-switch{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:var(--s-2);margin-top:var(--s-2)}.user-page__login-switch .aah-btn{min-width:92px}.user-page__login-switch .aah-btn.is-active{color:var(--c-primary);border-color:var(--c-primary-ring);background:var(--c-primary-soft)}.user-page__login-form,.user-page__login-form .form-item{margin-bottom:var(--s-3)}.user-page__login-btn{width:100%;min-height:38px}.user-page__register-tip{color:var(--c-text-muted);font-size:var(--font-sm);text-align:center}.user-page__link-btn{margin-left:var(--s-1);padding:0;border:0;background:transparent;color:var(--c-primary);font:inherit;cursor:pointer}.user-page__link-btn:hover{color:var(--c-primary-hover)}.user-page__helper{margin:var(--s-2) 0 0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.user-page__dashboard{display:flex;flex-direction:column;gap:var(--s-3);padding:0;max-width:100%}.user-page__top-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(168px,.8fr);gap:var(--s-3);align-items:stretch}.user-page__header-card{display:flex;flex-direction:column;justify-content:space-between;gap:var(--s-3);padding:var(--s-3)}.user-page__profile-main{display:flex;align-items:center;gap:var(--s-3);min-width:0}.user-page__avatar{display:grid;flex-shrink:0;width:56px;height:56px;place-items:center;overflow:hidden;border:1px solid var(--c-border-subtle);border-radius:50%;background:var(--c-bg-subtle);color:var(--c-text-muted)}.user-page__avatar img{width:100%;height:100%;object-fit:cover}.user-page__avatar-icon{width:28px;height:28px}.user-page__info-text{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:var(--s-1)}.user-page__info-text h2{margin:0;color:var(--c-text-primary);font-size:var(--font-lg);font-weight:600}.user-page__username{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.user-page__actions{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--s-2);padding-top:var(--s-2);border-top:1px solid var(--c-border-subtle)}.user-page__stats-grid{display:grid;grid-template-columns:1fr;gap:var(--s-2)}.user-page__stat-card{display:flex;align-items:center;gap:var(--s-2);min-width:0;min-height:0;padding:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-surface);box-shadow:var(--shadow-1)}.user-page__stat-icon{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--r-sm);font-size:16px}.user-page__stat-icon--coin{background:var(--c-warning-soft);color:var(--c-warning)}.user-page__stat-icon--course{background:var(--c-danger-soft);color:var(--c-danger)}.user-page__stat-icon--question{background:var(--c-success-soft);color:var(--c-success)}.user-page__stat-content{flex:1;min-width:0}.user-page__stat-label{margin:0;color:var(--c-text-muted);font-size:var(--font-xs)}.user-page__stat-value{margin:0;color:var(--c-text-primary);font-size:var(--font-md);font-weight:600;font-variant-numeric:var(--font-numeric)}.user-page__apikey-section{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.user-page__section-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-3)}.user-page__section-header h3{margin:0;color:var(--c-text-primary);font-size:var(--font-base);font-weight:600}.user-page__section-header p{margin:var(--s-1) 0 0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.user-page__apikey-display{display:flex;align-items:center;gap:var(--s-3)}.user-page__apikey-value{flex:1;min-width:0;padding:var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-subtle);color:var(--c-text-primary);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;font-size:var(--font-sm);line-height:1.4;overflow-wrap:anywhere}.user-page__apikey-actions{display:flex;flex-shrink:0;justify-content:flex-end}.user-page__support-card{display:flex;align-items:center;gap:var(--s-3);padding:var(--s-3)}.user-page__support-icon{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--r-sm);background:var(--c-primary-soft);color:var(--c-primary);font-size:18px}.user-page__support-content{flex:1;min-width:0}.user-page__support-title{margin:0 0 var(--s-1);color:var(--c-text-primary);font-size:var(--font-sm);font-weight:600}.user-page__support-desc{margin:0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.user-page__support-btn{flex-shrink:0;white-space:nowrap}.user-page__tips{padding:var(--s-3);color:var(--c-text-muted);font-size:var(--font-xs)}.user-page__tips p{margin:0}@media(max-width:640px){.user-page__login-section{padding:var(--s-3) 0}.user-page__login-box{padding:var(--s-4)}.user-page__top-row{grid-template-columns:1fr}.user-page__profile-main{align-items:flex-start}.user-page__actions{justify-content:stretch}.user-page__actions .aah-btn{flex:1 1 140px}.user-page__stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.user-page__stat-card{align-items:flex-start;flex-direction:column}.user-page__support-card{align-items:flex-start;flex-wrap:wrap}.user-page__apikey-display{align-items:stretch;flex-direction:column}.user-page__apikey-actions{justify-content:stretch}.user-page__apikey-actions .aah-btn,.user-page__support-btn{width:100%}}", ".ai-workbench{display:flex;flex-direction:column;gap:var(--s-4)}.ai-status-panel{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);padding:var(--s-3);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface)}.ai-status-main{min-width:0;display:flex;flex-direction:column;gap:4px}.ai-status-main strong{color:var(--c-text-primary);font-size:var(--font-md)}.ai-status-main p{margin:0;color:var(--c-text-muted);font-size:var(--font-xs);overflow-wrap:anywhere}.ai-input-panel,.ai-result-panel{display:flex;flex-direction:column;gap:var(--s-3)}.ai-section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-3)}.ai-section-heading h3{margin:0;color:var(--c-text-primary);font-size:var(--font-lg)}.ai-section-heading p,.ai-helper-text{margin:4px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-mode-switch,.ai-command-row,.ai-result-actions{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2)}.ai-mode-btn{border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-secondary);padding:7px 10px;border-radius:var(--r-full);font-size:var(--font-xs);cursor:pointer;transition:border-color .2s ease,background-color .2s ease,color .2s ease}.ai-mode-btn.active{background:var(--c-primary);border-color:var(--c-primary);color:#fff}.ai-question-type-row{display:grid;grid-template-columns:minmax(180px,240px) 1fr;align-items:end;gap:var(--s-3)}.ai-textarea{width:100%;min-height:160px;border:1px solid var(--c-border-base);border-radius:var(--r-md);padding:var(--s-3);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);line-height:1.6;resize:vertical;outline:none}.ai-textarea:focus{border-color:var(--c-primary-ring);box-shadow:0 0 0 3px var(--c-primary-soft)}.ai-result-content{min-height:140px;padding:var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-md)}.ai-result-content-active{border-color:var(--c-border-base)}.ai-loading-text{text-align:center;padding:var(--s-4) var(--s-2);color:var(--c-text-muted)}.ai-empty{text-align:center;padding:var(--s-8) var(--s-4);color:var(--c-text-muted)}.ai-empty-icon{font-size:48px;margin-bottom:var(--s-2);opacity:.5}.ai-empty-text{margin:0;font-size:var(--font-base)}.ai-link-btn{background:transparent;border:none;cursor:pointer;margin-left:8px;color:var(--c-primary)}.ai-service-details{border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface);padding:var(--s-3)}.ai-service-details summary{cursor:pointer;color:var(--c-text-secondary);font-weight:var(--fw-semibold)}.ai-service-details .copyright-content{margin-top:var(--s-3);color:var(--c-text-secondary);line-height:1.7}.official-meta{border:1px solid var(--c-border-subtle);border-radius:10px;overflow:hidden;margin-bottom:12px}.official-meta-row{display:grid;grid-template-columns:120px 1fr;border-bottom:1px solid var(--c-border-subtle)}.official-meta-row:last-child{border-bottom:none}.official-meta-label{background:var(--c-bg-base);padding:10px 12px;font-weight:700;color:var(--c-text-primary)}.official-meta-value{padding:10px 12px;color:var(--c-text-primary);line-height:1.6}.official-meta-options{padding:10px 12px;display:flex;flex-direction:column;gap:8px}.official-meta-option{display:flex;gap:8px;align-items:flex-start}.official-meta-option .official-option-label{font-weight:700;color:var(--c-text-muted)}.official-meta-option .official-option-text{flex:1;color:var(--c-text-primary);line-height:1.6}.official-result-list{display:flex;flex-direction:column;gap:12px}.official-result-item{border:1px solid var(--c-border-subtle);border-radius:10px;padding:12px;background:var(--c-bg-surface);box-shadow:var(--shadow-1)}.official-result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.official-result-title{font-weight:700;color:var(--c-text-primary)}.official-result-subtitle{color:var(--c-text-muted);margin-left:10px;font-size:12px}.official-section{margin-top:10px}.official-section-label{font-weight:700;color:var(--c-text-secondary);margin-bottom:6px}.official-question{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:6px;padding:8px;line-height:1.6;color:var(--c-text-primary)}.official-options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.official-options li{display:flex;gap:8px;align-items:flex-start;background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:6px;padding:8px}.official-options .official-option-label{font-weight:700;color:var(--c-text-muted)}.official-options .official-option-text{color:var(--c-text-primary);line-height:1.5}.official-answer-chips{display:flex;flex-wrap:wrap;gap:8px}.official-answer-empty{color:var(--c-text-muted)}@media(max-width:680px){.ai-status-panel,.ai-section-heading,.ai-question-type-row{display:flex;flex-direction:column;align-items:stretch}.ai-status-panel .aah-btn{align-self:flex-start}.ai-command-row .aah-btn{flex:1 1 auto;justify-content:center}}", ".ask-page{display:flex;flex-direction:column;gap:var(--s-3);padding:0}.ask-toolbar{position:sticky;top:0;z-index:var(--z-sticky);display:flex;align-items:center;gap:var(--s-3);padding:var(--s-2) var(--s-3);background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);flex-wrap:wrap}.ask-toolbar__primary{display:flex;gap:var(--s-2)}.ask-toolbar__progress{flex:1;display:flex;align-items:center;gap:var(--s-2);font-size:var(--font-sm);color:var(--c-text-muted);min-width:140px}.ask-progress-text{font-variant-numeric:var(--font-numeric);white-space:nowrap}.ask-progress-bar{flex:1;height:4px;border-radius:2px;background:var(--c-bg-hover);overflow:hidden}.ask-progress-bar>i{display:block;height:100%;background:var(--c-primary);transition:width var(--dur-base) var(--ease-out)}.ask-toolbar__actions{display:flex;gap:var(--s-1)}.ask-toolbar__actions .aah-btn{display:inline-flex;align-items:center;gap:4px}.ask-nav{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);padding:var(--s-2) var(--s-3)}.ask-nav summary{cursor:pointer;font-size:var(--font-sm);color:var(--c-text-secondary);font-weight:var(--fw-medium)}.ask-nav-legend{display:flex;gap:var(--s-3);flex-wrap:wrap;margin:var(--s-2) 0;font-size:var(--font-xs);color:var(--c-text-muted)}.legend-item{display:inline-flex;align-items:center;gap:4px}.legend-item i{width:8px;height:8px;border-radius:2px;display:inline-block}.legend-current i{background:var(--c-primary)}.legend-done i{background:var(--c-success)}.legend-error i{background:var(--c-danger)}.legend-unanswered i{background:var(--c-bg-hover);border:1px solid var(--c-border-base)}.ask-nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(32px,1fr));gap:var(--s-1)}.ask-nav-cell{height:28px;border-radius:var(--r-xs);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);color:var(--c-text-muted);font-size:var(--font-xs);font-variant-numeric:var(--font-numeric);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}.ask-nav-cell:hover{border-color:var(--c-border-base)}.ask-nav-cell.is-done{background:var(--c-success-soft);color:var(--c-success);border-color:var(--c-success)}.ask-nav-cell.is-error{background:var(--c-danger-soft);color:var(--c-danger);border-color:var(--c-danger)}.ask-nav-cell.is-current{box-shadow:0 0 0 2px var(--c-primary-ring)}.ask-card{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1)}.ask-card__header{display:flex;align-items:center;justify-content:space-between;padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.ask-card__title{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-card__actions{display:flex;gap:var(--s-1)}.ask-card__body{padding:var(--s-3)}.ask-card__body .aah_title{font-size:var(--font-base);line-height:1.6;color:var(--c-text-primary);margin-bottom:var(--s-2)}.ask-card__body .aah_options{margin:var(--s-1) 0;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-subtle);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}.ask-card__body .aah_options:hover{border-color:var(--c-border-base)}.ask-card__body .aah_options.active{background:var(--c-primary-soft);border-color:var(--c-primary);color:var(--c-primary)}.reading-passage{padding:var(--s-2) var(--s-3);background:var(--c-bg-subtle);border-radius:var(--r-sm);font-size:var(--font-sm);line-height:1.6;color:var(--c-text-secondary);margin-bottom:var(--s-3);white-space:pre-wrap}.reading-questions{display:flex;flex-direction:column;gap:var(--s-3);margin-top:var(--s-3)}.reading-sub-question{margin-top:var(--s-3)}.sub-question-title{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-primary);margin-bottom:var(--s-1)}.ask-match-table{width:100%;border-collapse:separate;border-spacing:var(--s-1);margin-top:var(--s-2)}.ask-match-table td{padding:var(--s-2);background:var(--c-bg-subtle);border-radius:var(--r-sm);font-size:var(--font-sm)}.ask-form-note{margin:var(--s-2) 0 0;font-size:var(--font-sm)}.ask-form-note--success{color:var(--c-success)}.ask-form-note--danger{color:var(--c-danger)}.ask-loading{padding:var(--s-3);text-align:center;color:var(--c-text-muted);font-size:var(--font-sm)}.answer-block{padding:var(--s-2) var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);margin-bottom:var(--s-2)}.answer-block:last-child{margin-bottom:0}.answer-header{display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);margin-bottom:var(--s-1)}.answer-meta{font-size:var(--font-xs);color:var(--c-text-muted);font-variant-numeric:var(--font-numeric)}.answer-field-html{font-size:var(--font-sm);color:var(--c-text-primary);line-height:1.6}.answer-field-html img{max-width:100%;height:auto;border-radius:var(--r-sm);margin:var(--s-1) 0}.answer-field-html table{width:100%;overflow-x:auto;display:block;border-collapse:collapse}.answer-field-html p{margin:var(--s-1) 0}.ai-preview-block{border-color:var(--c-warning);background:var(--c-warning-soft)}.ai-answer-block{background:var(--c-bg-subtle)}.ask-preview-actions{display:flex;gap:var(--s-1);margin-top:var(--s-2);flex-wrap:wrap}.ai-answer-divider{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-2)}.ai-answer-title{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-primary)}.ai-icon{font-size:16px}.ai-streaming-tag{display:inline-flex;align-items:center;gap:4px;font-size:var(--font-xs);color:var(--c-text-muted)}.ai-dot{width:4px;height:4px;border-radius:50%;background:var(--c-primary);display:inline-block;animation:ai-bounce 1s infinite}.ai-dot:nth-child(2){animation-delay:.15s}.ai-dot:nth-child(3){animation-delay:.3s}@keyframes ai-bounce{0%,80%,to{transform:translateY(0);opacity:.6}40%{transform:translateY(-3px);opacity:1}}.ai-stream-placeholder{font-size:var(--font-sm);color:var(--c-text-muted);padding:var(--s-2) 0}.ai-answer-markdown{font-size:var(--font-sm);color:var(--c-text-primary);line-height:1.6}.ask-empty{padding:var(--s-8) var(--s-3);text-align:center;color:var(--c-text-muted)}.ask-empty__icon{font-size:48px;width:48px;height:48px;margin:0 auto var(--s-2);display:block}.modal-title{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-settings{display:flex;flex-wrap:wrap;gap:var(--s-2);padding:var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);align-items:center}.native-checkbox{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);color:var(--c-text-primary);cursor:pointer}.native-checkbox input{width:16px;height:16px;accent-color:var(--c-primary)}.range-row{display:flex;flex-direction:column;gap:var(--s-1);flex:1;min-width:200px;font-size:var(--font-sm);color:var(--c-text-secondary)}.range-row input[type=range]{width:100%;accent-color:var(--c-primary)}.ask-tags{display:flex;flex-wrap:wrap;gap:var(--s-1);margin-top:var(--s-2)}.ask-info{display:flex;flex-direction:column;gap:var(--s-2);font-size:var(--font-sm);color:var(--c-text-secondary);line-height:1.6}.ask-info .info-body{color:var(--c-text-primary)}.ask-types{margin-top:var(--s-2)}.ask-types summary{cursor:pointer;font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-primary)}.ask-types summary:hover{color:var(--c-primary-hover)}@media(max-width:480px){.ask-settings{flex-direction:column;align-items:flex-start}}", ".question-page{position:relative;padding:0}.question-page .watermark-bg{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;display:grid;place-items:center;gap:6px;font-size:18px;color:#0000000d;text-transform:uppercase;z-index:0}.question-page>*:not(.watermark-bg){position:relative;z-index:1}.qc-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap;background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:var(--s-2) var(--s-3);margin-bottom:var(--s-3)}.qc-toolbar-info{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.qc-toolbar-count{display:inline-flex;align-items:center;gap:6px;font-size:var(--font-md);color:var(--c-text-primary);font-variant-numeric:var(--font-numeric)}.qc-toolbar-count strong{font-size:18px;font-weight:800;color:var(--c-primary);letter-spacing:-.02em}.qc-toolbar-count-filter{font-size:var(--font-sm);color:var(--c-text-muted)}.qc-toolbar-count-filter strong{font-size:var(--font-md);color:var(--c-text-secondary)}.qc-toolbar-count-uploading{padding:2px 8px;border-radius:999px;background:var(--c-primary-soft);color:var(--c-primary);font-size:var(--font-sm)}.qc-toolbar-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.qc-toolbar-actions .aah-btn{display:inline-flex;align-items:center;gap:4px}.upload-input{display:none}.qc-info-collapse{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);padding:var(--s-3);margin-bottom:var(--s-3);animation:fadeIn .2s ease-out}.info-body{font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.6}.warn-text{color:var(--c-danger);font-weight:600}.search-filter-row{display:flex;gap:var(--s-3);align-items:center;margin-bottom:var(--s-2);flex-wrap:wrap}.question-search-box{position:relative;flex:1;min-width:200px}.question-search-input{width:100%;padding:var(--s-2) 36px var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);font-size:var(--font-md);color:var(--c-text-primary);transition:all .2s ease}.question-search-input:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.question-search-input::placeholder{color:var(--c-text-muted)}.search-clear{position:absolute;right:var(--s-3);top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;color:var(--c-text-muted);cursor:pointer;width:var(--s-5);height:var(--s-5);display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s ease}.search-clear:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.filter-chips{display:flex;flex-wrap:wrap;gap:var(--s-1);margin:0 0 var(--s-3)}.filter-chips .aah-tag{cursor:pointer;border:1px solid var(--c-border-subtle);-webkit-user-select:none;user-select:none;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}.filter-chips .aah-tag:hover{border-color:var(--c-border-base)}.question-table-wrapper{margin-bottom:var(--s-4)}.qc-cards{display:flex;flex-direction:column;gap:var(--s-3)}.qc-card{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:var(--s-3);display:flex;flex-direction:column;gap:var(--s-2);transition:all .2s ease;animation:fadeIn .3s ease-out}.qc-card:hover{box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.qc-row-meta{display:flex;align-items:center;gap:var(--s-2)}.qc-row-meta .aah-tag{flex-shrink:0}.qc-num{font-size:var(--font-xs);color:var(--c-text-muted);font-variant-numeric:var(--font-numeric)}.qc-edit-btn{margin-left:auto;display:inline-flex;align-items:center;gap:4px}.qc-question{font-size:var(--font-base);color:var(--c-text-primary);line-height:1.6;word-break:break-word}.qc-question img{max-width:100%;height:auto}.qc-options-list{display:flex;flex-direction:column;gap:4px;padding:var(--s-2) 0;border-top:1px dashed var(--c-border-subtle)}.qc-option{display:flex;align-items:flex-start;gap:6px;padding:6px 10px;border-radius:var(--r-sm);font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.5;word-break:break-word}.qc-option-correct{background:var(--c-success-soft);color:var(--c-success);font-weight:600}.qc-option-icon{font-size:var(--font-md);color:var(--c-success);flex-shrink:0;margin-top:2px}.qc-option-letter{flex-shrink:0;font-weight:600;font-variant-numeric:var(--font-numeric)}.qc-option-text{flex:1;min-width:0}.qc-option-text img{max-width:100%;height:auto}.qc-answer{display:flex;align-items:baseline;gap:var(--s-2);padding-top:var(--s-2);border-top:1px dashed var(--c-border-subtle);font-size:var(--font-md);color:var(--c-success);line-height:1.5;word-break:break-word}.qc-answer-label{flex-shrink:0;font-size:var(--font-xs);color:var(--c-text-muted);font-weight:600}.qc-answer-value{flex:1;font-weight:600}.qc-sub-questions{display:flex;flex-direction:column;gap:var(--s-2)}.qc-sub-question{padding:var(--s-3);background:var(--c-bg-subtle);border-radius:var(--r-sm);border:1px solid var(--c-border-subtle)}.qc-sub-question-title{font-size:var(--font-md);font-weight:600;color:var(--c-text-primary);margin-bottom:var(--s-2);line-height:1.5}.qc-sub-question-options{display:flex;flex-direction:column;gap:4px;margin-bottom:var(--s-2)}.sub-option{display:flex;align-items:flex-start;gap:6px;padding:4px 8px;border-radius:var(--r-sm);font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.5}.sub-option-correct{background:var(--c-success-soft);color:var(--c-success);font-weight:600}.qc-sub-question-answer{padding:var(--s-2) var(--s-3);background:var(--c-success-soft);border-radius:6px;border-left:3px solid var(--c-success);font-size:var(--font-base);font-weight:600;color:var(--c-success)}.sub-answer-item{display:flex;align-items:flex-start;gap:var(--s-2);padding:4px 0}.sub-answer-num{display:inline-flex;align-items:center;justify-content:center;min-width:var(--s-6);height:var(--s-6);background:var(--c-success);color:var(--c-bg-surface);border-radius:50%;font-size:var(--font-sm);font-weight:700;flex-shrink:0;font-variant-numeric:var(--font-numeric)}.sub-answer-text{flex:1;font-size:var(--font-md);font-weight:600;color:var(--c-success);line-height:1.5;padding-top:2px}.table-empty{padding:var(--s-5);text-align:center;color:var(--c-text-muted);background:var(--c-bg-surface);border:1px dashed var(--c-border-subtle);border-radius:var(--r-md)}.table-empty-icon{font-size:40px;margin-bottom:8px;opacity:.5}.table-empty-text{margin:0 0 8px;color:var(--c-text-muted);font-size:var(--font-sm)}.question-pagination-wrapper{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;margin-top:var(--s-4)}.question-pagination{display:flex;align-items:center;gap:var(--s-2)}.question-page-btn{display:inline-flex;align-items:center;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-secondary);font-size:var(--font-md);cursor:pointer;transition:all .2s ease}.question-page-btn:hover:not(:disabled){background:var(--c-bg-hover);border-color:var(--c-border-strong)}.question-page-btn:disabled{opacity:.5;cursor:not-allowed}.page-numbers{display:flex;align-items:center;gap:var(--s-1)}.page-number{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-secondary);font-size:var(--font-md);cursor:pointer;transition:all .2s ease;font-variant-numeric:var(--font-numeric)}.page-number:hover{background:var(--c-bg-hover);border-color:var(--c-border-strong)}.page-number.active{background:var(--c-primary);border-color:var(--c-primary);color:var(--c-bg-surface)}.page-ellipsis{padding:0 var(--s-2);color:var(--c-text-muted)}.page-size-selector{display:flex;align-items:center;gap:var(--s-2);font-size:var(--font-md);color:var(--c-text-secondary)}.page-size-selector select{padding:6px 10px;border:1px solid var(--c-border-base);border-radius:6px;background:var(--c-bg-surface);font-size:var(--font-base);cursor:pointer;color:var(--c-text-primary)}.qc-drop-overlay{position:fixed;top:0;right:0;bottom:0;left:0;z-index:9999;background:#00000073;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:fadeIn .15s ease-out}.qc-drop-overlay-card{background:var(--c-bg-surface);border:2px dashed var(--c-primary);border-radius:var(--r-lg, 12px);padding:var(--s-5);display:flex;flex-direction:column;align-items:center;gap:var(--s-2);box-shadow:var(--shadow-3)}.qc-drop-overlay-icon{font-size:56px;color:var(--c-primary)}.qc-drop-overlay-text{font-size:var(--font-lg, 16px);font-weight:600;color:var(--c-text-primary)}@media(max-width:768px){.qc-toolbar{flex-direction:column;align-items:stretch}.qc-toolbar-actions{justify-content:flex-start}.search-filter-row{flex-direction:column;align-items:stretch}.question-search-box{min-width:0}.question-pagination-wrapper{flex-direction:column;gap:var(--s-4)}.question-pagination{flex-wrap:wrap;justify-content:center}.qc-sub-question{padding:var(--s-3)}.qc-sub-question-title{font-size:var(--font-base)}.sub-option,.qc-option{font-size:var(--font-sm)}}.qc-cards>*{content-visibility:auto;contain-intrinsic-size:180px}", ".question-tool{padding:0}.qt-actions{margin:var(--s-3) 0}.qt-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4);align-items:start}.qt-editor,.qt-preview{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:var(--s-3)}.qt-textarea{width:100%;min-height:480px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);padding:var(--s-3);font-size:var(--font-md);line-height:1.6;resize:vertical;outline:none;background:var(--c-bg-surface);color:var(--c-text-primary)}.qt-textarea:focus{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.qt-preview{max-height:640px;overflow:auto}.qt-empty{text-align:center;color:var(--c-text-muted);padding:var(--s-6) var(--s-3)}.qt-card{border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);padding:var(--s-3);margin-bottom:var(--s-3);background:var(--c-bg-subtle)}.qt-card-error{border-color:var(--c-danger);background:var(--c-danger-soft)}.qt-card-head{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-2)}.qt-title-no{font-weight:700;color:var(--c-text-primary)}.qt-tag{display:inline-flex;align-items:center;padding:var(--s-1) 10px;border-radius:var(--r-full);font-size:var(--font-sm);background:var(--c-bg-hover);color:var(--c-text-primary)}.qt-tag.danger{background:var(--c-danger-soft);color:var(--c-danger)}.qt-tag.success{background:var(--c-success-soft);color:var(--c-success)}.qt-question,.qt-answer{margin:6px 0;font-size:var(--font-md);color:var(--c-text-primary);line-height:1.6}.qt-options{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.qt-error{margin-top:var(--s-2);padding:10px;border-radius:var(--r-sm);background:var(--c-danger-soft);color:var(--c-danger);font-size:var(--font-base)}.label{color:var(--c-text-muted);margin-right:var(--s-1)}.qt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin:var(--s-3) 0}.qt-strategy{display:inline-flex;align-items:center;gap:var(--s-2);color:var(--c-text-secondary);font-size:var(--font-base)}.qt-strategy-label{color:var(--c-text-muted)}.qt-radio{display:inline-flex;align-items:center;gap:4px;cursor:pointer}.qt-stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--s-3)}.qt-stat{display:inline-flex;align-items:center;border-radius:var(--r-full);padding:var(--s-1) 10px;background:var(--c-bg-hover);color:var(--c-text-primary);font-size:var(--font-sm);font-variant-numeric:tabular-nums}.qt-stat.success,.qt-tag.create{background:var(--c-success-soft);color:var(--c-success)}.qt-stat.danger,.qt-tag.error{background:var(--c-danger-soft);color:var(--c-danger)}.qt-stat.warning,.qt-tag.overwrite,.qt-tag.skip{background:var(--c-warning-soft);color:var(--c-warning)}.qt-stat.muted{color:var(--c-text-muted)}.qt-card-warning{border-color:var(--c-warning);background:var(--c-warning-soft)}.question-tool .aah-btn:disabled{cursor:not-allowed;opacity:.55}@media(max-width:960px){.qt-grid{grid-template-columns:1fr}.qt-textarea{min-height:360px}}", ".preview-container{padding:0;background:var(--c-bg-base);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;font-size:var(--font-md);line-height:1.5}.toolbar{display:flex;justify-content:space-between;align-items:center;background:var(--c-bg-surface);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);box-shadow:var(--shadow-2);margin-bottom:var(--s-3);gap:var(--s-3)}.toolbar-left .page-title{margin:0;font-size:var(--font-lg);font-weight:600;color:var(--c-text-primary)}.toolbar-right{display:flex;align-items:center;gap:var(--s-3)}.preview-search-box{position:relative;display:flex;align-items:center}.preview-search-input{width:200px;padding:6px var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-xs);font-size:var(--font-base);outline:none;background:var(--c-bg-surface);color:var(--c-text-primary)}.preview-search-input:focus{border-color:var(--c-primary)}.clear-btn{position:absolute;right:var(--s-1);width:var(--s-5);height:var(--s-5);border:none;background:var(--c-danger);color:var(--c-bg-surface);border-radius:50%;cursor:pointer;font-size:var(--font-sm);display:flex;align-items:center;justify-content:center}.page-size{padding:var(--s-1) var(--s-2);border:1px solid var(--c-border-base);border-radius:var(--r-xs);font-size:var(--font-sm);background:var(--c-bg-surface);color:var(--c-text-primary)}.search-info{background:var(--c-info-soft);color:var(--c-info);padding:var(--s-2) var(--s-3);border-radius:var(--r-xs);margin-bottom:var(--s-3);font-size:var(--font-base)}.preview-questions-container{background:var(--c-bg-surface);border-radius:var(--r-sm);box-shadow:var(--shadow-2);overflow:hidden}.loading{display:flex;align-items:center;justify-content:center;padding:var(--s-10);gap:var(--s-3);color:var(--c-text-muted)}.preview-spinner{width:var(--s-5);height:var(--s-5);border:2px solid var(--c-border-subtle);border-top:2px solid var(--c-primary);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.empty{text-align:center;padding:var(--s-10) var(--s-5);color:var(--c-text-muted)}.preview-empty-icon{font-size:48px;margin-bottom:var(--s-3)}.empty p{margin:0 0 var(--s-4) 0}.btn-clear{background:var(--c-primary);color:var(--c-bg-surface);border:none;padding:var(--s-2) var(--s-4);border-radius:var(--r-xs);cursor:pointer;font-size:var(--font-base)}.btn-clear:hover{background:var(--c-primary-hover)}.questions-list{display:flex;flex-direction:column}.question-item{border-bottom:1px solid var(--c-border-subtle);padding:var(--s-3)}.question-item:last-child{border-bottom:none}.question-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-3)}.question-info{display:flex;align-items:center;gap:var(--s-2)}.question-num{background:var(--c-primary);color:var(--c-bg-surface);padding:2px var(--s-2);border-radius:var(--r-md);font-size:var(--font-sm);font-weight:500;min-width:var(--s-6);text-align:center;font-variant-numeric:var(--font-numeric)}.question-type{background:var(--c-bg-subtle);color:var(--c-text-secondary);padding:2px var(--s-2);border-radius:var(--r-md);font-size:var(--font-xs);border:1px solid var(--c-border-subtle)}.question-actions{display:flex;gap:var(--s-1)}.btn-edit,.btn-delete{width:28px;height:28px;border:none;border-radius:var(--r-xs);cursor:pointer;font-size:var(--font-md);display:flex;align-items:center;justify-content:center}.btn-edit{background:var(--c-info-soft);color:var(--c-info)}.btn-edit:hover{background:var(--c-primary-soft)}.btn-delete{background:var(--c-danger-soft);color:var(--c-danger)}.btn-delete:hover{background:var(--c-danger-soft);filter:brightness(.95)}.preview-question-content{line-height:1.6}.preview-question-text{margin-bottom:var(--s-3);color:var(--c-text-primary)}.preview-question-text img{max-width:100%;height:auto;border-radius:var(--r-sm);margin:var(--s-2) 0;background:var(--c-bg-subtle)}.options{margin-bottom:var(--s-3)}.reading-type{background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:6px;padding:var(--s-3)}.reading-title{font-weight:600;color:var(--c-text-secondary);margin-bottom:var(--s-2);font-size:var(--font-base)}.preview-sub-questions{display:flex;flex-direction:column;gap:var(--s-2)}.preview-sub-question{background:var(--c-bg-surface);padding:var(--s-2);border-radius:var(--r-xs);border:1px solid var(--c-border-subtle);font-size:var(--font-base)}.sub-num{color:var(--c-primary);font-weight:600;margin-right:var(--s-1);font-variant-numeric:var(--font-numeric)}.sub-type{color:var(--c-text-muted);font-size:var(--font-xs);margin-right:var(--s-2)}.sub-text{color:var(--c-text-secondary);margin-top:var(--s-1);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.sub-text img{background:var(--c-bg-subtle);border-radius:var(--r-sm)}.more-subs{text-align:center;color:var(--c-text-muted);font-size:var(--font-sm);font-style:italic;padding:var(--s-1)}.complex-type{background:var(--c-warning-soft);color:var(--c-warning);padding:var(--s-2) var(--s-3);border-radius:var(--r-xs);font-size:var(--font-base);border:1px solid var(--c-warning-soft)}.normal-options{display:flex;flex-direction:column;gap:6px}.option{display:flex;align-items:flex-start;gap:var(--s-2);padding:6px var(--s-2);border-radius:var(--r-xs);background:var(--c-bg-subtle);position:relative}.option.correct{background:var(--c-success-soft);border:1px solid var(--c-success-soft)}.option-label{color:var(--c-text-secondary);font-weight:500;min-width:var(--s-5)}.option-text{flex:1;color:var(--c-text-primary)}.option-text img{background:var(--c-bg-subtle);border-radius:var(--r-sm)}.correct-mark{color:var(--c-success);font-weight:700;font-size:var(--font-lg)}.answer{background:var(--c-success-soft);border:1px solid var(--c-success-soft);border-radius:var(--r-xs);padding:var(--s-2) var(--s-3);margin-top:var(--s-2)}.preview-answer-label{color:var(--c-success);font-weight:600;margin-right:var(--s-2)}.preview-answer-list{display:inline-flex;flex-wrap:wrap;gap:var(--s-1)}.preview-answer-item{background:var(--c-success);color:var(--c-bg-surface);padding:2px var(--s-2);border-radius:var(--r-md);font-size:var(--font-sm)}.preview-answer-text{color:var(--c-success);display:inline}.preview-answer-text img{background:var(--c-bg-subtle);border-radius:var(--r-sm)}.no-answer{color:var(--c-text-muted);font-style:italic}.preview-pagination{display:flex;justify-content:center;align-items:center;gap:var(--s-3);padding:var(--s-3);background:var(--c-bg-surface);border-top:1px solid var(--c-border-subtle);margin-top:var(--s-3);border-radius:var(--r-sm);box-shadow:var(--shadow-2);font-variant-numeric:var(--font-numeric)}.preview-page-btn{background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);color:var(--c-text-secondary);padding:6px var(--s-3);border-radius:var(--r-xs);cursor:pointer;font-size:var(--font-base)}.preview-page-btn:hover:not(:disabled){background:var(--c-bg-hover)}.preview-page-btn:disabled{opacity:.5;cursor:not-allowed}.page-info{display:flex;align-items:center;gap:var(--s-1);color:var(--c-text-secondary);font-size:var(--font-base);font-variant-numeric:var(--font-numeric)}.page-input{width:var(--s-10);text-align:center;border:1px solid var(--c-border-subtle);border-radius:var(--r-xs);padding:2px var(--s-1);font-size:var(--font-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-variant-numeric:var(--font-numeric)}.total-info{color:var(--c-text-muted);font-size:var(--font-sm);font-variant-numeric:var(--font-numeric)}.highlight{background:var(--c-warning-soft);color:var(--c-warning);padding:1px 2px;border-radius:2px}@media(max-width:600px){.toolbar{flex-direction:column;align-items:stretch;gap:var(--s-3)}.toolbar-right{justify-content:space-between}.preview-search-input{width:150px}.question-header{flex-direction:column;align-items:flex-start;gap:var(--s-2)}.preview-pagination{flex-wrap:wrap;gap:var(--s-2)}}", ".log-page{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-4)}.log-header,.log-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap}.log-header h2{margin:0;color:var(--c-text-primary);font-size:var(--font-xl)}.log-header p{margin:4px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.log-actions,.log-filter{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.log-list{display:flex;flex-direction:column;gap:var(--s-2);max-height:420px;margin:0;padding:0;list-style:none;overflow:auto}.log-row{display:grid;grid-template-columns:88px auto minmax(0,1fr);align-items:start;gap:var(--s-2);padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-subtle);border-left-width:4px;border-radius:var(--r-sm);background:var(--c-bg-surface)}.log-row-success{border-left-color:var(--c-success)}.log-row-warning{border-left-color:var(--c-warning)}.log-row-error{border-left-color:var(--c-danger)}.log-time{color:var(--c-text-muted);font-size:var(--font-xs);font-variant-numeric:tabular-nums}.log-msg{min-width:0;color:var(--c-text-primary);line-height:1.5;overflow-wrap:anywhere}.log-empty{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface);color:var(--c-text-muted)}.log-empty-icon{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-full);background:var(--c-primary-soft);color:var(--c-primary);font-weight:var(--fw-semibold)}", ".paper-library-container{padding:0;display:flex;flex-direction:column;gap:var(--s-3)}.search-card{display:flex;flex-direction:column;gap:10px}.search-header{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.input-wrap{flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--c-bg-base);border-radius:10px;border:1px solid transparent;transition:border-color .2s ease,box-shadow .2s ease}.input-wrap:focus-within{border-color:var(--c-primary-ring);box-shadow:var(--shadow-1)}.input-prefix{font-size:16px}.input-field{flex:1;border:none;background:transparent;font-size:14px;outline:none;color:var(--c-text-primary)}.search-stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.param-table-card{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px}.param-table-header,.param-table-row{display:grid;grid-template-columns:180px 1fr 90px;gap:10px;align-items:center}.param-table-header{font-weight:600;color:var(--c-text-secondary);font-size:13px}.param-table-row{padding:6px 0;border-bottom:1px solid var(--c-border-subtle)}.param-table-row:last-child{border-bottom:none}.param-value-group{display:flex;gap:8px;flex-wrap:wrap}.param-type{width:120px}.param-value{flex:1;min-width:160px}.param-code-wrapper{flex:1;min-width:200px;display:flex;flex-direction:column;gap:6px}.param-code{width:100%;min-height:80px}.param-error{color:var(--c-danger);font-size:12px}.papers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-3);margin-bottom:8px}.papers-grid .pl-loading{grid-column:1 / -1;padding:24px 0;text-align:center;color:var(--c-text-muted)}.pl-loading{text-align:center;padding:var(--s-4) var(--s-2);color:var(--c-text-muted)}.pl-empty{grid-column:1 / -1;text-align:center;padding:var(--s-8) var(--s-4);background:var(--c-bg-surface);border-radius:var(--r-lg);border:1px dashed var(--c-border-base)}.pl-empty-icon{font-size:40px;margin-bottom:var(--s-2);opacity:.5}.pl-empty-text{margin:0;color:var(--c-text-muted);font-size:var(--font-base)}.pl-info-card{display:flex;gap:var(--s-3);align-items:flex-start}.pl-info-icon{font-size:18px;opacity:.7;flex-shrink:0}.pl-info-text{font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.6}.pl-info-highlight{color:var(--c-warning);margin-left:4px;font-weight:600}.paper-card{cursor:pointer;transition:all .2s cubic-bezier(.25,.1,.25,1);height:100%;display:flex;flex-direction:column}.paper-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.paper-header{display:flex;align-items:flex-start;gap:var(--s-3);margin-bottom:var(--s-3)}.paper-icon{flex-shrink:0;width:44px;height:44px;display:grid;place-items:center;background:var(--c-primary-soft);border-radius:10px;font-size:20px}.paper-info{flex:1;min-width:0}.paper-title{margin:0 0 8px;font-size:16px;font-weight:600;color:var(--c-text-primary);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;line-height:1.4}.paper-meta{display:flex;gap:6px;flex-wrap:wrap}.paper-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:var(--s-3);border-top:1px solid var(--c-border-subtle)}.paper-actions{display:flex;align-items:center;gap:8px}.chevron{color:var(--c-text-muted);font-size:18px;transition:transform .2s ease,color .2s ease}.paper-card:hover .chevron{transform:translate(2px);color:var(--c-primary)}.header-card{display:flex;flex-direction:column;gap:var(--s-3)}.pl-header-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--c-border-subtle)}.header-action-group{display:flex;gap:8px;flex-wrap:wrap}.course-info h2,.chapter-info-header h2{margin:0;font-size:22px;font-weight:700;color:var(--c-text-primary);letter-spacing:-.02em}.course-stats,.chapter-info-header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}.chapters-list{display:flex;flex-direction:column;gap:var(--s-3)}.chapter-card{cursor:pointer;transition:all .3s cubic-bezier(.25,.1,.25,1)}.chapter-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.chapter-header{display:flex;align-items:center;gap:14px}.chapter-number{width:36px;height:36px;border-radius:10px;background:var(--c-primary);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700;flex-shrink:0;box-shadow:var(--shadow-2)}.chapter-info{flex:1;min-width:0}.chapter-title{margin:0;font-size:17px;font-weight:600;color:var(--c-text-primary);line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical}.chapter-meta{margin-top:6px}.chapter-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}.pl-questions-container{display:flex;flex-direction:column;gap:var(--s-3)}.pl-question-card{transition:all .2s cubic-bezier(.25,.1,.25,1)}.pl-question-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.question-number{display:inline-block;padding:4px 12px;background:var(--c-primary);color:#fff;border-radius:6px;font-size:12px;font-weight:700;margin-bottom:12px;box-shadow:var(--shadow-1)}.question-title{font-size:15px;line-height:1.6;color:var(--c-text-primary);margin-bottom:var(--s-3);word-break:break-word;padding:var(--s-3);background:var(--c-bg-base);border-radius:10px}.question-title img{max-width:100%;height:auto;border-radius:8px;margin:12px 0}.question-options{margin-bottom:16px}.option-item{display:flex;align-items:flex-start;padding:var(--s-2) var(--s-3);margin-bottom:8px;background:var(--c-bg-base);border-radius:10px;transition:all .2s ease;border:1px solid transparent}.option-item:last-child{margin-bottom:0}.option-item:hover{background:var(--c-bg-hover);transform:translate(2px);border-color:var(--c-primary-ring)}.option-item.is-answer{background:var(--c-success-soft);border:1px solid rgba(16,185,129,.35);color:var(--c-text-primary);font-weight:500}.option-item .option-label{flex-shrink:0;font-weight:700;margin-right:10px;min-width:24px;color:var(--c-text-muted)}.option-item.is-answer .option-label{color:var(--c-success)}.option-content{flex:1;line-height:1.6;word-break:break-word}.option-content img{max-width:100%;height:auto;border-radius:6px;margin:8px 0}.question-answer{margin-top:14px;padding-top:12px;border-top:1px solid var(--c-border-subtle)}.answer-divider{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:8px;background:var(--c-success-soft);color:var(--c-success);font-weight:700;font-size:13px}.answer-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.pl-answer-content{padding:12px;background:var(--c-success-soft);border-radius:10px;color:var(--c-text-primary);line-height:1.6;word-break:break-word;border:1px solid rgba(16,185,129,.2);margin-top:10px}.pl-answer-content img{max-width:100%;height:auto;border-radius:6px;margin:8px 0}@media(max-width:768px){.pl-header-actions{flex-direction:column;align-items:flex-start}.papers-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}.paper-footer{flex-direction:column;align-items:flex-start;gap:10px}.chapter-header{align-items:flex-start}}" ].join("\n"), sh = "__aiAskHookedXHRSend", installXHRHook = (e, t) => {
+  }), Vm = [ '.floating-wrapper{--c-primary: #0071e3;--c-primary-hover: #0077ed;--c-primary-active: #0062cc;--c-primary-soft: rgba(0, 113, 227, .1);--c-primary-ring: rgba(0, 113, 227, .18);--c-success: #34c759;--c-success-soft: rgba(52, 199, 89, .12);--c-warning: #ff9f0a;--c-warning-soft: rgba(255, 159, 10, .12);--c-danger: #ff3b30;--c-danger-soft: rgba(255, 59, 48, .1);--c-info: #5ac8fa;--c-info-soft: rgba(90, 200, 250, .12);--c-bg-base: #f5f5f7;--c-bg-surface: #ffffff;--c-bg-subtle: #fbfbfd;--c-bg-hover: #f0f0f3;--c-text-primary: #1d1d1f;--c-text-secondary: #424245;--c-text-muted: #86868b;--c-text-disabled: #c7c7cc;--c-border-subtle: rgba(0, 0, 0, .06);--c-border-base: rgba(0, 0, 0, .1);--c-border-strong: rgba(0, 0, 0, .16);--s-1: 4px;--s-2: 8px;--s-3: 10px;--s-4: 12px;--s-5: 16px;--s-6: 20px;--s-8: 24px;--s-10: 32px;--r-xs: 4px;--r-sm: 8px;--r-md: 12px;--r-lg: 16px;--r-full: 9999px;--shadow-1: 0 1px 2px rgba(0, 0, 0, .04);--shadow-2: 0 2px 8px rgba(0, 0, 0, .06);--shadow-3: 0 4px 16px rgba(0, 0, 0, .1);--shadow-4: 0 12px 32px rgba(0, 0, 0, .16);--font-xs: 11px;--font-sm: 12px;--font-base: 13px;--font-md: 14px;--font-lg: 16px;--font-xl: 19px;--fw-regular: 400;--fw-medium: 500;--fw-semibold: 600;--font-numeric: tabular-nums;--ease-out: cubic-bezier(.33, 1, .68, 1);--ease-spring: cubic-bezier(.34, 1.56, .64, 1);--dur-fast: .15s;--dur-base: .2s;--dur-slow: .28s;--z-base: 1;--z-sticky: 10;--z-overlay: 20;--z-modal: 30;--z-toast: 40;--z-tooltip: 50;color:var(--c-text-primary);color-scheme:light;font-size:var(--font-base);line-height:1.5;text-align:left}.floating-wrapper[data-theme=dark]{color-scheme:dark;--c-primary: #0a84ff;--c-primary-hover: #409cff;--c-primary-active: #0a6acf;--c-primary-soft: rgba(10, 132, 255, .18);--c-primary-ring: rgba(10, 132, 255, .28);--c-success: #30d158;--c-success-soft: rgba(48, 209, 88, .18);--c-warning: #ffd60a;--c-warning-soft: rgba(255, 214, 10, .18);--c-danger: #ff453a;--c-danger-soft: rgba(255, 69, 58, .18);--c-info: #64d2ff;--c-info-soft: rgba(100, 210, 255, .18);--c-bg-base: #1c1c1e;--c-bg-surface: #2c2c2e;--c-bg-subtle: #232325;--c-bg-hover: #3a3a3c;--c-text-primary: #f5f5f7;--c-text-secondary: #d1d1d6;--c-text-muted: #98989d;--c-text-disabled: #48484a;--c-border-subtle: rgba(255, 255, 255, .08);--c-border-base: rgba(255, 255, 255, .14);--c-border-strong: rgba(255, 255, 255, .22);--shadow-1: 0 1px 2px rgba(0, 0, 0, .4), inset 0 0 0 1px rgba(255, 255, 255, .04);--shadow-2: 0 2px 8px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(255, 255, 255, .06);--shadow-3: 0 4px 16px rgba(0, 0, 0, .6), inset 0 0 0 1px rgba(255, 255, 255, .06);--shadow-4: 0 12px 32px rgba(0, 0, 0, .7),inset 0 0 0 1px rgba(255, 255, 255, .08)}.floating-wrapper:not([data-theme]){visibility:hidden}.floating-wrapper,.floating-wrapper *{box-sizing:border-box}.floating-wrapper button,.floating-wrapper input,.floating-wrapper select,.floating-wrapper textarea{font:inherit}.custom-scroll{scrollbar-width:thin;scrollbar-color:var(--c-border-strong) transparent}.custom-scroll::-webkit-scrollbar-thumb{background:var(--c-border-strong)}.custom-scroll::-webkit-scrollbar-thumb:hover{background:var(--c-text-muted)}*{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Helvetica Neue,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}@keyframes fadeIn{0%{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeIn .3s cubic-bezier(.25,.1,.25,1)}.fade-slide-enter-active,.fade-slide-leave-active{transition:all .25s ease}.fade-slide-enter-from,.fade-slide-leave-to{opacity:0;transform:translateY(6px)}@keyframes pulse{0%,to{box-shadow:0 0 #cc33334d}50%{box-shadow:0 0 0 6px #c330}}@keyframes ai-bounce{0%,80%,to{transform:scale(.8);opacity:.6}40%{transform:scale(1.15);opacity:1}}.mb-10{margin-bottom:10px!important}.mt-10{margin-top:10px!important}.mt-20{margin-top:20px!important}.small{font-size:13px}.muted-text{color:#6b7280;font-size:13px}.green{color:#059669}.red{color:#dc2626}.flex-grow{flex:1}.ghost{box-shadow:none}.aah_breadcrumb{margin-bottom:24px;padding:0;background:transparent;border:none;border-radius:0}.breadcrumb{display:inline-flex;align-items:center;gap:8px;font-size:14px;white-space:nowrap;line-height:1.2}.breadcrumb-link{color:#0071e3;cursor:pointer;display:inline-flex;align-items:center;gap:4px;text-decoration:none;white-space:nowrap}.breadcrumb-link:hover{color:#0077ed;text-decoration:underline}.breadcrumb-sep,.breadcrumb-text{color:#86868b}.aah_title{font-size:var(--font-md);font-weight:var(--fw-medium);line-height:1.6;color:var(--c-text-primary);margin-bottom:var(--s-3);padding:var(--s-3);background:var(--c-bg-subtle);border-radius:var(--r-sm);border:1px solid var(--c-border-subtle);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical}.aah_title img{max-width:100%;height:auto;overflow:hidden;border-radius:var(--r-sm);margin:var(--s-3) 0}.aah_options{transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out);cursor:pointer;color:var(--c-text-primary)}.aah_options:hover{border-color:var(--c-primary-ring);background:var(--c-bg-hover)}.aah_options[style*="color:green"]{background:var(--c-success-soft)!important;border-color:var(--c-success)!important;font-weight:var(--fw-medium);color:var(--c-success)!important}.aah_active{box-shadow:0 0 0 2px var(--c-primary)}.aah_bomHet50{padding:13px 0 13px 10px}.aah_bomHet50 span{display:inline-block;line-height:24px;padding-left:14px;color:#86868b;font-size:13px}.aah_bomHet50 span i{display:inline-block;width:10px;height:10px;border:1px solid #d2d2d7;border-radius:2px;vertical-align:middle;margin-right:4px;margin-top:-2px}.aah_bomHet50 .dq i{background-color:#0071e31a;box-shadow:0 0 0 2px #0071e34d;border-color:#0071e3}.aah_bomHet50 .yp i{background-color:#00cc331a;border-color:#0c3}.aah_bomHet50 .wp i{background-color:#cc33331a;border-color:#c33}.is-error{box-shadow:0 0 0 2px #cc33334d inset!important}.error-message{color:#c33;margin-top:8px;font-size:13px;font-weight:400}.icon-inline{display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:middle;position:relative;top:-.05em}.home-avatar-icon{width:48px;height:48px;color:#9ca3af}.home-page-icon{width:24px;height:24px;flex-shrink:0}.aah-card{background:var(--c-bg-surface);border-radius:var(--r-md);border:1px solid var(--c-border-subtle);box-shadow:var(--shadow-1);padding:var(--s-3);transition:box-shadow var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}.aah-card:hover{box-shadow:var(--shadow-2);border-color:var(--c-border-base)}.aah-card-compact{padding:var(--s-2) var(--s-3)}.aah-card-spacious{padding:var(--s-4) var(--s-5)}.aah-btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-md);border:1px solid var(--c-border-base);background:var(--c-bg-base);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);cursor:pointer;transition:all var(--dur-base) var(--ease-out)}.aah-btn:hover:enabled{box-shadow:var(--shadow-2)}.aah-btn:disabled{opacity:.6;cursor:not-allowed}.aah-btn-primary{background:linear-gradient(135deg,#6fb1fc,#4364f7);color:#fff;border-color:transparent}.aah-btn-primary:hover:enabled{filter:brightness(.95);box-shadow:var(--shadow-4)}.aah-btn-plain{background:var(--c-bg-surface)}.aah-btn-small{padding:var(--s-2) var(--s-3);font-size:var(--font-sm);border-radius:var(--r-sm)}.aah-btn-danger{background:var(--c-danger-soft);color:var(--c-danger);border-color:var(--c-border-base)}.aah-tag{display:inline-flex;align-items:center;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);font-weight:var(--fw-semibold);border:1px solid transparent}.aah-tag-primary{background:#0071e31a;color:var(--c-primary);border-color:#0071e329}.aah-tag-success{background:#34c7591f;color:var(--c-success);border-color:#34c75933}.aah-tag-warning{background:#ff9f0a1f;color:var(--c-warning);border-color:#ff9f0a33}.aah-input{width:100%;padding:var(--s-2) var(--s-3);border-radius:var(--r-md);border:1px solid var(--c-border-base);background:var(--c-bg-subtle);color:var(--c-text-primary);font-size:var(--font-base);transition:all var(--dur-base) var(--ease-out)}.aah-input:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px #0071e31a}.aah-input:disabled{opacity:.6;cursor:not-allowed;background:var(--c-bg-base)}.aah-input.recording{border-color:var(--c-primary);box-shadow:0 0 0 3px #0071e326}.aah-select{width:100%;padding:var(--s-2) var(--s-3);border-radius:var(--r-md);border:1px solid var(--c-border-base);background:var(--c-bg-subtle);color:var(--c-text-primary);font-size:var(--font-base);cursor:pointer;transition:all var(--dur-base) var(--ease-out)}.aah-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px #0071e31a}.aah-select:disabled{opacity:.6;cursor:not-allowed;background:var(--c-bg-base)}.aah-alert{display:flex;align-items:flex-start;gap:var(--s-3);padding:var(--s-3);border-radius:var(--r-md);font-size:var(--font-base);line-height:1.6;border:1px solid transparent}.aah-alert-info{background:#3b82f61a;color:#1d4ed8;border-color:#3b82f633}.aah-alert-success{background:#34c7591a;color:#0f5132;border-color:#34c75933}.aah-alert-warning{background:#ff9f0a1a;color:#92400e;border-color:#ff9f0a33}.aah-alert-danger{background:#ef44441a;color:#b91c1c;border-color:#ef444433}.aah-page{display:flex;flex-direction:column;height:100%;overflow:hidden}.page-title{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary);letter-spacing:-.022em}.aah-page-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:var(--s-3)}.aah-page-content.no-padding{padding:0}.aah-page-footer{padding:var(--s-3) var(--s-4);border-top:1px solid var(--c-border-subtle);background:var(--c-bg-surface);flex-shrink:0}.aah-page.is-loading .aah-page-content{position:relative;pointer-events:none;opacity:.6}.page-loader{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;background:#fffc;z-index:100}.spinner{width:32px;height:32px;border:3px solid var(--c-border-subtle);border-top-color:var(--c-primary);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.aah-slider{width:100%;accent-color:var(--c-primary)}.radio-group{display:flex;gap:var(--s-3)}.radio-item{display:inline-flex;align-items:center;gap:var(--s-1);cursor:pointer}', ".floating-wrapper{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:999999}.el_wrapper>.floating-wrapper{pointer-events:none!important}.el_wrapper>div{pointer-events:none;z-index:999999!important}.el_wrapper>div>div{pointer-events:none;z-index:999999!important}.el_wrapper>.minimized-dialog{pointer-events:auto!important}.minimized-dialog{position:fixed;bottom:20px;right:20px;z-index:9999999}.floating-dialog{position:fixed;display:flex;flex-direction:column;pointer-events:auto;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--shadow-3);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);max-width:calc(100vw - 32px);max-height:calc(100vh - 80px);z-index:999999}.floating-dialog:has(.ai-config-panel){width:min(960px,calc(100vw - 32px))!important}.el_wrapper>.floating-wrapper>.floating-dialog{pointer-events:auto!important}.floating-header{display:flex;align-items:center;justify-content:space-between;background:var(--c-bg-subtle);color:var(--c-text-primary);padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--c-border-subtle);cursor:move;-webkit-user-select:none;user-select:none;gap:var(--s-2)}.floating-title{display:flex;align-items:center;gap:var(--s-2);min-width:0;font-size:var(--font-base);font-weight:var(--fw-semibold);color:var(--c-text-primary);letter-spacing:-.022em}.floating-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.floating-title img{width:16px;height:16px;vertical-align:middle;border-radius:4px}.floating-version{margin-left:var(--s-2);background:transparent;border:none;color:var(--c-text-muted);padding:0;font-size:var(--font-xs);font-weight:var(--fw-regular);font-variant-numeric:var(--font-numeric)}.floating-actions{display:flex;align-items:center;gap:var(--s-1);flex-shrink:0}.floating-actions .theme-switcher{display:inline-flex}.floating-actions .segmented{background:var(--c-bg-surface)}.floating-actions .segment-item{padding:2px 6px;font-size:var(--font-xs);line-height:1.4}.floating-close{width:28px;height:28px;border:none;border-radius:50%;background:var(--c-bg-hover);color:var(--c-text-secondary);font-size:var(--font-lg);line-height:1;cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.floating-close:hover{background:var(--c-border-base);color:var(--c-text-primary)}.floating-body{flex:1 1 auto;min-height:0;overflow:hidden;background:var(--c-bg-base)}.floating-resize-handle{position:absolute;right:0;bottom:0;width:16px;height:16px;cursor:ew-resize;-webkit-user-select:none;user-select:none;background-image:linear-gradient(135deg,transparent 50%,var(--c-text-muted) 50%,var(--c-text-muted) 60%,transparent 60%);background-size:6px 6px;background-position:bottom right;background-repeat:no-repeat;opacity:.45;transition:opacity var(--dur-fast) var(--ease-out)}.floating-resize-handle:hover{opacity:.9}.floating-scroll{min-height:0;background:var(--c-bg-base);padding:0;max-height:50vh;overflow:auto}@media(max-width:600px){.floating-scroll{max-height:45vh}}@media(min-width:601px){.floating-scroll{max-height:62vh}}.minimized-dialog img{pointer-events:auto;width:56px!important;height:56px!important;z-index:9999999!important;display:block;cursor:pointer}.mini-tooltip-wrapper{position:relative;display:inline-block}.mini-tooltip{position:absolute;bottom:calc(100% + 10px);right:0;background:var(--c-text-primary);color:var(--c-bg-surface);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);box-shadow:var(--shadow-2);white-space:nowrap}", ".modal-mask{position:fixed;top:0;right:0;bottom:0;left:0;background:#0006;display:grid;place-items:center;z-index:var(--z-modal, 1000000);padding:var(--s-4)}.modal-panel{background:var(--c-bg-surface);border-radius:var(--r-md);width:min(600px,100%);max-height:80vh;display:flex;flex-direction:column;box-shadow:var(--shadow-4);border:1px solid var(--c-border-subtle)}.modal-header{display:flex;align-items:center;justify-content:space-between;padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.modal-header h3{margin:0;color:var(--c-text-primary);font-size:var(--font-lg);font-weight:var(--fw-semibold)}.modal-close{border:none;background:transparent;font-size:var(--font-xl);cursor:pointer;color:var(--c-text-muted);transition:color var(--dur-fast) var(--ease-out)}.modal-close:hover{color:var(--c-text-primary)}.modal-body{padding:var(--s-3);overflow-y:auto;display:flex;flex-direction:column;gap:var(--s-3)}.modal-footer{padding:var(--s-2) var(--s-3);border-top:1px solid var(--c-border-subtle);display:flex;justify-content:flex-end;gap:var(--s-2)}.modal-panel-large{width:min(1000px,90vw);max-height:90vh}.form-row{display:flex;flex-direction:column;gap:var(--s-1)}.form-row label{color:var(--c-text-secondary);font-size:var(--font-sm);font-weight:var(--fw-medium)}.option-list{display:flex;flex-direction:column;gap:var(--s-2)}.option-row{display:flex;gap:var(--s-2);align-items:center}.option-selector{width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:50%;border:1px solid var(--c-border-base);background:var(--c-bg-base);color:var(--c-text-muted);font-weight:var(--fw-semibold);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.option-selector:hover{border-color:var(--c-primary);color:var(--c-primary)}.option-selector.active{background:var(--c-primary);color:#fff;border-color:var(--c-primary)}.reading-form-section{padding:var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-md)}.reading-section-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.reading-section-icon{font-size:var(--font-xl);color:var(--c-primary)}.reading-section-header h4{margin:0;color:var(--c-text-primary);font-size:var(--font-md);font-weight:var(--fw-semibold)}.reading-sub-questions-editor{display:flex;flex-direction:column;gap:var(--s-3)}.reading-sub-question-editor{padding:var(--s-3);background:var(--c-bg-surface);border:1px solid var(--c-border-base);border-radius:var(--r-md)}.reading-sub-question-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.reading-sub-question-number{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex-shrink:0;background:var(--c-primary);color:#fff;border-radius:var(--r-full);font-size:var(--font-sm);font-weight:var(--fw-semibold);font-variant-numeric:var(--font-numeric)}.reading-base-select-small{min-width:120px;padding:6px var(--s-2);font-size:var(--font-sm)}.reading-answer-list{display:flex;flex-direction:column;gap:var(--s-2)}.reading-answer-row{display:flex;align-items:center;gap:var(--s-2)}", ".hljs{display:block;overflow-x:auto;padding:var(--s-3);border-radius:var(--r-sm);font-family:ui-monospace,SF Mono,Consolas,monospace;font-size:var(--font-sm);line-height:1.5}.floating-wrapper:not([data-theme=dark]) .hljs{background:#f6f8fa;color:#24292f;box-shadow:var(--shadow-1)}.floating-wrapper:not([data-theme=dark]) .hljs-keyword,.floating-wrapper:not([data-theme=dark]) .hljs-selector-tag,.floating-wrapper:not([data-theme=dark]) .hljs-built_in{color:#cf222e}.floating-wrapper:not([data-theme=dark]) .hljs-string,.floating-wrapper:not([data-theme=dark]) .hljs-attr{color:#0a3069}.floating-wrapper:not([data-theme=dark]) .hljs-number,.floating-wrapper:not([data-theme=dark]) .hljs-literal{color:#0550ae}.floating-wrapper:not([data-theme=dark]) .hljs-comment{color:#6e7781;font-style:italic}.floating-wrapper:not([data-theme=dark]) .hljs-title,.floating-wrapper:not([data-theme=dark]) .hljs-name{color:#8250df}.floating-wrapper[data-theme=dark] .hljs{background:#1f1f23;color:#f0f6fc;box-shadow:var(--shadow-1)}.floating-wrapper[data-theme=dark] .hljs-keyword,.floating-wrapper[data-theme=dark] .hljs-selector-tag,.floating-wrapper[data-theme=dark] .hljs-built_in{color:#ff7b72}.floating-wrapper[data-theme=dark] .hljs-string,.floating-wrapper[data-theme=dark] .hljs-attr{color:#a5d6ff}.floating-wrapper[data-theme=dark] .hljs-number,.floating-wrapper[data-theme=dark] .hljs-literal{color:#79c0ff}.floating-wrapper[data-theme=dark] .hljs-comment{color:#8b949e;font-style:italic}.floating-wrapper[data-theme=dark] .hljs-title,.floating-wrapper[data-theme=dark] .hljs-name{color:#d2a8ff}", ".tabs-bar{display:flex;gap:3px;padding:5px 8px;border-bottom:1px solid var(--c-border-subtle);background:var(--c-bg-subtle);overflow-x:auto}.tabs-bar::-webkit-scrollbar{display:none}.tab-item{flex-shrink:0;padding:4px 8px;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:color var(--dur-fast) var(--ease-out),background-color var(--dur-fast) var(--ease-out)}.tab-item:hover:not(.active){color:var(--c-text-secondary)}.tab-item.active{background:var(--c-bg-surface);color:var(--c-primary);border-color:var(--c-primary-soft);box-shadow:var(--shadow-1)}.tab-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}.sub-segmented-row{padding:6px var(--s-2) 0}", ".segmented{display:inline-flex;padding:2px;gap:2px;background:var(--c-bg-base);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm)}.segment-item{padding:var(--s-1) var(--s-3);border:none;border-radius:calc(var(--r-sm) - 2px);background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.segment-item.active{background:var(--c-bg-surface);color:var(--c-primary);box-shadow:var(--shadow-1)}.segment-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}", ".stat-card{text-align:left;padding:10px 12px;background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:10px;cursor:default;box-shadow:var(--shadow-1);transition:transform var(--dur-base) var(--ease-out),box-shadow var(--dur-base) var(--ease-out)}.stat-card-clickable{cursor:pointer}.stat-card-clickable:hover{transform:translateY(-1px);box-shadow:var(--shadow-2)}.stat-card-clickable:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}.stat-label{display:flex;align-items:center;gap:var(--s-1);font-size:var(--font-xs);color:var(--c-text-muted)}.stat-icon{width:12px;height:12px;border-radius:3px;flex-shrink:0}.stat-value{font-size:18px;font-weight:var(--fw-semibold);margin-top:var(--s-1);font-variant-numeric:var(--font-numeric);line-height:1.3}.stat-meta{font-size:var(--font-xs);color:var(--c-text-muted);margin-top:2px}.stat-progress{height:4px;border-radius:2px;background:var(--c-bg-hover);overflow:hidden;margin-top:var(--s-2)}.stat-progress>i{display:block;height:100%;background:var(--c-primary);transition:width var(--dur-base) var(--ease-out)}", '.switch{position:relative;display:inline-block;width:44px;height:26px;cursor:pointer}.switch.disabled{cursor:not-allowed;opacity:.6}.switch input{opacity:0;width:0;height:0}.switch-slider{position:absolute;top:0;right:0;bottom:0;left:0;background:var(--c-bg-hover);border-radius:var(--r-full);transition:background-color var(--dur-base) var(--ease-out)}.switch-slider:before{content:"";position:absolute;top:2px;left:2px;width:22px;height:22px;background:#fff;border-radius:50%;box-shadow:var(--shadow-1);transition:transform var(--dur-base) var(--ease-spring)}.switch input:checked+.switch-slider{background:var(--c-primary)}.switch input:checked+.switch-slider:before{transform:translate(18px)}.switch input:focus-visible+.switch-slider{box-shadow:0 0 0 3px var(--c-primary-ring)}', '.overview-page{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.overview-user{display:flex;align-items:center;gap:var(--s-3)}.ov-avatar{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--c-primary-soft),var(--c-bg-subtle));border:1px solid var(--c-border-subtle);display:grid;place-items:center;color:var(--c-primary);overflow:hidden;font-weight:var(--fw-semibold);flex-shrink:0}.ov-avatar img{width:100%;height:100%;object-fit:cover}.ov-user-meta{flex:1;min-width:0}.ov-user-meta h3{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ov-user-meta p{margin:var(--s-1) 0 0;font-size:var(--font-sm);color:var(--c-text-muted)}.ov-tags{display:flex;gap:var(--s-1);flex-wrap:wrap}.ov-muted{color:var(--c-text-muted)}.overview-notice{background:var(--c-primary-soft);border:1px solid var(--c-primary-ring);padding:10px 12px}.ov-notice-content{font-size:var(--font-sm);color:var(--c-text-secondary);line-height:1.5}.ov-notice-content a{color:var(--c-primary)}.ov-notice-content:before{content:"\ud83d\udce3 "}.overview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s-2)}.overview-actions{display:flex;flex-wrap:wrap;gap:var(--s-2)}.overview-actions .aah-btn{flex:1;min-width:96px}.overview-version{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:10px}.ov-version-text{font-size:var(--font-sm);color:var(--c-text-muted);font-variant-numeric:var(--font-numeric)}@media(max-width:480px){.overview-stats{grid-template-columns:1fr}.overview-actions .aah-btn{flex:1 0 100%}}', ".settings-layout{display:grid;grid-template-columns:minmax(112px,124px) minmax(0,1fr);flex:1;min-height:0;gap:1px;background:var(--c-border-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-lg);overflow:hidden}.settings-page .aah-page-content{overflow-x:auto}.settings-sidebar{display:flex;flex-direction:column;background:var(--c-bg-surface);height:100%;min-width:0;overflow-y:auto}.sidebar-header{padding:var(--s-2);border-bottom:1px solid var(--c-border-subtle);flex-shrink:0}.settings-search-input-wrapper{position:relative;display:flex;align-items:center}.search-icon{position:absolute;left:var(--s-2);color:var(--c-text-muted);font-size:16px;pointer-events:none}.settings-search-input{padding-left:28px!important;width:100%}.sidebar-nav{flex:1;padding:var(--s-1);overflow-y:auto}.sidebar-nav .nav-item{display:flex;align-items:center;gap:var(--s-1);padding:var(--s-2);border-radius:var(--r-md);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);cursor:pointer;transition:all var(--dur-base) var(--ease-out);text-decoration:none;margin-bottom:var(--s-1);width:100%;text-align:left;border:none;background:transparent}.sidebar-nav .nav-item:hover{background:var(--c-bg-hover)}.sidebar-nav .nav-item.active{background:var(--c-primary-soft);color:var(--c-primary);font-weight:var(--fw-semibold)}.nav-icon{font-size:20px;flex-shrink:0}.sidebar-footer{padding:var(--s-3);border-top:1px solid var(--c-border-subtle);flex-shrink:0}.sidebar-footer .aah-alert{font-size:var(--font-sm);padding:var(--s-2) var(--s-3)}.settings-content{background:var(--c-bg-surface);height:100%;min-width:0;overflow-y:auto;padding:var(--s-4)}.settings-content-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-3);margin-bottom:var(--s-3);padding-bottom:var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.settings-content-header h2{margin:0;color:var(--c-text-primary);font-size:var(--font-xl);font-weight:var(--fw-semibold)}.settings-content-header p{margin:var(--s-1) 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.settings-section.settings-config-section{gap:var(--s-3)}.setting-group{margin-bottom:var(--s-4)}.group-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s-3);padding-bottom:var(--s-2);border-bottom:1px solid var(--c-border-subtle)}.group-title{display:flex;align-items:center;gap:var(--s-2);margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary);letter-spacing:-.022em}.group-items{display:flex;flex-direction:column;gap:var(--s-2)}.empty-search{text-align:center;padding:var(--s-6) var(--s-3);color:var(--c-text-muted)}.settings-empty-icon{font-size:48px;margin-bottom:var(--s-3);opacity:.5}.settings-empty-text{margin:0;font-size:var(--font-base)}.config-item{padding:10px;background:var(--c-bg-surface);border-radius:10px;transition:all .3s cubic-bezier(.25,.1,.25,1);border:1px solid var(--c-border-subtle)}.config-item:hover{background:var(--c-bg-subtle);box-shadow:0 2px 8px var(--c-border-subtle);border-color:var(--c-border-base)}.config-item-content{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.config-label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:180px}.label-wrapper{display:flex;flex-direction:column;gap:4px}.label-text{font-size:15px;font-weight:500;color:var(--c-text-primary)}.label-desc{font-size:13px;font-weight:400;color:var(--c-text-muted);line-height:1.5}.info-icon{color:var(--c-text-muted);cursor:help;font-size:16px;transition:color .2s ease}.info-icon:hover{color:var(--c-primary)}.config-control{display:flex;align-items:center;flex-shrink:0;gap:10px;flex-wrap:wrap;justify-content:flex-end}.checkbox-group{display:flex;flex-wrap:wrap;gap:10px}.base-alert{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;border:1px solid var(--c-border-subtle);background:var(--c-bg-subtle);color:var(--c-text-primary);font-size:14px}.base-alert-info{background:var(--c-primary-soft);border-color:var(--c-primary-ring)}.alert-icon{font-size:16px}.base-tag{display:inline-flex;align-items:center;padding:4px 8px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid transparent}.base-tag-success{background:var(--c-success-soft);color:var(--c-success);border-color:var(--c-success-soft)}.base-input,.base-select{min-width:180px;padding:8px 10px;border:1px solid var(--c-border-base);border-radius:8px;background:var(--c-bg-surface);color:var(--c-text-primary);font-size:14px;transition:border-color .2s ease,box-shadow .2s ease}.base-input:focus,.base-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.base-select{min-width:160px}.checkbox-item{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle)}.hotkey-input-wrapper{position:relative;display:inline-flex;align-items:center;gap:8px}.hotkey-input-wrapper .hotkey-hint{font-size:12px;color:var(--c-text-muted);background:var(--c-bg-subtle);padding:4px 8px;border-radius:8px}.hotkey-input-wrapper .hotkey-hint.danger{color:var(--c-danger);background:var(--c-danger-soft)}.hotkey-input-wrapper .base-input.recording{border-color:var(--c-danger);box-shadow:0 0 0 3px var(--c-danger-soft)}.hotkey-input-wrapper .base-input{cursor:pointer}.ai-config-panel{container-type:inline-size;container-name:aipanel;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2);flex-wrap:wrap}.ai-config-section-head h4{margin:0;color:var(--c-text-primary)}.ai-config-section-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-wizard{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.ai-wizard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2)}.ai-wizard-head h4{margin:0;color:var(--c-text-primary)}.ai-wizard-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-wizard-count{color:var(--c-text-muted);font-size:var(--font-xs);font-variant-numeric:tabular-nums}.ai-wizard-steps{display:flex;align-items:center;gap:var(--s-3);margin:0;padding:0;list-style:none;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-wizard-steps li{display:flex;align-items:center;gap:6px}.ai-wizard-dot{width:8px;height:8px;border-radius:var(--r-full);background:var(--c-border-subtle)}.ai-wizard-steps li.done .ai-wizard-dot{background:var(--c-success)}.ai-wizard-steps li.current{color:var(--c-text-primary);font-weight:var(--fw-semibold)}.ai-wizard-steps li.current .ai-wizard-dot{background:var(--c-primary)}.ai-wizard-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-wizard-subject{margin:0;color:var(--c-text-primary)}.ai-wizard-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-pick{text-align:left;cursor:pointer;font:inherit;color:inherit}.ai-config-card-pick:hover{border-color:var(--c-primary)}.ai-config-card-tags{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ai-config-channel-list{display:flex;flex-direction:column;gap:var(--s-2)}.ai-config-channel-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--s-2);padding:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-secondary);text-align:left;cursor:pointer}.ai-config-channel-item.active{border-color:var(--c-primary);background:var(--c-primary-soft);color:var(--c-text-primary)}.ai-config-channel-item.orphan{opacity:.6}.ai-config-channel-text{min-width:0;display:flex;flex-direction:column;gap:2px}.ai-config-channel-text strong,.ai-config-channel-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-config-channel-text small{color:var(--c-text-muted)}.ai-config-channel-grid{display:flex;flex-direction:column;gap:var(--s-2)}.ai-config-card{display:flex;flex-direction:column;gap:var(--s-2);padding:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-surface)}.ai-config-card.recommended{border-color:var(--c-primary)}.ai-config-card-head{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-promo{margin:0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-config-card-actions,.ai-config-instance-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-instance-remove{align-self:flex-start}@container aipanel (min-width: 560px){.ai-config-channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}@container aipanel (min-width: 820px){.ai-config-channel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}.ai-config-manager{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-side{min-width:0;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-list-panel,.ai-config-global,.ai-config-detail{min-width:0;display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.ai-config-side-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-inline-action{padding:0;border:none;background:none;color:var(--c-primary);font:inherit;font-weight:var(--fw-medium);cursor:pointer;text-decoration:underline}.ai-config-collapse{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);padding:0;border:none;background:none;color:var(--c-text-primary);font:inherit;font-weight:var(--fw-semibold);cursor:pointer}.ai-config-global-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-detail-empty{min-height:200px;align-items:center;justify-content:center;text-align:center}.ai-config-empty-icon{font-size:36px;color:var(--c-primary)}.ai-config-add-modal{width:min(760px,100%)}@container aipanel (min-width: 720px){.ai-config-manager{display:grid;grid-template-columns:minmax(220px,280px) minmax(0,1fr);align-items:start}}.ai-config-delete-modal{width:min(420px,100%)}.ai-config-delete-text{margin:0;color:var(--c-text-secondary);line-height:1.6}.ai-config-field{min-width:0;display:flex;flex-direction:column;gap:6px}.ai-config-field span{color:var(--c-text-secondary);font-size:var(--font-xs);font-weight:var(--fw-medium)}.ai-config-field-help{margin:0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.ai-config-field-help a{margin-left:var(--s-1);color:var(--c-primary);font-weight:var(--fw-medium);text-decoration:none}.ai-config-field-help a:hover{text-decoration:underline}@media(max-width:768px){.settings-layout{display:flex;flex-direction:column;height:auto;min-width:0;border:none;background:transparent}.settings-sidebar{position:sticky;top:0;z-index:10;height:auto;border-bottom:1px solid var(--c-border-subtle);border-radius:var(--r-lg) var(--r-lg) 0 0}.sidebar-footer{display:none}.sidebar-nav{flex-direction:row;overflow-x:auto;padding:0 var(--s-4);gap:var(--s-4)}.sidebar-nav .nav-item{white-space:nowrap;border-radius:0;border-bottom:2px solid transparent;padding:var(--s-4) var(--s-2);margin-bottom:0}.sidebar-nav .nav-item.active{background:transparent;border-bottom-color:var(--c-primary);color:var(--c-primary)}.settings-content{padding:var(--s-4)}.settings-content-header,.config-item-content{flex-direction:column;align-items:flex-start}.config-control{width:100%;justify-content:flex-start}}.settings-section{display:flex;flex-direction:column;gap:var(--s-2);margin-bottom:var(--s-3)}", ".user-page{display:flex;flex-direction:column;gap:var(--s-4);padding:0;max-width:100%}.user-page__login-section{display:flex;justify-content:center;padding:var(--s-4) 0;background:transparent}.user-page__login-box,.user-page__header-card,.user-page__apikey-section,.user-page__tips{border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface);box-shadow:var(--shadow-1)}.user-page__login-box{width:min(100%,460px);padding:var(--s-4)}.user-page__login-header{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3);text-align:center}.user-page__login-header h2{margin:var(--s-1) 0 0;color:var(--c-text-primary);font-size:var(--font-xl);font-weight:600}.user-page__login-header p{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.user-page__login-switch{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:var(--s-2);margin-top:var(--s-2)}.user-page__login-switch .aah-btn{min-width:92px}.user-page__login-switch .aah-btn.is-active{color:var(--c-primary);border-color:var(--c-primary-ring);background:var(--c-primary-soft)}.user-page__login-form,.user-page__login-form .form-item{margin-bottom:var(--s-3)}.user-page__login-btn{width:100%;min-height:38px}.user-page__register-tip{color:var(--c-text-muted);font-size:var(--font-sm);text-align:center}.user-page__link-btn{margin-left:var(--s-1);padding:0;border:0;background:transparent;color:var(--c-primary);font:inherit;cursor:pointer}.user-page__link-btn:hover{color:var(--c-primary-hover)}.user-page__helper{margin:var(--s-2) 0 0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.user-page__dashboard{display:flex;flex-direction:column;gap:var(--s-3);padding:0;max-width:100%}.user-page__top-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(168px,.8fr);gap:var(--s-3);align-items:stretch}.user-page__header-card{display:flex;flex-direction:column;justify-content:space-between;gap:var(--s-3);padding:var(--s-3)}.user-page__profile-main{display:flex;align-items:center;gap:var(--s-3);min-width:0}.user-page__avatar{display:grid;flex-shrink:0;width:56px;height:56px;place-items:center;overflow:hidden;border:1px solid var(--c-border-subtle);border-radius:50%;background:var(--c-bg-subtle);color:var(--c-text-muted)}.user-page__avatar img{width:100%;height:100%;object-fit:cover}.user-page__avatar-icon{width:28px;height:28px}.user-page__info-text{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:var(--s-1)}.user-page__info-text h2{margin:0;color:var(--c-text-primary);font-size:var(--font-lg);font-weight:600}.user-page__username{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.user-page__actions{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--s-2);padding-top:var(--s-2);border-top:1px solid var(--c-border-subtle)}.user-page__stats-grid{display:grid;grid-template-columns:1fr;gap:var(--s-2)}.user-page__stat-card{display:flex;align-items:center;gap:var(--s-2);min-width:0;min-height:0;padding:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-surface);box-shadow:var(--shadow-1)}.user-page__stat-icon{display:flex;flex-shrink:0;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--r-sm);font-size:16px}.user-page__stat-icon--coin{background:var(--c-warning-soft);color:var(--c-warning)}.user-page__stat-content{flex:1;min-width:0}.user-page__stat-label{margin:0;color:var(--c-text-muted);font-size:var(--font-xs)}.user-page__stat-value{margin:0;color:var(--c-text-primary);font-size:var(--font-md);font-weight:600;font-variant-numeric:var(--font-numeric)}.user-page__stat-content .user-page__link-btn{margin-top:var(--s-1);margin-left:0;font-size:var(--font-xs)}.user-page__apikey-section{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3)}.user-page__section-header{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-3)}.user-page__section-header h3{margin:0;color:var(--c-text-primary);font-size:var(--font-base);font-weight:600}.user-page__section-header p{margin:var(--s-1) 0 0;color:var(--c-text-muted);font-size:var(--font-xs);line-height:1.5}.user-page__apikey-display{display:flex;align-items:center;gap:var(--s-3)}.user-page__apikey-value{flex:1;min-width:0;padding:var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-subtle);color:var(--c-text-primary);font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace;font-size:var(--font-sm);line-height:1.4;overflow-wrap:anywhere}.user-page__apikey-actions{display:flex;flex-shrink:0;justify-content:flex-end}.user-page__tips{padding:var(--s-3);color:var(--c-text-muted);font-size:var(--font-xs)}.user-page__tips p{margin:0}.user-page__tips p+p{margin-top:var(--s-1)}@media(max-width:640px){.user-page__login-section{padding:var(--s-3) 0}.user-page__login-box{padding:var(--s-4)}.user-page__top-row{grid-template-columns:1fr}.user-page__profile-main{align-items:flex-start}.user-page__actions{justify-content:stretch}.user-page__actions .aah-btn{flex:1 1 140px}.user-page__stat-card{align-items:flex-start;flex-direction:column}.user-page__apikey-display{align-items:stretch;flex-direction:column}.user-page__apikey-actions{justify-content:stretch}.user-page__apikey-actions .aah-btn{width:100%}}", ".ai-workbench{display:flex;flex-direction:column;gap:var(--s-4)}.ai-status-panel{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);padding:var(--s-3);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface)}.ai-status-main{min-width:0;display:flex;flex-direction:column;gap:4px}.ai-status-main strong{color:var(--c-text-primary);font-size:var(--font-md)}.ai-status-main p{margin:0;color:var(--c-text-muted);font-size:var(--font-xs);overflow-wrap:anywhere}.ai-input-panel,.ai-result-panel{display:flex;flex-direction:column;gap:var(--s-3)}.ai-section-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-3)}.ai-section-heading h3{margin:0;color:var(--c-text-primary);font-size:var(--font-lg)}.ai-section-heading p,.ai-helper-text{margin:4px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.ai-mode-switch,.ai-command-row,.ai-result-actions{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2)}.ai-mode-btn{border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-secondary);padding:7px 10px;border-radius:var(--r-full);font-size:var(--font-xs);cursor:pointer;transition:border-color .2s ease,background-color .2s ease,color .2s ease}.ai-mode-btn.active{background:var(--c-primary);border-color:var(--c-primary);color:#fff}.ai-question-type-row{display:grid;grid-template-columns:minmax(180px,240px) 1fr;align-items:end;gap:var(--s-3)}.ai-textarea{width:100%;min-height:160px;border:1px solid var(--c-border-base);border-radius:var(--r-md);padding:var(--s-3);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);line-height:1.6;resize:vertical;outline:none}.ai-textarea:focus{border-color:var(--c-primary-ring);box-shadow:0 0 0 3px var(--c-primary-soft)}.ai-result-content{min-height:140px;padding:var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-md)}.ai-result-content-active{border-color:var(--c-border-base)}.ai-loading-text{text-align:center;padding:var(--s-4) var(--s-2);color:var(--c-text-muted)}.ai-empty{text-align:center;padding:var(--s-8) var(--s-4);color:var(--c-text-muted)}.ai-empty-icon{font-size:48px;margin-bottom:var(--s-2);opacity:.5}.ai-empty-text{margin:0;font-size:var(--font-base)}.ai-link-btn{background:transparent;border:none;cursor:pointer;margin-left:8px;color:var(--c-primary)}.ai-service-details{border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface);padding:var(--s-3)}.ai-service-details summary{cursor:pointer;color:var(--c-text-secondary);font-weight:var(--fw-semibold)}.ai-service-details .copyright-content{margin-top:var(--s-3);color:var(--c-text-secondary);line-height:1.7}.official-meta{border:1px solid var(--c-border-subtle);border-radius:10px;overflow:hidden;margin-bottom:12px}.official-meta-row{display:grid;grid-template-columns:120px 1fr;border-bottom:1px solid var(--c-border-subtle)}.official-meta-row:last-child{border-bottom:none}.official-meta-label{background:var(--c-bg-base);padding:10px 12px;font-weight:700;color:var(--c-text-primary)}.official-meta-value{padding:10px 12px;color:var(--c-text-primary);line-height:1.6}.official-meta-options{padding:10px 12px;display:flex;flex-direction:column;gap:8px}.official-meta-option{display:flex;gap:8px;align-items:flex-start}.official-meta-option .official-option-label{font-weight:700;color:var(--c-text-muted)}.official-meta-option .official-option-text{flex:1;color:var(--c-text-primary);line-height:1.6}.official-result-list{display:flex;flex-direction:column;gap:12px}.official-result-item{border:1px solid var(--c-border-subtle);border-radius:10px;padding:12px;background:var(--c-bg-surface);box-shadow:var(--shadow-1)}.official-result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.official-result-title{font-weight:700;color:var(--c-text-primary)}.official-result-subtitle{color:var(--c-text-muted);margin-left:10px;font-size:12px}.official-section{margin-top:10px}.official-section-label{font-weight:700;color:var(--c-text-secondary);margin-bottom:6px}.official-question{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:6px;padding:8px;line-height:1.6;color:var(--c-text-primary)}.official-options{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.official-options li{display:flex;gap:8px;align-items:flex-start;background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:6px;padding:8px}.official-options .official-option-label{font-weight:700;color:var(--c-text-muted)}.official-options .official-option-text{color:var(--c-text-primary);line-height:1.5}.official-answer-chips{display:flex;flex-wrap:wrap;gap:8px}.official-answer-empty{color:var(--c-text-muted)}@media(max-width:680px){.ai-status-panel,.ai-section-heading,.ai-question-type-row{display:flex;flex-direction:column;align-items:stretch}.ai-status-panel .aah-btn{align-self:flex-start}.ai-command-row .aah-btn{flex:1 1 auto;justify-content:center}}", ".ask-page{display:flex;flex-direction:column;gap:var(--s-3);padding:0}.ask-toolbar{position:sticky;top:0;z-index:var(--z-sticky);display:flex;align-items:center;gap:var(--s-3);padding:var(--s-2) var(--s-3);background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);flex-wrap:wrap}.ask-toolbar__primary{display:flex;gap:var(--s-2)}.ask-toolbar__progress{flex:1;display:flex;align-items:center;gap:var(--s-2);font-size:var(--font-sm);color:var(--c-text-muted);min-width:140px}.ask-progress-text{font-variant-numeric:var(--font-numeric);white-space:nowrap}.ask-progress-bar{flex:1;height:4px;border-radius:2px;background:var(--c-bg-hover);overflow:hidden}.ask-progress-bar>i{display:block;height:100%;background:var(--c-primary);transition:width var(--dur-base) var(--ease-out)}.ask-toolbar__actions{display:flex;gap:var(--s-1)}.ask-toolbar__actions .aah-btn{display:inline-flex;align-items:center;gap:4px}.ask-nav{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);padding:var(--s-2) var(--s-3)}.ask-nav summary{cursor:pointer;font-size:var(--font-sm);color:var(--c-text-secondary);font-weight:var(--fw-medium)}.ask-nav-legend{display:flex;gap:var(--s-3);flex-wrap:wrap;margin:var(--s-2) 0;font-size:var(--font-xs);color:var(--c-text-muted)}.legend-item{display:inline-flex;align-items:center;gap:4px}.legend-item i{width:8px;height:8px;border-radius:2px;display:inline-block}.legend-current i{background:var(--c-primary)}.legend-done i{background:var(--c-success)}.legend-error i{background:var(--c-danger)}.legend-unanswered i{background:var(--c-bg-hover);border:1px solid var(--c-border-base)}.ask-nav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(32px,1fr));gap:var(--s-1)}.ask-nav-cell{height:28px;border-radius:var(--r-xs);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);color:var(--c-text-muted);font-size:var(--font-xs);font-variant-numeric:var(--font-numeric);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}.ask-nav-cell:hover{border-color:var(--c-border-base)}.ask-nav-cell.is-done{background:var(--c-success-soft);color:var(--c-success);border-color:var(--c-success)}.ask-nav-cell.is-error{background:var(--c-danger-soft);color:var(--c-danger);border-color:var(--c-danger)}.ask-nav-cell.is-current{box-shadow:0 0 0 2px var(--c-primary-ring)}.ask-card{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1)}.ask-card__header{display:flex;align-items:center;justify-content:space-between;padding:var(--s-2) var(--s-3);border-bottom:1px solid var(--c-border-subtle)}.ask-card__title{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-card__actions{display:flex;gap:var(--s-1)}.ask-card__body{padding:var(--s-3)}.ask-card__body .aah_title{font-size:var(--font-base);line-height:1.6;color:var(--c-text-primary);margin-bottom:var(--s-2)}.ask-card__body .aah_options{margin:var(--s-1) 0;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);background:var(--c-bg-subtle);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}.ask-card__body .aah_options:hover{border-color:var(--c-border-base)}.ask-card__body .aah_options.active{background:var(--c-primary-soft);border-color:var(--c-primary);color:var(--c-primary)}.reading-passage{padding:var(--s-2) var(--s-3);background:var(--c-bg-subtle);border-radius:var(--r-sm);font-size:var(--font-sm);line-height:1.6;color:var(--c-text-secondary);margin-bottom:var(--s-3);white-space:pre-wrap}.reading-questions{display:flex;flex-direction:column;gap:var(--s-3);margin-top:var(--s-3)}.reading-sub-question{margin-top:var(--s-3)}.sub-question-title{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-primary);margin-bottom:var(--s-1)}.ask-match-table{width:100%;border-collapse:separate;border-spacing:var(--s-1);margin-top:var(--s-2)}.ask-match-table td{padding:var(--s-2);background:var(--c-bg-subtle);border-radius:var(--r-sm);font-size:var(--font-sm)}.ask-form-note{margin:var(--s-2) 0 0;font-size:var(--font-sm)}.ask-form-note--success{color:var(--c-success)}.ask-form-note--danger{color:var(--c-danger)}.ask-loading{padding:var(--s-3);text-align:center;color:var(--c-text-muted);font-size:var(--font-sm)}.answer-block{padding:var(--s-2) var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);margin-bottom:var(--s-2)}.answer-block:last-child{margin-bottom:0}.answer-header{display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);margin-bottom:var(--s-1)}.answer-meta{font-size:var(--font-xs);color:var(--c-text-muted);font-variant-numeric:var(--font-numeric)}.answer-field-html{font-size:var(--font-sm);color:var(--c-text-primary);line-height:1.6}.answer-field-html img{max-width:100%;height:auto;border-radius:var(--r-sm);margin:var(--s-1) 0}.answer-field-html table{width:100%;overflow-x:auto;display:block;border-collapse:collapse}.answer-field-html p{margin:var(--s-1) 0}.ai-preview-block{border-color:var(--c-warning);background:var(--c-warning-soft)}.ai-answer-block{background:var(--c-bg-subtle)}.ask-preview-actions{display:flex;gap:var(--s-1);margin-top:var(--s-2);flex-wrap:wrap}.ai-answer-divider{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-2)}.ai-answer-title{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-primary)}.ai-icon{font-size:16px}.ai-streaming-tag{display:inline-flex;align-items:center;gap:4px;font-size:var(--font-xs);color:var(--c-text-muted)}.ai-dot{width:4px;height:4px;border-radius:50%;background:var(--c-primary);display:inline-block;animation:ai-bounce 1s infinite}.ai-dot:nth-child(2){animation-delay:.15s}.ai-dot:nth-child(3){animation-delay:.3s}@keyframes ai-bounce{0%,80%,to{transform:translateY(0);opacity:.6}40%{transform:translateY(-3px);opacity:1}}.ai-stream-placeholder{font-size:var(--font-sm);color:var(--c-text-muted);padding:var(--s-2) 0}.ai-answer-markdown{font-size:var(--font-sm);color:var(--c-text-primary);line-height:1.6}.ask-empty{padding:var(--s-8) var(--s-3);text-align:center;color:var(--c-text-muted)}.ask-empty__icon{font-size:48px;width:48px;height:48px;margin:0 auto var(--s-2);display:block}.modal-title{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-settings{display:flex;flex-wrap:wrap;gap:var(--s-2);padding:var(--s-3);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);align-items:center}.native-checkbox{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);color:var(--c-text-primary);cursor:pointer}.native-checkbox input{width:16px;height:16px;accent-color:var(--c-primary)}.range-row{display:flex;flex-direction:column;gap:var(--s-1);flex:1;min-width:200px;font-size:var(--font-sm);color:var(--c-text-secondary)}.range-row input[type=range]{width:100%;accent-color:var(--c-primary)}.ask-tags{display:flex;flex-wrap:wrap;gap:var(--s-1);margin-top:var(--s-2)}.ask-info{display:flex;flex-direction:column;gap:var(--s-2);font-size:var(--font-sm);color:var(--c-text-secondary);line-height:1.6}.ask-info .info-body{color:var(--c-text-primary)}.ask-types{margin-top:var(--s-2)}.ask-types summary{cursor:pointer;font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-primary)}.ask-types summary:hover{color:var(--c-primary-hover)}@media(max-width:480px){.ask-settings{flex-direction:column;align-items:flex-start}}", ".question-page{position:relative;padding:0}.question-page .watermark-bg{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;display:grid;place-items:center;gap:6px;font-size:18px;color:#0000000d;text-transform:uppercase;z-index:0}.question-page>*:not(.watermark-bg){position:relative;z-index:1}.qc-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap;background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:var(--s-2) var(--s-3);margin-bottom:var(--s-3)}.qc-toolbar-info{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.qc-toolbar-count{display:inline-flex;align-items:center;gap:6px;font-size:var(--font-md);color:var(--c-text-primary);font-variant-numeric:var(--font-numeric)}.qc-toolbar-count strong{font-size:18px;font-weight:800;color:var(--c-primary);letter-spacing:-.02em}.qc-toolbar-count-filter{font-size:var(--font-sm);color:var(--c-text-muted)}.qc-toolbar-count-filter strong{font-size:var(--font-md);color:var(--c-text-secondary)}.qc-toolbar-count-uploading{padding:2px 8px;border-radius:999px;background:var(--c-primary-soft);color:var(--c-primary);font-size:var(--font-sm)}.qc-toolbar-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.qc-toolbar-actions .aah-btn{display:inline-flex;align-items:center;gap:4px}.upload-input{display:none}.qc-info-collapse{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);padding:var(--s-3);margin-bottom:var(--s-3);animation:fadeIn .2s ease-out}.info-body{font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.6}.warn-text{color:var(--c-danger);font-weight:600}.search-filter-row{display:flex;gap:var(--s-3);align-items:center;margin-bottom:var(--s-2);flex-wrap:wrap}.question-search-box{position:relative;flex:1;min-width:200px}.question-search-input{width:100%;padding:var(--s-2) 36px var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);font-size:var(--font-md);color:var(--c-text-primary);transition:all .2s ease}.question-search-input:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.question-search-input::placeholder{color:var(--c-text-muted)}.search-clear{position:absolute;right:var(--s-3);top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;color:var(--c-text-muted);cursor:pointer;width:var(--s-5);height:var(--s-5);display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s ease}.search-clear:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.filter-chips{display:flex;flex-wrap:wrap;gap:var(--s-1);margin:0 0 var(--s-3)}.filter-chips .aah-tag{cursor:pointer;border:1px solid var(--c-border-subtle);-webkit-user-select:none;user-select:none;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out)}.filter-chips .aah-tag:hover{border-color:var(--c-border-base)}.question-table-wrapper{margin-bottom:var(--s-4)}.qc-cards{display:flex;flex-direction:column;gap:var(--s-3)}.qc-card{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:var(--s-3);display:flex;flex-direction:column;gap:var(--s-2);transition:all .2s ease;animation:fadeIn .3s ease-out}.qc-card:hover{box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.qc-row-meta{display:flex;align-items:center;gap:var(--s-2)}.qc-row-meta .aah-tag{flex-shrink:0}.qc-num{font-size:var(--font-xs);color:var(--c-text-muted);font-variant-numeric:var(--font-numeric)}.qc-edit-btn{margin-left:auto;display:inline-flex;align-items:center;gap:4px}.qc-question{font-size:var(--font-base);color:var(--c-text-primary);line-height:1.6;word-break:break-word}.qc-question img{max-width:100%;height:auto}.qc-options-list{display:flex;flex-direction:column;gap:4px;padding:var(--s-2) 0;border-top:1px dashed var(--c-border-subtle)}.qc-option{display:flex;align-items:flex-start;gap:6px;padding:6px 10px;border-radius:var(--r-sm);font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.5;word-break:break-word}.qc-option-correct{background:var(--c-success-soft);color:var(--c-success);font-weight:600}.qc-option-icon{font-size:var(--font-md);color:var(--c-success);flex-shrink:0;margin-top:2px}.qc-option-letter{flex-shrink:0;font-weight:600;font-variant-numeric:var(--font-numeric)}.qc-option-text{flex:1;min-width:0}.qc-option-text img{max-width:100%;height:auto}.qc-answer{display:flex;align-items:baseline;gap:var(--s-2);padding-top:var(--s-2);border-top:1px dashed var(--c-border-subtle);font-size:var(--font-md);color:var(--c-success);line-height:1.5;word-break:break-word}.qc-answer-label{flex-shrink:0;font-size:var(--font-xs);color:var(--c-text-muted);font-weight:600}.qc-answer-value{flex:1;font-weight:600}.qc-sub-questions{display:flex;flex-direction:column;gap:var(--s-2)}.qc-sub-question{padding:var(--s-3);background:var(--c-bg-subtle);border-radius:var(--r-sm);border:1px solid var(--c-border-subtle)}.qc-sub-question-title{font-size:var(--font-md);font-weight:600;color:var(--c-text-primary);margin-bottom:var(--s-2);line-height:1.5}.qc-sub-question-options{display:flex;flex-direction:column;gap:4px;margin-bottom:var(--s-2)}.sub-option{display:flex;align-items:flex-start;gap:6px;padding:4px 8px;border-radius:var(--r-sm);font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.5}.sub-option-correct{background:var(--c-success-soft);color:var(--c-success);font-weight:600}.qc-sub-question-answer{padding:var(--s-2) var(--s-3);background:var(--c-success-soft);border-radius:6px;border-left:3px solid var(--c-success);font-size:var(--font-base);font-weight:600;color:var(--c-success)}.sub-answer-item{display:flex;align-items:flex-start;gap:var(--s-2);padding:4px 0}.sub-answer-num{display:inline-flex;align-items:center;justify-content:center;min-width:var(--s-6);height:var(--s-6);background:var(--c-success);color:var(--c-bg-surface);border-radius:50%;font-size:var(--font-sm);font-weight:700;flex-shrink:0;font-variant-numeric:var(--font-numeric)}.sub-answer-text{flex:1;font-size:var(--font-md);font-weight:600;color:var(--c-success);line-height:1.5;padding-top:2px}.table-empty{padding:var(--s-5);text-align:center;color:var(--c-text-muted);background:var(--c-bg-surface);border:1px dashed var(--c-border-subtle);border-radius:var(--r-md)}.table-empty-icon{font-size:40px;margin-bottom:8px;opacity:.5}.table-empty-text{margin:0 0 8px;color:var(--c-text-muted);font-size:var(--font-sm)}.question-pagination-wrapper{display:flex;align-items:center;justify-content:space-between;gap:var(--s-4);flex-wrap:wrap;margin-top:var(--s-4)}.question-pagination{display:flex;align-items:center;gap:var(--s-2)}.question-page-btn{display:inline-flex;align-items:center;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-secondary);font-size:var(--font-md);cursor:pointer;transition:all .2s ease}.question-page-btn:hover:not(:disabled){background:var(--c-bg-hover);border-color:var(--c-border-strong)}.question-page-btn:disabled{opacity:.5;cursor:not-allowed}.page-numbers{display:flex;align-items:center;gap:var(--s-1)}.page-number{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-secondary);font-size:var(--font-md);cursor:pointer;transition:all .2s ease;font-variant-numeric:var(--font-numeric)}.page-number:hover{background:var(--c-bg-hover);border-color:var(--c-border-strong)}.page-number.active{background:var(--c-primary);border-color:var(--c-primary);color:var(--c-bg-surface)}.page-ellipsis{padding:0 var(--s-2);color:var(--c-text-muted)}.page-size-selector{display:flex;align-items:center;gap:var(--s-2);font-size:var(--font-md);color:var(--c-text-secondary)}.page-size-selector select{padding:6px 10px;border:1px solid var(--c-border-base);border-radius:6px;background:var(--c-bg-surface);font-size:var(--font-base);cursor:pointer;color:var(--c-text-primary)}.qc-drop-overlay{position:fixed;top:0;right:0;bottom:0;left:0;z-index:9999;background:#00000073;display:flex;align-items:center;justify-content:center;pointer-events:none;animation:fadeIn .15s ease-out}.qc-drop-overlay-card{background:var(--c-bg-surface);border:2px dashed var(--c-primary);border-radius:var(--r-lg, 12px);padding:var(--s-5);display:flex;flex-direction:column;align-items:center;gap:var(--s-2);box-shadow:var(--shadow-3)}.qc-drop-overlay-icon{font-size:56px;color:var(--c-primary)}.qc-drop-overlay-text{font-size:var(--font-lg, 16px);font-weight:600;color:var(--c-text-primary)}@media(max-width:768px){.qc-toolbar{flex-direction:column;align-items:stretch}.qc-toolbar-actions{justify-content:flex-start}.search-filter-row{flex-direction:column;align-items:stretch}.question-search-box{min-width:0}.question-pagination-wrapper{flex-direction:column;gap:var(--s-4)}.question-pagination{flex-wrap:wrap;justify-content:center}.qc-sub-question{padding:var(--s-3)}.qc-sub-question-title{font-size:var(--font-base)}.sub-option,.qc-option{font-size:var(--font-sm)}}.qc-cards>*{content-visibility:auto;contain-intrinsic-size:180px}", ".question-tool{padding:0}.qt-actions{margin:var(--s-3) 0}.qt-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4);align-items:start}.qt-editor,.qt-preview{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);box-shadow:var(--shadow-1);padding:var(--s-3)}.qt-textarea{width:100%;min-height:480px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);padding:var(--s-3);font-size:var(--font-md);line-height:1.6;resize:vertical;outline:none;background:var(--c-bg-surface);color:var(--c-text-primary)}.qt-textarea:focus{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.qt-preview{max-height:640px;overflow:auto}.qt-empty{text-align:center;color:var(--c-text-muted);padding:var(--s-6) var(--s-3)}.qt-card{border:1px solid var(--c-border-subtle);border-radius:var(--r-sm);padding:var(--s-3);margin-bottom:var(--s-3);background:var(--c-bg-subtle)}.qt-card-error{border-color:var(--c-danger);background:var(--c-danger-soft)}.qt-card-head{display:flex;align-items:center;gap:10px;margin-bottom:var(--s-2)}.qt-title-no{font-weight:700;color:var(--c-text-primary)}.qt-tag{display:inline-flex;align-items:center;padding:var(--s-1) 10px;border-radius:var(--r-full);font-size:var(--font-sm);background:var(--c-bg-hover);color:var(--c-text-primary)}.qt-tag.danger{background:var(--c-danger-soft);color:var(--c-danger)}.qt-tag.success{background:var(--c-success-soft);color:var(--c-success)}.qt-question,.qt-answer{margin:6px 0;font-size:var(--font-md);color:var(--c-text-primary);line-height:1.6}.qt-options{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.qt-error{margin-top:var(--s-2);padding:10px;border-radius:var(--r-sm);background:var(--c-danger-soft);color:var(--c-danger);font-size:var(--font-base)}.label{color:var(--c-text-muted);margin-right:var(--s-1)}.qt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);margin:var(--s-3) 0}.qt-strategy{display:inline-flex;align-items:center;gap:var(--s-2);color:var(--c-text-secondary);font-size:var(--font-base)}.qt-strategy-label{color:var(--c-text-muted)}.qt-radio{display:inline-flex;align-items:center;gap:4px;cursor:pointer}.qt-stats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--s-3)}.qt-stat{display:inline-flex;align-items:center;border-radius:var(--r-full);padding:var(--s-1) 10px;background:var(--c-bg-hover);color:var(--c-text-primary);font-size:var(--font-sm);font-variant-numeric:tabular-nums}.qt-stat.success,.qt-tag.create{background:var(--c-success-soft);color:var(--c-success)}.qt-stat.danger,.qt-tag.error{background:var(--c-danger-soft);color:var(--c-danger)}.qt-stat.warning,.qt-tag.overwrite,.qt-tag.skip{background:var(--c-warning-soft);color:var(--c-warning)}.qt-stat.muted{color:var(--c-text-muted)}.qt-card-warning{border-color:var(--c-warning);background:var(--c-warning-soft)}.question-tool .aah-btn:disabled{cursor:not-allowed;opacity:.55}@media(max-width:960px){.qt-grid{grid-template-columns:1fr}.qt-textarea{min-height:360px}}", ".preview-container{padding:0;background:var(--c-bg-base);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;font-size:var(--font-md);line-height:1.5}.toolbar{display:flex;justify-content:space-between;align-items:center;background:var(--c-bg-surface);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);box-shadow:var(--shadow-2);margin-bottom:var(--s-3);gap:var(--s-3)}.toolbar-left .page-title{margin:0;font-size:var(--font-lg);font-weight:600;color:var(--c-text-primary)}.toolbar-right{display:flex;align-items:center;gap:var(--s-3)}.preview-search-box{position:relative;display:flex;align-items:center}.preview-search-input{width:200px;padding:6px var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-xs);font-size:var(--font-base);outline:none;background:var(--c-bg-surface);color:var(--c-text-primary)}.preview-search-input:focus{border-color:var(--c-primary)}.clear-btn{position:absolute;right:var(--s-1);width:var(--s-5);height:var(--s-5);border:none;background:var(--c-danger);color:var(--c-bg-surface);border-radius:50%;cursor:pointer;font-size:var(--font-sm);display:flex;align-items:center;justify-content:center}.page-size{padding:var(--s-1) var(--s-2);border:1px solid var(--c-border-base);border-radius:var(--r-xs);font-size:var(--font-sm);background:var(--c-bg-surface);color:var(--c-text-primary)}.search-info{background:var(--c-info-soft);color:var(--c-info);padding:var(--s-2) var(--s-3);border-radius:var(--r-xs);margin-bottom:var(--s-3);font-size:var(--font-base)}.preview-questions-container{background:var(--c-bg-surface);border-radius:var(--r-sm);box-shadow:var(--shadow-2);overflow:hidden}.loading{display:flex;align-items:center;justify-content:center;padding:var(--s-10);gap:var(--s-3);color:var(--c-text-muted)}.preview-spinner{width:var(--s-5);height:var(--s-5);border:2px solid var(--c-border-subtle);border-top:2px solid var(--c-primary);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}.empty{text-align:center;padding:var(--s-10) var(--s-5);color:var(--c-text-muted)}.preview-empty-icon{font-size:48px;margin-bottom:var(--s-3)}.empty p{margin:0 0 var(--s-4) 0}.btn-clear{background:var(--c-primary);color:var(--c-bg-surface);border:none;padding:var(--s-2) var(--s-4);border-radius:var(--r-xs);cursor:pointer;font-size:var(--font-base)}.btn-clear:hover{background:var(--c-primary-hover)}.questions-list{display:flex;flex-direction:column}.question-item{border-bottom:1px solid var(--c-border-subtle);padding:var(--s-3)}.question-item:last-child{border-bottom:none}.question-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s-3)}.question-info{display:flex;align-items:center;gap:var(--s-2)}.question-num{background:var(--c-primary);color:var(--c-bg-surface);padding:2px var(--s-2);border-radius:var(--r-md);font-size:var(--font-sm);font-weight:500;min-width:var(--s-6);text-align:center;font-variant-numeric:var(--font-numeric)}.question-type{background:var(--c-bg-subtle);color:var(--c-text-secondary);padding:2px var(--s-2);border-radius:var(--r-md);font-size:var(--font-xs);border:1px solid var(--c-border-subtle)}.question-actions{display:flex;gap:var(--s-1)}.btn-edit,.btn-delete{width:28px;height:28px;border:none;border-radius:var(--r-xs);cursor:pointer;font-size:var(--font-md);display:flex;align-items:center;justify-content:center}.btn-edit{background:var(--c-info-soft);color:var(--c-info)}.btn-edit:hover{background:var(--c-primary-soft)}.btn-delete{background:var(--c-danger-soft);color:var(--c-danger)}.btn-delete:hover{background:var(--c-danger-soft);filter:brightness(.95)}.preview-question-content{line-height:1.6}.preview-question-text{margin-bottom:var(--s-3);color:var(--c-text-primary)}.preview-question-text img{max-width:100%;height:auto;border-radius:var(--r-sm);margin:var(--s-2) 0;background:var(--c-bg-subtle)}.options{margin-bottom:var(--s-3)}.reading-type{background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);border-radius:6px;padding:var(--s-3)}.reading-title{font-weight:600;color:var(--c-text-secondary);margin-bottom:var(--s-2);font-size:var(--font-base)}.preview-sub-questions{display:flex;flex-direction:column;gap:var(--s-2)}.preview-sub-question{background:var(--c-bg-surface);padding:var(--s-2);border-radius:var(--r-xs);border:1px solid var(--c-border-subtle);font-size:var(--font-base)}.sub-num{color:var(--c-primary);font-weight:600;margin-right:var(--s-1);font-variant-numeric:var(--font-numeric)}.sub-type{color:var(--c-text-muted);font-size:var(--font-xs);margin-right:var(--s-2)}.sub-text{color:var(--c-text-secondary);margin-top:var(--s-1);display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.sub-text img{background:var(--c-bg-subtle);border-radius:var(--r-sm)}.more-subs{text-align:center;color:var(--c-text-muted);font-size:var(--font-sm);font-style:italic;padding:var(--s-1)}.complex-type{background:var(--c-warning-soft);color:var(--c-warning);padding:var(--s-2) var(--s-3);border-radius:var(--r-xs);font-size:var(--font-base);border:1px solid var(--c-warning-soft)}.normal-options{display:flex;flex-direction:column;gap:6px}.option{display:flex;align-items:flex-start;gap:var(--s-2);padding:6px var(--s-2);border-radius:var(--r-xs);background:var(--c-bg-subtle);position:relative}.option.correct{background:var(--c-success-soft);border:1px solid var(--c-success-soft)}.option-label{color:var(--c-text-secondary);font-weight:500;min-width:var(--s-5)}.option-text{flex:1;color:var(--c-text-primary)}.option-text img{background:var(--c-bg-subtle);border-radius:var(--r-sm)}.correct-mark{color:var(--c-success);font-weight:700;font-size:var(--font-lg)}.answer{background:var(--c-success-soft);border:1px solid var(--c-success-soft);border-radius:var(--r-xs);padding:var(--s-2) var(--s-3);margin-top:var(--s-2)}.preview-answer-label{color:var(--c-success);font-weight:600;margin-right:var(--s-2)}.preview-answer-list{display:inline-flex;flex-wrap:wrap;gap:var(--s-1)}.preview-answer-item{background:var(--c-success);color:var(--c-bg-surface);padding:2px var(--s-2);border-radius:var(--r-md);font-size:var(--font-sm)}.preview-answer-text{color:var(--c-success);display:inline}.preview-answer-text img{background:var(--c-bg-subtle);border-radius:var(--r-sm)}.no-answer{color:var(--c-text-muted);font-style:italic}.preview-pagination{display:flex;justify-content:center;align-items:center;gap:var(--s-3);padding:var(--s-3);background:var(--c-bg-surface);border-top:1px solid var(--c-border-subtle);margin-top:var(--s-3);border-radius:var(--r-sm);box-shadow:var(--shadow-2);font-variant-numeric:var(--font-numeric)}.preview-page-btn{background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle);color:var(--c-text-secondary);padding:6px var(--s-3);border-radius:var(--r-xs);cursor:pointer;font-size:var(--font-base)}.preview-page-btn:hover:not(:disabled){background:var(--c-bg-hover)}.preview-page-btn:disabled{opacity:.5;cursor:not-allowed}.page-info{display:flex;align-items:center;gap:var(--s-1);color:var(--c-text-secondary);font-size:var(--font-base);font-variant-numeric:var(--font-numeric)}.page-input{width:var(--s-10);text-align:center;border:1px solid var(--c-border-subtle);border-radius:var(--r-xs);padding:2px var(--s-1);font-size:var(--font-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-variant-numeric:var(--font-numeric)}.total-info{color:var(--c-text-muted);font-size:var(--font-sm);font-variant-numeric:var(--font-numeric)}.highlight{background:var(--c-warning-soft);color:var(--c-warning);padding:1px 2px;border-radius:2px}@media(max-width:600px){.toolbar{flex-direction:column;align-items:stretch;gap:var(--s-3)}.toolbar-right{justify-content:space-between}.preview-search-input{width:150px}.question-header{flex-direction:column;align-items:flex-start;gap:var(--s-2)}.preview-pagination{flex-wrap:wrap;gap:var(--s-2)}}", ".log-page{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-4)}.log-header,.log-toolbar{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);flex-wrap:wrap}.log-header h2{margin:0;color:var(--c-text-primary);font-size:var(--font-xl)}.log-header p{margin:4px 0 0;color:var(--c-text-muted);font-size:var(--font-xs)}.log-actions,.log-filter{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.log-list{display:flex;flex-direction:column;gap:var(--s-2);max-height:420px;margin:0;padding:0;list-style:none;overflow:auto}.log-row{display:grid;grid-template-columns:88px auto minmax(0,1fr);align-items:start;gap:var(--s-2);padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-subtle);border-left-width:4px;border-radius:var(--r-sm);background:var(--c-bg-surface)}.log-row-success{border-left-color:var(--c-success)}.log-row-warning{border-left-color:var(--c-warning)}.log-row-error{border-left-color:var(--c-danger)}.log-time{color:var(--c-text-muted);font-size:var(--font-xs);font-variant-numeric:tabular-nums}.log-msg{min-width:0;color:var(--c-text-primary);line-height:1.5;overflow-wrap:anywhere}.log-empty{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-2);border:1px solid var(--c-border-subtle);border-radius:var(--r-md);background:var(--c-bg-surface);color:var(--c-text-muted)}.log-empty-icon{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--r-full);background:var(--c-primary-soft);color:var(--c-primary);font-weight:var(--fw-semibold)}", ".paper-library-container{padding:0;display:flex;flex-direction:column;gap:var(--s-3)}.search-card{display:flex;flex-direction:column;gap:10px}.search-header{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.input-wrap{flex:1;display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--c-bg-base);border-radius:10px;border:1px solid transparent;transition:border-color .2s ease,box-shadow .2s ease}.input-wrap:focus-within{border-color:var(--c-primary-ring);box-shadow:var(--shadow-1)}.input-prefix{font-size:16px}.input-field{flex:1;border:none;background:transparent;font-size:14px;outline:none;color:var(--c-text-primary)}.search-stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.param-table-card{background:var(--c-bg-surface);border:1px solid var(--c-border-subtle);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:8px}.param-table-header,.param-table-row{display:grid;grid-template-columns:180px 1fr 90px;gap:10px;align-items:center}.param-table-header{font-weight:600;color:var(--c-text-secondary);font-size:13px}.param-table-row{padding:6px 0;border-bottom:1px solid var(--c-border-subtle)}.param-table-row:last-child{border-bottom:none}.param-value-group{display:flex;gap:8px;flex-wrap:wrap}.param-type{width:120px}.param-value{flex:1;min-width:160px}.param-code-wrapper{flex:1;min-width:200px;display:flex;flex-direction:column;gap:6px}.param-code{width:100%;min-height:80px}.param-error{color:var(--c-danger);font-size:12px}.papers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--s-3);margin-bottom:8px}.papers-grid .pl-loading{grid-column:1 / -1;padding:24px 0;text-align:center;color:var(--c-text-muted)}.pl-loading{text-align:center;padding:var(--s-4) var(--s-2);color:var(--c-text-muted)}.pl-empty{grid-column:1 / -1;text-align:center;padding:var(--s-8) var(--s-4);background:var(--c-bg-surface);border-radius:var(--r-lg);border:1px dashed var(--c-border-base)}.pl-empty-icon{font-size:40px;margin-bottom:var(--s-2);opacity:.5}.pl-empty-text{margin:0;color:var(--c-text-muted);font-size:var(--font-base)}.pl-info-card{display:flex;gap:var(--s-3);align-items:flex-start}.pl-info-icon{font-size:18px;opacity:.7;flex-shrink:0}.pl-info-text{font-size:var(--font-base);color:var(--c-text-secondary);line-height:1.6}.pl-info-highlight{color:var(--c-warning);margin-left:4px;font-weight:600}.paper-card{cursor:pointer;transition:all .2s cubic-bezier(.25,.1,.25,1);height:100%;display:flex;flex-direction:column}.paper-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.paper-header{display:flex;align-items:flex-start;gap:var(--s-3);margin-bottom:var(--s-3)}.paper-icon{flex-shrink:0;width:44px;height:44px;display:grid;place-items:center;background:var(--c-primary-soft);border-radius:10px;font-size:20px}.paper-info{flex:1;min-width:0}.paper-title{margin:0 0 8px;font-size:16px;font-weight:600;color:var(--c-text-primary);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;line-height:1.4}.paper-meta{display:flex;gap:6px;flex-wrap:wrap}.paper-footer{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:var(--s-3);border-top:1px solid var(--c-border-subtle)}.paper-actions{display:flex;align-items:center;gap:8px}.chevron{color:var(--c-text-muted);font-size:18px;transition:transform .2s ease,color .2s ease}.paper-card:hover .chevron{transform:translate(2px);color:var(--c-primary)}.header-card{display:flex;flex-direction:column;gap:var(--s-3)}.pl-header-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--c-border-subtle)}.header-action-group{display:flex;gap:8px;flex-wrap:wrap}.course-info h2,.chapter-info-header h2{margin:0;font-size:22px;font-weight:700;color:var(--c-text-primary);letter-spacing:-.02em}.course-stats,.chapter-info-header{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:6px}.chapters-list{display:flex;flex-direction:column;gap:var(--s-3)}.chapter-card{cursor:pointer;transition:all .3s cubic-bezier(.25,.1,.25,1)}.chapter-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.chapter-header{display:flex;align-items:center;gap:14px}.chapter-number{width:36px;height:36px;border-radius:10px;background:var(--c-primary);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:700;flex-shrink:0;box-shadow:var(--shadow-2)}.chapter-info{flex:1;min-width:0}.chapter-title{margin:0;font-size:17px;font-weight:600;color:var(--c-text-primary);line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical}.chapter-meta{margin-top:6px}.chapter-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}.pl-questions-container{display:flex;flex-direction:column;gap:var(--s-3)}.pl-question-card{transition:all .2s cubic-bezier(.25,.1,.25,1)}.pl-question-card:hover{transform:translateY(-1px);box-shadow:var(--shadow-3);border-color:var(--c-border-base)}.question-number{display:inline-block;padding:4px 12px;background:var(--c-primary);color:#fff;border-radius:6px;font-size:12px;font-weight:700;margin-bottom:12px;box-shadow:var(--shadow-1)}.question-title{font-size:15px;line-height:1.6;color:var(--c-text-primary);margin-bottom:var(--s-3);word-break:break-word;padding:var(--s-3);background:var(--c-bg-base);border-radius:10px}.question-title img{max-width:100%;height:auto;border-radius:8px;margin:12px 0}.question-options{margin-bottom:16px}.option-item{display:flex;align-items:flex-start;padding:var(--s-2) var(--s-3);margin-bottom:8px;background:var(--c-bg-base);border-radius:10px;transition:all .2s ease;border:1px solid transparent}.option-item:last-child{margin-bottom:0}.option-item:hover{background:var(--c-bg-hover);transform:translate(2px);border-color:var(--c-primary-ring)}.option-item.is-answer{background:var(--c-success-soft);border:1px solid rgba(16,185,129,.35);color:var(--c-text-primary);font-weight:500}.option-item .option-label{flex-shrink:0;font-weight:700;margin-right:10px;min-width:24px;color:var(--c-text-muted)}.option-item.is-answer .option-label{color:var(--c-success)}.option-content{flex:1;line-height:1.6;word-break:break-word}.option-content img{max-width:100%;height:auto;border-radius:6px;margin:8px 0}.question-answer{margin-top:14px;padding-top:12px;border-top:1px solid var(--c-border-subtle)}.answer-divider{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:8px;background:var(--c-success-soft);color:var(--c-success);font-weight:700;font-size:13px}.answer-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.pl-answer-content{padding:12px;background:var(--c-success-soft);border-radius:10px;color:var(--c-text-primary);line-height:1.6;word-break:break-word;border:1px solid rgba(16,185,129,.2);margin-top:10px}.pl-answer-content img{max-width:100%;height:auto;border-radius:6px;margin:8px 0}@media(max-width:768px){.pl-header-actions{flex-direction:column;align-items:flex-start}.papers-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}.paper-footer{flex-direction:column;align-items:flex-start;gap:10px}.chapter-header{align-items:flex-start}}" ].join("\n"), Km = "__aiAskHookedXHRSend", installXHRHook = (e, t) => {
     const a = Object.getOwnPropertyDescriptor(e.prototype, "send"), n = (null == a ? void 0 : a.value) ?? e.prototype.send;
-    if ("function" == typeof (r = n) && true === r[sh]) return false;
+    if ("function" == typeof (r = n) && true === r[Km]) return false;
     var r;
     if ("function" != typeof n) return false;
     if (false === (null == a ? void 0 : a.configurable) && false === a.writable) return false;
-    const s = n, hookedSend = function(e) {
+    const i = n, hookedSend = function(e) {
       return this.addEventListener("readystatechange", (function() {
         t.call(this, this);
-      })), s.call(this, e);
+      })), i.call(this, e);
     };
-    return Object.defineProperty(hookedSend, sh, {
+    return Object.defineProperty(hookedSend, Km, {
       value: true
     }), Object.defineProperty(e.prototype, "send", {
       configurable: false,
@@ -16320,7 +16164,7 @@
     window.console = e.contentWindow.console;
     (W === W.top || [ /\/work\/doHomeWorkNew/i, /selectWorkQuestionYiPiYue/i, /page\/quiz\/stu\/answerQuestion2/i, /page\/active\/stuActiveList/i, /uooconline.com/i, /edu-edu.com/i, /hblearning\/exam\/portal\/exam.jsp/i ].some((e => e.test(location.href))) || ha.some((e => "hook" !== e.type && isRuleMatched(e)))) && ((() => {
       var e;
-      const t = pinia.createPinia(), a = vue.createApp(nh);
+      const t = pinia.createPinia(), a = vue.createApp(Gm);
       a.use(t);
       const n = document.createElement("div"), r = document.createElement("div");
       r.id = "AiAskApp", (e => {
@@ -16332,15 +16176,15 @@
           return false;
         }
       })(window) ? (r.id = "AiAskAppTop", null == (e = window.top) || e.document.body.appendChild(n)) : document.body.append(n);
-      const s = n.attachShadow({
+      const i = n.attachShadow({
         mode: "closed"
       });
-      s.appendChild(r);
+      i.appendChild(r);
       try {
         const e = document.createElement("style");
-        e.textContent = rh, s.appendChild(e);
-      } catch (i) {
-        console.error("\u5e94\u7528\u6837\u5f0f\u8868\u65f6\u51fa\u9519:", i);
+        e.textContent = Vm, i.appendChild(e);
+      } catch (s) {
+        console.error("\u5e94\u7528\u6837\u5f0f\u8868\u65f6\u51fa\u9519:", s);
       }
       a.mount(r);
     })(), parseRule(ha));
