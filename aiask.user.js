@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.6.6
+// @version      2.6.7
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -10758,7 +10758,7 @@
     };
   }, ha = [];
 
-  for (const Wm in ma) ha.push(...ma[Wm]);
+  for (const Qm in ma) ha.push(...ma[Qm]);
 
   const isRuleMatched = e => "function" == typeof e.match ? e.match() : Boolean(e.match), parseRule = async e => {
     await waitUntil((() => void 0 !== W[ne + "app"]));
@@ -16203,9 +16203,9 @@
         }
       }
     }));
-  }, isPageClaimedByNewLine = e => {
+  }, Wm = "data-aiask-line", isPageClaimedByNewLine = e => {
     var t;
-    return "new" === (null == (t = e.documentElement) ? void 0 : t.getAttribute("data-aiask-line"));
+    return "new" === (null == (t = e.documentElement) ? void 0 : t.getAttribute(Wm));
   };
 
   (e => {
@@ -16220,7 +16220,8 @@
     var e;
     (e = document.createElement("iframe")).style.display = "none", document.body.appendChild(e), 
     window.console = e.contentWindow.console;
-    (W === W.top || [ /\/work\/doHomeWorkNew/i, /selectWorkQuestionYiPiYue/i, /page\/quiz\/stu\/answerQuestion2/i, /page\/active\/stuActiveList/i, /uooconline.com/i, /edu-edu.com/i, /hblearning\/exam\/portal\/exam.jsp/i ].some((e => e.test(location.href))) || ha.some((e => "hook" !== e.type && isRuleMatched(e)))) && ((() => {
+    if (W !== W.top && ![ /\/work\/doHomeWorkNew/i, /selectWorkQuestionYiPiYue/i, /page\/quiz\/stu\/answerQuestion2/i, /page\/active\/stuActiveList/i, /uooconline.com/i, /edu-edu.com/i, /hblearning\/exam\/portal\/exam.jsp/i ].some((e => e.test(location.href))) && !ha.some((e => "hook" !== e.type && isRuleMatched(e)))) return;
+    const t = (() => {
       var e;
       const t = pinia.createPinia(), a = vue.createApp(Gm);
       a.use(t);
@@ -16244,8 +16245,30 @@
       } catch (s) {
         console.error("\u5e94\u7528\u6837\u5f0f\u8868\u65f6\u51fa\u9519:", s);
       }
-      a.mount(r);
-    })(), parseRule(ha));
+      return a.mount(r), {
+        app: a,
+        main_root: n
+      };
+    })();
+    ((e, t, a = ("undefined" == typeof MutationObserver ? void 0 : MutationObserver)) => {
+      if (isPageClaimedByNewLine(e)) return t(), () => {};
+      const n = e.documentElement;
+      if (!n || !a) return () => {};
+      let r = false;
+      const i = new a((() => {
+        !r && isPageClaimedByNewLine(e) && (r = true, i.disconnect(), t());
+      }));
+      i.observe(n, {
+        attributes: true,
+        attributeFilter: [ Wm ]
+      });
+    })(document, (() => {
+      try {
+        null == t || t.app.unmount(), null == t || t.main_root.remove();
+      } catch (e) {
+        console.error("\u6536\u8d77\u65e7\u7248\u9762\u677f\u65f6\u51fa\u9519:", e);
+      }
+    })), parseRule(ha);
   };
 
   isPageClaimedByNewLine(document) || (comHook(), ha.filter((e => isRuleMatched(e) && e.hook)).forEach((e => {
