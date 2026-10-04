@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.6.8
+// @version      2.6.9
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -91,6 +91,7 @@
 // @match        *://*.geovisearth.com/*
 // @match        *://*.bgzk-edu.cn/*
 // @match        *://*.cqie.cn/*
+// @match        *://mooc1.ceduacad.ahut.edu.cn/*
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/vue/3.4.27/vue.global.min.js
 // @require      https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/vue-demi/0.14.6/index.iife.js
 // @require      data:application/javascript,%3Bwindow.Vue%3DVue%3B
@@ -214,6 +215,7 @@
 // @connect      geovisearth.com
 // @connect      bgzk-edu.cn
 // @connect      cqie.cn
+// @connect      mooc1.ceduacad.ahut.edu.cn
 // @grant        GM.xmlHttpRequest
 // @grant        GM_deleteValue
 // @grant        GM_getValue
@@ -294,7 +296,7 @@
     } catch (a) {
       console.log(e);
     }
-  }, X = "aah-notice-global-style", Y = `\n#${X} {}\n#aah-notice-container {\n  position: fixed;\n  top: 20px;\n  right: 20px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  z-index: 2147483647;\n  pointer-events: none;\n  width: min(390px, calc(100vw - 32px));\n}\n.aah-notice {\n  display: grid;\n  grid-template-columns: 7px 40px minmax(0, 1fr);\n  align-items: start;\n  width: 100%;\n  min-height: 74px;\n  border: 1px solid rgba(15, 23, 42, 0.1);\n  border-radius: 10px;\n  background: #ffffff;\n  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.22), 0 4px 14px rgba(15, 23, 42, 0.1);\n  color: #111827;\n  font-size: 13px;\n  line-height: 1.5;\n  pointer-events: auto;\n  transform: translateX(0);\n  opacity: 1;\n  animation: aah-notice-enter 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);\n  transition: opacity 0.2s ease, transform 0.2s ease;\n  overflow: hidden;\n}\n.aah-notice-bar {\n  width: 100%;\n  height: 100%;\n  background: var(--aah-notice-accent);\n}\n.aah-notice-icon {\n  width: 28px;\n  height: 28px;\n  border-radius: 50%;\n  margin: 14px 0 0 12px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--aah-notice-soft);\n  color: var(--aah-notice-accent-dark);\n  font-weight: 900;\n  font-size: 15px;\n  line-height: 1;\n}\n.aah-notice-body {\n  min-width: 0;\n  padding: 12px 14px 13px 5px;\n}\n.aah-notice-title {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 5px;\n  color: #0f172a;\n  font-size: 14px;\n  font-weight: 800;\n  line-height: 1.3;\n}\n.aah-notice-type {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 2px 7px;\n  background: var(--aah-notice-soft);\n  color: var(--aah-notice-accent-dark);\n  font-size: 11px;\n  font-weight: 800;\n}\n.aah-notice-content {\n  min-width: 0;\n  color: #475569;\n  overflow-wrap: anywhere;\n}\n.aah-notice-content p {\n  margin: 0 0 6px;\n}\n.aah-notice-content p:last-child {\n  margin-bottom: 0;\n}\n.aah-notice-content strong {\n  color: #0f172a;\n}\n.aah-notice-content a {\n  display: inline-flex;\n  align-items: center;\n  margin-top: 8px;\n  border-radius: 7px;\n  padding: 6px 9px;\n  background: #eff6ff;\n  color: #1d4ed8;\n  font-weight: 800;\n  text-decoration: none;\n}\n.aah-notice-content a:hover {\n  text-decoration: underline;\n}\n.aah-notice-success {\n  --aah-notice-accent: #16a34a;\n  --aah-notice-accent-dark: #15803d;\n  --aah-notice-soft: #dcfce7;\n}\n.aah-notice-error {\n  --aah-notice-accent: #dc2626;\n  --aah-notice-accent-dark: #b91c1c;\n  --aah-notice-soft: #fee2e2;\n}\n.aah-notice-warning {\n  --aah-notice-accent: #f97316;\n  --aah-notice-accent-dark: #c2410c;\n  --aah-notice-soft: #ffedd5;\n}\n.aah-notice-info {\n  --aah-notice-accent: #2563eb;\n  --aah-notice-accent-dark: #1d4ed8;\n  --aah-notice-soft: #dbeafe;\n}\n.aah-notice.hide {\n  opacity: 0;\n  transform: translateX(18px);\n}\n@keyframes aah-notice-enter {\n  from {\n    opacity: 0;\n    transform: translateX(18px);\n  }\n  to {\n    opacity: 1;\n    transform: translateX(0);\n  }\n}`, Z = {
+  }, Y = "aah-notice-global-style", X = `\n#${Y} {}\n#aah-notice-container {\n  position: fixed;\n  top: 20px;\n  right: 20px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  z-index: 2147483647;\n  pointer-events: none;\n  width: min(390px, calc(100vw - 32px));\n}\n.aah-notice {\n  display: grid;\n  grid-template-columns: 7px 40px minmax(0, 1fr);\n  align-items: start;\n  width: 100%;\n  min-height: 74px;\n  border: 1px solid rgba(15, 23, 42, 0.1);\n  border-radius: 10px;\n  background: #ffffff;\n  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.22), 0 4px 14px rgba(15, 23, 42, 0.1);\n  color: #111827;\n  font-size: 13px;\n  line-height: 1.5;\n  pointer-events: auto;\n  transform: translateX(0);\n  opacity: 1;\n  animation: aah-notice-enter 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);\n  transition: opacity 0.2s ease, transform 0.2s ease;\n  overflow: hidden;\n}\n.aah-notice-bar {\n  width: 100%;\n  height: 100%;\n  background: var(--aah-notice-accent);\n}\n.aah-notice-icon {\n  width: 28px;\n  height: 28px;\n  border-radius: 50%;\n  margin: 14px 0 0 12px;\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  background: var(--aah-notice-soft);\n  color: var(--aah-notice-accent-dark);\n  font-weight: 900;\n  font-size: 15px;\n  line-height: 1;\n}\n.aah-notice-body {\n  min-width: 0;\n  padding: 12px 14px 13px 5px;\n}\n.aah-notice-title {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  margin-bottom: 5px;\n  color: #0f172a;\n  font-size: 14px;\n  font-weight: 800;\n  line-height: 1.3;\n}\n.aah-notice-type {\n  display: inline-flex;\n  align-items: center;\n  border-radius: 999px;\n  padding: 2px 7px;\n  background: var(--aah-notice-soft);\n  color: var(--aah-notice-accent-dark);\n  font-size: 11px;\n  font-weight: 800;\n}\n.aah-notice-content {\n  min-width: 0;\n  color: #475569;\n  overflow-wrap: anywhere;\n}\n.aah-notice-content p {\n  margin: 0 0 6px;\n}\n.aah-notice-content p:last-child {\n  margin-bottom: 0;\n}\n.aah-notice-content strong {\n  color: #0f172a;\n}\n.aah-notice-content a {\n  display: inline-flex;\n  align-items: center;\n  margin-top: 8px;\n  border-radius: 7px;\n  padding: 6px 9px;\n  background: #eff6ff;\n  color: #1d4ed8;\n  font-weight: 800;\n  text-decoration: none;\n}\n.aah-notice-content a:hover {\n  text-decoration: underline;\n}\n.aah-notice-success {\n  --aah-notice-accent: #16a34a;\n  --aah-notice-accent-dark: #15803d;\n  --aah-notice-soft: #dcfce7;\n}\n.aah-notice-error {\n  --aah-notice-accent: #dc2626;\n  --aah-notice-accent-dark: #b91c1c;\n  --aah-notice-soft: #fee2e2;\n}\n.aah-notice-warning {\n  --aah-notice-accent: #f97316;\n  --aah-notice-accent-dark: #c2410c;\n  --aah-notice-soft: #ffedd5;\n}\n.aah-notice-info {\n  --aah-notice-accent: #2563eb;\n  --aah-notice-accent-dark: #1d4ed8;\n  --aah-notice-soft: #dbeafe;\n}\n.aah-notice.hide {\n  opacity: 0;\n  transform: translateX(18px);\n}\n@keyframes aah-notice-enter {\n  from {\n    opacity: 0;\n    transform: translateX(18px);\n  }\n  to {\n    opacity: 1;\n    transform: translateX(0);\n  }\n}`, Z = {
     success: "\u2713",
     error: "!",
     warning: "!",
@@ -313,9 +315,9 @@
 
   function msg(e, t = "info") {
     try {
-      if (!document.getElementById(X)) {
+      if (!document.getElementById(Y)) {
         const e = document.createElement("style");
-        e.id = X, e.textContent = Y, document.head.appendChild(e);
+        e.id = Y, e.textContent = X, document.head.appendChild(e);
       }
       const a = "aah-notice-container";
       let n = document.getElementById(a);
@@ -3586,11 +3588,11 @@
     return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
   }
 
-  var Xe, Ye;
+  var Ye, Xe;
 
   var Ze = function() {
-    if (Ye) return Xe;
-    Ye = 1;
+    if (Xe) return Ye;
+    Xe = 1;
     var e = {
       parse: function(t) {
         var a = e._bin, n = new Uint8Array(t), r = 0;
@@ -4769,7 +4771,7 @@
         }
       }
       a.x = u, a.y = d, a.nStems = s, a.haveWidth = o, a.width = l, a.open = c;
-    }, Xe = e;
+    }, Ye = e;
   }();
 
   const et = getDefaultExportFromCjs(Ze), decode = async () => {
@@ -4835,7 +4837,7 @@
     } catch {
       return "";
     }
-  }, redirectCurrentChaoxingExamOutLink = () => {
+  }, getChaoxingReviewLayout = e => e.querySelector(".TiMu .newAnswerBx") ? "modern" : e.querySelector(".TiMu .Py_answer") ? "classic" : null, redirectCurrentChaoxingExamOutLink = () => {
     ((e, t) => {
       const a = getChaoxingExamOutLinkTarget(e);
       !!a && t(a);
@@ -4958,16 +4960,84 @@
       } ], Je.setPaper(t.hash, t);
     }
   }, {
+    type: "save",
+    name: "\u5b66\u4e60\u901a\u7ecf\u5178\u4f5c\u4e1a\u6536\u5f55",
+    match: () => /\/work\/selectWorkQuestionYiPiYue$/.test(location.pathname) && "classic" === getChaoxingReviewLayout(document),
+    question: {
+      html: ".TiMu",
+      question: ".Zy_TItle > .clearfix > div:first-child",
+      options: "ul.Zy_ulTop > li > a.fl",
+      type: ".newZy_TItle",
+      workType: "zj",
+      pageType: "cx"
+    },
+    answerHook: e => {
+      const t = ((e, t) => {
+        var a, n, r, i, s;
+        let o = "", l = e.previousElementSibling;
+        for (let b = 200; l && b > 0; b--) {
+          if (l.matches(".Cy_TItle1")) {
+            o = (null == (a = l.textContent) ? void 0 : a.trim()) || "";
+            break;
+          }
+          l = l.previousElementSibling;
+        }
+        const c = null == (n = o.match(/^[\u4e00\u4e8c\u4e09\u56db\u4e94\u516d\u4e03\u516b\u4e5d\u5341\d]+[.\u3001\uff0e]\s*(\u5355\u9009\u9898|\u591a\u9009\u9898|\u5224\u65ad\u9898)/)) ? void 0 : n[1];
+        if (!c) return null;
+        const p = e.querySelector(".Zy_TItle > .clearfix > div:first-child"), u = p ? cleanQuestionTitle(t(p.innerHTML)) : "";
+        if (!u) return null;
+        const d = Array.from(e.querySelectorAll(".Py_answer > span")).map((e => {
+          var t;
+          return (null == (t = e.textContent) ? void 0 : t.trim()) || "";
+        })).filter((e => /^\u6b63\u786e\u7b54\u6848\s*[:\uff1a]/.test(e)));
+        if (1 !== d.length) return null;
+        const m = d[0].replace(/^\u6b63\u786e\u7b54\u6848\s*[:\uff1a]\s*/, "").trim();
+        if ("\u5224\u65ad\u9898" === c) return /^(\u6b63\u786e|\u9519\u8bef|\u5bf9|\u9519|\u221a|\xd7)$/.test(m) ? {
+          question: u,
+          options: [],
+          type: "3",
+          answer: judgeAnswer(m)
+        } : null;
+        const h = Array.from(e.querySelectorAll("ul.Zy_ulTop > li"));
+        if (h.length < 2 || h.length > 26) return null;
+        const f = [], g = new Map;
+        for (const b of h) {
+          const e = null == (s = null == (i = null == (r = b.querySelector("i.fl")) ? void 0 : r.textContent) ? void 0 : i.trim().match(/^([A-Z])[\u3001.\uff0e]$/)) ? void 0 : s[1], a = b.querySelector("a.fl"), n = a ? t(a.innerHTML).trim() : "";
+          if (!e || !n || g.has(e)) return null;
+          f.push(n), g.set(e, n);
+        }
+        if (!/^[A-Z](?:[\s,\uff0c\u3001;\uff1b]*[A-Z])*$/.test(m)) return null;
+        const v = m.replace(/[\s,\uff0c\u3001;\uff1b]/g, "").split("");
+        if ("\u5355\u9009\u9898" === c && 1 !== v.length || new Set(v).size !== v.length) return null;
+        const y = [];
+        for (const b of v) {
+          const e = g.get(b);
+          if (!e) return null;
+          y.push(e);
+        }
+        return {
+          question: u,
+          options: f,
+          type: "\u5355\u9009\u9898" === c ? "0" : "1",
+          answer: y
+        };
+      })(e.html, removeHtml);
+      return t ? {
+        ...e,
+        ...t
+      } : null;
+    }
+  }, {
     type: "hook",
     name: "hook",
-    match: location.href.includes("work/selectWorkQuestionYiPiYue") && location.href.includes("mooc2=0"),
+    match: () => location.href.includes("work/selectWorkQuestionYiPiYue") && location.href.includes("mooc2=0") && "classic" !== getChaoxingReviewLayout(document),
     main: e => {
       location.href.includes("mooc2=0") ? W.location.href = location.href.replace("mooc2=0", "mooc2=1") : W.location.href = location.href + "&mooc2=1";
     }
   }, {
     type: "save",
     name: "\u5b66\u4e60\u901a\u4f5c\u4e1a\u6536\u5f55\u65b0",
-    match: () => location.href.includes("work/selectWorkQuestionYiPiYue") && location.href.includes("mooc2=1"),
+    match: () => location.href.includes("work/selectWorkQuestionYiPiYue") && "modern" === getChaoxingReviewLayout(document),
     question: {
       html: ".TiMu",
       question: ".Zy_TItle .clearfix",
@@ -9695,7 +9765,7 @@
       }
       return e;
     }
-  } ], Xt = [ {
+  } ], Yt = [ {
     type: "hook",
     name: "hook",
     match: () => location.host.includes("yxbyun.com") && !location.host.includes("yxb4student"),
@@ -9852,7 +9922,7 @@
       }
       return true;
     }
-  } ], Yt = [ {
+  } ], Xt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("wdjycj.com") || location.host.includes("iwdjy.com"),
@@ -10728,7 +10798,7 @@
     qingshu: ut,
     sclecb: bt,
     uooc: dt,
-    wdjycj: Yt,
+    wdjycj: Xt,
     wencai: qt,
     whut: Zt,
     wx168: Et,
@@ -10737,7 +10807,7 @@
     ynou: St,
     ytccr: ht,
     yunmuxueyuan: Ve,
-    yxbyun: Xt,
+    yxbyun: Yt,
     yxlearning: _t,
     zhihuishu: at,
     zhijiaoyun: lt
@@ -12424,7 +12494,7 @@
   }, null, -1), Qa = [ Wa ], Ja = {
     key: 0,
     class: "aah-page-footer"
-  }, Xa = vue.defineComponent({
+  }, Ya = vue.defineComponent({
     __name: "PageContainer",
     props: {
       loading: {
@@ -12446,7 +12516,7 @@
       } ])
     }, [ vue.renderSlot(e.$slots, "default"), e.loading ? (vue.openBlock(), vue.createElementBlock("div", Ka, Qa)) : vue.createCommentVNode("", true) ], 2), e.$slots.footer ? (vue.openBlock(), 
     vue.createElementBlock("footer", Ja, [ vue.renderSlot(e.$slots, "footer") ])) : vue.createCommentVNode("", true) ], 2))
-  }), Ya = {
+  }), Xa = {
     class: "segmented",
     role: "tablist"
   }, Za = [ "aria-selected", "onClick" ], en = vue.defineComponent({
@@ -12456,7 +12526,7 @@
       modelValue: {}
     },
     emits: [ "update:modelValue" ],
-    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Ya, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.segments, (t => (vue.openBlock(), 
+    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Xa, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.segments, (t => (vue.openBlock(), 
     vue.createElementBlock("button", {
       key: t.key,
       type: "button",
@@ -12659,7 +12729,7 @@
     class: "ai-config-field"
   }, Kn = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), Wn = [ "value" ], Qn = {
     class: "ai-wizard-actions"
-  }, Jn = [ "disabled" ], Xn = [ "disabled" ], Yn = {
+  }, Jn = [ "disabled" ], Yn = [ "disabled" ], Xn = {
     key: 0,
     class: "aah-alert aah-alert-info"
   }, Zn = {
@@ -12744,10 +12814,10 @@
   }, Kr = vue.createElementVNode("span", null, "\u6a21\u578b", -1), Wr = [ "value" ], Qr = [ "value" ], Jr = {
     key: 0,
     class: "ai-config-field-help"
-  }, Xr = {
+  }, Yr = {
     key: 1,
     class: "ai-config-field-help"
-  }, Yr = {
+  }, Xr = {
     class: "native-checkbox"
   }, Zr = [ "checked" ], ei = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), ti = {
     key: 0,
@@ -12931,7 +13001,7 @@
           type: "button",
           disabled: !z.value,
           onClick: finishWizard
-        }, " \u5b8c\u6210 ", 8, Xn) ]), messageFor(g.value) ? (vue.openBlock(), vue.createElementBlock("div", Yn, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, " \u5b8c\u6210 ", 8, Yn) ]), messageFor(g.value) ? (vue.openBlock(), vue.createElementBlock("div", Xn, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(g.value)), 1) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), 
@@ -13030,7 +13100,7 @@
           class: "ai-config-inline-action",
           onClick: useSuggestedVisionModel
         }, " \u5207\u6362\u5230 " + vue.toDisplayString(O.value.suggestModelId), 1) ])) : "unsupported" === (null == (B = O.value) ? void 0 : B.state) ? (vue.openBlock(), 
-        vue.createElementBlock("p", Xr, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("label", Yr, [ vue.createElementVNode("input", {
+        vue.createElementBlock("p", Yr, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("label", Xr, [ vue.createElementVNode("input", {
           type: "checkbox",
           checked: H.value.enabled,
           onChange: toggleEnabled
@@ -13239,7 +13309,7 @@
         msg("\u914d\u7f6e\u4fee\u6539\u6210\u529f", "success"), t.app, t.setConfig(t.app);
       })), vue.onMounted((() => {
         t.activeSettingSection && (o.value = t.activeSettingSection, t.setActiveSettingSection(""));
-      })), (e, t) => (vue.openBlock(), vue.createBlock(Xa, {
+      })), (e, t) => (vue.openBlock(), vue.createBlock(Ya, {
         class: "settings-page"
       }, {
         default: vue.withCtx((() => [ vue.createElementVNode("div", {
@@ -13302,9 +13372,9 @@
     class: "ask-toolbar__primary"
   }, Ji = {
     class: "ask-toolbar__progress"
-  }, Xi = {
-    class: "ask-progress-text"
   }, Yi = {
+    class: "ask-progress-text"
+  }, Xi = {
     class: "ask-progress-bar"
   }, Zi = {
     class: "ask-toolbar__actions"
@@ -13404,10 +13474,10 @@
     class: "ai-dot"
   }, null, -1), Qs = vue.createElementVNode("span", {
     class: "ai-dot"
-  }, null, -1), Js = [ "innerHTML" ], Xs = {
+  }, null, -1), Js = [ "innerHTML" ], Ys = {
     key: 1,
     class: "ai-stream-placeholder"
-  }, Ys = {
+  }, Xs = {
     key: 5,
     class: "ask-empty"
   }, Zs = vue.createElementVNode("p", null, "\u6682\u65e0\u9898\u76ee\u6570\u636e", -1), eo = {
@@ -13487,7 +13557,7 @@
         const e = t.rule;
         e && (e.optionDelay = t.optionDelay);
       };
-      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
         default: vue.withCtx((() => [ vue.createElementVNode("div", Ki, [ vue.unref(t).current ? (vue.openBlock(), vue.createElementBlock("div", Wi, [ vue.createElementVNode("div", Qi, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary",
           type: "button",
@@ -13496,7 +13566,7 @@
           class: "aah-btn",
           type: "button",
           onClick: p[1] || (p[1] = e => vue.unref(t).restart())
-        }, "\u91cd\u65b0\u7b54\u9898") ]), vue.createElementVNode("div", Ji, [ vue.createElementVNode("span", Xi, vue.toDisplayString(vue.unref(t).questionInx + 1) + " / " + vue.toDisplayString(vue.unref(t).questionList.length), 1), vue.createElementVNode("div", Yi, [ vue.createElementVNode("i", {
+        }, "\u91cd\u65b0\u7b54\u9898") ]), vue.createElementVNode("div", Ji, [ vue.createElementVNode("span", Yi, vue.toDisplayString(vue.unref(t).questionInx + 1) + " / " + vue.toDisplayString(vue.unref(t).questionList.length), 1), vue.createElementVNode("div", Xi, [ vue.createElementVNode("i", {
           style: vue.normalizeStyle({
             width: vue.unref(t).questionList.length ? (vue.unref(t).questionInx + 1) / vue.unref(t).questionList.length * 100 + "%" : "0%"
           })
@@ -13618,8 +13688,8 @@
           key: 0,
           innerHTML: vue.unref(t).currentAiMd,
           class: "ai-answer-markdown"
-        }, null, 8, Js)) : (vue.openBlock(), vue.createElementBlock("div", Xs, " AI \u6b63\u5728\u601d\u8003\uff0c\u6d41\u5f0f\u5185\u5bb9\u4f1a\u5b9e\u65f6\u586b\u5145\uff0c\u8bf7\u7a0d\u5019... ")) ])) : vue.createCommentVNode("", true) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("div", Ys, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, Js)) : (vue.openBlock(), vue.createElementBlock("div", Ys, " AI \u6b63\u5728\u601d\u8003\uff0c\u6d41\u5f0f\u5185\u5bb9\u4f1a\u5b9e\u65f6\u586b\u5145\uff0c\u8bf7\u7a0d\u5019... ")) ])) : vue.createCommentVNode("", true) ]) ])) : vue.createCommentVNode("", true), vue.unref(t).current ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("div", Xs, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-edit",
           class: "ask-empty__icon"
         }), Zs ])) ]), g.value ? (vue.openBlock(), vue.createElementBlock("div", {
@@ -13718,7 +13788,7 @@
     class: "form-row"
   }, Wo = vue.createElementVNode("label", null, "\u7b54\u6848", -1), Qo = {
     class: "option-list"
-  }, Jo = [ "onUpdate:modelValue" ], Xo = [ "onClick" ], Yo = vue.defineComponent({
+  }, Jo = [ "onUpdate:modelValue" ], Yo = [ "onClick" ], Xo = vue.defineComponent({
     __name: "QuestionEdit",
     props: {
       ques: {},
@@ -13801,7 +13871,7 @@
           onClick: e => 0 !== a ? handleDelete(a) : handleAdd()
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: 0 !== a ? "mdi:minus" : "mdi:plus"
-        }, null, 8, [ "icon" ]) ], 8, Xo) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
+        }, null, 8, [ "icon" ]) ], 8, Yo) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
           class: "modal-footer"
         }, [ vue.createElementVNode("button", {
           class: "aah-btn",
@@ -14034,9 +14104,9 @@
   }, Ql = {
     key: 1,
     class: "filter-chips"
-  }, Jl = [ "onClick" ], Xl = {
+  }, Jl = [ "onClick" ], Yl = {
     class: "question-table-wrapper"
-  }, Yl = {
+  }, Xl = {
     key: 0,
     class: "table-empty"
   }, Zl = {
@@ -14263,7 +14333,7 @@
       }, handlePageChange = e => {
         A.value = e;
       }, B = vue.computed((() => !!S.value || !!U.value));
-      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
         default: vue.withCtx((() => [ vue.createElementVNode("div", Ul, [ Hl, vue.createElementVNode("div", Pl, [ vue.createElementVNode("div", Ll, [ vue.createElementVNode("span", jl, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:database-outline"
         }), vue.createTextVNode(" \u5df2\u7f13\u5b58 "), vue.createElementVNode("strong", null, vue.toDisplayString(vue.unref(M).saveQuestionData.length), 1), vue.createTextVNode(" \u9898 ") ]), B.value ? (vue.openBlock(), 
@@ -14335,8 +14405,8 @@
           type: "button",
           class: vue.normalizeClass([ "aah-tag", U.value === e.value ? "aah-tag-primary" : "" ]),
           onClick: t => U.value = e.value
-        }, vue.toDisplayString(e.label), 11, Jl))), 64)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Xl, [ 0 === D.value.length ? (vue.openBlock(), 
-        vue.createElementBlock("div", Yl, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, vue.toDisplayString(e.label), 11, Jl))), 64)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Yl, [ 0 === D.value.length ? (vue.openBlock(), 
+        vue.createElementBlock("div", Xl, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-edit",
           class: "table-empty-icon"
         }), vue.createElementVNode("div", Zl, vue.toDisplayString(B.value ? "\u6ca1\u6709\u627e\u5230\u5339\u914d\u7684\u9898\u76ee" : "\u5f53\u524d\u9875\u6682\u65e0\u6570\u636e"), 1), B.value ? (vue.openBlock(), 
@@ -14423,7 +14493,7 @@
         }, [ P.value ? (vue.openBlock(), vue.createElementBlock("div", jc, [ vue.createElementVNode("div", $c, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:cloud-upload-outline",
           class: "qc-drop-overlay-icon"
-        }), zc ]) ])) : vue.createCommentVNode("", true) ])) ]), vue.createVNode(Yo, {
+        }), zc ]) ])) : vue.createCommentVNode("", true) ])) ]), vue.createVNode(Xo, {
           visible: a.value,
           ques: t.value,
           onHandleClose: handleEditClose
@@ -14458,12 +14528,12 @@
     class: "search-info"
   }, Jc = {
     class: "preview-questions-container"
-  }, Xc = {
+  }, Yc = {
     key: 0,
     class: "loading"
-  }, Yc = vue.createElementVNode("div", {
+  }, Xc = vue.createElementVNode("div", {
     class: "preview-spinner"
-  }, null, -1), Zc = vue.createElementVNode("span", null, "\u641c\u7d22\u4e2d...", -1), ep = [ Yc, Zc ], tp = {
+  }, null, -1), Zc = vue.createElementVNode("span", null, "\u641c\u7d22\u4e2d...", -1), ep = [ Xc, Zc ], tp = {
     key: 1,
     class: "empty"
   }, ap = {
@@ -14577,8 +14647,8 @@
       }, handleReadingClose = () => {
         H.value = false;
       };
-      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Oc, [ vue.createVNode(Yo, {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", Oc, [ vue.createVNode(Xo, {
           visible: E.value,
           ques: I.value,
           onHandleClose: handleClose
@@ -14606,7 +14676,7 @@
           onChange: p[3] || (p[3] = e => g.value = 1),
           class: "page-size"
         }, Wc, 544), [ [ vue.vModelSelect, k.value ] ]) ]) ]), o.value ? (vue.openBlock(), vue.createElementBlock("div", Qc, [ vue.createTextVNode(" \u627e\u5230 "), vue.createElementVNode("strong", null, vue.toDisplayString(t.value.length), 1), vue.createTextVNode(" \u9053\u76f8\u5173\u9898\u76ee ") ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Jc, [ a.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Xc, ep)) : 0 === S.value.length ? (vue.openBlock(), vue.createElementBlock("div", tp, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        vue.createElementBlock("div", Yc, ep)) : 0 === S.value.length ? (vue.openBlock(), vue.createElementBlock("div", tp, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-edit",
           class: "preview-empty-icon"
         }), vue.createElementVNode("p", null, vue.toDisplayString(o.value ? "\u6ca1\u6709\u627e\u5230\u5339\u914d\u7684\u9898\u76ee" : "\u6682\u65e0\u9898\u76ee\u6570\u636e"), 1), o.value ? (vue.openBlock(), 
@@ -14740,7 +14810,7 @@
         }), a = URL.createObjectURL(e), n = document.createElement("a");
         n.href = a, n.download = `aiask-logs-${Date.now()}.json`, n.click(), URL.revokeObjectURL(a);
       };
-      return (e, p) => (vue.openBlock(), vue.createBlock(Xa, {
+      return (e, p) => (vue.openBlock(), vue.createBlock(Ya, {
         "no-padding": true
       }, {
         default: vue.withCtx((() => [ vue.createElementVNode("div", zp, [ vue.createElementVNode("header", Mp, [ vue.createElementVNode("div", null, [ Op, vue.createElementVNode("p", null, "\u5171 " + vue.toDisplayString(f.value) + " \u6761\u8bb0\u5f55\uff0c\u5f53\u524d\u7b5b\u9009\uff1a" + vue.toDisplayString(u.value), 1) ]), vue.createElementVNode("div", Fp, [ vue.createElementVNode("button", {
@@ -14766,9 +14836,9 @@
     }
   }), Jp = {
     class: "ai-workbench"
-  }, Xp = {
-    class: "ai-status-panel"
   }, Yp = {
+    class: "ai-status-panel"
+  }, Xp = {
     class: "ai-status-main"
   }, Zp = {
     class: "aah-card ai-input-panel"
@@ -14865,9 +14935,9 @@
   }, "\u672a\u5339\u914d\u5230\u7ed3\u679c\uff0c\u8bd5\u8bd5\u4f18\u5316\u9898\u5e72\u6216\u8c03\u6574\u9898\u578b", -1), Ju = {
     key: 5,
     class: "ai-empty"
-  }, Xu = vue.createElementVNode("p", {
+  }, Yu = vue.createElementVNode("p", {
     class: "ai-empty-text"
-  }, "\u8f93\u5165\u9898\u5e72\u5e76\u70b9\u51fb\u641c\u7d22\uff0c\u5373\u53ef\u5339\u914d\u5b98\u65b9\u9898\u5e93", -1), Yu = {
+  }, "\u8f93\u5165\u9898\u5e72\u5e76\u70b9\u51fb\u641c\u7d22\uff0c\u5373\u53ef\u5339\u914d\u5b98\u65b9\u9898\u5e93", -1), Xu = {
     key: 0,
     class: "ai-service-details"
   }, Zu = vue.createElementVNode("summary", null, "\u670d\u52a1\u8bf4\u660e", -1), ed = [ "innerHTML" ], td = vue.defineComponent({
@@ -15033,8 +15103,8 @@
         value: "2",
         key: "ask"
       } ];
-      return (e, o) => (vue.openBlock(), vue.createBlock(Xa, null, {
-        default: vue.withCtx((() => [ vue.createElementVNode("div", Jp, [ vue.createElementVNode("section", Xp, [ vue.createElementVNode("div", Yp, [ vue.createElementVNode("span", {
+      return (e, o) => (vue.openBlock(), vue.createBlock(Ya, null, {
+        default: vue.withCtx((() => [ vue.createElementVNode("div", Jp, [ vue.createElementVNode("section", Yp, [ vue.createElementVNode("div", Xp, [ vue.createElementVNode("span", {
           class: vue.normalizeClass([ "aah-tag", "success" === D.value.tone ? "aah-tag-success" : "aah-tag-warning" ])
         }, vue.toDisplayString(D.value.title), 3), vue.createElementVNode("strong", null, vue.toDisplayString(D.value.model), 1), vue.createElementVNode("p", null, vue.toDisplayString(D.value.desc), 1) ]), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
@@ -15150,10 +15220,10 @@
         vue.createElementBlock("div", Ju, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:file-document-outline",
           class: "ai-empty-icon"
-        }), Xu ])) : (vue.openBlock(), vue.createElementBlock("div", Wu, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), Yu ])) : (vue.openBlock(), vue.createElementBlock("div", Wu, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:magnify",
           class: "ai-empty-icon"
-        }), Qu ])) ], 2)) ]), "1" === g.value ? (vue.openBlock(), vue.createElementBlock("details", Yu, [ Zu, vue.createElementVNode("div", {
+        }), Qu ])) ], 2)) ]), "1" === g.value ? (vue.openBlock(), vue.createElementBlock("details", Xu, [ Zu, vue.createElementVNode("div", {
           class: "copyright-content",
           innerHTML: vue.unref(createSafeMarkdownHtml)(B.value)
         }, null, 8, ed) ])) : vue.createCommentVNode("", true) ]) ])),
@@ -15280,7 +15350,7 @@
       };
       return vue.onMounted((() => {
         y.value && t.fetchUserInfo();
-      })), (e, p) => (vue.openBlock(), vue.createBlock(Xa, null, {
+      })), (e, p) => (vue.openBlock(), vue.createBlock(Ya, null, {
         default: vue.withCtx((() => [ vue.createElementVNode("div", rd, [ y.value ? (vue.openBlock(), vue.createElementBlock("div", xd, [ vue.createElementVNode("div", kd, [ vue.createElementVNode("div", qd, [ vue.createElementVNode("div", _d, [ vue.createElementVNode("div", Ad, [ vue.unref(t).avatar ? (vue.openBlock(), 
         vue.createElementBlock("img", {
           key: 0,
@@ -15542,7 +15612,7 @@
     if (/^[A-Z]+$/.test(t)) return Array.from(t);
     const a = t.split(/[\s|,\uff0c\u3001;\uff1b]+/).map((e => e.trim())).filter(Boolean);
     return a.every((e => /^[A-Z]$/.test(e))) ? a : [];
-  }, hasBlankPlaceholder = e => countBlankPlaceholders(e) > 0, countBlankPlaceholders = e => Array.from(e.matchAll(/\uff08\s*\uff09|\(\s*\)|_{2,}|-{2,}|\[\s*\]/g)).length, normalizeSpaces = e => e.replace(/\s+/g, " ").trim(), isChoiceType = e => "0" === e || "1" === e, normalizeImportText = e => e.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim(), Jd = "ques1_", Xd = "AiAsk_ques1_", buildQuestionImportPlan = (e, t, a) => {
+  }, hasBlankPlaceholder = e => countBlankPlaceholders(e) > 0, countBlankPlaceholders = e => Array.from(e.matchAll(/\uff08\s*\uff09|\(\s*\)|_{2,}|-{2,}|\[\s*\]/g)).length, normalizeSpaces = e => e.replace(/\s+/g, " ").trim(), isChoiceType = e => "0" === e || "1" === e, normalizeImportText = e => e.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim(), Jd = "ques1_", Yd = "AiAsk_ques1_", buildQuestionImportPlan = (e, t, a) => {
     const n = new Set(t.map(getHashFromCacheKey).filter(Boolean)), r = {
       total: e.length,
       valid: 0,
@@ -15586,7 +15656,7 @@
       items: i,
       stats: r
     };
-  }, getHashFromCacheKey = e => e.startsWith(Xd) ? e.slice(12) : e.startsWith(Jd) ? e.slice(6) : "", Yd = {
+  }, getHashFromCacheKey = e => e.startsWith(Yd) ? e.slice(12) : e.startsWith(Jd) ? e.slice(6) : "", Xd = {
     class: "question-tool"
   }, Zd = vue.createElementVNode("div", {
     class: "info-banner"
@@ -15723,7 +15793,7 @@
         const a = e.stats;
         msg(`\u5bfc\u5165\u5b8c\u6210\uff1a\u65b0\u589e ${a.create} \u9898\uff0c\u8986\u76d6 ${a.overwrite} \u9898\uff0c\u8df3\u8fc7 ${a.skip} \u9898\uff0c\u9519\u8bef ${a.error} \u9898`, "success");
       };
-      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", Yd, [ Zd, vue.createElementVNode("div", em, [ vue.createElementVNode("div", tm, [ am, vue.createElementVNode("label", nm, [ vue.withDirectives(vue.createElementVNode("input", {
+      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", Xd, [ Zd, vue.createElementVNode("div", em, [ vue.createElementVNode("div", tm, [ am, vue.createElementVNode("label", nm, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": a[0] || (a[0] = e => u.value = e),
         type: "radio",
         value: "overwrite"
