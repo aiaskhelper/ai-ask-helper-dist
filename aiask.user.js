@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.7.5
+// @version      2.7.6
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学、UMU互动平台】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -3270,7 +3270,7 @@
           "timeout" === e && this.score("icodef", -1), n({
             form: "\u4e00\u4e4b\u9898\u5e93",
             answer: "",
-            msg: e,
+            msg: e instanceof Error ? e.message : "\u8bf7\u6c42\u5931\u8d25",
             duration: 5e3
           });
         }));
@@ -7603,36 +7603,44 @@
     answerHook: e => {
       var t, n, a;
       const r = O(e.html).attr("queid"), i = e.html._ms_context_.el.questions.find((e => e.id === r));
-      i.questionTypeName.includes("\u5224\u65ad") && (i.questionTypeName = "\u5224\u65ad\u9898"), 
-      e.type = typeMatch(i.questionTypeName), e.question = removeHtml(i.stem);
-      const s = ((null == (t = i.answerArea) ? void 0 : t.optionList) || []).slice().sort(((e, t) => e.sequence - t.sequence));
-      e.options = s.map((e => removeHtml(e.content)));
-      if (!!!((null == (n = i.answer) ? void 0 : n.ans) || Array.isArray(null == (a = i.answer) ? void 0 : a.ansL) && i.answer.ansL.length) && 0 === i.answerScore) return;
-      const o = s.filter((e => e.isTrue)).map((e => removeHtml(e.content))), l = ((e, t, n, a) => {
-        const r = t || {}, i = r.ans || (Array.isArray(r.ansL) ? r.ansL.join("") : "");
+      e.type = typeMatch(i.questionTypeName.includes("\u5224\u65ad") ? "\u5224\u65ad\u9898" : i.questionTypeName), 
+      e.question = removeHtml(i.stem);
+      const s = (null == (t = i.answerArea) ? void 0 : t.optionList) || [], o = "0" === e.type || "1" === e.type;
+      if (o) {
+        const t = O(e.html).find("dd > span").map(((e, t) => O(t).text().trim())).get();
+        if (e.options.length < 2 || e.options.length !== s.length || t.length !== e.options.length || t.some(((e, t) => e !== String.fromCharCode(65 + t))) || e.options.some((e => !e.trim()))) return null;
+      }
+      o || (e.options = s.map((e => removeHtml(e.content))));
+      if (!!!((null == (n = i.answer) ? void 0 : n.ans) || Array.isArray(null == (a = i.answer) ? void 0 : a.ansL) && i.answer.ansL.length) && (o || 0 === i.answerScore)) return null;
+      const l = ((e, t, n) => {
+        const a = t || {}, r = a.ans || (Array.isArray(a.ansL) ? a.ansL.join("") : "");
         if ("3" === e) return {
-          answer: judgeAnswer(String(i)),
+          answer: judgeAnswer(String(r)),
           options: []
         };
         if ("0" === e || "1" === e) {
-          if (i) {
-            const e = String(i).split("").map((e => n[e.charCodeAt(0) - 65])).filter((e => void 0 !== e));
-            if (e.length > 0) return {
-              answer: e,
+          if (r) {
+            const t = String(r).split(""), a = t.map((e => n[e.charCodeAt(0) - 65]));
+            return !/^[A-Z]+$/.test(String(r)) || new Set(t).size !== t.length || "0" === e && 1 !== t.length || a.some((e => "string" != typeof e || !e.trim())) ? {
+              answer: [],
+              options: n
+            } : {
+              answer: a,
               options: n
             };
           }
           return {
-            answer: a,
+            answer: [],
             options: n
           };
         }
         return {
-          answer: (Array.isArray(r.ansL) && r.ansL.length > 0 ? r.ansL : r.ans ? [ r.ans ] : []).map((e => removeHtml(String(e)))).filter(Boolean),
+          answer: (Array.isArray(a.ansL) && a.ansL.length > 0 ? a.ansL : a.ans ? [ a.ans ] : []).map((e => removeHtml(String(e)))).filter(Boolean),
           options: n
         };
-      })(e.type, i.answer, e.options, o);
-      return e.answer = l.answer, e.options = l.options, e;
+      })(e.type, i.answer, e.options);
+      return 0 === l.answer.length ? null : (e.answer = l.answer, e.options = l.options, 
+      e);
     },
     paper: e => {
       const t = O(".dl_list:eq(0)")[0]._ms_context_.loop.category, n = O(".dl_list:eq(0)")[0]._ms_context_.oAnswerDetailInfo, a = {
@@ -12268,7 +12276,7 @@
         const r = matchAnswerCandidates(g, e);
         if (r.haveAnswer && r.source && r.fillPlan) return {
           status: "answered",
-          displayAnswers: g,
+          displayAnswers: [ ...f, ...g ],
           adoptedSource: r.source,
           fillPlan: r.fillPlan
         };
@@ -12280,7 +12288,7 @@
         };
         m = getErrorMessage(w, "\u8fdc\u7aef\u9898\u5e93\u8bf7\u6c42\u5931\u8d25");
       }
-      let v = g.length ? g : f;
+      let v = [ ...f, ...g ];
       if (a && o) try {
         const a = await o(e);
         if (!n(t)) return {
@@ -12373,64 +12381,75 @@
     phase: n,
     reason: a
   }), runQuestionTask = async (e, t) => {
+    var n;
     if (!t.isCurrentRun(e.runToken)) return {
       phase: "cancelled",
       reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
     };
-    const n = t.getQuestion(e.index);
-    if (!n) return finishWithPhase(t, e, "failed", "\u9898\u76ee\u4e0d\u5b58\u5728");
-    if (t.setPhase(e.index, "preparing", e), t.setLoadingText("\u52a0\u8f7d\u4e2d...."), 
-    !t.isCurrentRun(e.runToken)) return {
-      phase: "cancelled",
-      reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
-    };
-    t.setPhase(e.index, "searching", e);
-    const a = await t.runPipeline(e, n);
-    if ("stale" === a.status || !t.isCurrentRun(e.runToken)) return {
-      phase: "cancelled",
-      reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
-    };
-    const r = (e => e.displayAnswers.map((e => e.raw || e)))(a);
-    if ("preview" === a.status && a.preview) return t.publishQuestion(e.index, {
-      answer: r,
-      phase: "preview",
-      status: 0,
-      taskId: e.id
-    }), t.publishPreview(e.index, a.preview), t.setPhase(e.index, "preview", e), t.stopAutoRun(), 
-    {
-      phase: "preview",
-      reason: a.preview.reason
-    };
-    const i = a.adoptedSource && a.fillPlan ? createLegacyMatchResult({
-      haveAnswer: true,
-      source: a.adoptedSource,
-      fillPlan: a.fillPlan,
-      displayAnswers: a.displayAnswers
-    }) : createLegacyMatchResult({
-      haveAnswer: false,
-      displayAnswers: a.displayAnswers
-    });
-    if (a.fillPlan && t.setPhase(e.index, "matched", e), t.publishQuestion(e.index, {
-      answer: r,
-      form: i.form,
-      error: a.failureReason || "",
-      phase: "published",
-      status: 0,
-      taskId: e.id
-    }), t.setPhase(e.index, "published", e), await t.waitForRender(), !t.isCurrentRun(e.runToken)) return {
-      phase: "cancelled",
-      reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
-    };
-    if (t.setPhase(e.index, "rendering", e), a.fillPlan) {
-      t.setPhase(e.index, "filling", e);
-      const r = await t.fillAnswer(a.fillPlan, n);
+    const a = t.getQuestion(e.index);
+    if (!a) return finishWithPhase(t, e, "failed", "\u9898\u76ee\u4e0d\u5b58\u5728");
+    try {
+      if (t.setPhase(e.index, "preparing", e), t.setLoadingText("\u52a0\u8f7d\u4e2d...."), 
+      !t.isCurrentRun(e.runToken)) return {
+        phase: "cancelled",
+        reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
+      };
+      t.setPhase(e.index, "searching", e);
+      const n = await t.runPipeline(e, a);
+      if ("stale" === n.status || !t.isCurrentRun(e.runToken)) return {
+        phase: "cancelled",
+        reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
+      };
+      const r = (e => e.displayAnswers.map((e => e.raw || e)))(n);
+      if ("preview" === n.status && n.preview) return t.publishQuestion(e.index, {
+        answer: r,
+        phase: "preview",
+        status: 0,
+        taskId: e.id
+      }), t.publishPreview(e.index, n.preview), t.setPhase(e.index, "preview", e), t.stopAutoRun(), 
+      {
+        phase: "preview",
+        reason: n.preview.reason
+      };
+      const i = n.adoptedSource && n.fillPlan ? createLegacyMatchResult({
+        haveAnswer: !0,
+        source: n.adoptedSource,
+        fillPlan: n.fillPlan,
+        displayAnswers: n.displayAnswers
+      }) : createLegacyMatchResult({
+        haveAnswer: !1,
+        displayAnswers: n.displayAnswers
+      });
+      if (n.fillPlan && t.setPhase(e.index, "matched", e), t.publishQuestion(e.index, {
+        answer: r,
+        form: i.form,
+        error: n.failureReason || "",
+        phase: "published",
+        status: 0,
+        taskId: e.id
+      }), t.setPhase(e.index, "published", e), await t.waitForRender(), !t.isCurrentRun(e.runToken)) return {
+        phase: "cancelled",
+        reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
+      };
+      if (t.setPhase(e.index, "rendering", e), n.fillPlan) {
+        t.setPhase(e.index, "filling", e);
+        const r = await t.fillAnswer(n.fillPlan, a);
+        if (!t.isCurrentRun(e.runToken)) return {
+          phase: "cancelled",
+          reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
+        };
+        if (!r.success) return finishWithPhase(t, e, "failed", r.reason || "\u7b54\u6848\u586b\u5145\u5931\u8d25");
+      }
+      return "answered" === n.status ? finishWithPhase(t, e, "done") : "failed" === n.status ? finishWithPhase(t, e, "failed", n.failureReason || "\u7b54\u6848\u83b7\u53d6\u5931\u8d25") : finishWithPhase(t, e, "no-answer", n.failureReason || "\u672a\u627e\u5230\u53ef\u5339\u914d\u7b54\u6848");
+    } catch (r) {
       if (!t.isCurrentRun(e.runToken)) return {
         phase: "cancelled",
         reason: "\u7b54\u9898\u5df2\u53d6\u6d88"
       };
-      if (!r.success) return finishWithPhase(t, e, "failed", r.reason || "\u7b54\u6848\u586b\u5145\u5931\u8d25");
+      null == (n = t.log) || n.call(t, "\u5355\u9898\u7b54\u9898\u5f02\u5e38", r);
+      const a = r instanceof Error ? r.message : "string" == typeof r ? r : "";
+      return finishWithPhase(t, e, "failed", a ? `\u7b54\u9898\u5931\u8d25\uff1a${a}` : "\u7b54\u9898\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5");
     }
-    return "answered" === a.status ? finishWithPhase(t, e, "done") : "failed" === a.status ? finishWithPhase(t, e, "failed", a.failureReason || "\u7b54\u6848\u83b7\u53d6\u5931\u8d25") : finishWithPhase(t, e, "no-answer", a.failureReason || "\u672a\u627e\u5230\u53ef\u5339\u914d\u7b54\u6848");
   }, zn = [ "ask", "library", "settings" ], Dn = {
     page: "ask",
     subPage: ""
@@ -13577,7 +13596,7 @@
             label: "AI",
             state: "pending"
           } ];
-          "wait" === e.mark ? r[2].state = "wait" : e.aiStreaming ? r[2].state = "run" : e.aiFailed ? r[2].state = "miss" : r[2].state = settled(n) ?? (e.aiEnabled ? "pending" : "off");
+          "wait" === e.mark ? r[2].state = "wait" : e.aiStreaming ? r[2].state = "run" : r[2].state = settled(n) ?? (e.aiEnabled ? e.aiFailed ? "miss" : "pending" : "off");
           const i = r.findIndex((e => "hit" === e.state));
           if (i >= 0) for (let s = i + 1; s < r.length; s++) "pending" === r[s].state && (r[s].state = "off");
           if ("run" === e.mark) {
