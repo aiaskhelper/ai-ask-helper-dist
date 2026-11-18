@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.7.9
+// @version      2.7.10
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学、UMU互动平台】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -246,7 +246,7 @@
     value: a
   }) : t[n] = a)(t, "symbol" != typeof n ? n + "" : n, a);
 
-  var D = (() => "undefined" != typeof GM_deleteValue ? GM_deleteValue : void 0)(), N = (() => "undefined" != typeof GM_getValue ? GM_getValue : void 0)(), R = (() => "undefined" != typeof GM_info ? GM_info : void 0)(), F = (() => "undefined" != typeof GM_listValues ? GM_listValues : void 0)(), B = (() => "undefined" != typeof GM_setValue ? GM_setValue : void 0)(), G = (() => "undefined" != typeof GM_xmlhttpRequest ? GM_xmlhttpRequest : void 0)(), K = (() => "undefined" != typeof unsafeWindow ? unsafeWindow : void 0)();
+  var N = (() => "undefined" != typeof GM_deleteValue ? GM_deleteValue : void 0)(), D = (() => "undefined" != typeof GM_getValue ? GM_getValue : void 0)(), R = (() => "undefined" != typeof GM_info ? GM_info : void 0)(), F = (() => "undefined" != typeof GM_listValues ? GM_listValues : void 0)(), B = (() => "undefined" != typeof GM_setValue ? GM_setValue : void 0)(), G = (() => "undefined" != typeof GM_xmlhttpRequest ? GM_xmlhttpRequest : void 0)(), K = (() => "undefined" != typeof unsafeWindow ? unsafeWindow : void 0)();
 
   const V = "AiAsk_";
 
@@ -257,11 +257,11 @@
         value: t,
         expire: n > 0 ? Date.now() + 1e3 * n : 0
       };
-      return B(e, a), N(e);
+      return B(e, a), D(e);
     }
     static get(e, t = null) {
-      const n = N(e = V + e);
-      return n && n.expire && n.expire < Date.now() ? (D(e), t) : n ? n.value : t;
+      const n = D(e = V + e);
+      return n && n.expire && n.expire < Date.now() ? (N(e), t) : n ? n.value : t;
     }
     static match(e) {
       return e = V + e, F().filter((t => t.startsWith(e)));
@@ -272,20 +272,20 @@
         if (t && t.expire && t.expire < Date.now()) return n(e), null;
         const a = t ? t.value : null;
         return a && (a.key = e.replace("AiAsk_", "")), a;
-      }(e, N(e, {
+      }(e, D(e, {
         value: null,
         expire: 0
-      }), D))).filter((e => null !== e));
+      }), N))).filter((e => null !== e));
       return n.sort(((e, t) => (t.createTime || 0) - (e.createTime || 0))), n;
     }
     static remove(e) {
-      D(V + e);
+      N(V + e);
     }
     static clear() {
-      F().filter((e => e.startsWith(V))).forEach(D);
+      F().filter((e => e.startsWith(V))).forEach(N);
     }
     static matchRemove(e) {
-      e = V + e, F().filter((t => t.startsWith(e))).forEach(D);
+      e = V + e, F().filter((t => t.startsWith(e))).forEach(N);
     }
   }
 
@@ -462,11 +462,7 @@
       return n.push(`<img src="${(e => e.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;"))(a)}">`), 
       i;
     })).replace(/<br\s*\/?>/gi, "\n").replace(/<(\/)?(p|div).*?>/gi, "\n").replace(/<[^>]+>/g, "").replace(/\u0000AAH_IMAGE_PLACEHOLDER_(\d+)\u0000/g, ((e, t) => n[Number(t)] || "")).replace(t ? /[\r\xa0]/g : /[\t\r\xa0]/g, " ").replace(/[\u2000-\u200a]/g, " ").replace(/ {2,}/g, " ").replace(/\n{2,}/g, "\n").replace(t ? /^[^\S\t]+|[^\S\t]+$/g : /^\s+|\s+$/g, "");
-  }, cleanQuestionTitle = (e, t = false) => e.replace(/^[.*?]\s*/, "").replace(/^\u3010.*?\u3011\s*/, "").replace(/\s*[\uff08(]\s*\d+(?:\.\d+)?\s*\u5206?\s*[\uff09)]\s*$/, "").replace(/^\d+\./, "").replace(t ? /^[^\S\t]+|[^\S\t]+$/g : /^\s+|\s+$/g, "").replace(/^\d+\uff0e/, "").replace(t ? /^[^\S\t]+|[^\S\t]+$/g : /^\s+|\s+$/g, ""), normalizeComparableText = e => (e => {
-    if (/^[+-]?\d+(\.\d+)?$/.test(e)) return e;
-    const t = e.replace(/\s+/g, "");
-    return t.replace(new RegExp("\\p{P}", "gu"), "") || t;
-  })((e => String(e ?? "").replace(/<img\b([^>]*)>/gi, ((e, t) => stripImageSrcQuery(getImageSrc(t)))).replace(/<[^>]*>/g, ""))(e)).trim(), removeOptionPrefixes = (e, {removeBareLetter: t = false} = {}) => e.map(((e, n) => {
+  }, cleanQuestionTitle = (e, t = false) => e.replace(/^[.*?]\s*/, "").replace(/^\u3010.*?\u3011\s*/, "").replace(/\s*[\uff08(]\s*\d+(?:\.\d+)?\s*\u5206?\s*[\uff09)]\s*$/, "").replace(/^\d+\./, "").replace(t ? /^[^\S\t]+|[^\S\t]+$/g : /^\s+|\s+$/g, "").replace(/^\d+\uff0e/, "").replace(t ? /^[^\S\t]+|[^\S\t]+$/g : /^\s+|\s+$/g, ""), normalizeComparableText = e => (e => String(e ?? "").replace(/<img\b([^>]*)>/gi, ((e, t) => stripImageSrcQuery(getImageSrc(t)))).replace(/<[^>]*>/g, ""))(e).replace(/\s+/g, "").replace(new RegExp("\\p{P}", "gu"), (e => /[ -~]/.test(e) ? e : "")), removeOptionPrefixes = (e, {removeBareLetter: t = false} = {}) => e.map(((e, n) => {
     const a = String.fromCharCode(65 + n), i = t ? `^${a}(?:\\s*[.\u3001\uff0e)\uff09:\uff1a]\\s*|\\s+)?` : `^${a}\\s*[.\u3001\uff0e)\uff09:\uff1a]\\s*`;
     return e.replace(new RegExp(i), "").trim();
   })), normalizeHashText = e => String(e ?? "").replace(/<img\b([^>]*)>/gi, ((e, t) => {
@@ -1844,6 +1840,9 @@
     if (!t.every((e => /^(?:\u5bf9|\u9519|\u6b63\u786e|\u9519\u8bef|\u771f|\u5047|\u221a|\u2713|\xd7|\u2715|\u662f|\u5426|true|false|t|f|yes|no)$/.test(e)))) return false;
     const n = t.map(normalizeJudgeAnswer);
     return n.includes("\u6b63\u786e") && n.includes("\u9519\u8bef");
+  }, judgeAnswerArray = e => {
+    const t = normalizeJudgeAnswer(e);
+    return t ? [ t ] : [];
   }, flattenAnswerTexts = e => null == e ? [] : Array.isArray(e) ? e.flatMap(flattenAnswerTexts) : "object" == typeof e ? Object.values(e).flatMap(flattenAnswerTexts) : [ String(e) ], mapChoiceLetterToOption = (e, t) => {
     var n;
     const a = e.trim().toUpperCase();
@@ -3220,8 +3219,8 @@
       const n = e.map(normalizeComparableText);
       if (0 === n.length || n.some((e => "" === e))) return [];
       const a = t.map(normalizeComparableText), findIndexFor = e => {
-        const t = a.findIndex((t => t === e));
-        if (-1 !== t) return t;
+        const t = a.flatMap(((t, n) => t === e ? [ n ] : []));
+        if (t.length > 0) return 1 === t.length ? t[0] : -1;
         const n = a.reduce(((t, n, a) => (n.includes(e) && t.push(a), t)), []);
         return 1 === n.length ? n[0] : -1;
       }, i = n.map(((t, n) => {
@@ -3329,7 +3328,7 @@
     };
   }));
 
-  const De = {
+  const Ne = {
     "\u5355\u9009\u9898": "0",
     "\u591a\u9009\u9898": "1",
     "\u586b\u7a7a\u9898": "2",
@@ -3356,22 +3355,22 @@
     "\u9009\u8bcd\u586b\u7a7a": "24",
     "\u9009\u505a\u9898": "25",
     "\u5176\u5b83": "8"
-  }, Ne = function(e) {
+  }, De = function(e) {
     let t = "";
     for (;t.length < e; t += Math.random().toString(36).substring(2)) ;
     return t.substring(0, e);
   }(9) + "_", Re = R;
 
   function getAppStore() {
-    return K[Ne + "app"];
+    return K[De + "app"];
   }
 
   function getAskStore() {
-    return K[Ne + "ask"];
+    return K[De + "ask"];
   }
 
   function getAiStore() {
-    return K[Ne + "ai"];
+    return K[De + "ai"];
   }
 
   function isParentChecked(e) {
@@ -3717,7 +3716,7 @@
     }
     static getAnonymousId() {
       if (this.cachedAnonymousId) return this.cachedAnonymousId;
-      let e = N(this.STORAGE_KEY);
+      let e = D(this.STORAGE_KEY);
       return e && this.validateId(e) || (e = this.generateShortId(), B(this.STORAGE_KEY, e)), 
       this.cachedAnonymousId = e, e;
     }
@@ -3752,7 +3751,7 @@
     }
     static getDeviceFingerprint() {
       if (this.cachedFingerprint) return this.cachedFingerprint;
-      const e = N(this.FINGERPRINT_KEY);
+      const e = D(this.FINGERPRINT_KEY);
       if (e && e.version === this.FP_VERSION && e.value) return this.cachedFingerprint = e.value, 
       e.value, e.value;
       const t = [ this.normalizeUserAgent(navigator.userAgent), navigator.language, navigator.platform, screen.colorDepth, screen.pixelDepth || screen.colorDepth, (new Date).getTimezoneOffset(), navigator.hardwareConcurrency || 0, navigator.maxTouchPoints || 0, navigator.deviceMemory || 0, this.getWebGLFingerprint(), this.getStableCanvasFingerprint() ], n = md5(t.filter(Boolean).join("|")).substring(0, 12);
@@ -3792,8 +3791,8 @@
           webgl: this.getWebGLFingerprint()
         },
         storage: {
-          fp_stored: N(this.FINGERPRINT_KEY),
-          id_stored: N(this.STORAGE_KEY)
+          fp_stored: D(this.FINGERPRINT_KEY),
+          id_stored: D(this.STORAGE_KEY)
         }
       };
     }
@@ -4172,13 +4171,13 @@
       }));
     }
     static async syncQuestionList(e) {
-      return new Promise((t => {
-        requestApi(apiUrl("question/sync"), "POST", e, {}).then((e => {
-          e[0].responseText, t(e[0].responseText);
-        })).catch((e => {
-          t(e);
-        }));
-      }));
+      var t;
+      try {
+        const [n] = await requestApi(apiUrl("question/sync"), "POST", e, {});
+        return n.status >= 200 && n.status < 300 && 200 === (null == (t = JSON.parse(n.responseText)) ? void 0 : t.code);
+      } catch (n) {
+        return false;
+      }
     }
     static async syncPaper(e) {
       return new Promise(((t, n) => {
@@ -5585,11 +5584,11 @@
               p = n.x, d = n.y, s = n.nStems, o = n.haveWidth, l = n.width, c = n.open;
             }
           } else if ("o30" == A || "o31" == A) {
-            var z = r.length, D = (I = 0, "o31" == A);
-            for (I += z - (_ = -3 & z); I < _; ) D ? (m = d, g = (h = p + r.shift()) + r.shift(), 
+            var z = r.length, N = (I = 0, "o31" == A);
+            for (I += z - (_ = -3 & z); I < _; ) N ? (m = d, g = (h = p + r.shift()) + r.shift(), 
             d = (f = m + r.shift()) + r.shift(), _ - I == 5 ? (p = g + r.shift(), I++) : p = g, 
-            D = false) : (h = p, m = d + r.shift(), g = h + r.shift(), f = m + r.shift(), p = g + r.shift(), 
-            _ - I == 5 ? (d = f + r.shift(), I++) : d = f, D = true), e.U.P.curveTo(i, h, m, g, f, p, d), 
+            N = false) : (h = p, m = d + r.shift(), g = h + r.shift(), f = m + r.shift(), p = g + r.shift(), 
+            _ - I == 5 ? (d = f + r.shift(), I++) : d = f, N = true), e.U.P.curveTo(i, h, m, g, f, p, d), 
             I += 4;
           } else {
             if ("o" == (A + "").charAt(0)) throw console.log("Unknown operation: " + A, t), 
@@ -9728,7 +9727,9 @@
       "3" === e.type) e.options = [], e.$options = z(e.html).find("ul>li");
       return e;
     }
-  } ], _t = [ {
+  } ];
+
+  const _t = [ {
     type: "ask",
     name: "\u9ea6\u80fd\u7f51\u7b54\u9898",
     tips: "",
@@ -9748,7 +9749,8 @@
       }));
     },
     toquestion: e => {
-      z(`.controldiv > a:eq(${e})`), z(`.epcl_circle:eq(${e})`)[0].click();
+      var t;
+      null == (t = z(".epcl_circle")[e]) || t.click();
     },
     ischecked: isParentChecked,
     questionHook: e => {
@@ -9758,12 +9760,17 @@
       return e;
     },
     setAnswer: e => {
+      var t;
       switch (e.type) {
        case "3":
-        let t = e.answer;
-        return z(e.html).find(".ansdiv input").each(((e, n) => {
-          isTrue(t) && "1" == z(n).val() && z(n).click(), isFalse(t) && "0" == z(n).val() && z(n).click();
-        })), false;
+        {
+          const n = normalizeJudgeAnswer(e.answer), a = Array.from(e.html.querySelectorAll('.ansdiv input[type="radio"]')), i = a.find((e => "1" === e.value)), r = a.find((e => "0" === e.value)), s = "\u9ea6\u80fd\u7f51\u5224\u65ad\u9898\u672a\u80fd\u786e\u8ba4\u52fe\u9009";
+          if (!n || 2 !== a.length || !i || !r || !i.name || i.name !== r.name || i.form !== r.form || a.some((e => !e.isConnected || e.matches(":disabled")))) throw new Error(s);
+          const o = "\u6b63\u786e" === n ? i : r, l = "\u6b63\u786e" === n ? r : i;
+          if (false === (null == (t = e.shouldContinue) ? void 0 : t.call(e))) throw new Error("\u7b54\u9898\u5df2\u53d6\u6d88");
+          if (o.checked || o.click(), !o.isConnected || !l.isConnected || !o.checked || l.checked) throw new Error(s);
+          return false;
+        }
 
        case "2":
        case "4":
@@ -9810,18 +9817,27 @@
       })).get()), e.type) {
        case "0":
        case "1":
-        e.answer = e.$options.map(((t, n) => {
-          var a;
-          return (null == (a = z(n).find("img").attr("src")) ? void 0 : a.includes("exam-yes")) && e.options[t];
-        })).get().filter((e => void 0 !== e));
-        break;
-
        case "3":
-        e.answer = e.$options.map(((t, n) => {
-          var a;
-          return (null == (a = z(n).find("img").attr("src")) ? void 0 : a.includes("exam-yes")) && e.options[t];
-        })).get().filter((e => void 0 !== e)), e.answer = judgeAnswer(e.answer), e.options = [];
-        break;
+        {
+          const t = e.$options.toArray().flatMap(((t, n) => {
+            return a = t, Array.from(a.querySelectorAll("img[src]")).some((e => {
+              var t;
+              const n = e.getAttribute("src");
+              if (!n) return false;
+              try {
+                const a = new URL(n, e.baseURI);
+                return ("https://fs.cjnep.net" === a.origin || a.origin === (null == (t = e.ownerDocument.location) ? void 0 : t.origin)) && "/resources/public/lmsv2/images/exam-yes.png" === a.pathname;
+              } catch {
+                return false;
+              }
+            })) ? [ e.options[n] ] : [];
+            var a;
+          }));
+          if (0 === t.length || t.some((e => !e)) || "1" !== e.type && 1 !== t.length) return null;
+          if (e.answer = "3" === e.type ? judgeAnswerArray(t[0]) : t, 0 === e.answer.length) return null;
+          "3" === e.type && (e.options = []);
+          break;
+        }
 
        case "4":
         e.options = [];
@@ -10343,9 +10359,9 @@
   }, getOptionNo = e => e.itemNo ?? e.item_no ?? 0, getSortedOptions = e => [ ...e.options || [] ].sort(((e, t) => getOptionNo(e) - getOptionNo(t))), getMosoteachTopicOptions = (e, t) => {
     var n;
     return "TF" !== e.type || (null == (n = e.options) ? void 0 : n.length) ? t(getSortedOptions(e).map((e => e.content || ""))) : [ "\u6b63\u786e", "\u9519\u8bef" ];
-  }, $t = ".topic-answer-align,label.d-flex.align-center:has(.v-radio)", Mt = `.pt-10.d-flex.list-item:has(.topic-subject):has(${$t})`, Ht = `${$t},.t-option.t-item label,.t-judge.t-item label`, Ot = ".v-chip__content,.t-type", jt = "__aiAskMosoteachRouteHook", zt = "__aiAskMosoteachHref", Dt = "__aiAskMosoteachRouteTimer";
+  }, $t = ".topic-answer-align,label.d-flex.align-center:has(.v-radio)", Mt = `.pt-10.d-flex.list-item:has(.topic-subject):has(${$t})`, Ht = `${$t},.t-option.t-item label,.t-judge.t-item label`, Ot = ".v-chip__content,.t-type", jt = "__aiAskMosoteachRouteHook", zt = "__aiAskMosoteachHref", Nt = "__aiAskMosoteachRouteTimer";
 
-  let Nt = [];
+  let Dt = [];
 
   const Rt = {
     cleanText: (e = "") => titleClean(removeHtml(e)),
@@ -10371,7 +10387,7 @@
         const t = getMosoteachTopicOptions(e, a.cleanOptions).sort().join("\n");
         return a.cleanText(e.subject || "") === i && t === r;
       }));
-    })(e.question, e.options, Nt, Rt);
+    })(e.question, e.options, Dt, Rt);
     if (!t) return;
     const n = ((e, t) => {
       const n = t.cleanOptions(getSortedOptions(e).map((e => e.content || "")));
@@ -10409,7 +10425,7 @@
     if (e[jt]) return;
     e[jt] = true, e[zt] = location.href;
     const checkRouteChange = () => {
-      e[zt] !== location.href && (e[zt] = location.href, clearTimeout(e[Dt]), e[Dt] = setTimeout((() => vuePageChange()), 100));
+      e[zt] !== location.href && (e[zt] = location.href, clearTimeout(e[Nt]), e[Nt] = setTimeout((() => vuePageChange()), 100));
     }, bindHistoryChange = e => {
       const t = history[e];
       history[e] = function(...e) {
@@ -10440,8 +10456,8 @@
       pageType: "mosoteach"
     },
     init: async () => {
-      if (await sleep(500), !isMosoteachAskUrl()) return Nt = [], false;
-      return !!(await waitForMosoteachQuestionElements()) && (Nt = isMosoteachQuizAnswerUrl() ? await (async () => {
+      if (await sleep(500), !isMosoteachAskUrl()) return Dt = [], false;
+      return !!(await waitForMosoteachQuestionElements()) && (Dt = isMosoteachQuizAnswerUrl() ? await (async () => {
         const e = getMosoteachQuizIds(), t = localStorage.getItem("teach_token") || "";
         if (!e || !t) return [];
         try {
@@ -10603,13 +10619,29 @@
     init: waitPaper,
     answerHook: e => {
       const t = parseItem$1(e, true);
-      if (!t || "3" === e.type) return null;
-      const n = z(e.html).find(".question-answer-exhibition>.topic-teacher-check-content").filter(((e, t) => "\u53c2\u8003\u7b54\u6848" === z(t).find(".content-title>span").first().text().trim())), a = n.find(".check-content>.answer-content"), i = a.text().trim();
-      if (1 !== n.length || 1 !== a.length || !/^[A-Z](?:\u3001[A-Z])*$/.test(i)) return null;
-      const r = i.split("\u3001");
-      if (new Set(r).size !== r.length || "1" !== e.type && 1 !== r.length) return null;
-      const s = r.map((e => t.options[t.codes.indexOf(e)]));
-      return s.some((e => void 0 === e)) ? null : (e.answer = s, e);
+      if (!t) return null;
+      const n = z(e.html).find(".question-answer-exhibition>.topic-teacher-check-content").filter(((e, t) => "\u53c2\u8003\u7b54\u6848" === z(t).find(".content-title>span").first().text().trim()));
+      let a;
+      if (n.length) {
+        const e = n.find(".check-content>.answer-content"), t = e.text().trim();
+        if (1 !== n.length || 1 !== e.length || !/^[A-Z](?:\u3001[A-Z])*$/.test(t)) return null;
+        a = t.split("\u3001");
+      } else a = function(e, t) {
+        var n;
+        const a = z(e.html).find(">.item-question-header>.header-right"), i = a.children("i"), r = a.children("span.student-score"), s = a.children("span:not(.student-score)"), o = r.text().trim(), l = null == (n = s.text().trim().match(/^\/\s*(\d+(?:\.\d+)?)\s*\u5206$/)) ? void 0 : n[1];
+        if (1 !== a.length || 1 !== i.length || !i.is(".right:not(.wrong)") || 1 !== r.length || 1 !== s.length || !/^\d+(?:\.\d+)?$/.test(o) || !l || !Number.isFinite(Number(o)) || Number(o) <= 0 || Number(o) !== Number(l) || e.$options.is(".can-do")) return [];
+        const c = t.filter(((t, n) => e.$options.eq(n).hasClass("active")));
+        return "1" === e.type && c.length < 2 ? [] : c;
+      }(e, t.codes);
+      if (!a.length || new Set(a).size !== a.length || "1" !== e.type && 1 !== a.length) return null;
+      const i = a.map((e => t.options[t.codes.indexOf(e)]));
+      if (i.some((e => void 0 === e))) return null;
+      if ("3" === e.type) {
+        const t = judgeAnswerArray(i[0]);
+        if (t[0] !== ("T" === a[0] ? "\u6b63\u786e" : "\u9519\u8bef")) return null;
+        e.answer = t;
+      } else e.answer = i;
+      return e;
     }
   } ], Kt = [ {
     type: "hook",
@@ -12846,7 +12878,7 @@
 
   const isRuleMatched = e => "function" == typeof e.match ? e.match() : Boolean(e.match), parseRule = async e => {
     if (isPageClaimedByNewLine(document)) return;
-    if (await waitUntil((() => void 0 !== K[Ne + "app"])), isPageClaimedByNewLine(document)) return;
+    if (await waitUntil((() => void 0 !== K[De + "app"])), isPageClaimedByNewLine(document)) return;
     const t = e.filter(isRuleMatched), n = getAppStore(), a = getAskStore(), i = {
       app: n,
       ask: a,
@@ -12872,9 +12904,10 @@
       return !(null == e || (t = e.answer, !flattenAnswerTexts(t).some((e => "" !== e.trim()))) || "8" == e.type);
       var t;
     })).map((e => (e.question = titleClean(e.question), e)));
-    a.saveQuestionData = i, i.forEach((e => {
-      Answer.cacheAnswer(e);
-    })), await async function({questionList: e, pageType: t, paper: n, onPaperError: a, beforeSync: i, syncQuestionList: r}) {
+    a.saveQuestionData = i;
+    const r = new Set(i.filter((e => Answer.cacheAnswer(e))).map((e => e.hash))).size;
+    let s = false;
+    await async function({questionList: e, pageType: t, paper: n, onPaperError: a, beforeSync: i, syncQuestionList: r}) {
       if (n) try {
         await n(e);
       } catch (o) {
@@ -12891,10 +12924,12 @@
       paper: e.paper && "function" == typeof e.paper ? e.paper : void 0,
       onPaperError: () => addLog("\u6574\u5377\u7f13\u5b58\u5f02\u5e38", "error"),
       beforeSync: () => n.setPage("library", "saved"),
-      syncQuestionList: e => Answer.syncQuestionList(e)
-    }), n.app.alert = `\u9898\u5e93\u6536\u5f55\u5b8c\u6210\uff0c\u5171\u7f13\u5b58${i.length}\u9053\u9898\u76ee`, 
-    msg(`\u9898\u5e93\u6536\u5f55\u5b8c\u6210\uff0c\u5171\u7f13\u5b58${i.length}\u9053\u9898\u76ee`, "success"), 
-    e.next && e.next();
+      syncQuestionList: async e => {
+        s = await Answer.syncQuestionList(e);
+      }
+    });
+    const o = r === i.length ? `\u5df2\u7f13\u5b58 ${r} \u9053\u9898` : `\u672c\u9875\u6536\u5f55 ${i.length} \u9053\u9898\uff0c\u53bb\u91cd\u7f13\u5b58 ${r} \u9053`, l = i.length ? `${o}\uff0c${s ? "\u5df2\u63d0\u4ea4\u9898\u5e93\u540c\u6b65" : "\u9898\u5e93\u540c\u6b65\u5931\u8d25"}` : "\u672a\u627e\u5230\u53ef\u6536\u5f55\u7684\u7b54\u6848";
+    n.app.alert = l, msg(l, s ? "success" : "warning"), e.next && e.next();
   }, askParser = (e, t) => {
     const n = t.app, a = t.ask;
     a.rule = e, e.minDelay && (a.minDelay = e.minDelay, a.delay < a.minDelay && (a.delay = a.minDelay)), 
@@ -13591,10 +13626,10 @@
       const n = o instanceof Error ? o.message : "string" == typeof o ? o : "";
       return finishWithPhase(t, e, "failed", n ? `\u7b54\u9898\u5931\u8d25\uff1a${n}` : "\u7b54\u9898\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5");
     }
-  }, zn = [ "ask", "library", "settings" ], Dn = {
+  }, zn = [ "ask", "library", "settings" ], Nn = {
     page: "ask",
     subPage: ""
-  }, Nn = {
+  }, Dn = {
     home: {
       page: "ask",
       subPage: ""
@@ -13644,7 +13679,7 @@
   }, Bn = new Set([ "manage", "preview", "tool" ]);
 
   function resolveNextPage(e, t) {
-    return void 0 !== Nn[e] ? Nn[e] : "system" === e ? {
+    return void 0 !== Dn[e] ? Dn[e] : "system" === e ? {
       page: "settings",
       subPage: Rn[t ?? ""] ?? ""
     } : "settings" === e && void 0 !== Fn[t ?? ""] ? {
@@ -13656,7 +13691,7 @@
     } : zn.includes(e) ? {
       page: e,
       subPage: t ?? ""
-    } : Dn;
+    } : Nn;
   }
 
   function normalizeDialogWidth(e) {
@@ -15483,14 +15518,14 @@
     stroke: "currentColor",
     "stroke-opacity": "0.25",
     "stroke-width": "1.5"
-  }, null, -1), Da = vue.createElementVNode("path", {
+  }, null, -1), Na = vue.createElementVNode("path", {
     class: "status-glyph-arc",
     d: "M7 1.5a5.5 5.5 0 0 1 5.5 5.5",
     fill: "none",
     stroke: "currentColor",
     "stroke-width": "1.5",
     "stroke-linecap": "round"
-  }, null, -1), Na = vue.createElementVNode("circle", {
+  }, null, -1), Da = vue.createElementVNode("circle", {
     cx: "7",
     cy: "7",
     r: "6.25",
@@ -15541,9 +15576,9 @@
       "aria-label": vue.unref(Ma)[e.mark]
     }, [ "todo" === e.mark ? (vue.openBlock(), vue.createElementBlock("circle", ja)) : "run" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 1
-    }, [ za, Da ], 64)) : "done" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ za, Na ], 64)) : "done" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 2
-    }, [ Na, Ra ], 64)) : "none" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ Da, Ra ], 64)) : "none" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 3
     }, [ Fa, Ba ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 4
@@ -15636,9 +15671,9 @@
     class: "aah-alert aah-alert-warning"
   }, zi = {
     class: "ask-sources"
-  }, Di = vue.createElementVNode("h3", {
+  }, Ni = vue.createElementVNode("h3", {
     class: "aah-section-title"
-  }, "\u7b54\u6848\u6765\u6e90", -1), Ni = {
+  }, "\u7b54\u6848\u6765\u6e90", -1), Di = {
     class: "ask-chain",
     "aria-label": "\u67e5\u627e\u94fe"
   }, Ri = vue.createElementVNode("span", {
@@ -15936,7 +15971,7 @@
         }, "\u8df3\u8fc7") ]) ])) : vue.createCommentVNode("", true), vue.unref(t).aiFailureMap[vue.unref(t).questionInx] ? (vue.openBlock(), 
         vue.createElementBlock("div", ji, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:alert-outline"
-        }), vue.createTextVNode(vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("section", zi, [ Di, vue.createElementVNode("ol", Ni, [ (vue.openBlock(true), 
+        }), vue.createTextVNode(vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("section", zi, [ Ni, vue.createElementVNode("ol", Di, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(U.value, (e => (vue.openBlock(), vue.createElementBlock("li", {
           key: e.key,
           class: vue.normalizeClass([ "ask-chain-step", `is-${e.state}` ])
@@ -16053,6 +16088,16 @@
     }
   });
 
+  function downloadBlob(e, t) {
+    const n = document.createElement("a");
+    n.href = URL.createObjectURL(e), n.download = t, n.hidden = true, document.body.appendChild(n);
+    try {
+      n.click();
+    } finally {
+      n.remove(), setTimeout((() => URL.revokeObjectURL(n.href)), 1e4);
+    }
+  }
+
   const $r = [ {
     value: "0",
     label: "\u5355\u9009"
@@ -16103,11 +16148,10 @@
       return `\n        <p><a href="${t}">\u7231\u95ee\u7b54\u52a9\u624b</a></p>\n        <p>${n + 1}\u3001[${typeConvert(e.type, false)}]${e.question}</p>\n        <p>${formatOptionsForExport(e.options)}</p>\n        <p style="color:green;">\u7b54\u6848\uff1a${a = e.answer, 
     a ? Array.isArray(a) && a.length > 0 && Array.isArray(a[0]) ? a.map(((e, t) => `<strong>${t + 1}.</strong> ${Array.isArray(e) ? e.join(", ") : String(e)}`)).join("<br>") : Array.isArray(a) ? a.join("<br>") : String(a) : ""}</p>\n        `;
       var a;
-    })).join("<br/>"), a = new Blob([ `<HtML> <head> <meta charset="utf-8"> <title>\u7231\u95ee\u7b54\u52a9\u624b\u7b54\u6848\u5bfc\u51fa</title> </head> <body> ${n} </body> </HtML>` ], {
+    })).join("<br/>");
+    downloadBlob(new Blob([ `<HtML> <head> <meta charset="utf-8"> <title>\u7231\u95ee\u7b54\u52a9\u624b\u7b54\u6848\u5bfc\u51fa</title> </head> <body> ${n} </body> </HtML>` ], {
       type: "text/html"
-    }), i = document.createElement("a");
-    i.href = URL.createObjectURL(a), i.download = "\u7231\u95ee\u7b54\u52a9\u624b.html", 
-    i.click();
+    }), "\u7231\u95ee\u7b54\u52a9\u624b.html");
   };
 
   let Hr = null;
@@ -16133,9 +16177,9 @@
     class: "lib-detail-head"
   }, zr = {
     class: "aah-tag"
-  }, Dr = vue.createElementVNode("span", {
+  }, Nr = vue.createElementVNode("span", {
     class: "lib-detail-spacer"
-  }, null, -1), Nr = {
+  }, null, -1), Dr = {
     key: 0,
     class: "aah-alert aah-alert-info"
   }, Rr = [ "innerHTML" ], Fr = [ "innerHTML" ], Br = {
@@ -16166,7 +16210,7 @@
     emits: [ "edit", "remove" ],
     setup(e) {
       const optionKey = e => String.fromCharCode(65 + e);
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Or, [ vue.createElementVNode("header", jr, [ vue.createElementVNode("span", zr, vue.toDisplayString(vue.unref(typeLabel)(e.item)), 1), Dr, vue.createElementVNode("button", {
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Or, [ vue.createElementVNode("header", jr, [ vue.createElementVNode("span", zr, vue.toDisplayString(vue.unref(typeLabel)(e.item)), 1), Nr, vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-small",
         onClick: t[0] || (t[0] = t => e.$emit("edit"))
@@ -16179,7 +16223,7 @@
         onClick: t[1] || (t[1] = t => e.$emit("remove"))
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:trash-can-outline"
-      }), vue.createTextVNode("\u5220\u9664 ") ])) : vue.createCommentVNode("", true) ]), true === e.item.aiGenerated ? (vue.openBlock(), vue.createElementBlock("p", Nr, "AI \u751f\u6210 \xb7 " + vue.toDisplayString("local" === e.item.aiOrigin ? "\u672c\u673a\u7f51\u5173" : "AI \u670d\u52a1") + " \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u6b64\u8bb0\u5f55\u4ec5\u4fdd\u5b58\u5728\u672c\u673a\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", {
+      }), vue.createTextVNode("\u5220\u9664 ") ])) : vue.createCommentVNode("", true) ]), true === e.item.aiGenerated ? (vue.openBlock(), vue.createElementBlock("p", Dr, "AI \u751f\u6210 \xb7 " + vue.toDisplayString("local" === e.item.aiOrigin ? "\u672c\u673a\u7f51\u5173" : "AI \u670d\u52a1") + " \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u6b64\u8bb0\u5f55\u4ec5\u4fdd\u5b58\u5728\u672c\u673a\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", {
         class: "lib-detail-stem",
         innerHTML: vue.unref(withNoReferrer)(e.item.question1 || e.item.question)
       }, null, 8, Rr), "15" === e.item.type && Array.isArray(e.item.options) && "object" == typeof e.item.options[0] ? (vue.openBlock(true), 
@@ -16287,7 +16331,7 @@
       }) ]) ]), vue.createElementVNode("div", is, [ vue.createElementVNode("div", rs, [ ss, vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t[0] || (t[0] = t => e.ques.type = t),
         class: "base-select"
-      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(De), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
+      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(Ne), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
       }, vue.toDisplayString(t), 9, os)))), 128)) ], 512), [ [ vue.vModelSelect, e.ques.type ] ]) ]), vue.createElementVNode("div", ls, [ cs, vue.withDirectives(vue.createElementVNode("textarea", {
@@ -16365,9 +16409,9 @@
     class: "reading-sub-question-header"
   }, Hs = {
     class: "reading-sub-question-number"
-  }, Os = [ "onUpdate:modelValue" ], js = [ "value" ], zs = [ "onClick", "disabled" ], Ds = {
+  }, Os = [ "onUpdate:modelValue" ], js = [ "value" ], zs = [ "onClick", "disabled" ], Ns = {
     class: "form-row"
-  }, Ns = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), Rs = [ "onUpdate:modelValue", "placeholder" ], Fs = {
+  }, Ds = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), Rs = [ "onUpdate:modelValue", "placeholder" ], Fs = {
     key: 0,
     class: "form-row"
   }, Bs = vue.createElementVNode("label", null, "\u9009\u9879\u8bbe\u7f6e", -1), Gs = {
@@ -16452,7 +16496,7 @@
       }, [ vue.createElementVNode("div", Ms, [ vue.createElementVNode("span", Hs, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t => e.type = t,
         class: "base-select reading-base-select-small"
-      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(De), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
+      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(Ne), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
       }, vue.toDisplayString(t), 9, js)))), 128)) ], 8, Os), [ [ vue.vModelSelect, e.type ] ]), vue.createElementVNode("button", {
@@ -16462,7 +16506,7 @@
           s.value.options.length > 1 && s.value.options.splice(e, 1);
         })(t),
         disabled: s.value.options.length <= 1
-      }, " \u5220\u9664 ", 8, zs) ]), vue.createElementVNode("div", Ds, [ Ns, vue.withDirectives(vue.createElementVNode("textarea", {
+      }, " \u5220\u9664 ", 8, zs) ]), vue.createElementVNode("div", Ns, [ Ds, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t => e.question = t,
         class: "base-input",
         rows: "3",
@@ -17006,9 +17050,9 @@
 
   const zo = {
     class: "lib-toolbar"
-  }, Do = {
-    class: "lib-search"
   }, No = {
+    class: "lib-search"
+  }, Do = {
     key: 0,
     class: "lib-search-state"
   }, Ro = {
@@ -17081,7 +17125,7 @@
       }));
       const reload = () => {
         q.value = Cache.matchGet("ques1_") || [], refreshLibraryCount(), _.value.trim() && runSearch();
-      }, D = vue.computed((() => "saved" === z.value ? n.saveQuestionData : q.value)), runSearch = async () => {
+      }, N = vue.computed((() => "saved" === z.value ? n.saveQuestionData : q.value)), runSearch = async () => {
         const e = _.value.trim();
         if (!e) return void (A.value = null);
         if ("saved" === z.value) return void (A.value = ((e, t) => {
@@ -17110,10 +17154,10 @@
       })), vue.watch(S, (() => {
         I.value = Al, E.value = 0;
       }));
-      const N = vue.computed((() => {
-        const e = A.value ?? D.value;
+      const D = vue.computed((() => {
+        const e = A.value ?? N.value;
         return S.value ? e.filter((e => e.type === S.value)) : e;
-      })), R = vue.computed((() => N.value.slice(0, I.value))), F = vue.computed((() => N.value[E.value] ?? null)), stemText = e => {
+      })), R = vue.computed((() => D.value.slice(0, I.value))), F = vue.computed((() => D.value[E.value] ?? null)), stemText = e => {
         const t = document.createElement("div");
         return t.innerHTML = e ?? "", (t.textContent || "").replace(/\s+/g, " ").trim();
       }, B = vue.ref(null), G = vue.ref(false), K = vue.ref(false), editItem = e => {
@@ -17174,15 +17218,12 @@
             const n = new Blob([ t ], {
               type: "application/text"
             });
-            msg(`\u6253\u5305\u5b8c\u6210\uff0c\u5171\u8ba1${e.length}\u9898\uff0c\u51c6\u5907\u4e0b\u8f7d`, "success");
-            const a = document.createElement("a");
-            a.href = URL.createObjectURL(n);
-            const i = (new Date).toLocaleDateString().replace(/\//g, "-");
-            a.download = `\u7231\u95ee\u7b54\u52a9\u624b\u5907\u4efd-${i}.bak`, a.click(), setTimeout((() => URL.revokeObjectURL(a.href)), 100);
+            msg(`\u6253\u5305\u5b8c\u6210\uff0c\u5171\u8ba1${e.length}\u9898\uff0c\u51c6\u5907\u4e0b\u8f7d`, "success"), 
+            downloadBlob(n, `\u7231\u95ee\u7b54\u52a9\u624b\u5907\u4efd-${(new Date).toLocaleDateString().replace(/\//g, "-")}.bak`);
           } catch (e) {
             msg(`\u5bfc\u51fa\u5931\u8d25\uff1a${e}`, "error");
           }
-        })() : exportQuestionsAsDoc("doc-current" === e ? N.value : q.value);
+        })() : exportQuestionsAsDoc("doc-current" === e ? D.value : q.value);
       }, onDragEnter = e => {
         var t, n;
         (null == (n = null == (t = e.dataTransfer) ? void 0 : t.types) ? void 0 : n.includes("Files")) && (O++, 
@@ -17220,14 +17261,14 @@
         visible: K.value,
         ques: B.value,
         onHandleClose: closeEdit
-      }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", zo, [ vue.createElementVNode("label", Do, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", zo, [ vue.createElementVNode("label", No, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:magnify"
       }), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": i[0] || (i[0] = e => _.value = e),
         type: "search",
         placeholder: "\u641c\u7d22\u9898\u5e72\u3001\u9009\u9879\u6216\u7b54\u6848",
         "aria-label": "\u641c\u7d22\u9898\u5e93"
-      }, null, 512), [ [ vue.vModelText, _.value ] ]), C.value ? (vue.openBlock(), vue.createElementBlock("span", No, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ro, [ j.value ? (vue.openBlock(), 
+      }, null, 512), [ [ vue.vModelText, _.value ] ]), C.value ? (vue.openBlock(), vue.createElementBlock("span", Do, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ro, [ j.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         type: "button",
@@ -17272,13 +17313,13 @@
         deletable: !!e.key,
         onEdit: t => editItem(e),
         onRemove: t => removeItem(e)
-      }, null, 8, [ "item", "deletable", "onEdit", "onRemove" ])) : vue.createCommentVNode("", true) ], 2)))), 128)), N.value.length > R.value.length ? (vue.openBlock(), 
+      }, null, 8, [ "item", "deletable", "onEdit", "onRemove" ])) : vue.createCommentVNode("", true) ], 2)))), 128)), D.value.length > R.value.length ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         type: "button",
         class: "aah-btn aah-btn-plain lib-more",
         onClick: i[3] || (i[3] = e => I.value += Al)
-      }, "\u518d\u663e\u793a " + vue.toDisplayString(Math.min(Al, N.value.length - R.value.length)) + " \u6761\uff08\u8fd8\u5269 " + vue.toDisplayString(N.value.length - R.value.length) + " \u6761\uff09", 1)) : vue.createCommentVNode("", true) ], 64)) : (vue.openBlock(), 
+      }, "\u518d\u663e\u793a " + vue.toDisplayString(Math.min(Al, D.value.length - R.value.length)) + " \u6761\uff08\u8fd8\u5269 " + vue.toDisplayString(D.value.length - R.value.length) + " \u6761\uff09", 1)) : vue.createCommentVNode("", true) ], 64)) : (vue.openBlock(), 
       vue.createElementBlock("div", Yo, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:database-search-outline",
         class: "lib-empty-icon"
@@ -17304,7 +17345,7 @@
       }, [ vue.createTextVNode(" \xb7 \u672c\u9875\u6536\u5f55 "), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(n).saveQuestionData.length), 1) ], 64)) : vue.createCommentVNode("", true), _.value || S.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
-      }, [ vue.createTextVNode(" \xb7 \u7b5b\u9009\u540e "), vue.createElementVNode("b", null, vue.toDisplayString(N.value.length), 1) ], 64)) : vue.createCommentVNode("", true), L.value ? (vue.openBlock(), 
+      }, [ vue.createTextVNode(" \xb7 \u7b5b\u9009\u540e "), vue.createElementVNode("b", null, vue.toDisplayString(D.value.length), 1) ], 64)) : vue.createCommentVNode("", true), L.value ? (vue.openBlock(), 
       vue.createElementBlock("span", sl, "\u5bfc\u5165\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), ol, vue.createElementVNode("input", {
         ref_key: "uploadInput",
         ref: M,
@@ -17427,10 +17468,10 @@
     class: "label-desc"
   }, jl = {
     class: "config-control"
-  }, zl = [ "value" ], Dl = {
+  }, zl = [ "value" ], Nl = {
     key: 4,
     class: "hotkey-input-wrapper"
-  }, Nl = [ "value", "placeholder" ], Rl = {
+  }, Dl = [ "value", "placeholder" ], Rl = {
     key: 0,
     class: "hotkey-hint danger"
   }, Fl = {
@@ -17481,7 +17522,7 @@
         key: e.value,
         value: e.value
       }, vue.toDisplayString(e.label), 9, zl)))), 128)) ], 512)), [ [ vue.vModelSelect, e.item.value ] ]) : "hotkey" === i.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Dl, [ vue.createElementVNode("input", {
+      vue.createElementBlock("div", Nl, [ vue.createElementVNode("input", {
         class: vue.normalizeClass([ "aah-input", {
           recording: e.recordingHotkey === e.item.name
         } ]),
@@ -17490,7 +17531,7 @@
         readonly: "",
         onFocus: handleStartRecording,
         onKeydown: handleHotkeyKeydown
-      }, null, 42, Nl), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", Rl, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
+      }, null, 42, Dl), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", Rl, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
       vue.createElementBlock("span", Fl, "\u70b9\u51fb\u5f55\u5236")) ])) : "checkbox" === i.value ? (vue.openBlock(), 
       vue.createElementBlock("div", Bl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (n => (vue.openBlock(), vue.createElementBlock("label", {
         key: n.value,
@@ -17719,11 +17760,11 @@
     class: "ai-config-field"
   }, Oc = vue.createElementVNode("span", null, "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f", -1), jc = [ "value" ], zc = vue.createElementVNode("option", {
     value: "off"
-  }, "\u5173\u95ed\u8865\u7b54", -1), Dc = vue.createElementVNode("option", {
+  }, "\u5173\u95ed\u8865\u7b54", -1), Nc = vue.createElementVNode("option", {
     value: "manual"
-  }, "\u4ec5\u624b\u52a8", -1), Nc = vue.createElementVNode("option", {
+  }, "\u4ec5\u624b\u52a8", -1), Dc = vue.createElementVNode("option", {
     value: "auto"
-  }, "\u81ea\u52a8\u8865\u7b54", -1), Rc = [ zc, Dc, Nc ], Fc = {
+  }, "\u81ea\u52a8\u8865\u7b54", -1), Rc = [ zc, Nc, Dc ], Fc = {
     class: "ai-config-field"
   }, Bc = vue.createElementVNode("span", null, "\u4fdd\u5b58 AI \u7b54\u6848\u5230\u672c\u673a", -1), Gc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
@@ -17805,10 +17846,10 @@
   }, Ou = [ "disabled" ], ju = [ "disabled" ], zu = {
     key: 0,
     class: "aah-alert aah-alert-info"
-  }, Du = {
+  }, Nu = {
     key: 1,
     class: "ai-config-manager"
-  }, Nu = {
+  }, Du = {
     class: "ai-config-side"
   }, Ru = {
     class: "aah-card ai-config-list-panel"
@@ -17898,7 +17939,7 @@
     class: "ai-config-field-help"
   }, zp = {
     class: "ai-config-instance-actions"
-  }, Dp = [ "disabled" ], Np = {
+  }, Np = [ "disabled" ], Dp = {
     key: 5,
     class: "aah-alert aah-alert-info"
   }, Rp = {
@@ -17974,7 +18015,7 @@
       const s = t.settings.instances[0], l = vue.ref(s ? 2 : 1), _ = vue.ref((null == s ? void 0 : s.channelId) ?? ""), C = vue.ref(false), I = vue.ref(t.settings.defaultChannelId || (null == s ? void 0 : s.channelId) || ""), E = vue.ref(false), U = vue.ref(false), P = vue.ref(false), L = vue.ref(""), M = vue.ref(""), H = vue.ref(""), O = vue.ref(""), j = vue.ref(""), z = vue.ref(null), channelOf2 = e => {
         const n = resolveChannel(t.catalog, t.settings.customChannels, e);
         return n ? asChannel(n) : void 0;
-      }, isCustom = e => t.settings.customChannels.some((t => t.id === e)), D = vue.computed((() => t.catalogForDisplay().filter((e => !t.settings.instances.some((t => t.channelId === e.id)))))), N = vue.computed((() => C.value ? D.value : D.value.slice(0, 6))), R = vue.computed((() => t.settings.instances.map((e => ({
+      }, isCustom = e => t.settings.customChannels.some((t => t.id === e)), N = vue.computed((() => t.catalogForDisplay().filter((e => !t.settings.instances.some((t => t.channelId === e.id)))))), D = vue.computed((() => C.value ? N.value : N.value.slice(0, 6))), R = vue.computed((() => t.settings.instances.map((e => ({
         instance: e,
         channel: channelOf2(e.channelId)
       }))))), F = vue.computed((() => t.settings.instances.find((e => e.channelId === I.value)))), B = vue.computed((() => channelOf2(I.value))), G = vue.computed((() => channelOf2(_.value))), K = vue.computed((() => t.settings.instances.find((e => e.channelId === _.value)))), V = vue.computed((() => {
@@ -18077,7 +18118,7 @@
             current: l.value === t + 1
           })
         }, [ fu, vue.createElementVNode("span", null, vue.toDisplayString(e), 1) ], 2))), 64)) ]), 1 === l.value ? (vue.openBlock(), vue.createElementBlock("div", vu, [ yu, vue.createElementVNode("div", wu, [ (vue.openBlock(true), 
-        vue.createElementBlock(vue.Fragment, null, vue.renderList(N.value, (e => (vue.openBlock(), vue.createElementBlock("button", {
+        vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, (e => (vue.openBlock(), vue.createElementBlock("button", {
           key: e.id,
           type: "button",
           class: vue.normalizeClass([ "ai-config-card ai-config-card-pick", {
@@ -18095,13 +18136,13 @@
           class: "aah-btn",
           type: "button",
           onClick: i[5] || (i[5] = e => editCustom())
-        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), !C.value && D.value.length > N.value.length ? (vue.openBlock(), 
+        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), !C.value && N.value.length > D.value.length ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: i[6] || (i[6] = e => C.value = true)
-        }, " \u5c55\u5f00\u5168\u90e8 " + vue.toDisplayString(D.value.length) + " \u5bb6 ", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+        }, " \u5c55\u5f00\u5168\u90e8 " + vue.toDisplayString(N.value.length) + " \u5bb6 ", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           onClick: skipWizard
@@ -18150,7 +18191,7 @@
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(_.value)), 1) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), 
-        vue.createElementBlock("div", Du, [ vue.createElementVNode("aside", Nu, [ vue.createElementVNode("section", Ru, [ Fu, R.value.length ? (vue.openBlock(), vue.createElementBlock("div", Bu, [ (vue.openBlock(true), 
+        vue.createElementBlock("div", Nu, [ vue.createElementVNode("aside", Du, [ vue.createElementVNode("section", Ru, [ Fu, R.value.length ? (vue.openBlock(), vue.createElementBlock("div", Bu, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(R.value, (e => {
           var n, a;
           return vue.openBlock(), vue.createElementBlock("button", {
@@ -18267,8 +18308,8 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:connection",
           class: "icon-inline"
-        }), vue.createTextVNode(vue.toDisplayString(testingFor(I.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, Dp) ]), messageFor(I.value) ? (vue.openBlock(), 
-        vue.createElementBlock("div", Np, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), vue.createTextVNode(vue.toDisplayString(testingFor(I.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, Np) ]), messageFor(I.value) ? (vue.openBlock(), 
+        vue.createElementBlock("div", Dp, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(I.value)), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
@@ -18303,7 +18344,7 @@
           class: "aah-btn",
           type: "button",
           onClick: i[20] || (i[20] = e => editCustom())
-        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), vue.createElementVNode("div", Qp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, (e => (vue.openBlock(), 
+        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), vue.createElementVNode("div", Qp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(N.value, (e => (vue.openBlock(), 
         vue.createElementBlock("article", {
           key: e.id,
           class: vue.normalizeClass([ "ai-config-card", {
@@ -18327,7 +18368,7 @@
             return a = e.id, t.addChannel(a), I.value = a, void (E.value = false);
             var a;
           }
-        }, "\u6dfb\u52a0", 8, ed) ]) ], 2)))), 128)) ]), D.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        }, "\u6dfb\u52a0", 8, ed) ]) ], 2)))), 128)) ]), N.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
         vue.createElementBlock("p", td, "\u5168\u90e8\u6e20\u9053\u90fd\u5df2\u6dfb\u52a0\u3002")) ]), vue.createElementVNode("div", nd, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
@@ -18440,7 +18481,7 @@
     class: "config-item"
   }, zd = {
     class: "config-item-content"
-  }, Dd = vue.createElementVNode("div", {
+  }, Nd = vue.createElementVNode("div", {
     class: "config-label"
   }, [ vue.createElementVNode("div", {
     class: "label-wrapper"
@@ -18448,7 +18489,7 @@
     class: "label-text"
   }, "\u9898\u95f4\u95f4\u9694"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u4e24\u9898\u4e4b\u95f4\u7b49\u5f85\u7684\u65f6\u95f4\u3002\u95f4\u9694\u592a\u77ed\u5bb9\u6613\u88ab\u5e73\u53f0\u5224\u5b9a\u5f02\u5e38\u3002") ]) ], -1), Nd = {
+  }, "\u4e24\u9898\u4e4b\u95f4\u7b49\u5f85\u7684\u65f6\u95f4\u3002\u95f4\u9694\u592a\u77ed\u5bb9\u6613\u88ab\u5e73\u53f0\u5224\u5b9a\u5f02\u5e38\u3002") ]) ], -1), Dd = {
     class: "config-control settings-range"
   }, Rd = [ "min" ], Fd = {
     class: "num"
@@ -18515,7 +18556,7 @@
             askGpt: t
           }), Cache.set("askGpt", t), t && msg("\u8bf7\u5148\u6d4b\u8bd5\u53ef\u7528\u7684\u6a21\u578b\uff1b\u81ea\u52a8 AI \u4ecd\u9700\u901a\u8fc7\u5b89\u5168\u5339\u914d\u548c\u91c7\u7eb3\u7b56\u7565\u3002");
         })(e.target.value))
-      }, Od, 40, Hd) ]) ]) ]), vue.createElementVNode("div", jd, [ vue.createElementVNode("div", zd, [ Dd, vue.createElementVNode("div", Nd, [ vue.withDirectives(vue.createElementVNode("input", {
+      }, Od, 40, Hd) ]) ]) ]), vue.createElementVNode("div", jd, [ vue.createElementVNode("div", zd, [ Nd, vue.createElementVNode("div", Dd, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": r[1] || (r[1] = e => vue.unref(t).delay = e),
         type: "range",
         min: vue.unref(t).minDelay,
@@ -18657,9 +18698,9 @@
     class: "user-page__apikey num"
   }, jh = {
     class: "config-control"
-  }, zh = [ "disabled" ], Dh = {
+  }, zh = [ "disabled" ], Nh = {
     class: "user-page__tips"
-  }, Nh = vue.defineComponent({
+  }, Dh = vue.defineComponent({
     __name: "User",
     setup(e) {
       const t = Jn(), n = vue.ref("password"), a = vue.ref({
@@ -18793,7 +18834,7 @@
         class: "user-page__link-btn",
         type: "button",
         onClick: i[6] || (i[6] = e => openSite(vue.unref(eh).reset))
-      }, "\u5728\u5b98\u7f51\u627e\u56de") ]) ]) ], 32) ], 64)), vue.createElementVNode("p", Dh, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
+      }, "\u5728\u5b98\u7f51\u627e\u56de") ]) ]) ], 32) ], 64)), vue.createElementVNode("p", Nh, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
         class: "user-page__link-btn",
         type: "button",
         onClick: i[8] || (i[8] = e => openSite(vue.unref(eh).feedback))
@@ -18853,10 +18894,9 @@
         var e;
         return (null == (e = n.find((e => e.key === s.value))) ? void 0 : e.label) || "\u5168\u90e8";
       })), f = vue.computed((() => t.logs.length)), exportLogs = () => {
-        const e = new Blob([ JSON.stringify(t.logs, null, 2) ], {
+        downloadBlob(new Blob([ JSON.stringify(t.logs, null, 2) ], {
           type: "application/json"
-        }), n = URL.createObjectURL(e), a = document.createElement("a");
-        a.href = n, a.download = `aiask-logs-${Date.now()}.json`, a.click(), URL.revokeObjectURL(n);
+        }), `aiask-logs-${Date.now()}.json`);
       };
       return (e, i) => (vue.openBlock(), vue.createElementBlock("div", Rh, [ vue.createElementVNode("div", Fh, [ vue.createElementVNode("div", Bh, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(n, (e => vue.createElementVNode("button", {
         key: e.key,
@@ -18965,9 +19005,9 @@
     class: "config-item"
   }, zm = {
     class: "config-item-content"
-  }, Dm = {
-    class: "config-label"
   }, Nm = {
+    class: "config-label"
+  }, Dm = {
     class: "label-wrapper"
   }, Rm = {
     class: "label-text"
@@ -19105,7 +19145,7 @@
         key: 0
       })) : "ai" === A.value ? (vue.openBlock(), vue.createBlock(Ad, {
         key: 1
-      })) : "account" === A.value ? (vue.openBlock(), vue.createBlock(Nh, {
+      })) : "account" === A.value ? (vue.openBlock(), vue.createBlock(Dh, {
         key: 2
       })) : "general" === A.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 3
@@ -19146,7 +19186,7 @@
       }), vue.createTextVNode("\u6e05\u7a7a ") ], 8, Hm) ]) ]) ]) ]) ], 64)) : "about" === A.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 4
-      }, [ vue.createElementVNode("div", Om, [ vue.createElementVNode("div", jm, [ vue.createElementVNode("div", zm, [ vue.createElementVNode("div", Dm, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("span", Rm, [ vue.createTextVNode(vue.toDisplayString(vue.unref(Re).script.name) + " ", 1), vue.createElementVNode("span", Fm, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), Bm ]) ]), vue.createElementVNode("div", Gm, [ vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("div", Om, [ vue.createElementVNode("div", jm, [ vue.createElementVNode("div", zm, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("div", Dm, [ vue.createElementVNode("span", Rm, [ vue.createTextVNode(vue.toDisplayString(vue.unref(Re).script.name) + " ", 1), vue.createElementVNode("span", Fm, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), Bm ]) ]), vue.createElementVNode("div", Gm, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn",
         disabled: L.value,
@@ -19223,18 +19263,24 @@
   }, cg = vue.defineComponent({
     __name: "MiniBall",
     setup(e) {
-      const t = Qn(), n = ia(), a = useAskOverview(), i = vue.computed((() => n.questionList.length)), s = vue.computed((() => i.value - a.value.tally.todo)), o = vue.computed((() => i.value ? Math.round(s.value / i.value * 100) : 0)), l = vue.computed((() => a.value.tally.none + a.value.tally.wait)), m = vue.computed((() => n.questionList.findIndex((e => Array.isArray(e.answer) && e.answer.some((e => null == e ? void 0 : e.needLogin)))))), g = vue.computed((() => {
-        const {firstWait: e, firstNone: n, tally: i} = a.value;
+      const t = Qn(), n = ia(), a = useAskOverview(), i = vue.computed((() => n.questionList.length)), s = vue.computed((() => a.value.tally.done)), o = vue.computed((() => i.value ? Math.round(s.value / i.value * 100) : 0)), l = vue.computed((() => a.value.tally.none + a.value.tally.wait)), m = vue.computed((() => n.questionList.findIndex((e => Array.isArray(e.answer) && e.answer.some((e => null == e ? void 0 : e.needLogin)))))), g = vue.computed((() => {
+        const {firstWait: e, firstNone: i, tally: r} = a.value;
         if (e >= 0) return {
           title: `\u7b2c ${e + 1} \u9898 AI \u5efa\u8bae\u5f85\u786e\u8ba4`,
           detail: "\u786e\u8ba4\u540e\u624d\u4f1a\u586b\u5165\u9875\u9762\uff0c\u70b9\u6b64\u67e5\u770b",
           index: e
         };
-        if (n >= 0) {
+        if (i >= 0) {
+          const e = n.questionList[i];
+          if ("failed" === (null == e ? void 0 : e.phase)) return {
+            title: `\u7b2c ${i + 1} \u9898\u672a\u5b8c\u6210`,
+            detail: e.error || "\u70b9\u6b64\u67e5\u770b",
+            index: i
+          };
           return {
-            title: `\u7b2c ${n + 1} \u9898\u65e0\u7b54\u6848`,
-            detail: `\u5404\u6765\u6e90\u90fd\u6ca1\u67e5\u5230${i.none > 1 ? `\uff0c\u5171 ${i.none} \u9898\u65e0\u7b54\u6848` : ""}\uff0c\u70b9\u6b64\u67e5\u770b`,
-            index: n
+            title: `\u7b2c ${i + 1} \u9898\u65e0\u7b54\u6848`,
+            detail: `\u5404\u6765\u6e90\u90fd\u6ca1\u67e5\u5230${r.none > 1 ? `\uff0c\u5171 ${r.none} \u9898\u65e0\u7b54\u6848` : ""}\uff0c\u70b9\u6b64\u67e5\u770b`,
+            index: i
           };
         }
         return m.value >= 0 ? {
@@ -19326,9 +19372,9 @@
     class: "official-result-head"
   }, zg = {
     class: "official-result-num"
-  }, Dg = {
-    class: "num"
   }, Ng = {
+    class: "num"
+  }, Dg = {
     class: "aah-tag"
   }, Rg = [ "innerHTML" ], Fg = {
     key: 0,
@@ -19594,7 +19640,7 @@
         return vue.openBlock(), vue.createElementBlock("li", {
           key: `official-${t}`,
           class: "official-result-item"
-        }, [ vue.createElementVNode("div", jg, [ vue.createElementVNode("span", zg, [ vue.createTextVNode("\u76f8\u4f3c\u9898 "), vue.createElementVNode("span", Dg, vue.toDisplayString(t + 1), 1) ]), vue.createElementVNode("span", Ng, vue.toDisplayString((n = e.type, 
+        }, [ vue.createElementVNode("div", jg, [ vue.createElementVNode("span", zg, [ vue.createTextVNode("\u76f8\u4f3c\u9898 "), vue.createElementVNode("span", Ng, vue.toDisplayString(t + 1), 1) ]), vue.createElementVNode("span", Dg, vue.toDisplayString((n = e.type, 
         O[String(n)] || "\u5176\u5b83\u9898\u578b")), 1) ]), vue.createElementVNode("div", {
           class: "official-question",
           innerHTML: e.question
@@ -19780,15 +19826,19 @@
           mark: null,
           tone: "idle"
         };
-        const {tally: t} = _.value, a = e - t.todo;
+        const {tally: t} = _.value, a = t.done;
         return n.start ? {
           text: `\u7b54\u9898\u4e2d \xb7 \u7b2c ${Math.min(n.questionInx + 1, e)} \u9898`,
           mark: "run",
           tone: "run"
-        } : 0 === t.todo ? {
+        } : a === e ? {
           text: `\u5df2\u5b8c\u6210 ${a}/${e}`,
           mark: "done",
           tone: "done"
+        } : 0 === t.todo && 0 === t.wait ? {
+          text: `\u5df2\u7b54 ${a}/${e}`,
+          mark: null,
+          tone: "idle"
         } : {
           text: `${a ? "\u5df2\u6682\u505c" : "\u5f85\u5f00\u59cb"} \xb7 \u5df2\u7b54 ${a}/${e}`,
           mark: "todo",
@@ -19828,7 +19878,7 @@
         left: "50%",
         useTransform: true
       });
-      K[Ne + "app"] = t, K[Ne + "ask"] = n, K[Ne + "api"] = a, K[Ne + "user"] = s, K[Ne + "ai"] = y;
+      K[De + "app"] = t, K[De + "ask"] = n, K[De + "api"] = a, K[De + "user"] = s, K[De + "ai"] = y;
       document.onkeydown = function(e) {
         if (!t.app.hotkeyEnabled) return;
         const n = (e => {
@@ -19866,19 +19916,19 @@
         startX: 0,
         startWidth: 0
       });
-      let D = 0, N = 0;
+      let N = 0, D = 0;
       const handleResizeMove = e => {
         if (!z.resizing) return;
         const t = e.clientX - z.startX, n = H.useTransform ? 2 : 1;
-        N = Math.max(480, Math.min(1200, Math.round(z.startWidth + t * n))), D || (D = requestAnimationFrame((() => {
-          D = 0, O.value = N;
+        D = Math.max(480, Math.min(1200, Math.round(z.startWidth + t * n))), N || (N = requestAnimationFrame((() => {
+          N = 0, O.value = D;
         })));
       }, stopResize = () => {
-        z.resizing && (z.resizing = false, D && cancelAnimationFrame(D), D = 0, null !== O.value && t.setDialogWidth(O.value), 
+        z.resizing && (z.resizing = false, N && cancelAnimationFrame(N), N = 0, null !== O.value && t.setDialogWidth(O.value), 
         O.value = null, window.removeEventListener("pointermove", handleResizeMove), window.removeEventListener("pointerup", stopResize));
       }, startResize = e => {
         e.preventDefault(), e.stopPropagation(), z.resizing = true, z.startX = e.clientX, 
-        z.startWidth = t.app.dialogWidth, N = z.startWidth, window.addEventListener("pointermove", handleResizeMove), 
+        z.startWidth = t.app.dialogWidth, D = z.startWidth, window.addEventListener("pointermove", handleResizeMove), 
         window.addEventListener("pointerup", stopResize);
       }, handleDragMove = e => {
         if (!M.dragging || !q.value) return;
