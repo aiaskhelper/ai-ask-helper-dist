@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.7.11
+// @version      2.7.12
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学、UMU互动平台】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -246,7 +246,7 @@
     value: a
   }) : t[n] = a)(t, "symbol" != typeof n ? n + "" : n, a);
 
-  var N = (() => "undefined" != typeof GM_deleteValue ? GM_deleteValue : void 0)(), D = (() => "undefined" != typeof GM_getValue ? GM_getValue : void 0)(), R = (() => "undefined" != typeof GM_info ? GM_info : void 0)(), F = (() => "undefined" != typeof GM_listValues ? GM_listValues : void 0)(), B = (() => "undefined" != typeof GM_setValue ? GM_setValue : void 0)(), G = (() => "undefined" != typeof GM_xmlhttpRequest ? GM_xmlhttpRequest : void 0)(), K = (() => "undefined" != typeof unsafeWindow ? unsafeWindow : void 0)();
+  var D = (() => "undefined" != typeof GM_deleteValue ? GM_deleteValue : void 0)(), N = (() => "undefined" != typeof GM_getValue ? GM_getValue : void 0)(), R = (() => "undefined" != typeof GM_info ? GM_info : void 0)(), F = (() => "undefined" != typeof GM_listValues ? GM_listValues : void 0)(), B = (() => "undefined" != typeof GM_setValue ? GM_setValue : void 0)(), G = (() => "undefined" != typeof GM_xmlhttpRequest ? GM_xmlhttpRequest : void 0)(), K = (() => "undefined" != typeof unsafeWindow ? unsafeWindow : void 0)();
 
   const V = "AiAsk_";
 
@@ -257,11 +257,11 @@
         value: t,
         expire: n > 0 ? Date.now() + 1e3 * n : 0
       };
-      return B(e, a), D(e);
+      return B(e, a), N(e);
     }
     static get(e, t = null) {
-      const n = D(e = V + e);
-      return n && n.expire && n.expire < Date.now() ? (N(e), t) : n ? n.value : t;
+      const n = N(e = V + e);
+      return n && n.expire && n.expire < Date.now() ? (D(e), t) : n ? n.value : t;
     }
     static match(e) {
       return e = V + e, F().filter((t => t.startsWith(e)));
@@ -272,20 +272,20 @@
         if (t && t.expire && t.expire < Date.now()) return n(e), null;
         const a = t ? t.value : null;
         return a && (a.key = e.replace("AiAsk_", "")), a;
-      }(e, D(e, {
+      }(e, N(e, {
         value: null,
         expire: 0
-      }), N))).filter((e => null !== e));
+      }), D))).filter((e => null !== e));
       return n.sort(((e, t) => (t.createTime || 0) - (e.createTime || 0))), n;
     }
     static remove(e) {
-      N(V + e);
+      D(V + e);
     }
     static clear() {
-      F().filter((e => e.startsWith(V))).forEach(N);
+      F().filter((e => e.startsWith(V))).forEach(D);
     }
     static matchRemove(e) {
-      e = V + e, F().filter((t => t.startsWith(e))).forEach(N);
+      e = V + e, F().filter((t => t.startsWith(e))).forEach(D);
     }
   }
 
@@ -2500,7 +2500,7 @@
     baseUrl: e.baseUrl || t,
     providerKind: e.providerKind,
     model: e.model
-  }), Le = "ai_settings", $e = "ai_settings_backup_v1", isRecord = e => "object" == typeof e && null !== e, normalizeCredential = e => {
+  }), Le = "ai_settings", Me = "ai_settings_backup_v1", isRecord = e => "object" == typeof e && null !== e, normalizeCredential = e => {
     if (!isRecord(e)) return;
     const t = "string" == typeof e.value ? e.value.trim() : "";
     return t ? {
@@ -2560,7 +2560,7 @@
   }, loadAiSettingsFrom = (e, t, n) => {
     const a = e.get(Le), i = normalizeAiSettingsV2(a);
     if (i) return i;
-    a && !e.get($e) && e.set($e, a);
+    a && !e.get(Me) && e.set(Me, a);
     const r = (e => {
       var t, n;
       if (!isRecord$1(e) || !Array.isArray(e.configs)) return null;
@@ -2802,7 +2802,26 @@
       state: "unsupported",
       modelId: a
     };
-  }, Me = /<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi, He = /(?:spacer|blank|transparent)\.(?:gif|png|webp)(?:[?#].*)?$/i, Oe = [ "data-src", "data-original", "data-lazy-src", "data-echo" ], resolveImageSrc = (e, t) => {
+  };
+
+  function questionImageElements(e, t) {
+    const n = Array.from(e.querySelectorAll("img"));
+    if (!t || !n.length) return n;
+    const a = new Set(t(e));
+    return n.filter((e => !a.has(e)));
+  }
+
+  function questionMediaMarkup(e) {
+    const {html: t, findMediaDecorations: n} = e;
+    if ("string" == typeof t) return t;
+    if ((null == t ? void 0 : t.ownerDocument) && (null == n ? void 0 : n(t).some((e => "svg" === e.localName)))) {
+      const e = t.ownerDocument.implementation.createHTMLDocument().importNode(t, true);
+      return n(e).forEach((e => e.remove())), e.outerHTML;
+    }
+    return "string" == typeof (null == t ? void 0 : t.outerHTML) ? t.outerHTML : "string" == typeof (null == t ? void 0 : t.innerHTML) ? t.innerHTML : "";
+  }
+
+  const $e = /<img\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi, He = /(?:spacer|blank|transparent)\.(?:gif|png|webp)(?:[?#].*)?$/i, Oe = [ "data-src", "data-original", "data-lazy-src", "data-echo" ], resolveImageSrc = (e, t) => {
     if (!e) return "";
     const n = e.trim().replace(/&amp;/g, "&");
     if (/^(?:data:|blob:)/i.test(n)) return n;
@@ -2836,22 +2855,22 @@
     var n, a;
   }, extractRefsFromString = (e, t) => {
     const n = [];
-    for (const a of e.matchAll(Me)) {
+    for (const a of e.matchAll($e)) {
       const e = resolveImageSrc(a[1], t);
       shouldUseImageSrc(e) && n.push({
         src: e
       });
     }
     return n;
-  }, collectRefs = (e, t) => {
-    return e ? "string" == typeof e ? extractRefsFromString(e, t) : (n = e) && "object" == typeof n && "function" == typeof n.querySelectorAll ? Array.from(e.querySelectorAll("img") || []).filter((e => !(e => {
+  }, collectRefs = (e, t, n) => {
+    return e ? "string" == typeof e ? extractRefsFromString(e, t) : (a = e) && "object" == typeof a && "function" == typeof a.querySelectorAll ? questionImageElements(e, n).filter((e => !(e => {
       const t = Number(null == e ? void 0 : e.naturalWidth), n = Number(null == e ? void 0 : e.naturalHeight);
       return t > 0 && n > 0 && t < 32 && n < 32;
     })(e))).map((e => ({
       src: resolveImageSrc(pickElementSrc(e), t),
       el: e
     }))).filter((e => shouldUseImageSrc(e.src))) : "string" == typeof e.outerHTML ? extractRefsFromString(e.outerHTML, t) : "string" == typeof e.innerHTML ? extractRefsFromString(e.innerHTML, t) : [] : [];
-    var n;
+    var a;
   }, uniqueRefs = e => {
     const t = new Map;
     for (const n of e) {
@@ -2859,7 +2878,7 @@
       (!e || !e.el && n.el) && t.set(n.src, n);
     }
     return Array.from(t.values());
-  }, extractQuestionImageRefs = (e, t = {}) => uniqueRefs([ ...collectRefs(e.question, t.baseUrl), ...collectRefs(e.html, t.baseUrl), ...Array.isArray(e.options) ? e.options.flatMap((e => collectRefs(e, t.baseUrl))) : [] ]), hasQuestionImages = (e, t = "") => {
+  }, extractQuestionImageRefs = (e, t = {}) => uniqueRefs([ ...collectRefs(e.question, t.baseUrl), ...collectRefs(e.html, t.baseUrl, e.findMediaDecorations), ...Array.isArray(e.options) ? e.options.flatMap((e => collectRefs(e, t.baseUrl))) : [] ]), hasQuestionImages = (e, t = "") => {
     return (e => extractQuestionImageRefs(e).map((e => e.src)))(e).length > 0 || (n = t, 
     uniqueRefs(collectRefs(n)).map((e => e.src))).length > 0;
     var n;
@@ -3096,7 +3115,7 @@
     if (add(e.question || "", "stem", "\u9898\u5e72"), null == (t = e.options) ? void 0 : t.some((e => "string" != typeof e))) throw new Error("\u590d\u5408\u56fe\u7247\u9898\u6682\u4e0d\u652f\u6301");
     if (null == (n = e.options) || n.forEach(((e, t) => add(e, `option:${t}`, `\u9009\u9879 ${String.fromCharCode(65 + t)}`))), 
     i.length && (null == (a = e.html) ? void 0 : a.querySelectorAll)) {
-      const t = new Set(i.map((e => e.url))), n = Array.from(e.html.querySelectorAll("img"));
+      const t = new Set(i.map((e => e.url))), n = questionImageElements(e.html, e.findMediaDecorations);
       if (n.length > 8 || n.some((e => !t.has(resolveImageSrc(e.currentSrc || e.getAttribute("src") || ""))))) throw new Error("\u9875\u9762\u56fe\u7247\u4e0e\u9898\u5e72\u6216\u9009\u9879\u65e0\u6cd5\u5b8c\u6574\u5bf9\u5e94\uff0c\u8bf7\u91cd\u65b0\u8bc6\u522b");
     }
     return i;
@@ -3328,7 +3347,7 @@
     };
   }));
 
-  const Ne = {
+  const De = {
     "\u5355\u9009\u9898": "0",
     "\u591a\u9009\u9898": "1",
     "\u586b\u7a7a\u9898": "2",
@@ -3355,22 +3374,22 @@
     "\u9009\u8bcd\u586b\u7a7a": "24",
     "\u9009\u505a\u9898": "25",
     "\u5176\u5b83": "8"
-  }, De = function(e) {
+  }, Ne = function(e) {
     let t = "";
     for (;t.length < e; t += Math.random().toString(36).substring(2)) ;
     return t.substring(0, e);
   }(9) + "_", Re = R;
 
   function getAppStore() {
-    return K[De + "app"];
+    return K[Ne + "app"];
   }
 
   function getAskStore() {
-    return K[De + "ask"];
+    return K[Ne + "ask"];
   }
 
   function getAiStore() {
-    return K[De + "ai"];
+    return K[Ne + "ai"];
   }
 
   function isParentChecked(e) {
@@ -3716,7 +3735,7 @@
     }
     static getAnonymousId() {
       if (this.cachedAnonymousId) return this.cachedAnonymousId;
-      let e = D(this.STORAGE_KEY);
+      let e = N(this.STORAGE_KEY);
       return e && this.validateId(e) || (e = this.generateShortId(), B(this.STORAGE_KEY, e)), 
       this.cachedAnonymousId = e, e;
     }
@@ -3751,7 +3770,7 @@
     }
     static getDeviceFingerprint() {
       if (this.cachedFingerprint) return this.cachedFingerprint;
-      const e = D(this.FINGERPRINT_KEY);
+      const e = N(this.FINGERPRINT_KEY);
       if (e && e.version === this.FP_VERSION && e.value) return this.cachedFingerprint = e.value, 
       e.value, e.value;
       const t = [ this.normalizeUserAgent(navigator.userAgent), navigator.language, navigator.platform, screen.colorDepth, screen.pixelDepth || screen.colorDepth, (new Date).getTimezoneOffset(), navigator.hardwareConcurrency || 0, navigator.maxTouchPoints || 0, navigator.deviceMemory || 0, this.getWebGLFingerprint(), this.getStableCanvasFingerprint() ], n = md5(t.filter(Boolean).join("|")).substring(0, 12);
@@ -3791,8 +3810,8 @@
           webgl: this.getWebGLFingerprint()
         },
         storage: {
-          fp_stored: D(this.FINGERPRINT_KEY),
-          id_stored: D(this.STORAGE_KEY)
+          fp_stored: N(this.FINGERPRINT_KEY),
+          id_stored: N(this.STORAGE_KEY)
         }
       };
     }
@@ -5448,17 +5467,17 @@
               if (2 != E.fmt) continue;
               var U = e._lctf.getInterval(E.cDef, d), P = E.cDef[U + 2], L = E.scset[P];
               for (i = 0; i < L.length; i++) {
-                var $ = L[i], M = $.input;
-                if (!(M.length > w)) {
-                  for (S = true, I = 0; I < M.length; I++) {
+                var M = L[i], $ = M.input;
+                if (!($.length > w)) {
+                  for (S = true, I = 0; I < $.length; I++) {
                     var H = e._lctf.getInterval(E.cDef, a[p + 1 + I]);
-                    if (-1 == U && E.cDef[H + 2] != M[I]) {
+                    if (-1 == U && E.cDef[H + 2] != $[I]) {
                       S = false;
                       break;
                     }
                   }
                   if (S) {
-                    var O = $.substLookupRecords;
+                    var O = M.substLookupRecords;
                     for (_ = 0; _ < O.length; _ += 2) O[_], O[_ + 1];
                   }
                 }
@@ -5559,8 +5578,8 @@
           b = y + r.shift(), Math.abs(w - p) > Math.abs(b - d) ? p = w + r.shift() : d = b + r.shift(), 
           e.U.P.curveTo(i, h, m, g, f, x, k), e.U.P.curveTo(i, v, y, w, b, p, d)); else if ("o14" == A) {
             if (r.length > 0 && !o && (l = r.shift() + a.nominalWidthX, o = true), 4 == r.length) {
-              var E = r.shift(), U = r.shift(), P = r.shift(), L = r.shift(), $ = e.CFF.glyphBySE(a, P), M = e.CFF.glyphBySE(a, L);
-              e.U._drawCFF(a.CharStrings[$], n, a, i), n.x = E, n.y = U, e.U._drawCFF(a.CharStrings[M], n, a, i);
+              var E = r.shift(), U = r.shift(), P = r.shift(), L = r.shift(), M = e.CFF.glyphBySE(a, P), $ = e.CFF.glyphBySE(a, L);
+              e.U._drawCFF(a.CharStrings[M], n, a, i), n.x = E, n.y = U, e.U._drawCFF(a.CharStrings[$], n, a, i);
             }
             c && (e.U.P.closePath(i), c = false);
           } else if ("o19" == A || "o20" == A) {
@@ -5584,11 +5603,11 @@
               p = n.x, d = n.y, s = n.nStems, o = n.haveWidth, l = n.width, c = n.open;
             }
           } else if ("o30" == A || "o31" == A) {
-            var z = r.length, N = (I = 0, "o31" == A);
-            for (I += z - (_ = -3 & z); I < _; ) N ? (m = d, g = (h = p + r.shift()) + r.shift(), 
+            var z = r.length, D = (I = 0, "o31" == A);
+            for (I += z - (_ = -3 & z); I < _; ) D ? (m = d, g = (h = p + r.shift()) + r.shift(), 
             d = (f = m + r.shift()) + r.shift(), _ - I == 5 ? (p = g + r.shift(), I++) : p = g, 
-            N = false) : (h = p, m = d + r.shift(), g = h + r.shift(), f = m + r.shift(), p = g + r.shift(), 
-            _ - I == 5 ? (d = f + r.shift(), I++) : d = f, N = true), e.U.P.curveTo(i, h, m, g, f, p, d), 
+            D = false) : (h = p, m = d + r.shift(), g = h + r.shift(), f = m + r.shift(), p = g + r.shift(), 
+            _ - I == 5 ? (d = f + r.shift(), I++) : d = f, D = true), e.U.P.curveTo(i, h, m, g, f, p, d), 
             I += 4;
           } else {
             if ("o" == (A + "").charAt(0)) throw console.log("Unknown operation: " + A, t), 
@@ -5669,7 +5688,17 @@
     })(location.href, (e => {
       K.location.href = e;
     }));
-  }, isModernMultipleChecked = e => e.hasClass("answerBg") ? e.find(".check_answer_dx").length > 0 : null, isClassicMultipleChecked = e => {
+  };
+
+  function findExamMediaDecorations(e) {
+    const t = e.querySelectorAll('img[alt=""], img[aria-hidden="true"], svg[aria-hidden="true"]');
+    return Array.from(t).filter((t => {
+      const n = t.closest('button[aria-label], [role="button"][aria-label], [role="status"]');
+      return n && e.contains(n) && !t.closest("h3, .after, .answer_p, .answerBg");
+    }));
+  }
+
+  const isModernMultipleChecked = e => e.hasClass("answerBg") ? e.find(".check_answer_dx").length > 0 : null, isClassicMultipleChecked = e => {
     const t = e.closest("li");
     if (!t.length) return null;
     const n = t.find('input[type="checkbox"]');
@@ -6073,8 +6102,8 @@
     },
     questionHook: e => {
       const t = removeHtml(z(e.html).find(".colorShallow").html());
-      if (e.question = cleanChaoxingQuestionLiTitle(e.question, t, titleClean), e.$options = z(e.html).find(".answerBg"), 
-      "3" === e.type) e.options = [];
+      if (e.question = cleanChaoxingQuestionLiTitle(e.question, t, titleClean), "0" !== e.type && "3" !== e.type || (e.findMediaDecorations = findExamMediaDecorations), 
+      e.$options = z(e.html).find(".answerBg"), "3" === e.type) e.options = [];
       return e;
     },
     isMultipleChecked: isModernMultipleChecked,
@@ -10360,9 +10389,9 @@
   }, getOptionNo = e => e.itemNo ?? e.item_no ?? 0, getSortedOptions = e => [ ...e.options || [] ].sort(((e, t) => getOptionNo(e) - getOptionNo(t))), getMosoteachTopicOptions = (e, t) => {
     var n;
     return "TF" !== e.type || (null == (n = e.options) ? void 0 : n.length) ? t(getSortedOptions(e).map((e => e.content || ""))) : [ "\u6b63\u786e", "\u9519\u8bef" ];
-  }, $t = ".topic-answer-align,label.d-flex.align-center:has(.v-radio)", Mt = `.pt-10.d-flex.list-item:has(.topic-subject):has(${$t})`, Ht = `${$t},.t-option.t-item label,.t-judge.t-item label`, Ot = ".v-chip__content,.t-type", jt = "__aiAskMosoteachRouteHook", zt = "__aiAskMosoteachHref", Nt = "__aiAskMosoteachRouteTimer";
+  }, Mt = ".topic-answer-align,label.d-flex.align-center:has(.v-radio)", $t = `.pt-10.d-flex.list-item:has(.topic-subject):has(${Mt})`, Ht = `${Mt},.t-option.t-item label,.t-judge.t-item label`, Ot = ".v-chip__content,.t-type", jt = "__aiAskMosoteachRouteHook", zt = "__aiAskMosoteachHref", Dt = "__aiAskMosoteachRouteTimer";
 
-  let Dt = [];
+  let Nt = [];
 
   const Rt = {
     cleanText: (e = "") => titleClean(removeHtml(e)),
@@ -10371,7 +10400,7 @@
   }, getMosoteachQuestionType = (e = "", t = []) => ((e = "", t = []) => {
     const n = Lt[e.trim()];
     return "0" === n && (e => 2 === e.length && e.every((e => /^(\u6b63\u786e|\u9519\u8bef|\u5bf9|\u9519|\u662f|\u5426|T|F|true|false)$/i.test(e.trim()))))(t) ? "3" : n || "";
-  })(e, t) || typeMatch(e), getMosoteachQuestionElements = () => isMosoteachReviewUrl() ? z(location.pathname.endsWith("/index.php") ? ".topic-item" : ".quiz-topic-content") : isMosoteachLegacyQuizReplyUrl() ? z(".topic-item") : z(Mt), getMosoteachLegacyTopics = () => {
+  })(e, t) || typeMatch(e), getMosoteachQuestionElements = () => isMosoteachReviewUrl() ? z(location.pathname.endsWith("/index.php") ? ".topic-item" : ".quiz-topic-content") : isMosoteachLegacyQuizReplyUrl() ? z(".topic-item") : z($t), getMosoteachLegacyTopics = () => {
     var e, t;
     const n = z("#app")[0], a = null == (t = null == (e = null == n ? void 0 : n.__vue__) ? void 0 : e.$data) ? void 0 : t.topics;
     return Array.isArray(a) ? a : [];
@@ -10388,7 +10417,7 @@
         const t = getMosoteachTopicOptions(e, a.cleanOptions).sort().join("\n");
         return a.cleanText(e.subject || "") === i && t === r;
       }));
-    })(e.question, e.options, Dt, Rt);
+    })(e.question, e.options, Nt, Rt);
     if (!t) return;
     const n = ((e, t) => {
       const n = t.cleanOptions(getSortedOptions(e).map((e => e.content || "")));
@@ -10403,7 +10432,7 @@
     };
     Answer.cacheAnswer(a);
   }, parseMosoteachDomQuestion = e => {
-    const t = z(e.html), n = t.find(".topic-subject").first().html(), a = t.find($t);
+    const t = z(e.html), n = t.find(".topic-subject").first().html(), a = t.find(Mt);
     if (!n || !a.length) return e;
     e.question = Rt.cleanText(n);
     const i = a.map(((e, t) => z(t).find(".topic-answer").first().html() || z(t).html())).get();
@@ -10426,7 +10455,7 @@
     if (e[jt]) return;
     e[jt] = true, e[zt] = location.href;
     const checkRouteChange = () => {
-      e[zt] !== location.href && (e[zt] = location.href, clearTimeout(e[Nt]), e[Nt] = setTimeout((() => vuePageChange()), 100));
+      e[zt] !== location.href && (e[zt] = location.href, clearTimeout(e[Dt]), e[Dt] = setTimeout((() => vuePageChange()), 100));
     }, bindHistoryChange = e => {
       const t = history[e];
       history[e] = function(...e) {
@@ -10457,8 +10486,8 @@
       pageType: "mosoteach"
     },
     init: async () => {
-      if (await sleep(500), !isMosoteachAskUrl()) return Dt = [], false;
-      return !!(await waitForMosoteachQuestionElements()) && (Dt = isMosoteachQuizAnswerUrl() ? await (async () => {
+      if (await sleep(500), !isMosoteachAskUrl()) return Nt = [], false;
+      return !!(await waitForMosoteachQuestionElements()) && (Nt = isMosoteachQuizAnswerUrl() ? await (async () => {
         const e = getMosoteachQuizIds(), t = localStorage.getItem("teach_token") || "";
         if (!e || !t) return [];
         try {
@@ -12879,7 +12908,7 @@
 
   const isRuleMatched = e => "function" == typeof e.match ? e.match() : Boolean(e.match), parseRule = async e => {
     if (isPageClaimedByNewLine(document)) return;
-    if (await waitUntil((() => void 0 !== K[De + "app"])), isPageClaimedByNewLine(document)) return;
+    if (await waitUntil((() => void 0 !== K[Ne + "app"])), isPageClaimedByNewLine(document)) return;
     const t = e.filter(isRuleMatched), n = getAppStore(), a = getAskStore(), i = {
       app: n,
       ask: a,
@@ -13007,7 +13036,7 @@
       if (e < t) return -1;
     }
     return 0;
-  }, compareVersions = (e, t) => compareVersionOrder(e, t) < 0, $n = 864e5, formatDate = e => formatUpdateDate(e), Mn = [ {
+  }, compareVersions = (e, t) => compareVersionOrder(e, t) < 0, Mn = 864e5, formatDate = e => formatUpdateDate(e), $n = [ {
     id: "492563",
     name: "GreasyFork",
     home: "https://greasyfork.org/zh-CN/scripts/492563-%E7%88%B1%E9%97%AE%E7%AD%94%E5%8A%A9%E6%89%8B",
@@ -13047,10 +13076,10 @@
     const t = Cache.get("app", {});
     if (e && !t.checkUpdate) return;
     const n = Cache.get("lastCheckTime");
-    if (e && n && Date.now() - n < $n) {
-      new Date(n + $n).toLocaleString();
+    if (e && n && Date.now() - n < Mn) {
+      new Date(n + Mn).toLocaleString();
     } else try {
-      const t = await Promise.allSettled(Mn.map((async e => {
+      const t = await Promise.allSettled($n.map((async e => {
         try {
           e.name, e.updateurl, addLog(`[${e.name}] \u5f00\u59cb\u68c0\u6d4b\u66f4\u65b0`, "info");
           const t = await request(e.updateurl, "GET", {}, {}), n = e.getdata(t);
@@ -13192,10 +13221,10 @@
     var t, n;
     const a = e.$options, i = "function" == typeof a ? a() : a;
     return Array.isArray(i) ? i.length : (null == (t = e.html) ? void 0 : t.querySelectorAll) ? e.html.querySelectorAll("textarea").length : "string" == typeof e.html && (null == (n = e.html.match(/<textarea\b/gi)) ? void 0 : n.length) || 0;
-  }, getQuestionHtmlText = e => e.html ? "string" == typeof e.html ? e.html : "string" == typeof e.html.outerHTML ? e.html.outerHTML : "string" == typeof e.html.innerHTML ? e.html.innerHTML : "" : "", stripImageTags = e => e.replace(/<\s*img\b[^>]*>/gi, ""), describeImageFailures = e => e.map((e => e.src ? `${e.src}\uff08${e.reason}\uff09` : e.reason)).join("\uff1b"), isTextAnswerUnknownQuestion = e => {
+  }, stripImageTags = e => e.replace(/<\s*img\b[^>]*>/gi, ""), describeImageFailures = e => e.map((e => e.src ? `${e.src}\uff08${e.reason}\uff09` : e.reason)).join("\uff1b"), isTextAnswerUnknownQuestion = e => {
     var t, n;
     if ("8" !== e.type) return false;
-    const a = getQuestionHtmlText(e);
+    const a = questionMediaMarkup(e);
     return /<textarea\b/i.test(a) || /ueditor/i.test(a) || Boolean(null == (n = null == (t = e.html) ? void 0 : t.querySelector) ? void 0 : n.call(t, 'textarea, iframe[id^="ueditor_"], iframe[name^="ueditor_"]'));
   }, Hn = /<\s*img\b[^>]*>/gi, On = /\bsrc\s*=\s*["']([^"']+)["']/i, alignQuestionImages = (e, t) => {
     const n = t.parts || [], a = t.failures || [];
@@ -13232,7 +13261,7 @@
     if (null == o ? void 0 : o.aborted) return createFallbackResult(d, "AI \u8bf7\u6c42\u5df2\u53d6\u6d88");
     const h = ((e, t) => hasQuestionImages(t, e))(n, i);
     if (h && !((e, t) => !!(null == e ? void 0 : e.enabled) && true === (e.capabilities || Ee)[t])(r, "image")) return createFallbackResult(d, "\u5f53\u524d AI \u914d\u7f6e\u4e0d\u652f\u6301\u56fe\u7247\u9898\u76ee\uff0c\u8bf7\u5728 AI \u8bbe\u7f6e\u4e2d\u9009\u62e9\u56fe\u7247\u9898\u6a21\u578b");
-    if (hasUnsupportedMedia(stripImageTags(n)) || hasUnsupportedMedia(stripImageTags(getQuestionHtmlText(i)))) return createFallbackResult(d, getAiErrorMessage(createAiError("AI_IMAGE_UNSUPPORTED")));
+    if (hasUnsupportedMedia(stripImageTags(n)) || hasUnsupportedMedia(stripImageTags(questionMediaMarkup(i)))) return createFallbackResult(d, getAiErrorMessage(createAiError("AI_IMAGE_UNSUPPORTED")));
     let m = [], g = [];
     if (h) {
       try {
@@ -13627,10 +13656,10 @@
       const n = o instanceof Error ? o.message : "string" == typeof o ? o : "";
       return finishWithPhase(t, e, "failed", n ? `\u7b54\u9898\u5931\u8d25\uff1a${n}` : "\u7b54\u9898\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5");
     }
-  }, zn = [ "ask", "library", "settings" ], Nn = {
+  }, zn = [ "ask", "library", "settings" ], Dn = {
     page: "ask",
     subPage: ""
-  }, Dn = {
+  }, Nn = {
     home: {
       page: "ask",
       subPage: ""
@@ -13680,7 +13709,7 @@
   }, Bn = new Set([ "manage", "preview", "tool" ]);
 
   function resolveNextPage(e, t) {
-    return void 0 !== Dn[e] ? Dn[e] : "system" === e ? {
+    return void 0 !== Nn[e] ? Nn[e] : "system" === e ? {
       page: "settings",
       subPage: Rn[t ?? ""] ?? ""
     } : "settings" === e && void 0 !== Fn[t ?? ""] ? {
@@ -13692,7 +13721,7 @@
     } : zn.includes(e) ? {
       page: e,
       subPage: t ?? ""
-    } : Nn;
+    } : Dn;
   }
 
   function normalizeDialogWidth(e) {
@@ -15477,7 +15506,7 @@
         onClick: clear
       }, "\u6e05\u7a7a\u5bf9\u8bdd")) : vue.createCommentVNode("", true) ], 64)) : vue.createCommentVNode("", true) ]));
     }
-  }), $a = new Set([ "preparing", "searching", "matched", "published", "rendering", "filling" ]), Ma = {
+  }), Ma = new Set([ "preparing", "searching", "matched", "published", "rendering", "filling" ]), $a = {
     todo: "\u672a\u7b54",
     run: "\u67e5\u627e\u4e2d",
     done: "\u5df2\u7b54",
@@ -15519,14 +15548,14 @@
     stroke: "currentColor",
     "stroke-opacity": "0.25",
     "stroke-width": "1.5"
-  }, null, -1), Na = vue.createElementVNode("path", {
+  }, null, -1), Da = vue.createElementVNode("path", {
     class: "status-glyph-arc",
     d: "M7 1.5a5.5 5.5 0 0 1 5.5 5.5",
     fill: "none",
     stroke: "currentColor",
     "stroke-width": "1.5",
     "stroke-linecap": "round"
-  }, null, -1), Da = vue.createElementVNode("circle", {
+  }, null, -1), Na = vue.createElementVNode("circle", {
     cx: "7",
     cy: "7",
     r: "6.25",
@@ -15574,12 +15603,12 @@
       height: e.size,
       viewBox: "0 0 14 14",
       role: "img",
-      "aria-label": vue.unref(Ma)[e.mark]
+      "aria-label": vue.unref($a)[e.mark]
     }, [ "todo" === e.mark ? (vue.openBlock(), vue.createElementBlock("circle", ja)) : "run" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 1
-    }, [ za, Na ], 64)) : "done" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ za, Da ], 64)) : "done" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 2
-    }, [ Da, Ra ], 64)) : "none" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ Na, Ra ], 64)) : "none" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 3
     }, [ Fa, Ba ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 4
@@ -15590,7 +15619,7 @@
     const e = ia();
     return vue.computed((() => {
       const t = e.aiPreview ? e.aiPreview.index : -1, n = e.questionList.map(((e, n) => function(e, t = false) {
-        return t || "preview" === e.phase ? "wait" : e.phase && $a.has(e.phase) ? "run" : "done" === e.phase || 1 === e.status ? "done" : "no-answer" === e.phase || "failed" === e.phase || 2 === e.status ? "none" : "todo";
+        return t || "preview" === e.phase ? "wait" : e.phase && Ma.has(e.phase) ? "run" : "done" === e.phase || 1 === e.status ? "done" : "no-answer" === e.phase || "failed" === e.phase || 2 === e.status ? "none" : "todo";
       }(e, n === t)));
       return {
         marks: n,
@@ -15661,7 +15690,7 @@
     class: "ask-preview"
   }, Li = {
     class: "ask-preview-head"
-  }, $i = vue.createElementVNode("strong", null, "AI \u5efa\u8bae", -1), Mi = {
+  }, Mi = vue.createElementVNode("strong", null, "AI \u5efa\u8bae", -1), $i = {
     class: "ask-preview-reason"
   }, Hi = vue.createElementVNode("p", {
     class: "ask-preview-note"
@@ -15672,9 +15701,9 @@
     class: "aah-alert aah-alert-warning"
   }, zi = {
     class: "ask-sources"
-  }, Ni = vue.createElementVNode("h3", {
+  }, Di = vue.createElementVNode("h3", {
     class: "aah-section-title"
-  }, "\u7b54\u6848\u6765\u6e90", -1), Di = {
+  }, "\u7b54\u6848\u6765\u6e90", -1), Ni = {
     class: "ask-chain",
     "aria-label": "\u67e5\u627e\u94fe"
   }, Ri = vue.createElementVNode("span", {
@@ -15755,7 +15784,7 @@
         return t.innerHTML = e ?? "", (t.textContent || "").replace(/\s+/g, " ").trim();
       })(e.question))))), sourceLabel = (e, n) => {
         var a, i;
-        return "done" === n ? (null == (i = null == (a = t.questionList[e]) ? void 0 : a.form) ? void 0 : i.form) || "\u5df2\u4f5c\u7b54" : "todo" === n ? "" : Ma[n];
+        return "done" === n ? (null == (i = null == (a = t.questionList[e]) ? void 0 : a.form) ? void 0 : i.form) || "\u5df2\u4f5c\u7b54" : "todo" === n ? "" : $a[n];
       }, A = vue.computed((() => l.value.marks[t.questionInx] ?? "todo")), _ = vue.computed((() => t.aiLoadingIndex === t.questionInx)), C = vue.computed((() => Boolean(t.current && (t.current.aiMsg || _.value)))), T = vue.computed((() => !!t.aiPreview && t.aiPreview.index === t.questionInx)), S = vue.computed((() => !(!t.current || "8" != t.current.type && t.current.type))), I = vue.computed((() => t.current ? typeConvert(t.current.type ?? "", false) : "")), E = vue.computed((() => {
         var e, n;
         return (null == (n = null == (e = t.current) ? void 0 : e.form) ? void 0 : n.form) ?? "";
@@ -15797,7 +15826,7 @@
         miss: "\u672a\u547d\u4e2d",
         wait: "\u5f85\u786e\u8ba4",
         off: "\u4e0d\u67e5"
-      }, L = vue.computed((() => "off" === U.value[2].state && U.value.every((e => "hit" !== e.state)) ? "AI \u672a\u5f00\u542f\uff1a\u53ef\u5728 \u8bbe\u7f6e \u2192 \u7b54\u9898 \u4e2d\u542f\u7528\uff0c\u7ed3\u679c\u9700\u8981\u4f60\u786e\u8ba4\u540e\u624d\u586b\u5165" : "")), M = vue.computed((() => {
+      }, L = vue.computed((() => "off" === U.value[2].state && U.value.every((e => "hit" !== e.state)) ? "AI \u672a\u5f00\u542f\uff1a\u53ef\u5728 \u8bbe\u7f6e \u2192 \u7b54\u9898 \u4e2d\u542f\u7528\uff0c\u7ed3\u679c\u9700\u8981\u4f60\u786e\u8ba4\u540e\u624d\u586b\u5165" : "")), $ = vue.computed((() => {
         var e, n;
         const a = null == (n = null == (e = t.current) ? void 0 : e.form) ? void 0 : n.match;
         return Array.isArray(a) ? a : [];
@@ -15837,7 +15866,7 @@
           class: vue.normalizeClass([ "ask-cell num", [ `is-${vue.unref(l).marks[n]}`, {
             "is-current": n === vue.unref(t).questionInx
           } ] ]),
-          "aria-label": `\u7b2c ${n + 1} \u9898\uff0c${vue.unref(Ma)[vue.unref(l).marks[n]]}`,
+          "aria-label": `\u7b2c ${n + 1} \u9898\uff0c${vue.unref($a)[vue.unref(l).marks[n]]}`,
           onClick: e => vue.unref(t).toQuestion(n)
         }, [ vue.createVNode(Va, {
           mark: vue.unref(l).marks[n],
@@ -15860,7 +15889,7 @@
           class: vue.normalizeClass([ "ask-detail-state", `is-${A.value}` ])
         }, [ vue.createVNode(Va, {
           mark: A.value
-        }, null, 8, [ "mark" ]), vue.createTextVNode(" " + vue.toDisplayString(vue.unref(t).loading && "run" === A.value ? vue.unref(t).loadingText : vue.unref(Ma)[A.value]), 1) ], 2), vue.createElementVNode("span", di, [ vue.createElementVNode("button", {
+        }, null, 8, [ "mark" ]), vue.createTextVNode(" " + vue.toDisplayString(vue.unref(t).loading && "run" === A.value ? vue.unref(t).loadingText : vue.unref($a)[A.value]), 1) ], 2), vue.createElementVNode("span", di, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           disabled: vue.unref(t).loading,
@@ -15911,12 +15940,12 @@
         }, null, 8, wi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: t,
           class: vue.normalizeClass([ "ask-option", {
-            "is-hit": M.value.includes(t)
+            "is-hit": $.value.includes(t)
           } ])
         }, [ vue.createElementVNode("span", bi, vue.toDisplayString(optionKey(t)), 1), vue.createElementVNode("span", {
           class: "ask-option-text",
           innerHTML: e
-        }, null, 8, xi), M.value.includes(t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
+        }, null, 8, xi), $.value.includes(t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
           key: 0,
           icon: "mdi:check",
           class: "ask-option-check"
@@ -15957,7 +15986,7 @@
         }, "\u53d6\u6d88\u56fe\u7247\u8865\u7b54") ]) ])) : vue.createCommentVNode("", true), T.value && vue.unref(t).aiPreview ? (vue.openBlock(), 
         vue.createElementBlock("div", Pi, [ vue.createElementVNode("div", Li, [ vue.createVNode(Va, {
           mark: "wait"
-        }), $i, vue.createElementVNode("span", Mi, vue.toDisplayString(vue.unref(t).aiPreview.reason), 1) ]), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).aiPreview.answer, ((e, n) => (vue.openBlock(), 
+        }), Mi, vue.createElementVNode("span", $i, vue.toDisplayString(vue.unref(t).aiPreview.reason), 1) ]), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).aiPreview.answer, ((e, n) => (vue.openBlock(), 
         vue.createElementBlock("div", {
           class: "ask-preview-answer",
           key: n
@@ -15972,7 +16001,7 @@
         }, "\u8df3\u8fc7") ]) ])) : vue.createCommentVNode("", true), vue.unref(t).aiFailureMap[vue.unref(t).questionInx] ? (vue.openBlock(), 
         vue.createElementBlock("div", ji, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:alert-outline"
-        }), vue.createTextVNode(vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("section", zi, [ Ni, vue.createElementVNode("ol", Di, [ (vue.openBlock(true), 
+        }), vue.createTextVNode(vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("section", zi, [ Di, vue.createElementVNode("ol", Ni, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(U.value, (e => (vue.openBlock(), vue.createElementBlock("li", {
           key: e.key,
           class: vue.normalizeClass([ "ask-chain-step", `is-${e.state}` ])
@@ -16099,7 +16128,7 @@
     }
   }
 
-  const $r = [ {
+  const Mr = [ {
     value: "0",
     label: "\u5355\u9009"
   }, {
@@ -16114,7 +16143,7 @@
   }, {
     value: "15",
     label: "\u9605\u8bfb\u7406\u89e3"
-  } ], Mr = [ "\u5bf9", "\u9519" ], withNoReferrer = e => e && e.trim() ? e.replace(/<img\b(?!.*?\breferrerPolicy\b)[^>]*>/gi, (e => e.replace(/\/?>$/, ' referrerPolicy="no-referrer">'))) : e, normalizeAnswer$1 = e => null == e ? [] : Array.isArray(e) ? e.length > 0 && Array.isArray(e[0]) ? [] : e.map((e => String(e))) : [ String(e) ], visibleOptions = e => "3" === e.type ? Array.isArray(e.options) && 2 === e.options.length && "string" == typeof e.options[0] ? e.options : Mr : "2" === e.type ? [] : Array.isArray(e.options) && e.options.length > 0 && "string" == typeof e.options[0] ? e.options : [], isCorrectOption = (e, t, n) => {
+  } ], $r = [ "\u5bf9", "\u9519" ], withNoReferrer = e => e && e.trim() ? e.replace(/<img\b(?!.*?\breferrerPolicy\b)[^>]*>/gi, (e => e.replace(/\/?>$/, ' referrerPolicy="no-referrer">'))) : e, normalizeAnswer$1 = e => null == e ? [] : Array.isArray(e) ? e.length > 0 && Array.isArray(e[0]) ? [] : e.map((e => String(e))) : [ String(e) ], visibleOptions = e => "3" === e.type ? Array.isArray(e.options) && 2 === e.options.length && "string" == typeof e.options[0] ? e.options : $r : "2" === e.type ? [] : Array.isArray(e.options) && e.options.length > 0 && "string" == typeof e.options[0] ? e.options : [], isCorrectOption = (e, t, n) => {
     const a = normalizeAnswer$1(e.answer);
     return 0 !== a.length && (!!a.includes(String(t)) || (!!a.includes(n) || a.includes(String.fromCharCode(65 + t))));
   }, answerSummary = e => {
@@ -16178,9 +16207,9 @@
     class: "lib-detail-head"
   }, zr = {
     class: "aah-tag"
-  }, Nr = vue.createElementVNode("span", {
+  }, Dr = vue.createElementVNode("span", {
     class: "lib-detail-spacer"
-  }, null, -1), Dr = {
+  }, null, -1), Nr = {
     key: 0,
     class: "aah-alert aah-alert-info"
   }, Rr = [ "innerHTML" ], Fr = [ "innerHTML" ], Br = {
@@ -16211,7 +16240,7 @@
     emits: [ "edit", "remove" ],
     setup(e) {
       const optionKey = e => String.fromCharCode(65 + e);
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Or, [ vue.createElementVNode("header", jr, [ vue.createElementVNode("span", zr, vue.toDisplayString(vue.unref(typeLabel)(e.item)), 1), Nr, vue.createElementVNode("button", {
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Or, [ vue.createElementVNode("header", jr, [ vue.createElementVNode("span", zr, vue.toDisplayString(vue.unref(typeLabel)(e.item)), 1), Dr, vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-small",
         onClick: t[0] || (t[0] = t => e.$emit("edit"))
@@ -16224,7 +16253,7 @@
         onClick: t[1] || (t[1] = t => e.$emit("remove"))
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:trash-can-outline"
-      }), vue.createTextVNode("\u5220\u9664 ") ])) : vue.createCommentVNode("", true) ]), true === e.item.aiGenerated ? (vue.openBlock(), vue.createElementBlock("p", Dr, "AI \u751f\u6210 \xb7 " + vue.toDisplayString("local" === e.item.aiOrigin ? "\u672c\u673a\u7f51\u5173" : "AI \u670d\u52a1") + " \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u6b64\u8bb0\u5f55\u4ec5\u4fdd\u5b58\u5728\u672c\u673a\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", {
+      }), vue.createTextVNode("\u5220\u9664 ") ])) : vue.createCommentVNode("", true) ]), true === e.item.aiGenerated ? (vue.openBlock(), vue.createElementBlock("p", Nr, "AI \u751f\u6210 \xb7 " + vue.toDisplayString("local" === e.item.aiOrigin ? "\u672c\u673a\u7f51\u5173" : "AI \u670d\u52a1") + " \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u6b64\u8bb0\u5f55\u4ec5\u4fdd\u5b58\u5728\u672c\u673a\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", {
         class: "lib-detail-stem",
         innerHTML: vue.unref(withNoReferrer)(e.item.question1 || e.item.question)
       }, null, 8, Rr), "15" === e.item.type && Array.isArray(e.item.options) && "object" == typeof e.item.options[0] ? (vue.openBlock(true), 
@@ -16332,7 +16361,7 @@
       }) ]) ]), vue.createElementVNode("div", is, [ vue.createElementVNode("div", rs, [ ss, vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t[0] || (t[0] = t => e.ques.type = t),
         class: "base-select"
-      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(Ne), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
+      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(De), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
       }, vue.toDisplayString(t), 9, os)))), 128)) ], 512), [ [ vue.vModelSelect, e.ques.type ] ]) ]), vue.createElementVNode("div", ls, [ cs, vue.withDirectives(vue.createElementVNode("textarea", {
@@ -16404,15 +16433,15 @@
     class: "reading-form-section"
   }, Ps = {
     class: "reading-section-header"
-  }, Ls = vue.createElementVNode("h4", null, "\u5b50\u9898\u76ee\u5217\u8868", -1), $s = {
+  }, Ls = vue.createElementVNode("h4", null, "\u5b50\u9898\u76ee\u5217\u8868", -1), Ms = {
     class: "reading-sub-questions-editor"
-  }, Ms = {
+  }, $s = {
     class: "reading-sub-question-header"
   }, Hs = {
     class: "reading-sub-question-number"
-  }, Os = [ "onUpdate:modelValue" ], js = [ "value" ], zs = [ "onClick", "disabled" ], Ns = {
+  }, Os = [ "onUpdate:modelValue" ], js = [ "value" ], zs = [ "onClick", "disabled" ], Ds = {
     class: "form-row"
-  }, Ds = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), Rs = [ "onUpdate:modelValue", "placeholder" ], Fs = {
+  }, Ns = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), Rs = [ "onUpdate:modelValue", "placeholder" ], Fs = {
     key: 0,
     class: "form-row"
   }, Bs = vue.createElementVNode("label", null, "\u9009\u9879\u8bbe\u7f6e", -1), Gs = {
@@ -16490,14 +16519,14 @@
         onClick: addSubQuestion
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:plus"
-      }), vue.createTextVNode(" \u6dfb\u52a0\u9898\u76ee ") ]) ]), vue.createElementVNode("div", $s, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(s.value.options, ((e, t) => (vue.openBlock(), 
+      }), vue.createTextVNode(" \u6dfb\u52a0\u9898\u76ee ") ]) ]), vue.createElementVNode("div", Ms, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(s.value.options, ((e, t) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: t,
         class: "reading-sub-question-editor"
-      }, [ vue.createElementVNode("div", Ms, [ vue.createElementVNode("span", Hs, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
+      }, [ vue.createElementVNode("div", $s, [ vue.createElementVNode("span", Hs, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t => e.type = t,
         class: "base-select reading-base-select-small"
-      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(Ne), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
+      }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(De), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
       }, vue.toDisplayString(t), 9, js)))), 128)) ], 8, Os), [ [ vue.vModelSelect, e.type ] ]), vue.createElementVNode("button", {
@@ -16507,7 +16536,7 @@
           s.value.options.length > 1 && s.value.options.splice(e, 1);
         })(t),
         disabled: s.value.options.length <= 1
-      }, " \u5220\u9664 ", 8, zs) ]), vue.createElementVNode("div", Ns, [ Ds, vue.withDirectives(vue.createElementVNode("textarea", {
+      }, " \u5220\u9664 ", 8, zs) ]), vue.createElementVNode("div", Ds, [ Ns, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t => e.question = t,
         class: "base-input",
         rows: "3",
@@ -16981,7 +17010,7 @@
         key: e
       }, vue.toDisplayString(e), 1)))), 128)) ])) : vue.createCommentVNode("", true) ], 2)))), 128)) ]) ]) ]));
     }
-  }), $o = Cache.get("apiList", []), Mo = [ {
+  }), Mo = Cache.get("apiList", []), $o = [ {
     name: "\u4e00\u4e4b\u9898\u5e93",
     url: "http://cx.icodef.com/wyn-nb?v=4",
     method: "POST",
@@ -17000,8 +17029,8 @@
     weight: 0
   } ], Ho = pinia.defineStore("api", {
     state: () => ({
-      apiList: $o,
-      defApiList: Mo
+      apiList: Mo,
+      defApiList: $o
     }),
     actions: {},
     getters: {
@@ -17051,9 +17080,9 @@
 
   const zo = {
     class: "lib-toolbar"
-  }, No = {
-    class: "lib-search"
   }, Do = {
+    class: "lib-search"
+  }, No = {
     key: 0,
     class: "lib-search-state"
   }, Ro = {
@@ -17116,7 +17145,7 @@
   }, ql = vue.createElementVNode("p", null, "\u677e\u5f00\u5bfc\u5165\u5907\u4efd\u6587\u4ef6\uff08.bak\uff09", -1), Al = 100, _l = vue.defineComponent({
     __name: "Library",
     setup(e) {
-      const t = Qn(), n = ia(), a = useLibraryCount(), q = vue.shallowRef(Cache.matchGet("ques1_") || []), A = vue.shallowRef(null), _ = vue.ref(""), C = vue.ref(false), S = vue.ref(""), I = vue.ref(Al), E = vue.ref(0), U = vue.ref(""), P = vue.ref(false), L = vue.ref(false), M = vue.ref(null), H = vue.ref(false);
+      const t = Qn(), n = ia(), a = useLibraryCount(), q = vue.shallowRef(Cache.matchGet("ques1_") || []), A = vue.shallowRef(null), _ = vue.ref(""), C = vue.ref(false), S = vue.ref(""), I = vue.ref(Al), E = vue.ref(0), U = vue.ref(""), P = vue.ref(false), L = vue.ref(false), $ = vue.ref(null), H = vue.ref(false);
       let O = 0;
       const j = vue.computed((() => n.saveQuestionData.length > 0)), z = vue.ref("saved" === t.subPage && j.value ? "saved" : "all");
       vue.watch(j, (e => {
@@ -17126,7 +17155,7 @@
       }));
       const reload = () => {
         q.value = Cache.matchGet("ques1_") || [], refreshLibraryCount(), _.value.trim() && runSearch();
-      }, N = vue.computed((() => "saved" === z.value ? n.saveQuestionData : q.value)), runSearch = async () => {
+      }, D = vue.computed((() => "saved" === z.value ? n.saveQuestionData : q.value)), runSearch = async () => {
         const e = _.value.trim();
         if (!e) return void (A.value = null);
         if ("saved" === z.value) return void (A.value = ((e, t) => {
@@ -17155,10 +17184,10 @@
       })), vue.watch(S, (() => {
         I.value = Al, E.value = 0;
       }));
-      const D = vue.computed((() => {
-        const e = A.value ?? N.value;
+      const N = vue.computed((() => {
+        const e = A.value ?? D.value;
         return S.value ? e.filter((e => e.type === S.value)) : e;
-      })), R = vue.computed((() => D.value.slice(0, I.value))), F = vue.computed((() => D.value[E.value] ?? null)), stemText = e => {
+      })), R = vue.computed((() => N.value.slice(0, I.value))), F = vue.computed((() => N.value[E.value] ?? null)), stemText = e => {
         const t = document.createElement("div");
         return t.innerHTML = e ?? "", (t.textContent || "").replace(/\s+/g, " ").trim();
       }, B = vue.ref(null), G = vue.ref(false), K = vue.ref(false), editItem = e => {
@@ -17177,7 +17206,7 @@
         "`" === e.key && V.value++;
       }, startImportFile = () => {
         var e;
-        U.value = "", null == (e = M.value) || e.click();
+        U.value = "", null == (e = $.value) || e.click();
       }, importFile = e => {
         L.value = true, ((e, t) => {
           const n = new FileReader;
@@ -17203,7 +17232,7 @@
       }, handleFileChange = e => {
         var t;
         const n = null == (t = e.target.files) ? void 0 : t[0];
-        n && importFile(n), M.value && (M.value.value = "");
+        n && importFile(n), $.value && ($.value.value = "");
       }, openTool = () => {
         U.value = "", P.value = true;
       }, closeTool = () => {
@@ -17224,7 +17253,7 @@
           } catch (e) {
             msg(`\u5bfc\u51fa\u5931\u8d25\uff1a${e}`, "error");
           }
-        })() : exportQuestionsAsDoc("doc-current" === e ? D.value : q.value);
+        })() : exportQuestionsAsDoc("doc-current" === e ? N.value : q.value);
       }, onDragEnter = e => {
         var t, n;
         (null == (n = null == (t = e.dataTransfer) ? void 0 : t.types) ? void 0 : n.includes("Files")) && (O++, 
@@ -17262,14 +17291,14 @@
         visible: K.value,
         ques: B.value,
         onHandleClose: closeEdit
-      }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", zo, [ vue.createElementVNode("label", No, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", zo, [ vue.createElementVNode("label", Do, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:magnify"
       }), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": i[0] || (i[0] = e => _.value = e),
         type: "search",
         placeholder: "\u641c\u7d22\u9898\u5e72\u3001\u9009\u9879\u6216\u7b54\u6848",
         "aria-label": "\u641c\u7d22\u9898\u5e93"
-      }, null, 512), [ [ vue.vModelText, _.value ] ]), C.value ? (vue.openBlock(), vue.createElementBlock("span", Do, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ro, [ j.value ? (vue.openBlock(), 
+      }, null, 512), [ [ vue.vModelText, _.value ] ]), C.value ? (vue.openBlock(), vue.createElementBlock("span", No, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ro, [ j.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         type: "button",
@@ -17287,7 +17316,7 @@
           "is-on": !S.value
         } ]),
         onClick: i[2] || (i[2] = e => S.value = "")
-      }, "\u5168\u90e8", 2), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref($r), (e => (vue.openBlock(), vue.createElementBlock("button", {
+      }, "\u5168\u90e8", 2), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(Mr), (e => (vue.openBlock(), vue.createElementBlock("button", {
         key: e.value,
         type: "button",
         class: vue.normalizeClass([ "lib-chip", {
@@ -17314,13 +17343,13 @@
         deletable: !!e.key,
         onEdit: t => editItem(e),
         onRemove: t => removeItem(e)
-      }, null, 8, [ "item", "deletable", "onEdit", "onRemove" ])) : vue.createCommentVNode("", true) ], 2)))), 128)), D.value.length > R.value.length ? (vue.openBlock(), 
+      }, null, 8, [ "item", "deletable", "onEdit", "onRemove" ])) : vue.createCommentVNode("", true) ], 2)))), 128)), N.value.length > R.value.length ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         type: "button",
         class: "aah-btn aah-btn-plain lib-more",
         onClick: i[3] || (i[3] = e => I.value += Al)
-      }, "\u518d\u663e\u793a " + vue.toDisplayString(Math.min(Al, D.value.length - R.value.length)) + " \u6761\uff08\u8fd8\u5269 " + vue.toDisplayString(D.value.length - R.value.length) + " \u6761\uff09", 1)) : vue.createCommentVNode("", true) ], 64)) : (vue.openBlock(), 
+      }, "\u518d\u663e\u793a " + vue.toDisplayString(Math.min(Al, N.value.length - R.value.length)) + " \u6761\uff08\u8fd8\u5269 " + vue.toDisplayString(N.value.length - R.value.length) + " \u6761\uff09", 1)) : vue.createCommentVNode("", true) ], 64)) : (vue.openBlock(), 
       vue.createElementBlock("div", Yo, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:database-search-outline",
         class: "lib-empty-icon"
@@ -17346,10 +17375,10 @@
       }, [ vue.createTextVNode(" \xb7 \u672c\u9875\u6536\u5f55 "), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(n).saveQuestionData.length), 1) ], 64)) : vue.createCommentVNode("", true), _.value || S.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
-      }, [ vue.createTextVNode(" \xb7 \u7b5b\u9009\u540e "), vue.createElementVNode("b", null, vue.toDisplayString(D.value.length), 1) ], 64)) : vue.createCommentVNode("", true), L.value ? (vue.openBlock(), 
+      }, [ vue.createTextVNode(" \xb7 \u7b5b\u9009\u540e "), vue.createElementVNode("b", null, vue.toDisplayString(N.value.length), 1) ], 64)) : vue.createCommentVNode("", true), L.value ? (vue.openBlock(), 
       vue.createElementBlock("span", sl, "\u5bfc\u5165\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), ol, vue.createElementVNode("input", {
         ref_key: "uploadInput",
-        ref: M,
+        ref: $,
         type: "file",
         accept: ".bak",
         class: "lib-file-input",
@@ -17458,9 +17487,9 @@
     class: "config-item"
   }, Ll = {
     class: "config-item-content"
-  }, $l = {
-    class: "config-label"
   }, Ml = {
+    class: "config-label"
+  }, $l = {
     class: "label-wrapper"
   }, Hl = {
     class: "label-text"
@@ -17469,10 +17498,10 @@
     class: "label-desc"
   }, jl = {
     class: "config-control"
-  }, zl = [ "value" ], Nl = {
+  }, zl = [ "value" ], Dl = {
     key: 4,
     class: "hotkey-input-wrapper"
-  }, Dl = [ "value", "placeholder" ], Rl = {
+  }, Nl = [ "value", "placeholder" ], Rl = {
     key: 0,
     class: "hotkey-hint danger"
   }, Fl = {
@@ -17497,7 +17526,7 @@
       }, handleHotkeyKeydown = e => {
         a("hotkey-keydown", e, n.item);
       };
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Pl, [ vue.createElementVNode("div", Ll, [ vue.createElementVNode("div", $l, [ vue.createElementVNode("div", Ml, [ vue.createElementVNode("span", Hl, vue.toDisplayString(e.item.label), 1), e.item.desc ? (vue.openBlock(), 
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Pl, [ vue.createElementVNode("div", Ll, [ vue.createElementVNode("div", Ml, [ vue.createElementVNode("div", $l, [ vue.createElementVNode("span", Hl, vue.toDisplayString(e.item.label), 1), e.item.desc ? (vue.openBlock(), 
       vue.createElementBlock("span", Ol, vue.toDisplayString(e.item.desc), 1)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("div", jl, [ "switch" === i.value ? (vue.openBlock(), 
       vue.createBlock(Ul, {
         key: 0,
@@ -17523,7 +17552,7 @@
         key: e.value,
         value: e.value
       }, vue.toDisplayString(e.label), 9, zl)))), 128)) ], 512)), [ [ vue.vModelSelect, e.item.value ] ]) : "hotkey" === i.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Nl, [ vue.createElementVNode("input", {
+      vue.createElementBlock("div", Dl, [ vue.createElementVNode("input", {
         class: vue.normalizeClass([ "aah-input", {
           recording: e.recordingHotkey === e.item.name
         } ]),
@@ -17532,7 +17561,7 @@
         readonly: "",
         onFocus: handleStartRecording,
         onKeydown: handleHotkeyKeydown
-      }, null, 42, Dl), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", Rl, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
+      }, null, 42, Nl), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", Rl, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
       vue.createElementBlock("span", Fl, "\u70b9\u51fb\u5f55\u5236")) ])) : "checkbox" === i.value ? (vue.openBlock(), 
       vue.createElementBlock("div", Bl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (n => (vue.openBlock(), vue.createElementBlock("label", {
         key: n.value,
@@ -17753,19 +17782,19 @@
         "config-id": "local-gateway"
       })) : vue.createCommentVNode("", true) ]));
     }
-  }), $c = {
+  }), Mc = {
     class: "ai-config-panel"
-  }, Mc = {
+  }, $c = {
     class: "aah-card ai-config-global-body"
   }, Hc = {
     class: "ai-config-field"
   }, Oc = vue.createElementVNode("span", null, "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f", -1), jc = [ "value" ], zc = vue.createElementVNode("option", {
     value: "off"
-  }, "\u5173\u95ed\u8865\u7b54", -1), Nc = vue.createElementVNode("option", {
+  }, "\u5173\u95ed\u8865\u7b54", -1), Dc = vue.createElementVNode("option", {
     value: "manual"
-  }, "\u4ec5\u624b\u52a8", -1), Dc = vue.createElementVNode("option", {
+  }, "\u4ec5\u624b\u52a8", -1), Nc = vue.createElementVNode("option", {
     value: "auto"
-  }, "\u81ea\u52a8\u8865\u7b54", -1), Rc = [ zc, Nc, Dc ], Fc = {
+  }, "\u81ea\u52a8\u8865\u7b54", -1), Rc = [ zc, Dc, Nc ], Fc = {
     class: "ai-config-field"
   }, Bc = vue.createElementVNode("span", null, "\u4fdd\u5b58 AI \u7b54\u6848\u5230\u672c\u673a", -1), Gc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
@@ -17842,15 +17871,15 @@
     class: "ai-wizard-subject"
   }, Lu = {
     class: "ai-config-field"
-  }, $u = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), Mu = [ "value" ], Hu = {
+  }, Mu = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), $u = [ "value" ], Hu = {
     class: "ai-wizard-actions"
   }, Ou = [ "disabled" ], ju = [ "disabled" ], zu = {
     key: 0,
     class: "aah-alert aah-alert-info"
-  }, Nu = {
+  }, Du = {
     key: 1,
     class: "ai-config-manager"
-  }, Du = {
+  }, Nu = {
     class: "ai-config-side"
   }, Ru = {
     class: "aah-card ai-config-list-panel"
@@ -17930,9 +17959,9 @@
   }, Lp = {
     key: 1,
     class: "ai-config-field-help"
-  }, $p = {
+  }, Mp = {
     class: "native-checkbox"
-  }, Mp = [ "checked" ], Hp = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), Op = {
+  }, $p = [ "checked" ], Hp = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), Op = {
     key: 3,
     class: "ai-config-field-help"
   }, jp = {
@@ -17940,7 +17969,7 @@
     class: "ai-config-field-help"
   }, zp = {
     class: "ai-config-instance-actions"
-  }, Np = [ "disabled" ], Dp = {
+  }, Dp = [ "disabled" ], Np = {
     key: 5,
     class: "aah-alert aah-alert-info"
   }, Rp = {
@@ -18013,10 +18042,10 @@
         var t;
         return null == (t = e.credential) ? void 0 : t.value;
       })));
-      const s = t.settings.instances[0], l = vue.ref(s ? 2 : 1), _ = vue.ref((null == s ? void 0 : s.channelId) ?? ""), C = vue.ref(false), I = vue.ref(t.settings.defaultChannelId || (null == s ? void 0 : s.channelId) || ""), E = vue.ref(false), U = vue.ref(false), P = vue.ref(false), L = vue.ref(""), M = vue.ref(""), H = vue.ref(""), O = vue.ref(""), j = vue.ref(""), z = vue.ref(null), channelOf2 = e => {
+      const s = t.settings.instances[0], l = vue.ref(s ? 2 : 1), _ = vue.ref((null == s ? void 0 : s.channelId) ?? ""), C = vue.ref(false), I = vue.ref(t.settings.defaultChannelId || (null == s ? void 0 : s.channelId) || ""), E = vue.ref(false), U = vue.ref(false), P = vue.ref(false), L = vue.ref(""), $ = vue.ref(""), H = vue.ref(""), O = vue.ref(""), j = vue.ref(""), z = vue.ref(null), channelOf2 = e => {
         const n = resolveChannel(t.catalog, t.settings.customChannels, e);
         return n ? asChannel(n) : void 0;
-      }, isCustom = e => t.settings.customChannels.some((t => t.id === e)), N = vue.computed((() => t.catalogForDisplay().filter((e => !t.settings.instances.some((t => t.channelId === e.id)))))), D = vue.computed((() => C.value ? N.value : N.value.slice(0, 6))), R = vue.computed((() => t.settings.instances.map((e => ({
+      }, isCustom = e => t.settings.customChannels.some((t => t.id === e)), D = vue.computed((() => t.catalogForDisplay().filter((e => !t.settings.instances.some((t => t.channelId === e.id)))))), N = vue.computed((() => C.value ? D.value : D.value.slice(0, 6))), R = vue.computed((() => t.settings.instances.map((e => ({
         instance: e,
         channel: channelOf2(e.channelId)
       }))))), F = vue.computed((() => t.settings.instances.find((e => e.channelId === I.value)))), B = vue.computed((() => channelOf2(I.value))), G = vue.computed((() => channelOf2(_.value))), K = vue.computed((() => t.settings.instances.find((e => e.channelId === _.value)))), V = vue.computed((() => {
@@ -18047,7 +18076,7 @@
         _.value = "", l.value = 1, C.value = false, a.value = true;
       }, editCustom = (e = "") => {
         const n = t.settings.customChannels.find((t => t.id === e));
-        L.value = e, M.value = (null == n ? void 0 : n.baseUrl) ?? "", H.value = (null == n ? void 0 : n.model) ?? "", 
+        L.value = e, $.value = (null == n ? void 0 : n.baseUrl) ?? "", H.value = (null == n ? void 0 : n.model) ?? "", 
         O.value = "", j.value = "", P.value = true, E.value = false;
       }, closeCustom = () => {
         O.value = "", P.value = false;
@@ -18055,7 +18084,7 @@
         try {
           const e = L.value || `custom-${createAiNonce()}`;
           t.saveCustomChannel(e, {
-            baseUrl: M.value,
+            baseUrl: $.value,
             model: H.value,
             credential: O.value
           }), I.value = e, a.value = !1, closeCustom(), msg("\u5df2\u4fdd\u5b58\u81ea\u5b9a\u4e49\u63a5\u53e3\uff0c\u4f7f\u7528\u65f6\u7ecf\u7231\u95ee\u7b54\u8f6c\u53d1\u3002", "success");
@@ -18082,7 +18111,7 @@
         n.value || t.loadCatalog();
       })), (e, i) => {
         var r, s, o, T, J, Z, Y, X;
-        return vue.openBlock(), vue.createElementBlock("div", $c, [ vue.createElementVNode("section", Mc, [ vue.createElementVNode("label", Hc, [ Oc, vue.createElementVNode("select", {
+        return vue.openBlock(), vue.createElementBlock("div", Mc, [ vue.createElementVNode("section", $c, [ vue.createElementVNode("label", Hc, [ Oc, vue.createElementVNode("select", {
           class: "aah-select",
           "aria-label": "AI \u4f7f\u7528\u65b9\u5f0f",
           value: vue.unref(t).usage,
@@ -18119,7 +18148,7 @@
             current: l.value === t + 1
           })
         }, [ fu, vue.createElementVNode("span", null, vue.toDisplayString(e), 1) ], 2))), 64)) ]), 1 === l.value ? (vue.openBlock(), vue.createElementBlock("div", vu, [ yu, vue.createElementVNode("div", wu, [ (vue.openBlock(true), 
-        vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, (e => (vue.openBlock(), vue.createElementBlock("button", {
+        vue.createElementBlock(vue.Fragment, null, vue.renderList(N.value, (e => (vue.openBlock(), vue.createElementBlock("button", {
           key: e.id,
           type: "button",
           class: vue.normalizeClass([ "ai-config-card ai-config-card-pick", {
@@ -18137,13 +18166,13 @@
           class: "aah-btn",
           type: "button",
           onClick: i[5] || (i[5] = e => editCustom())
-        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), !C.value && N.value.length > D.value.length ? (vue.openBlock(), 
+        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), !C.value && D.value.length > N.value.length ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: i[6] || (i[6] = e => C.value = true)
-        }, " \u5c55\u5f00\u5168\u90e8 " + vue.toDisplayString(N.value.length) + " \u5bb6 ", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+        }, " \u5c55\u5f00\u5168\u90e8 " + vue.toDisplayString(D.value.length) + " \u5bb6 ", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           onClick: skipWizard
@@ -18167,14 +18196,14 @@
           type: "button",
           onClick: i[7] || (i[7] = e => l.value = 3)
         }, "\u6211\u5df2\u7ecf\u6709 Key \u4e86") ]) ])) : 3 === l.value && G.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Uu, [ vue.createElementVNode("h5", Pu, vue.toDisplayString(G.value.name), 1), vue.createElementVNode("label", Lu, [ $u, vue.createElementVNode("input", {
+        vue.createElementBlock("div", Uu, [ vue.createElementVNode("h5", Pu, vue.toDisplayString(G.value.name), 1), vue.createElementVNode("label", Lu, [ Mu, vue.createElementVNode("input", {
           value: (null == (s = null == (r = K.value) ? void 0 : r.credential) ? void 0 : s.value) || "",
           class: "aah-input",
           type: "password",
           autocomplete: "off",
           placeholder: "\u7c98\u8d34\u540e\u4f1a\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u5730",
           onInput: i[8] || (i[8] = e => setCredential(_.value, e.target.value))
-        }, null, 40, Mu) ]), vue.createElementVNode("div", Hu, [ vue.createElementVNode("button", {
+        }, null, 40, $u) ]), vue.createElementVNode("div", Hu, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: i[9] || (i[9] = e => l.value = 2)
@@ -18192,7 +18221,7 @@
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(_.value)), 1) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), 
-        vue.createElementBlock("div", Nu, [ vue.createElementVNode("aside", Du, [ vue.createElementVNode("section", Ru, [ Fu, R.value.length ? (vue.openBlock(), vue.createElementBlock("div", Bu, [ (vue.openBlock(true), 
+        vue.createElementBlock("div", Du, [ vue.createElementVNode("aside", Nu, [ vue.createElementVNode("section", Ru, [ Fu, R.value.length ? (vue.openBlock(), vue.createElementBlock("div", Bu, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(R.value, (e => {
           var n, a;
           return vue.openBlock(), vue.createElementBlock("button", {
@@ -18288,11 +18317,11 @@
           class: "ai-config-inline-action",
           onClick: useSuggestedVisionModel
         }, " \u5207\u6362\u5230 " + vue.toDisplayString(W.value.suggestModelId), 1) ])) : "unsupported" === (null == (X = W.value) ? void 0 : X.state) ? (vue.openBlock(), 
-        vue.createElementBlock("p", Lp, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ])), vue.createElementVNode("label", $p, [ vue.createElementVNode("input", {
+        vue.createElementBlock("p", Lp, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ])), vue.createElementVNode("label", Mp, [ vue.createElementVNode("input", {
           type: "checkbox",
           checked: F.value.enabled,
           onChange: toggleEnabled
-        }, null, 40, Mp), Hp ]), isCustom(B.value.id) || "global" !== B.value.region ? isCustom(B.value.id) || vue.unref(canDirectConnect)(B.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        }, null, 40, $p), Hp ]), isCustom(B.value.id) || "global" !== B.value.region ? isCustom(B.value.id) || vue.unref(canDirectConnect)(B.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
         vue.createElementBlock("p", jp, " \u8be5\u6e20\u9053\u4e0d\u5728\u672c\u7248\u672c\u7684\u76f4\u8fde\u767d\u540d\u5355\u91cc\uff0c\u53ea\u80fd\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\u2014\u2014\u9700\u8981\u5148\u767b\u5f55\u3002 ")) : (vue.openBlock(), 
         vue.createElementBlock("p", Op, " \u8be5\u5e73\u53f0\u670d\u52a1\u5668\u5728\u5883\u5916\uff0c\u56fd\u5185\u7f51\u7edc\u901a\u5e38\u65e0\u6cd5\u76f4\u8fde\uff0c\u9700\u81ea\u5907\u4ee3\u7406\u540e\u518d\u4f7f\u7528\u3002 ")), vue.createElementVNode("div", zp, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
@@ -18309,8 +18338,8 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:connection",
           class: "icon-inline"
-        }), vue.createTextVNode(vue.toDisplayString(testingFor(I.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, Np) ]), messageFor(I.value) ? (vue.openBlock(), 
-        vue.createElementBlock("div", Dp, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), vue.createTextVNode(vue.toDisplayString(testingFor(I.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, Dp) ]), messageFor(I.value) ? (vue.openBlock(), 
+        vue.createElementBlock("div", Np, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(I.value)), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
@@ -18345,7 +18374,7 @@
           class: "aah-btn",
           type: "button",
           onClick: i[20] || (i[20] = e => editCustom())
-        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), vue.createElementVNode("div", Qp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(N.value, (e => (vue.openBlock(), 
+        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), vue.createElementVNode("div", Qp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, (e => (vue.openBlock(), 
         vue.createElementBlock("article", {
           key: e.id,
           class: vue.normalizeClass([ "ai-config-card", {
@@ -18369,7 +18398,7 @@
             return a = e.id, t.addChannel(a), I.value = a, void (E.value = false);
             var a;
           }
-        }, "\u6dfb\u52a0", 8, ed) ]) ], 2)))), 128)) ]), N.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        }, "\u6dfb\u52a0", 8, ed) ]) ], 2)))), 128)) ]), D.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
         vue.createElementBlock("p", td, "\u5168\u90e8\u6e20\u9053\u90fd\u5df2\u6dfb\u52a0\u3002")) ]), vue.createElementVNode("div", nd, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
@@ -18392,11 +18421,11 @@
           onClick: closeCustom
         }, "\u5173\u95ed") ]), vue.createElementVNode("div", od, [ ld, vue.createElementVNode("label", cd, [ ud, vue.withDirectives(vue.createElementVNode("input", {
           class: "aah-input",
-          "onUpdate:modelValue": i[24] || (i[24] = e => M.value = e),
+          "onUpdate:modelValue": i[24] || (i[24] = e => $.value = e),
           "aria-label": "\u81ea\u5b9a\u4e49 API \u5730\u5740",
           placeholder: "https://api.example.com/v1",
           autocomplete: "off"
-        }, null, 512), [ [ vue.vModelText, M.value ] ]), pd ]), vue.createElementVNode("label", dd, [ hd, vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 512), [ [ vue.vModelText, $.value ] ]), pd ]), vue.createElementVNode("label", dd, [ hd, vue.withDirectives(vue.createElementVNode("input", {
           class: "aah-input",
           "onUpdate:modelValue": i[25] || (i[25] = e => H.value = e),
           "aria-label": "\u81ea\u5b9a\u4e49 AI \u6a21\u578b",
@@ -18462,7 +18491,7 @@
     class: "config-item"
   }, Ld = {
     class: "config-item-content"
-  }, $d = vue.createElementVNode("div", {
+  }, Md = vue.createElementVNode("div", {
     class: "config-label"
   }, [ vue.createElementVNode("div", {
     class: "label-wrapper"
@@ -18470,7 +18499,7 @@
     class: "label-text"
   }, "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u5173\u95ed\u3001\u4ec5\u624b\u52a8\u6216\u9898\u5e93\u672a\u547d\u4e2d\u540e\u81ea\u52a8\u8865\u7b54\uff1b\u5728\u300cAI \u6e20\u9053\u300d\u914d\u7f6e\u4e91\u7aef\u670d\u52a1\u6216\u672c\u673a\u7f51\u5173\u3002") ]) ], -1), Md = {
+  }, "\u5173\u95ed\u3001\u4ec5\u624b\u52a8\u6216\u9898\u5e93\u672a\u547d\u4e2d\u540e\u81ea\u52a8\u8865\u7b54\uff1b\u5728\u300cAI \u6e20\u9053\u300d\u914d\u7f6e\u4e91\u7aef\u670d\u52a1\u6216\u672c\u673a\u7f51\u5173\u3002") ]) ], -1), $d = {
     class: "config-control"
   }, Hd = [ "value" ], Od = [ vue.createElementVNode("option", {
     value: "off"
@@ -18482,7 +18511,7 @@
     class: "config-item"
   }, zd = {
     class: "config-item-content"
-  }, Nd = vue.createElementVNode("div", {
+  }, Dd = vue.createElementVNode("div", {
     class: "config-label"
   }, [ vue.createElementVNode("div", {
     class: "label-wrapper"
@@ -18490,7 +18519,7 @@
     class: "label-text"
   }, "\u9898\u95f4\u95f4\u9694"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u4e24\u9898\u4e4b\u95f4\u7b49\u5f85\u7684\u65f6\u95f4\u3002\u95f4\u9694\u592a\u77ed\u5bb9\u6613\u88ab\u5e73\u53f0\u5224\u5b9a\u5f02\u5e38\u3002") ]) ], -1), Dd = {
+  }, "\u4e24\u9898\u4e4b\u95f4\u7b49\u5f85\u7684\u65f6\u95f4\u3002\u95f4\u9694\u592a\u77ed\u5bb9\u6613\u88ab\u5e73\u53f0\u5224\u5b9a\u5f02\u5e38\u3002") ]) ], -1), Nd = {
     class: "config-control settings-range"
   }, Rd = [ "min" ], Fd = {
     class: "num"
@@ -18546,7 +18575,7 @@
         "onUpdate:modelValue": n => {
           vue.unref(t)[e.key] = n, persist(e.key, n);
         }
-      }, null, 8, [ "model-value", "onUpdate:modelValue" ]) ]) ]) ]))), 64)), vue.createElementVNode("div", Pd, [ vue.createElementVNode("div", Ld, [ $d, vue.createElementVNode("div", Md, [ vue.createElementVNode("select", {
+      }, null, 8, [ "model-value", "onUpdate:modelValue" ]) ]) ]) ]))), 64)), vue.createElementVNode("div", Pd, [ vue.createElementVNode("div", Ld, [ Md, vue.createElementVNode("div", $d, [ vue.createElementVNode("select", {
         class: "aah-select",
         "aria-label": "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f",
         value: vue.unref(a).usage,
@@ -18557,7 +18586,7 @@
             askGpt: t
           }), Cache.set("askGpt", t), t && msg("\u8bf7\u5148\u6d4b\u8bd5\u53ef\u7528\u7684\u6a21\u578b\uff1b\u81ea\u52a8 AI \u4ecd\u9700\u901a\u8fc7\u5b89\u5168\u5339\u914d\u548c\u91c7\u7eb3\u7b56\u7565\u3002");
         })(e.target.value))
-      }, Od, 40, Hd) ]) ]) ]), vue.createElementVNode("div", jd, [ vue.createElementVNode("div", zd, [ Nd, vue.createElementVNode("div", Dd, [ vue.withDirectives(vue.createElementVNode("input", {
+      }, Od, 40, Hd) ]) ]) ]), vue.createElementVNode("div", jd, [ vue.createElementVNode("div", zd, [ Dd, vue.createElementVNode("div", Nd, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": r[1] || (r[1] = e => vue.unref(t).delay = e),
         type: "range",
         min: vue.unref(t).minDelay,
@@ -18689,9 +18718,9 @@
     class: "config-item-content"
   }, Lh = {
     class: "config-label"
-  }, $h = {
+  }, Mh = {
     class: "label-wrapper"
-  }, Mh = vue.createElementVNode("span", {
+  }, $h = vue.createElementVNode("span", {
     class: "label-text"
   }, "API Key", -1), Hh = vue.createElementVNode("span", {
     class: "label-desc"
@@ -18699,9 +18728,9 @@
     class: "user-page__apikey num"
   }, jh = {
     class: "config-control"
-  }, zh = [ "disabled" ], Nh = {
+  }, zh = [ "disabled" ], Dh = {
     class: "user-page__tips"
-  }, Dh = vue.defineComponent({
+  }, Nh = vue.defineComponent({
     __name: "User",
     setup(e) {
       const t = Jn(), n = vue.ref("password"), a = vue.ref({
@@ -18776,7 +18805,7 @@
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: i[7] || (i[7] = e => openSite(vue.unref(eh).account))
-      }, "\u79ef\u5206\u660e\u7ec6") ]) ]) ]), vue.createElementVNode("div", Uh, [ vue.createElementVNode("div", Ph, [ vue.createElementVNode("div", Lh, [ vue.createElementVNode("div", $h, [ Mh, Hh, vue.createElementVNode("code", Oh, vue.toDisplayString(f.value), 1) ]) ]), vue.createElementVNode("div", jh, [ vue.createElementVNode("button", {
+      }, "\u79ef\u5206\u660e\u7ec6") ]) ]) ]), vue.createElementVNode("div", Uh, [ vue.createElementVNode("div", Ph, [ vue.createElementVNode("div", Lh, [ vue.createElementVNode("div", Mh, [ $h, Hh, vue.createElementVNode("code", Oh, vue.toDisplayString(f.value), 1) ]) ]), vue.createElementVNode("div", jh, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         disabled: l.value,
@@ -18835,7 +18864,7 @@
         class: "user-page__link-btn",
         type: "button",
         onClick: i[6] || (i[6] = e => openSite(vue.unref(eh).reset))
-      }, "\u5728\u5b98\u7f51\u627e\u56de") ]) ]) ], 32) ], 64)), vue.createElementVNode("p", Nh, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
+      }, "\u5728\u5b98\u7f51\u627e\u56de") ]) ]) ], 32) ], 64)), vue.createElementVNode("p", Dh, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
         class: "user-page__link-btn",
         type: "button",
         onClick: i[8] || (i[8] = e => openSite(vue.unref(eh).feedback))
@@ -18996,9 +19025,9 @@
     class: "label-text"
   }, "\u6e05\u7a7a\u672c\u5730\u9898\u5e93", -1), Lm = {
     class: "label-desc"
-  }, $m = {
-    class: "num"
   }, Mm = {
+    class: "num"
+  }, $m = {
     class: "config-control"
   }, Hm = [ "disabled" ], Om = {
     class: "settings-rows"
@@ -19006,9 +19035,9 @@
     class: "config-item"
   }, zm = {
     class: "config-item-content"
-  }, Nm = {
-    class: "config-label"
   }, Dm = {
+    class: "config-label"
+  }, Nm = {
     class: "label-wrapper"
   }, Rm = {
     class: "label-text"
@@ -19146,7 +19175,7 @@
         key: 0
       })) : "ai" === A.value ? (vue.openBlock(), vue.createBlock(Ad, {
         key: 1
-      })) : "account" === A.value ? (vue.openBlock(), vue.createBlock(Dh, {
+      })) : "account" === A.value ? (vue.openBlock(), vue.createBlock(Nh, {
         key: 2
       })) : "general" === A.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 3
@@ -19177,7 +19206,7 @@
       }, [ Am, vue.createElementVNode("div", _m, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(E.value, ((e, t) => (vue.openBlock(), vue.createBlock(Wl, {
         key: `runtime-${t}`,
         item: e
-      }, null, 8, [ "item" ])))), 128)) ]) ], 64)) : vue.createCommentVNode("", true), Cm, vue.createElementVNode("div", Tm, [ vue.createElementVNode("div", Sm, [ vue.createElementVNode("div", Im, [ vue.createElementVNode("div", Em, [ vue.createElementVNode("div", Um, [ Pm, vue.createElementVNode("span", Lm, [ vue.createTextVNode("\u5f53\u524d\u5171 "), vue.createElementVNode("b", $m, vue.toDisplayString(vue.unref(a).toLocaleString()), 1), vue.createTextVNode(" \u9898\uff0c\u4fdd\u5b58\u5728\u8fd9\u4e2a\u6d4f\u89c8\u5668\u91cc\u3002\u6e05\u7a7a\u540e\u65e0\u6cd5\u6062\u590d\uff0c\u6362\u6d4f\u89c8\u5668\u6216\u6e05\u7a7a\u524d\u5148\u5728\u300c\u9898\u5e93 \u2192 \u5bfc\u51fa\u300d\u5907\u4efd\u3002") ]) ]) ]), vue.createElementVNode("div", Mm, [ vue.createElementVNode("button", {
+      }, null, 8, [ "item" ])))), 128)) ]) ], 64)) : vue.createCommentVNode("", true), Cm, vue.createElementVNode("div", Tm, [ vue.createElementVNode("div", Sm, [ vue.createElementVNode("div", Im, [ vue.createElementVNode("div", Em, [ vue.createElementVNode("div", Um, [ Pm, vue.createElementVNode("span", Lm, [ vue.createTextVNode("\u5f53\u524d\u5171 "), vue.createElementVNode("b", Mm, vue.toDisplayString(vue.unref(a).toLocaleString()), 1), vue.createTextVNode(" \u9898\uff0c\u4fdd\u5b58\u5728\u8fd9\u4e2a\u6d4f\u89c8\u5668\u91cc\u3002\u6e05\u7a7a\u540e\u65e0\u6cd5\u6062\u590d\uff0c\u6362\u6d4f\u89c8\u5668\u6216\u6e05\u7a7a\u524d\u5148\u5728\u300c\u9898\u5e93 \u2192 \u5bfc\u51fa\u300d\u5907\u4efd\u3002") ]) ]) ]), vue.createElementVNode("div", $m, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-danger",
         disabled: !vue.unref(a),
@@ -19187,7 +19216,7 @@
       }), vue.createTextVNode("\u6e05\u7a7a ") ], 8, Hm) ]) ]) ]) ]) ], 64)) : "about" === A.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 4
-      }, [ vue.createElementVNode("div", Om, [ vue.createElementVNode("div", jm, [ vue.createElementVNode("div", zm, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("div", Dm, [ vue.createElementVNode("span", Rm, [ vue.createTextVNode(vue.toDisplayString(vue.unref(Re).script.name) + " ", 1), vue.createElementVNode("span", Fm, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), Bm ]) ]), vue.createElementVNode("div", Gm, [ vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("div", Om, [ vue.createElementVNode("div", jm, [ vue.createElementVNode("div", zm, [ vue.createElementVNode("div", Dm, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("span", Rm, [ vue.createTextVNode(vue.toDisplayString(vue.unref(Re).script.name) + " ", 1), vue.createElementVNode("span", Fm, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), Bm ]) ]), vue.createElementVNode("div", Gm, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn",
         disabled: L.value,
@@ -19360,10 +19389,10 @@
   }, Pg = [ "innerHTML" ], Lg = {
     key: 2,
     class: "ai-placeholder"
-  }, $g = {
+  }, Mg = {
     key: 0,
     class: "ai-placeholder is-loading"
-  }, Mg = {
+  }, $g = {
     key: 1,
     class: "aah-alert aah-alert-warning"
   }, Hg = [ "innerHTML" ], Og = {
@@ -19373,9 +19402,9 @@
     class: "official-result-head"
   }, zg = {
     class: "official-result-num"
-  }, Ng = {
-    class: "num"
   }, Dg = {
+    class: "num"
+  }, Ng = {
     class: "aah-tag"
   }, Rg = [ "innerHTML" ], Fg = {
     key: 0,
@@ -19401,7 +19430,7 @@
       const t = ta(), n = Qn(), a = Jn(), s = vue.ref(""), k = vue.ref("1"), q = vue.ref(""), A = vue.ref([]), _ = vue.ref(false), C = vue.ref(""), T = vue.ref(false), S = vue.ref(false), I = vue.computed((() => "1" === k.value)), E = vue.computed((() => I.value ? t.aiLoading : _.value)), U = vue.computed((() => E.value ? "\u641c\u7d22\u4e2d..." : "\u5f00\u59cb\u641c\u7d22")), P = vue.computed((() => t.selectTarget("search"))), L = vue.computed((() => {
         var e;
         return null == (e = P.value) ? void 0 : e.config;
-      })), M = vue.computed((() => {
+      })), $ = vue.computed((() => {
         const e = P.value;
         if (!e) {
           const e = t.settings.instances.length > 0;
@@ -19573,9 +19602,9 @@
         onClick: t => k.value = e.value
       }, vue.toDisplayString(e.label), 11, dg))), 64)), hg, "1" === k.value ? (vue.openBlock(), vue.createElementBlock("span", {
         key: 0,
-        class: vue.normalizeClass([ "ai-status", `is-${M.value.tone}` ]),
-        title: M.value.desc
-      }, [ gg, vue.createTextVNode(vue.toDisplayString("success" === M.value.tone ? M.value.model : M.value.title), 1) ], 10, mg)) : vue.createCommentVNode("", true), "1" === k.value ? (vue.openBlock(), 
+        class: vue.normalizeClass([ "ai-status", `is-${$.value.tone}` ]),
+        title: $.value.desc
+      }, [ gg, vue.createTextVNode(vue.toDisplayString("success" === $.value.tone ? $.value.model : $.value.title), 1) ], 10, mg)) : vue.createCommentVNode("", true), "1" === k.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 1,
         class: "aah-btn aah-btn-plain aah-btn-small",
@@ -19624,8 +19653,8 @@
       }, null, 8, Pg)) : (vue.openBlock(), vue.createElementBlock("p", Lg, "\u8f93\u5165\u9898\u76ee\u540e\u70b9\u300c" + vue.toDisplayString(U.value) + "\u300d\uff0c\u89e3\u7b54\u4f1a\u663e\u793a\u5728\u8fd9\u91cc\u3002", 1)) ], 64)) : (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
-      }, [ _.value ? (vue.openBlock(), vue.createElementBlock("p", $g, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true), C.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Mg, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, [ _.value ? (vue.openBlock(), vue.createElementBlock("p", Mg, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true), C.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", $g, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:alert-outline"
       }), vue.createElementVNode("span", {
         innerHTML: C.value
@@ -19641,7 +19670,7 @@
         return vue.openBlock(), vue.createElementBlock("li", {
           key: `official-${t}`,
           class: "official-result-item"
-        }, [ vue.createElementVNode("div", jg, [ vue.createElementVNode("span", zg, [ vue.createTextVNode("\u76f8\u4f3c\u9898 "), vue.createElementVNode("span", Ng, vue.toDisplayString(t + 1), 1) ]), vue.createElementVNode("span", Dg, vue.toDisplayString((n = e.type, 
+        }, [ vue.createElementVNode("div", jg, [ vue.createElementVNode("span", zg, [ vue.createTextVNode("\u76f8\u4f3c\u9898 "), vue.createElementVNode("span", Dg, vue.toDisplayString(t + 1), 1) ]), vue.createElementVNode("span", Ng, vue.toDisplayString((n = e.type, 
         O[String(n)] || "\u5176\u5b83\u9898\u578b")), 1) ]), vue.createElementVNode("div", {
           class: "official-question",
           innerHTML: e.question
@@ -19870,7 +19899,7 @@
         t.closeSearch(), t.setPage("settings", "account");
       }, switchArea = e => {
         t.closeSearch(), t.setPage(e);
-      }, M = vue.reactive({
+      }, $ = vue.reactive({
         dragging: false,
         offsetX: 0,
         offsetY: 0
@@ -19879,7 +19908,7 @@
         left: "50%",
         useTransform: true
       });
-      K[De + "app"] = t, K[De + "ask"] = n, K[De + "api"] = a, K[De + "user"] = s, K[De + "ai"] = y;
+      K[Ne + "app"] = t, K[Ne + "ask"] = n, K[Ne + "api"] = a, K[Ne + "user"] = s, K[Ne + "ai"] = y;
       document.onkeydown = function(e) {
         if (!t.app.hotkeyEnabled) return;
         const n = (e => {
@@ -19917,28 +19946,28 @@
         startX: 0,
         startWidth: 0
       });
-      let N = 0, D = 0;
+      let D = 0, N = 0;
       const handleResizeMove = e => {
         if (!z.resizing) return;
         const t = e.clientX - z.startX, n = H.useTransform ? 2 : 1;
-        D = Math.max(480, Math.min(1200, Math.round(z.startWidth + t * n))), N || (N = requestAnimationFrame((() => {
-          N = 0, O.value = D;
+        N = Math.max(480, Math.min(1200, Math.round(z.startWidth + t * n))), D || (D = requestAnimationFrame((() => {
+          D = 0, O.value = N;
         })));
       }, stopResize = () => {
-        z.resizing && (z.resizing = false, N && cancelAnimationFrame(N), N = 0, null !== O.value && t.setDialogWidth(O.value), 
+        z.resizing && (z.resizing = false, D && cancelAnimationFrame(D), D = 0, null !== O.value && t.setDialogWidth(O.value), 
         O.value = null, window.removeEventListener("pointermove", handleResizeMove), window.removeEventListener("pointerup", stopResize));
       }, startResize = e => {
         e.preventDefault(), e.stopPropagation(), z.resizing = true, z.startX = e.clientX, 
-        z.startWidth = t.app.dialogWidth, D = z.startWidth, window.addEventListener("pointermove", handleResizeMove), 
+        z.startWidth = t.app.dialogWidth, N = z.startWidth, window.addEventListener("pointermove", handleResizeMove), 
         window.addEventListener("pointerup", stopResize);
       }, handleDragMove = e => {
-        if (!M.dragging || !q.value) return;
+        if (!$.dragging || !q.value) return;
         const t = q.value, {clientX: n, clientY: a} = e, i = t.offsetWidth, r = t.offsetHeight, s = window.innerWidth - i, o = window.innerHeight - r;
-        let l = n - M.offsetX, c = a - M.offsetY;
+        let l = n - $.offsetX, c = a - $.offsetY;
         l = Math.min(Math.max(0, l), Math.max(0, s)), c = Math.min(Math.max(0, c), Math.max(0, o)), 
         H.left = `${l}px`, H.top = `${c}px`, H.useTransform = false;
       }, stopDrag = () => {
-        M.dragging && (M.dragging = false, window.removeEventListener("pointermove", handleDragMove), 
+        $.dragging && ($.dragging = false, window.removeEventListener("pointermove", handleDragMove), 
         window.removeEventListener("pointerup", stopDrag));
       }, startDrag = e => {
         if ((t = e.target) instanceof Element && t.closest("button, a, input, textarea, select, option, label")) return;
@@ -19946,8 +19975,8 @@
         if (!q.value) return;
         e.preventDefault();
         const n = q.value.getBoundingClientRect();
-        H.useTransform && (H.left = `${n.left}px`, H.top = `${n.top}px`), M.dragging = true, 
-        M.offsetX = e.clientX - n.left, M.offsetY = e.clientY - n.top, H.useTransform = false, 
+        H.useTransform && (H.left = `${n.left}px`, H.top = `${n.top}px`), $.dragging = true, 
+        $.offsetX = e.clientX - n.left, $.offsetY = e.clientY - n.top, H.useTransform = false, 
         window.addEventListener("pointermove", handleDragMove), window.addEventListener("pointerup", stopDrag);
       };
       return vue.watch((() => t.app.showFloat), (e => {
@@ -20057,9 +20086,9 @@
         role: "separator"
       }, null, 32) ], 12, pf), [ [ vue.vShow, vue.unref(t).app.showFloat ] ]), vue.withDirectives(vue.createVNode(cg, null, null, 512), [ [ vue.vShow, !vue.unref(t).app.showFloat ] ]) ], 512) ]));
     }
-  }), Lf = [ '.floating-wrapper{--c-primary: #1672b8;--c-primary-hover: #12659f;--c-primary-active: #0f5789;--c-primary-soft: rgba(22, 114, 184, .09);--c-primary-ring: rgba(22, 114, 184, .28);--c-on-primary: #ffffff;--c-success: #1d8549;--c-success-soft: rgba(29, 133, 73, .1);--c-warning: #a86200;--c-warning-soft: rgba(214, 135, 0, .12);--c-danger: #c93030;--c-danger-soft: rgba(201, 48, 48, .08);--c-info: #1672b8;--c-info-soft: rgba(22, 114, 184, .09);--c-bg-base: #ffffff;--c-bg-surface: #ffffff;--c-bg-subtle: #f6f7f9;--c-bg-hover: #f0f1f4;--c-bg-selected: rgba(22, 114, 184, .08);--c-bg-inverse: #1d2129;--c-text-primary: #1d2129;--c-text-secondary: #4b5260;--c-text-muted: #6b7280;--c-text-disabled: #a9aeb7;--c-text-inverse: #ffffff;--c-border-subtle: #edeef1;--c-border-base: #e1e3e8;--c-border-strong: #c9ccd3;--s-1: 4px;--s-2: 8px;--s-3: 10px;--s-4: 12px;--s-5: 16px;--s-6: 20px;--s-8: 24px;--s-10: 32px;--r-xs: 4px;--r-sm: 6px;--r-md: 8px;--r-lg: 12px;--r-full: 9999px;--shadow-1: none;--shadow-2: 0 1px 2px rgba(20, 24, 33, .06);--shadow-3: 0 8px 24px -6px rgba(20, 24, 33, .16), 0 2px 6px rgba(20, 24, 33, .06);--shadow-4: 0 18px 48px -12px rgba(20, 24, 33, .28), 0 4px 12px rgba(20, 24, 33, .08);--font-xs: 11px;--font-sm: 12px;--font-base: 13px;--font-md: 14px;--font-lg: 15px;--font-xl: 18px;--fw-regular: 400;--fw-medium: 500;--fw-semibold: 600;--font-numeric: tabular-nums;--font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Arial, sans-serif;--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;--row-h: 32px;--control-h: 28px;--control-h-sm: 24px;--ease-out: cubic-bezier(.16, 1, .3, 1);--ease-spring: cubic-bezier(.22, 1, .36, 1);--dur-fast: .12s;--dur-base: .18s;--dur-slow: .26s;--z-base: 1;--z-sticky: 10;--z-overlay: 20;--z-modal: 30;--z-toast: 40;--z-tooltip: 50;color:var(--c-text-primary);color-scheme:light;font-family:var(--font-sans);font-size:var(--font-base);line-height:1.5;text-align:left}.floating-wrapper[data-theme=dark]{color-scheme:dark;--c-primary: #4da3e6;--c-primary-hover: #6cb4eb;--c-primary-active: #3a92d6;--c-primary-soft: rgba(77, 163, 230, .14);--c-primary-ring: rgba(77, 163, 230, .36);--c-on-primary: #08131c;--c-success: #4cc27e;--c-success-soft: rgba(76, 194, 126, .14);--c-warning: #e8a73c;--c-warning-soft: rgba(232, 167, 60, .15);--c-danger: #f0716b;--c-danger-soft: rgba(240, 113, 107, .14);--c-info: #4da3e6;--c-info-soft: rgba(77, 163, 230, .14);--c-bg-base: #18191c;--c-bg-surface: #18191c;--c-bg-subtle: #1f2024;--c-bg-hover: #26282d;--c-bg-selected: rgba(77, 163, 230, .13);--c-bg-inverse: #e6e7ea;--c-text-primary: #e6e7ea;--c-text-secondary: #b4b8c0;--c-text-muted: #8d929b;--c-text-disabled: #565a62;--c-text-inverse: #18191c;--c-border-subtle: #24262a;--c-border-base: #2d3035;--c-border-strong: #3b3f46;--shadow-2: 0 1px 2px rgba(0, 0, 0, .4);--shadow-3: 0 8px 24px -6px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04);--shadow-4: 0 18px 48px -12px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .06)}.floating-wrapper:not([data-theme]){visibility:hidden}.floating-wrapper,.floating-wrapper *{box-sizing:border-box}:where(.floating-wrapper) :where(button,input,select,textarea){font:inherit;color:inherit}:where(.floating-wrapper) :where(button){cursor:pointer}:where(.floating-wrapper) :where(button:disabled){cursor:not-allowed}.floating-wrapper ::selection{background:var(--c-primary-ring);color:var(--c-text-primary)}.floating-wrapper input,.floating-wrapper textarea{caret-color:var(--c-primary);accent-color:var(--c-primary)}.floating-wrapper :focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:1px}.floating-wrapper a{color:var(--c-primary);text-underline-offset:2px}.custom-scroll,.floating-wrapper .scroll{scrollbar-width:thin;scrollbar-color:var(--c-border-strong) transparent}.custom-scroll::-webkit-scrollbar,.floating-wrapper .scroll::-webkit-scrollbar{width:8px;height:8px}.custom-scroll::-webkit-scrollbar-thumb,.floating-wrapper .scroll::-webkit-scrollbar-thumb{background:var(--c-border-strong);border-radius:8px;border:2px solid transparent;background-clip:content-box}.custom-scroll::-webkit-scrollbar-thumb:hover,.floating-wrapper .scroll::-webkit-scrollbar-thumb:hover{background-color:var(--c-text-muted)}.floating-wrapper *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.num{font-variant-numeric:tabular-nums}.flex-grow{flex:1}.icon-inline{display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:middle;position:relative;top:-.05em}.aah-card{background:var(--c-bg-surface);border-radius:var(--r-md);border:1px solid var(--c-border-base);padding:var(--s-4)}.aah-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:var(--control-h);padding:0 var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.aah-btn:hover:enabled{background:var(--c-bg-hover);border-color:var(--c-border-strong)}.aah-btn:active:enabled{background:var(--c-border-subtle)}.aah-btn:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-btn svg{flex:none;width:15px;height:15px}.aah-btn-primary{background:var(--c-primary);color:var(--c-on-primary);border-color:var(--c-primary)}.aah-btn-primary:hover:enabled{background:var(--c-primary-hover);border-color:var(--c-primary-hover)}.aah-btn-primary:active:enabled{background:var(--c-primary-active)}.aah-btn-primary:disabled{background:var(--c-primary-soft);border-color:transparent;color:var(--c-text-disabled)}.aah-btn-plain{background:transparent;border-color:transparent;color:var(--c-text-secondary)}.aah-btn-plain:hover:enabled{background:var(--c-bg-hover);border-color:transparent;color:var(--c-text-primary)}.aah-btn-small{height:var(--control-h-sm);padding:0 var(--s-2);font-size:var(--font-sm);border-radius:var(--r-xs)}.aah-btn-icon{width:var(--control-h);padding:0}.aah-btn-small.aah-btn-icon{width:var(--control-h-sm)}.aah-btn-danger{color:var(--c-danger)}.aah-btn-danger:hover:enabled{background:var(--c-danger-soft);border-color:var(--c-danger)}.aah-btn-danger-solid{background:var(--c-danger);border-color:var(--c-danger);color:#fff}.aah-btn-danger-solid:hover:enabled{filter:brightness(.94);background:var(--c-danger);border-color:var(--c-danger)}.aah-tag{display:inline-flex;align-items:center;gap:var(--s-1);height:20px;padding:0 6px;border-radius:var(--r-xs);font-size:var(--font-sm);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;color:var(--c-text-secondary);background:var(--c-bg-subtle);border:1px solid var(--c-border-base)}button.aah-tag:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.aah-tag-primary{background:var(--c-primary-soft);color:var(--c-primary);border-color:transparent}.aah-tag-success{background:var(--c-success-soft);color:var(--c-success);border-color:transparent}.aah-tag-warning{background:var(--c-warning-soft);color:var(--c-warning);border-color:transparent}.aah-tag-danger{background:var(--c-danger-soft);color:var(--c-danger);border-color:transparent}.aah-input,.aah-select{width:100%;min-height:var(--control-h);padding:4px var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.aah-input::placeholder,.floating-wrapper textarea::placeholder,.floating-wrapper input::placeholder{color:var(--c-text-muted)}.aah-input:hover:enabled,.aah-select:hover:enabled{border-color:var(--c-border-strong)}.aah-input:focus,.aah-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.aah-input:disabled,.aah-select:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-input.recording{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.aah-select{cursor:pointer}.aah-alert{display:flex;align-items:flex-start;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);line-height:1.6;color:var(--c-text-primary);background:var(--c-bg-subtle)}.aah-alert-info{background:var(--c-info-soft)}.aah-alert-success{background:var(--c-success-soft)}.aah-alert-warning{background:var(--c-warning-soft)}.aah-alert-danger{background:var(--c-danger-soft)}.aah-alert-warning svg{color:var(--c-warning)}.aah-alert-danger svg{color:var(--c-danger)}.aah-alert-info svg{color:var(--c-info)}.aah-section-title{display:flex;align-items:center;gap:6px;margin:0 0 var(--s-2);font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-text-secondary)}.aah-section-title svg{width:14px;height:14px;color:var(--c-text-muted)}.aah-menu{position:absolute;z-index:var(--z-overlay);min-width:200px;padding:var(--s-1);background:var(--c-bg-surface);border:1px solid var(--c-border-base);border-radius:var(--r-md);box-shadow:var(--shadow-3)}.aah-menu-item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:6px var(--s-3);border:0;border-radius:var(--r-xs);background:none;text-align:left;color:var(--c-text-primary)}.aah-menu-item:hover{background:var(--c-bg-hover)}.aah-menu-item small{color:var(--c-text-muted);font-size:var(--font-xs)}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.aah-slider{width:100%;accent-color:var(--c-primary)}.radio-group{display:flex;gap:var(--s-3)}.radio-item{display:inline-flex;align-items:center;gap:var(--s-1);cursor:pointer}.floating-wrapper[data-theme=dark] .aah-btn-danger-solid{color:#1f0b0a}.floating-wrapper[data-theme=dark] :is(.panel-body,.notice-full) img:not(.panel-avatar,.user-page__avatar){padding:2px;border-radius:var(--r-xs);background-color:#fff}', '.floating-wrapper{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:999999}.el_wrapper>.floating-wrapper,.el_wrapper>div,.el_wrapper>div>div{pointer-events:none;z-index:999999!important}.floating-dialog{position:fixed;display:flex;flex-direction:column;height:min(720px,calc(100vh - 80px));max-width:calc(100vw - 32px);pointer-events:auto!important;overflow:hidden;background:var(--c-bg-base);border:1px solid var(--c-border-base);border-radius:var(--r-lg);box-shadow:var(--shadow-4);container:panel / inline-size;z-index:999999}.panel-head{display:flex;align-items:center;gap:var(--s-2);height:44px;flex:none;padding:0 var(--s-2) 0 var(--s-4);cursor:move;-webkit-user-select:none;user-select:none}.panel-brand{display:flex;align-items:center;gap:7px;min-width:0;flex:none}.panel-brand img{width:18px;height:18px;border-radius:4px}.panel-name{font-size:var(--font-md);font-weight:var(--fw-semibold);letter-spacing:-.01em;white-space:nowrap}.panel-version{font-size:var(--font-xs);color:var(--c-text-muted)}.panel-status{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;margin-left:var(--s-1);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary);white-space:nowrap}.panel-status:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.panel-status.is-run{color:var(--c-primary);border-color:var(--c-primary-ring);background:var(--c-primary-soft)}.panel-status.is-done{color:var(--c-success)}.panel-status.is-idle{color:var(--c-text-muted)}.panel-spacer{flex:1}.panel-actions{display:flex;align-items:center;gap:2px;flex:none}.panel-tool,.panel-account,.panel-icon-btn{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--c-text-secondary);white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.panel-tool:hover,.panel-account:hover,.panel-icon-btn:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.panel-tool svg,.panel-icon-btn svg{width:16px;height:16px}.panel-tool.is-on{background:var(--c-primary-soft);color:var(--c-primary)}.panel-icon-btn{width:28px;padding:0;justify-content:center}.panel-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.panel-account-name{max-width:96px;overflow:hidden;text-overflow:ellipsis;color:var(--c-text-primary)}.panel-account-score{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 639px){.panel-version,.panel-tool-label,.panel-account-name{display:none}.panel-tool{width:28px;padding:0;justify-content:center}}@container panel (max-width: 519px){.panel-account-score{display:none}}.notice-bar{flex:none;margin:0 var(--s-3) var(--s-2);border-radius:var(--r-sm);background:var(--c-bg-subtle)}.notice-row{display:flex;align-items:center;gap:var(--s-2);height:32px;padding:0 4px 0 var(--s-3)}.notice-icon{flex:none;width:15px;height:15px;color:var(--c-primary)}.notice-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.notice-full{max-height:180px;overflow:auto;padding:0 var(--s-3) var(--s-3) 33px;font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.notice-full img{max-width:100%;height:auto}.panel-nav{display:flex;gap:var(--s-1);flex:none;padding:0 var(--s-3);border-bottom:1px solid var(--c-border-base)}.panel-nav-item{position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 var(--s-2);border:0;background:none;color:var(--c-text-muted);font-size:var(--font-md);font-weight:var(--fw-medium)}.panel-nav-item:hover{color:var(--c-text-primary)}.panel-nav-item:after{content:"";position:absolute;left:var(--s-2);right:var(--s-2);bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:transparent;transition:background-color var(--dur-base) var(--ease-out)}.panel-nav-item.is-active{color:var(--c-text-primary)}.panel-nav-item.is-active:after{background:var(--c-primary)}.panel-nav-count{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.panel-body{position:relative;flex:1 1 auto;min-height:0}.area{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;min-height:0}.area .scroll{min-height:0;overflow:auto;overscroll-behavior:contain}.area-foot{display:flex;align-items:center;gap:var(--s-2);min-height:48px;padding:var(--s-2) var(--s-3) var(--s-2) var(--s-4);border-top:1px solid var(--c-border-base);background:var(--c-bg-base)}.area-foot-spacer{flex:1}.area-foot-pop,.lib-menu-wrap{position:relative}.area-foot-pop .aah-menu,.lib-menu-wrap .aah-menu{right:0;bottom:calc(100% + 6px)}.search-sheet,.area-sheet{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-overlay);display:flex;flex-direction:column;background:var(--c-bg-base);animation:sheet-in var(--dur-slow) var(--ease-out)}.search-sheet-head,.area-sheet-head{display:flex;align-items:center;gap:var(--s-2);flex:none;height:44px;padding:0 var(--s-2) 0 var(--s-4);border-bottom:1px solid var(--c-border-subtle)}.area-sheet-head{padding-left:var(--s-2)}.search-sheet-head h2,.area-sheet-head h2{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.search-sheet-hint{flex:1;font-size:var(--font-sm);color:var(--c-text-muted)}.search-sheet-body,.area-sheet-body{flex:1;min-height:0;overflow:auto}@keyframes sheet-in{0%{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.floating-resize-handle{position:absolute;right:2px;bottom:2px;z-index:var(--z-overlay);width:14px;height:14px;cursor:nwse-resize;-webkit-user-select:none;user-select:none;background-image:linear-gradient(135deg,transparent 45%,var(--c-border-strong) 45%,var(--c-border-strong) 55%,transparent 55%),linear-gradient(135deg,transparent 70%,var(--c-border-strong) 70%,var(--c-border-strong) 80%,transparent 80%);opacity:.8}.floating-resize-handle:hover{opacity:1}.mini-ball-dock{position:fixed;right:20px;bottom:20px;z-index:9999999;display:flex;align-items:center;gap:var(--s-3);pointer-events:none}.mini-ball,.mini-bubble{pointer-events:auto}.mini-ball{--p: 0;position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:50%;background:transparent;transition:transform var(--dur-base) var(--ease-out)}.mini-ball:hover{transform:translateY(-2px)}.mini-ball img{width:52px;height:52px;filter:drop-shadow(0 2px 6px rgba(20,24,33,.25))}.mini-ball.has-progress:before{content:"";position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;border-radius:50%;background:conic-gradient(var(--c-primary) calc(var(--p) * 1%),rgba(20,24,33,.18) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px))}.mini-ball-value{position:absolute;left:50%;bottom:-10px;transform:translate(-50%);padding:0 6px;border-radius:var(--r-full);background:var(--c-bg-surface);box-shadow:var(--shadow-3);font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:16px;color:var(--c-text-primary);white-space:nowrap}.mini-ball-value small{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.mini-ball-badge{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-full);border:2px solid var(--c-bg-surface);background:var(--c-danger);color:#fff;font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:14px}.mini-bubble{display:flex;flex-direction:column;gap:2px;max-width:240px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-md);background:var(--c-bg-surface);box-shadow:var(--shadow-3);text-align:left;font-size:var(--font-sm);color:var(--c-text-secondary);animation:sheet-in var(--dur-slow) var(--ease-out)}.mini-bubble strong{font-size:var(--font-base);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.mini-bubble:hover{border-color:var(--c-border-strong)}.panel-kbd{margin-left:2px}@container panel (max-width: 639px){.panel-tool .panel-kbd{display:none}}', ".modal-mask{position:fixed;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-4);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .modal-mask{background:#00000080}.modal-panel{display:flex;flex-direction:column;width:min(600px,100%);max-height:100%;border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.modal-header{display:flex;align-items:center;justify-content:space-between;flex:none;height:48px;padding:0 var(--s-2) 0 var(--s-5);border-bottom:1px solid var(--c-border-subtle)}.modal-header h3{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.modal-body{display:flex;flex-direction:column;gap:var(--s-4);padding:var(--s-4) var(--s-5);overflow-y:auto}.modal-footer{display:flex;justify-content:flex-end;gap:var(--s-2);flex:none;padding:var(--s-3) var(--s-5);border-top:1px solid var(--c-border-subtle)}.modal-panel-large{width:min(760px,100%)}.form-row{display:flex;flex-direction:column;gap:6px}.form-row label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.form-row label small{margin-left:6px;font-weight:var(--fw-regular);color:var(--c-text-muted)}.option-list{display:flex;flex-direction:column;gap:6px}.option-row{display:flex;align-items:center;gap:var(--s-2)}.option-selector{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--control-h);height:var(--control-h);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);font-weight:var(--fw-semibold);transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.option-selector:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.option-selector.active{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary)}.reading-form-section+.reading-form-section{padding-top:var(--s-4);border-top:1px solid var(--c-border-base)}.reading-section-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.reading-section-icon{width:16px;height:16px;color:var(--c-text-muted)}.reading-section-header h4{flex:1;margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.reading-sub-questions-editor{display:flex;flex-direction:column}.reading-sub-question-editor{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.reading-sub-question-header{display:flex;align-items:center;gap:var(--s-2)}.reading-sub-question-number{min-width:22px;font-size:var(--font-md);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums}.reading-base-select-small{width:auto;min-width:120px}.reading-answer-list{display:flex;flex-direction:column;gap:6px}.reading-answer-row{display:flex;align-items:center;gap:var(--s-2)}.confirm-layer{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-5);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .confirm-layer{background:#00000080}.confirm-box{width:min(360px,100%);padding:var(--s-5);border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.confirm-box h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.confirm-box p{margin:var(--s-2) 0 0;font-size:var(--font-base);line-height:1.6;color:var(--c-text-secondary)}.confirm-actions{display:flex;justify-content:flex-end;gap:var(--s-2);margin-top:var(--s-5)}", ".hljs{display:block;overflow-x:auto;padding:var(--s-3);border-radius:var(--r-sm);font-family:ui-monospace,SF Mono,Consolas,monospace;font-size:var(--font-sm);line-height:1.5}.floating-wrapper:not([data-theme=dark]) .hljs{background:#f6f8fa;color:#24292f;box-shadow:var(--shadow-1)}.floating-wrapper:not([data-theme=dark]) .hljs-keyword,.floating-wrapper:not([data-theme=dark]) .hljs-selector-tag,.floating-wrapper:not([data-theme=dark]) .hljs-built_in{color:#cf222e}.floating-wrapper:not([data-theme=dark]) .hljs-string,.floating-wrapper:not([data-theme=dark]) .hljs-attr{color:#0a3069}.floating-wrapper:not([data-theme=dark]) .hljs-number,.floating-wrapper:not([data-theme=dark]) .hljs-literal{color:#0550ae}.floating-wrapper:not([data-theme=dark]) .hljs-comment{color:#6e7781;font-style:italic}.floating-wrapper:not([data-theme=dark]) .hljs-title,.floating-wrapper:not([data-theme=dark]) .hljs-name{color:#8250df}.floating-wrapper[data-theme=dark] .hljs{background:#1f1f23;color:#f0f6fc;box-shadow:var(--shadow-1)}.floating-wrapper[data-theme=dark] .hljs-keyword,.floating-wrapper[data-theme=dark] .hljs-selector-tag,.floating-wrapper[data-theme=dark] .hljs-built_in{color:#ff7b72}.floating-wrapper[data-theme=dark] .hljs-string,.floating-wrapper[data-theme=dark] .hljs-attr{color:#a5d6ff}.floating-wrapper[data-theme=dark] .hljs-number,.floating-wrapper[data-theme=dark] .hljs-literal{color:#79c0ff}.floating-wrapper[data-theme=dark] .hljs-comment{color:#8b949e;font-style:italic}.floating-wrapper[data-theme=dark] .hljs-title,.floating-wrapper[data-theme=dark] .hljs-name{color:#d2a8ff}", ".segmented{display:inline-flex;padding:2px;gap:2px;background:var(--c-bg-base);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm)}.segment-item{padding:var(--s-1) var(--s-3);border:none;border-radius:calc(var(--r-sm) - 2px);background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.segment-item.active{background:var(--c-bg-surface);color:var(--c-primary);box-shadow:var(--shadow-1)}.segment-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}", '.switch{position:relative;display:inline-block;width:32px;height:18px;flex:none;cursor:pointer}.switch.disabled{cursor:not-allowed;opacity:.5}.switch input{position:absolute;opacity:0;width:0;height:0}.switch-slider{position:absolute;top:0;right:0;bottom:0;left:0;background:var(--c-border-strong);border-radius:var(--r-full);transition:background-color var(--dur-base) var(--ease-out)}.switch-slider:before{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;box-shadow:0 1px 2px #14182133;transition:transform var(--dur-base) var(--ease-spring)}.switch input:checked+.switch-slider{background:var(--c-primary)}.switch input:checked+.switch-slider:before{transform:translate(14px)}.switch input:focus-visible+.switch-slider{box-shadow:0 0 0 3px var(--c-primary-ring)}', '.settings-rows{display:flex;flex-direction:column}.config-item{padding:12px 0;border-bottom:1px solid var(--c-border-subtle)}.config-item:last-child{border-bottom:0}.config-item-content{display:flex;justify-content:space-between;align-items:center;gap:16px}.config-label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0}.label-wrapper{display:flex;flex-direction:column;gap:2px}.label-text{font-size:var(--font-base);font-weight:var(--fw-medium);color:var(--c-text-primary)}.label-desc{font-size:var(--font-sm);color:var(--c-text-muted);line-height:1.5;white-space:pre-line}.settings-range{min-width:220px}.settings-range .aah-slider{width:150px}.settings-range .num{min-width:56px;text-align:right;color:var(--c-text-secondary);font-size:var(--font-sm)}.config-control{display:flex;align-items:center;flex-shrink:0;gap:10px;flex-wrap:wrap;justify-content:flex-end}.checkbox-group{display:flex;flex-wrap:wrap;gap:10px}.alert-icon{flex:none;width:16px;height:16px}.base-input,.base-select{min-width:180px;min-height:var(--control-h);padding:4px 10px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color .2s ease,box-shadow .2s ease}.base-input:focus,.base-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.base-select{min-width:160px}.checkbox-item{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r-sm);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle)}.hotkey-input-wrapper{position:relative;display:inline-flex;align-items:center;gap:8px}.hotkey-input-wrapper .hotkey-hint{font-size:var(--font-sm);color:var(--c-text-muted);background:var(--c-bg-subtle);padding:2px 8px;border-radius:var(--r-xs)}.hotkey-input-wrapper .hotkey-hint.danger{color:var(--c-danger);background:var(--c-danger-soft)}.hotkey-input-wrapper .base-input.recording{border-color:var(--c-danger);box-shadow:0 0 0 3px var(--c-danger-soft)}.hotkey-input-wrapper .base-input{cursor:pointer}.ai-config-panel{container-type:inline-size;container-name:aipanel;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-panel .aah-card{padding:0;border:0;border-radius:0;background:none}.ai-config-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2);flex-wrap:wrap}.ai-config-section-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-config-section-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard{display:flex;flex-direction:column;gap:var(--s-4)}.ai-wizard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2)}.ai-wizard-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-count{color:var(--c-text-muted);font-size:var(--font-sm);font-variant-numeric:tabular-nums}.ai-wizard-steps{display:flex;align-items:center;gap:var(--s-5);margin:0;padding:0 0 var(--s-3);list-style:none;border-bottom:1px solid var(--c-border-base);color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-steps li{position:relative;display:flex;align-items:center;gap:6px}.ai-wizard-steps li+li:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ai-wizard-dot{width:8px;height:8px;border-radius:var(--r-full);border:1.5px solid var(--c-text-disabled)}.ai-wizard-steps li.done .ai-wizard-dot{border-color:var(--c-success);background:var(--c-success)}.ai-wizard-steps li.current{color:var(--c-text-primary);font-weight:var(--fw-medium)}.ai-wizard-steps li.current .ai-wizard-dot{border-color:var(--c-primary);background:var(--c-primary)}.ai-wizard-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-wizard-subject{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-pick{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}.ai-config-card-pick:hover{background:var(--c-bg-hover)}.ai-config-card-tags{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.ai-config-channel-list{display:flex;flex-direction:column;gap:1px}.ai-config-channel-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--s-2);min-height:40px;padding:6px var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left;cursor:pointer}.ai-config-channel-item:hover{background:var(--c-bg-hover)}.ai-config-channel-item.active{background:var(--c-bg-selected);color:var(--c-text-primary)}.ai-config-channel-item.orphan{opacity:.6}.ai-config-channel-text{min-width:0;display:flex;flex-direction:column;gap:1px}.ai-config-channel-text strong,.ai-config-channel-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-config-channel-text strong{font-weight:var(--fw-medium)}.ai-config-channel-text small{color:var(--c-text-muted);font-size:var(--font-xs)}.ai-config-channel-grid{display:flex;flex-direction:column;border-top:1px solid var(--c-border-subtle)}.ai-config-card{display:flex;flex-direction:column;gap:6px;padding:var(--s-3) var(--s-2);border:0;border-bottom:1px solid var(--c-border-subtle);border-radius:0;background:none}.ai-config-card.recommended{background:var(--c-bg-selected)}.ai-config-card-head{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;font-weight:var(--fw-medium)}.ai-config-card-promo{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-config-card-actions,.ai-config-instance-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-instance-remove{align-self:flex-start}@container aipanel (min-width: 560px){.ai-config-channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-4)}}@container aipanel (min-width: 820px){.ai-config-channel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}.ai-config-manager{display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-side{min-width:0;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-list-panel,.ai-config-global,.ai-config-detail{min-width:0;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-global{padding-top:var(--s-3);border-top:1px solid var(--c-border-base)}.ai-config-side-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-inline-action{padding:0;border:none;background:none;color:var(--c-primary);font:inherit;font-weight:var(--fw-medium);cursor:pointer;text-decoration:underline;text-underline-offset:2px}.ai-config-collapse{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);padding:0;border:none;background:none;color:var(--c-text-primary);font:inherit;font-weight:var(--fw-semibold);cursor:pointer}.ai-config-global-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-detail-empty{min-height:200px;align-items:center;justify-content:center;text-align:center}.ai-config-empty-icon{width:28px;height:28px;color:var(--c-text-muted)}.ai-config-add-modal{width:min(760px,100%)}@container aipanel (min-width: 720px){.ai-config-manager{display:grid;grid-template-columns:minmax(200px,240px) minmax(0,1fr);gap:0;align-items:start}.ai-config-side{padding-right:var(--s-4)}.ai-config-detail{min-height:100%;padding-left:var(--s-5);border-left:1px solid var(--c-border-base)}}.ai-config-delete-modal{width:min(420px,100%)}.ai-config-delete-text{margin:0;color:var(--c-text-secondary);line-height:1.6}.ai-config-field{min-width:0;display:flex;flex-direction:column;gap:6px}.ai-config-field span{color:var(--c-text-secondary);font-size:var(--font-sm);font-weight:var(--fw-medium)}.ai-config-field-help{margin:0;color:var(--c-text-muted);font-size:var(--font-sm);line-height:1.55}.ai-config-field-help a{margin-left:var(--s-1);color:var(--c-primary);font-weight:var(--fw-medium);text-decoration:none}.ai-config-field-help a:hover{text-decoration:underline}@container panel (max-width: 519px){.config-item-content{flex-direction:column;align-items:flex-start}.config-control{width:100%;justify-content:flex-start}}', '.user-page{display:flex;flex-direction:column;gap:var(--s-4);max-width:560px}.user-page__tabs{display:flex;gap:var(--s-4);border-bottom:1px solid var(--c-border-base)}.user-page__tab{position:relative;height:32px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.user-page__tab:hover,.user-page__tab.is-active{color:var(--c-text-primary)}.user-page__tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.user-page__form{display:flex;flex-direction:column;gap:var(--s-3)}.user-page__field{display:flex;flex-direction:column;gap:4px}.user-page__field>span{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.user-page__form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4);margin-top:var(--s-1)}.user-page__form-actions .aah-btn{min-width:96px}.user-page__helper{font-size:var(--font-sm);color:var(--c-text-muted)}.user-page__link-btn{padding:0;border:0;background:none;color:var(--c-primary);font-size:inherit}.user-page__link-btn:hover{text-decoration:underline;text-underline-offset:2px}.user-page__avatar{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.user-page__score{margin-left:6px;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.user-page__apikey{margin-top:4px;font-family:var(--font-mono);font-size:var(--font-sm);color:var(--c-text-secondary);word-break:break-all}.user-page__tips{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}', '.ai-workbench{display:flex;flex-direction:column;min-height:100%}.ai-tabs{display:flex;align-items:center;gap:var(--s-4);padding:0 var(--s-3) 0 var(--s-4);border-bottom:1px solid var(--c-border-base)}.ai-tab{position:relative;height:36px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ai-tab:hover,.ai-tab.is-active{color:var(--c-text-primary)}.ai-tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.ai-tabs-spacer{flex:1}.ai-status{display:inline-flex;align-items:center;gap:6px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.ai-status i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--c-success)}.ai-status.is-warning i{background:var(--c-warning)}.ai-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);flex:1;min-height:0}.ai-input{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-4);border-right:1px solid var(--c-border-base)}.ai-field-label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.ai-textarea{width:100%;min-height:160px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);line-height:1.6;resize:vertical}.ai-textarea:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.ai-field-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-command-row{display:flex;gap:var(--s-2)}.ai-service-details{margin-top:auto;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-service-details summary{cursor:pointer}.ai-service-details .copyright-content{margin-top:var(--s-2);line-height:1.7}.ai-result{min-width:0;padding:var(--s-4) var(--s-5) var(--s-6)}.ai-result-head{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.ai-result-head .aah-section-title{margin:0}.ai-result-note{font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder.is-loading{color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}.ai-markdown{font-size:var(--font-base);line-height:1.75;overflow-wrap:anywhere}.ai-result>.aah-alert{margin-bottom:var(--s-3);align-items:center}.official-options li{display:flex;gap:var(--s-2)}.official-result-list{margin:0;padding:0;list-style:none}.official-result-item{display:flex;flex-direction:column;gap:var(--s-2);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.official-result-head{display:flex;align-items:center;gap:var(--s-2)}.official-result-num{font-weight:var(--fw-semibold);color:var(--c-text-muted)}.official-question{line-height:1.65;overflow-wrap:anywhere}.official-options{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none;font-size:var(--font-sm);color:var(--c-text-secondary)}.official-answer{display:flex;flex-wrap:wrap;align-items:center;gap:4px var(--s-2)}.official-answer-label{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.ai-split{grid-template-columns:1fr}.ai-input{border-right:0;border-bottom:1px solid var(--c-border-base)}.ai-status{display:none}}', '.ask-area{grid-template-columns:minmax(240px,300px) 1fr;grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"list detail" "foot foot"}.ask-area.is-empty{grid-template-columns:1fr;grid-template-rows:1fr;grid-template-areas:"detail"}.ask-list{grid-area:list}.ask-detail{grid-area:detail}.ask-strip{display:none}.ask-area>.area-foot{grid-area:foot}@container panel (max-width: 719px){.ask-area{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"strip" "detail" "foot"}.ask-list{display:none}.ask-strip{display:block;grid-area:strip}}.status-glyph{flex:none;display:block}.status-glyph.is-todo{color:var(--c-text-disabled)}.status-glyph.is-run{color:var(--c-primary)}.status-glyph.is-done{color:var(--c-success)}.status-glyph.is-none{color:var(--c-danger)}.status-glyph.is-wait{color:var(--c-warning)}.status-glyph-arc{transform-origin:7px 7px;animation:glyph-spin .9s linear infinite}@keyframes glyph-spin{to{transform:rotate(360deg)}}.ask-list{margin:0;padding:var(--s-1) 0;list-style:none;border-right:1px solid var(--c-border-base)}.ask-row{display:grid;grid-template-columns:22px 14px minmax(0,1fr) auto;align-items:center;gap:var(--s-2);height:var(--row-h);margin:0 var(--s-1);padding:0 var(--s-2);border-radius:var(--r-sm);cursor:pointer}.ask-row:hover{background:var(--c-bg-hover)}.ask-row.is-current{background:var(--c-bg-selected)}.ask-row-num{font-size:var(--font-sm);color:var(--c-text-muted)}.ask-row.is-current .ask-row-num{color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-secondary)}.ask-row.is-current .ask-row-stem{color:var(--c-text-primary)}.ask-row.is-todo .ask-row-stem{color:var(--c-text-muted)}.ask-row-src{max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-xs);color:var(--c-text-muted)}.ask-row.is-none .ask-row-src{color:var(--c-danger)}.ask-row.is-wait .ask-row-src{color:var(--c-warning)}.ask-strip{max-height:166px;overflow:auto;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);padding:var(--s-2) var(--s-4) var(--s-3);border-bottom:1px solid var(--c-border-base)}.ask-strip summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary);list-style:none}.ask-strip summary::-webkit-details-marker{display:none}.ask-strip-meta{font-weight:var(--fw-regular);color:var(--c-text-muted)}.ask-cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:4px;margin-top:var(--s-2)}.ask-cell{display:inline-flex;align-items:center;justify-content:center;gap:3px;height:26px;padding:0;border:1px solid var(--c-border-subtle);border-radius:var(--r-xs);background:var(--c-bg-surface);font-size:var(--font-xs);color:var(--c-text-secondary)}.ask-cell:hover{border-color:var(--c-border-strong)}.ask-cell.is-current{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-detail{padding:var(--s-4) var(--s-6) var(--s-6)}.ask-detail-head{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);margin-bottom:var(--s-4)}.ask-detail-num{font-size:var(--font-xl);font-weight:var(--fw-semibold);letter-spacing:-.02em;line-height:1}.ask-detail-state{display:inline-flex;align-items:center;gap:5px;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-detail-state.is-none{color:var(--c-danger)}.ask-detail-state.is-wait{color:var(--c-warning)}.ask-detail-actions{display:inline-flex;gap:var(--s-1);margin-left:auto}.ask-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-stem img,.ask-option-text img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.reading-passage{max-height:220px;overflow:auto;padding:var(--s-3);border-radius:var(--r-sm);background:var(--c-bg-subtle);font-size:var(--font-base)}.ask-sub{margin-top:var(--s-4)}.ask-sub-title{margin-bottom:var(--s-2);font-weight:var(--fw-medium)}.ask-option{display:flex;align-items:flex-start;gap:var(--s-2);padding:7px var(--s-3);margin-bottom:4px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);line-height:1.55;overflow-wrap:anywhere}.ask-option-key{flex:none;width:14px;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ask-option-text{flex:1;min-width:0}.ask-option.is-hit{border-color:var(--c-primary);background:var(--c-bg-selected)}.ask-option.is-hit .ask-option-key{color:var(--c-primary)}.ask-option-check{flex:none;width:16px;height:16px;margin-top:2px;color:var(--c-primary)}.ask-match-table{width:100%;margin-top:var(--s-2);border-collapse:collapse}.ask-match-table td{padding:6px var(--s-2);border-bottom:1px solid var(--c-border-subtle);vertical-align:middle}.ask-detail>.aah-alert{margin-top:var(--s-3)}.ask-preview{margin-top:var(--s-4);padding:var(--s-3) var(--s-4);border:1px dashed var(--c-warning);border-radius:var(--r-md);background:var(--c-warning-soft)}.ask-preview-head{display:flex;align-items:center;gap:6px;margin-bottom:var(--s-2)}.ask-preview-reason{font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-answer{font-size:var(--font-md);font-weight:var(--fw-semibold)}.ask-preview-note{margin:var(--s-2) 0;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-actions{display:flex;gap:var(--s-2)}.ask-sources,.ask-ai{margin-top:var(--s-6)}.ask-source-table{border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.ask-source-row{display:grid;grid-template-columns:minmax(92px,auto) minmax(0,1fr) auto;align-items:baseline;gap:var(--s-3);padding:8px var(--s-3);border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.ask-source-row:last-child{border-bottom:0}.ask-source-row.is-used{background:var(--c-bg-selected)}.ask-source-name{display:inline-flex;align-items:center;gap:6px;font-weight:var(--fw-medium);color:var(--c-text-primary);white-space:nowrap}.ask-source-name .aah-tag{height:18px;font-size:var(--font-xs)}.ask-source-answer{min-width:0;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-source-answer .aah-btn{margin-left:var(--s-2)}.ask-source-miss{color:var(--c-text-muted)}.ask-source-time{font-size:var(--font-xs);color:var(--c-text-muted)}.ask-source-empty{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.answer-field-html+.answer-field-html{margin-top:2px}.answer-field-html p{margin:0}.ask-ai-streaming{margin-left:var(--s-1);font-weight:var(--fw-regular);color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}@keyframes streaming-pulse{50%{opacity:.45}}.ai-answer-markdown{font-size:var(--font-base);color:var(--c-text-primary);line-height:1.7}.ask-empty{grid-area:detail;align-self:center;justify-self:center;max-width:420px;padding:var(--s-8);color:var(--c-text-secondary)}.ask-empty-icon{width:32px;height:32px;color:var(--c-text-muted)}.ask-empty h2{margin:var(--s-3) 0 var(--s-1);font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-empty p{margin:0 0 var(--s-3)}.ask-empty ul{margin:0 0 var(--s-5);padding-left:18px;font-size:var(--font-sm);line-height:1.9;color:var(--c-text-muted)}.ask-empty-actions{display:flex;gap:var(--s-2)}.ask-empty-types{margin-top:var(--s-4);font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-tally{display:flex;flex-wrap:wrap;gap:4px var(--s-4);font-size:var(--font-sm);color:var(--c-text-muted)}.ask-tally span{display:inline-flex;align-items:center;gap:5px}.ask-tally b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-tally .is-none b{color:var(--c-danger)}.ask-tally .is-wait b{color:var(--c-warning)}.ask-run-btn{min-width:104px}.ask-tips{width:320px;max-height:360px;padding:var(--s-3) var(--s-4);font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.ask-tips-forms{display:flex;flex-wrap:wrap;gap:4px;margin:var(--s-2) 0}.ask-tips summary{cursor:pointer;color:var(--c-text-primary)}@container panel (max-width: 599px){.ask-tally{flex-wrap:nowrap;gap:var(--s-3)}.ask-tally i{display:none}.ask-detail{padding:var(--s-3) var(--s-4) var(--s-5)}}.native-checkbox{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);color:var(--c-text-primary);cursor:pointer}.native-checkbox input{width:16px;height:16px;accent-color:var(--c-primary)}.ask-chain{display:flex;flex-wrap:wrap;gap:4px var(--s-5);margin:0 0 var(--s-2);padding:0;list-style:none;font-size:var(--font-sm)}.ask-chain-step{position:relative;display:inline-flex;align-items:center;gap:6px;color:var(--c-text-secondary)}.ask-chain-step+.ask-chain-step:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ask-chain-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c-text-disabled);transition:background-color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}.ask-chain-state{color:var(--c-text-muted)}.ask-chain-step.is-run .ask-chain-dot{border-color:var(--c-primary);background:var(--c-primary-soft);animation:streaming-pulse 1.2s ease-in-out infinite}.ask-chain-step.is-run .ask-chain-state{color:var(--c-primary)}.ask-chain-step.is-hit .ask-chain-dot{border-color:var(--c-success);background:var(--c-success)}.ask-chain-step.is-hit .ask-chain-state{color:var(--c-success);font-weight:var(--fw-medium)}.ask-chain-step.is-miss .ask-chain-dot{border-color:var(--c-danger)}.ask-chain-step.is-wait .ask-chain-dot{border-color:var(--c-warning);background:linear-gradient(90deg,var(--c-warning) 50%,transparent 50%)}.ask-chain-step.is-wait .ask-chain-state{color:var(--c-warning)}.ask-chain-step.is-off{color:var(--c-text-muted)}.ask-chain-step.is-off .ask-chain-dot{border-style:dashed}.ask-chain-hint{margin-bottom:var(--s-2)}.ask-tally i{font-style:normal}.floating-wrapper kbd{display:inline-flex;align-items:center;min-width:18px;height:18px;padding:0 4px;border:1px solid var(--c-border-base);border-bottom-width:2px;border-radius:var(--r-xs);background:var(--c-bg-subtle);font-family:var(--font-mono);font-size:var(--font-xs);color:var(--c-text-secondary)}.ai-explanation p{color:var(--c-text-secondary);font-size:12px;line-height:1.6}.ai-explanation .explanation-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-pair{padding:10px 0;border-top:1px solid var(--c-border-base)}.ai-explanation .explanation-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;max-height:380px;overflow:auto;margin:6px 0 12px}.ai-explanation .explanation-image{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-image img{max-width:100%;max-height:120px;object-fit:contain}.ai-explanation textarea{width:100%;resize:vertical}', ".question-tool{display:flex;flex-direction:column;gap:var(--s-3);height:100%}.qt-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4)}.qt-strategy{display:inline-flex;align-items:center;gap:var(--s-3);font-size:var(--font-sm)}.qt-strategy-label{color:var(--c-text-secondary)}.qt-radio{display:inline-flex;align-items:center;gap:4px;cursor:pointer}.qt-stats{font-size:var(--font-sm);color:var(--c-text-muted)}.qt-stats b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.qt-stats .qt-stat-error{color:var(--c-danger)}.qt-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;min-height:360px;border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.qt-textarea{width:100%;min-height:100%;padding:var(--s-3);border:0;border-right:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-family:var(--font-mono);font-size:var(--font-sm);line-height:1.7;resize:none}.qt-textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--c-primary-soft)}.qt-preview{margin:0;padding:0 var(--s-3);list-style:none;overflow:auto;background:var(--c-bg-subtle)}.qt-empty{padding:var(--s-8) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-row{display:flex;flex-direction:column;gap:4px;padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-base);font-size:var(--font-sm)}.qt-row-head{display:flex;align-items:center;gap:var(--s-2)}.qt-title-no{min-width:20px;font-weight:var(--fw-semibold);color:var(--c-text-muted)}.qt-status{margin-left:auto;color:var(--c-text-muted)}.qt-row.is-create .qt-status{color:var(--c-success)}.qt-row.is-overwrite .qt-status{color:var(--c-warning)}.qt-row.is-error .qt-status{color:var(--c-danger);font-weight:var(--fw-medium)}.qt-question{margin:0;color:var(--c-text-primary);line-height:1.6;overflow-wrap:anywhere}.qt-options{display:flex;flex-wrap:wrap;gap:2px var(--s-3);color:var(--c-text-secondary)}.qt-options .is-true{color:var(--c-primary);font-weight:var(--fw-medium)}.qt-answer{margin:0;color:var(--c-text-secondary)}.qt-error{margin:0;padding-left:16px;color:var(--c-danger)}@container panel (max-width: 719px){.qt-grid{grid-template-columns:1fr}.qt-textarea{min-height:220px;border-right:0;border-bottom:1px solid var(--c-border-base)}}", ".log-page{display:flex;flex-direction:column;gap:var(--s-2)}.log-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);padding-bottom:var(--s-2);border-bottom:1px solid var(--c-border-base)}.log-count{font-size:var(--font-sm);color:var(--c-text-muted)}.log-list{margin:0;padding:0;list-style:none}.log-row{display:grid;grid-template-columns:148px 52px minmax(0,1fr);align-items:baseline;gap:var(--s-3);padding:6px 0;border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.log-time{color:var(--c-text-muted)}.log-level{display:inline-flex;align-items:center;gap:5px;color:var(--c-text-secondary)}.log-level i{width:6px;height:6px;border-radius:50%;background:var(--c-text-disabled)}.log-row-success .log-level i{background:var(--c-success)}.log-row-warning .log-level{color:var(--c-warning)}.log-row-warning .log-level i{background:var(--c-warning)}.log-row-error .log-level{color:var(--c-danger)}.log-row-error .log-level i{background:var(--c-danger)}.log-msg{min-width:0;color:var(--c-text-primary);line-height:1.5;overflow-wrap:anywhere}.log-empty{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.log-row{grid-template-columns:52px minmax(0,1fr)}.log-time{grid-column:1 / -1}}", ".lib-area{grid-template-rows:auto minmax(0,1fr) auto}.lib-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-3);padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--c-border-base)}.lib-search{display:flex;align-items:center;gap:6px;flex:1 1 220px;min-width:0;height:var(--control-h);padding:0 var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.lib-search:focus-within{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.lib-search svg{flex:none;width:15px;height:15px}.lib-search input{flex:1;min-width:0;height:100%;border:0;outline:none;background:transparent;color:var(--c-text-primary)}.lib-search-state{font-size:var(--font-xs);white-space:nowrap}.lib-chips{display:flex;flex-wrap:wrap;gap:4px}.lib-chip{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 var(--s-2);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary)}.lib-chip:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.lib-chip.is-on{border-color:var(--c-text-primary);background:var(--c-text-primary);color:var(--c-text-inverse)}.lib-chip.is-scope{border-style:dashed;border-color:var(--c-primary);color:var(--c-primary)}.lib-chip.is-scope.is-on{border-style:solid;background:var(--c-primary);border-color:var(--c-primary);color:var(--c-on-primary)}.lib-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,1fr);min-height:0}.lib-list{padding:var(--s-1) 0}.lib-row{margin:0 var(--s-1)}.lib-row-main{display:grid;grid-template-columns:52px minmax(0,1fr);gap:1px var(--s-2);width:100%;padding:7px var(--s-2);border:0;border-radius:var(--r-sm);background:none;text-align:left}.lib-row-main:hover{background:var(--c-bg-hover)}.lib-row.is-current>.lib-row-main{background:var(--c-bg-selected)}.lib-row-type{grid-row:span 2;padding-top:1px;font-size:var(--font-xs);color:var(--c-text-muted)}.lib-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-primary)}.lib-row-answer{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-muted)}.lib-row-inline{display:none}.lib-more{display:flex;width:calc(100% - 16px);margin:var(--s-2) var(--s-2) var(--s-3)}.lib-pane{padding:var(--s-4) var(--s-6) var(--s-6);border-left:1px solid var(--c-border-base)}.lib-pane-empty{margin:var(--s-8) 0;text-align:center;color:var(--c-text-muted)}@container panel (max-width: 719px){.lib-split{grid-template-columns:1fr}.lib-pane{display:none}.lib-row.is-current .lib-row-inline{display:block;padding:var(--s-2) var(--s-3) var(--s-4) calc(52px + var(--s-4))}}.lib-detail-head{display:flex;align-items:center;gap:var(--s-1);margin-bottom:var(--s-3)}.lib-detail-spacer{flex:1}.lib-detail-stem img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.lib-detail-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;overflow-wrap:anywhere}.lib-detail-sub{margin-bottom:var(--s-3)}.lib-detail-sub-title{margin-bottom:6px;font-weight:var(--fw-medium)}.lib-detail-answer{margin-top:var(--s-5)}.lib-detail-answer-list{display:flex;flex-wrap:wrap;gap:4px}.lib-answer-chip{padding:2px var(--s-2);border-radius:var(--r-xs);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-medium)}.floating-wrapper .highlight{padding:0 1px;border-radius:2px;background:var(--c-warning-soft);color:inherit}.lib-empty{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);padding:var(--s-10) var(--s-6);text-align:center;color:var(--c-text-muted)}.lib-empty p{margin:0;font-weight:var(--fw-medium);color:var(--c-text-primary)}.lib-empty span{max-width:320px;font-size:var(--font-sm)}.lib-empty-icon{width:28px;height:28px}.lib-count{font-size:var(--font-sm);color:var(--c-text-muted)}.lib-count b{color:var(--c-text-primary);font-weight:var(--fw-semibold)}.lib-uploading{margin-left:var(--s-2);color:var(--c-primary)}.lib-file-input{display:none}.lib-menu{min-width:240px}.lib-drop{position:absolute;inset:var(--s-2);z-index:var(--z-overlay);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-2);border:2px dashed var(--c-primary);border-radius:var(--r-md);background:color-mix(in srgb,var(--c-bg-base) 88%,transparent);color:var(--c-primary);pointer-events:none}.lib-drop svg{width:28px;height:28px}.lib-drop p{margin:0;font-weight:var(--fw-medium)}.lib-area .area-sheet-body .question-tool{padding:var(--s-4)}", ".settings-area{grid-template-columns:200px minmax(0,1fr)}.settings-nav{display:flex;flex-direction:column;gap:1px;padding:var(--s-3) var(--s-2);border-right:1px solid var(--c-border-base);background:var(--c-bg-subtle)}.settings-search{flex:none;margin-bottom:var(--s-2)}.settings-nav-item{display:flex;align-items:center;gap:var(--s-2);height:30px;padding:0 var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left}.settings-nav-item svg{flex:none;width:16px;height:16px;color:var(--c-text-muted)}.settings-nav-item span{flex:1}.settings-nav-item:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.settings-nav-item.is-active{background:var(--c-bg-surface);color:var(--c-text-primary);font-weight:var(--fw-medium);box-shadow:inset 0 0 0 1px var(--c-border-base)}.settings-nav-item.is-active svg{color:var(--c-primary)}.settings-nav-chevron{display:none}.settings-nav-empty{margin:var(--s-3) var(--s-2);font-size:var(--font-sm);color:var(--c-text-muted)}.settings-pane{padding:var(--s-5) var(--s-6) var(--s-8)}.settings-back{display:none;margin:0 0 var(--s-2) -6px}.settings-pane-head{margin-bottom:var(--s-3)}.settings-pane-head h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.settings-pane-head p{margin:2px 0 0;font-size:var(--font-sm);color:var(--c-text-muted)}.settings-group-title{margin-top:var(--s-6);padding-bottom:var(--s-1);border-bottom:1px solid var(--c-border-base)}.settings-pane-head+.settings-group-title{margin-top:var(--s-2)}.settings-notice-body{font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.settings-notice-body img{max-width:100%;height:auto}@container panel (max-width: 719px){.settings-area{grid-template-columns:1fr}.settings-nav{border-right:0;background:var(--c-bg-base);padding:var(--s-3) var(--s-3)}.settings-nav-item{height:40px;border-bottom:1px solid var(--c-border-subtle);border-radius:0}.settings-nav-item.is-active{background:none;box-shadow:none;font-weight:var(--fw-regular)}.settings-nav-chevron{display:block}.settings-area.is-drilled .settings-nav{display:none}.settings-area:not(.is-drilled) .settings-pane{display:none}.settings-back{display:inline-flex}.settings-pane{padding:var(--s-3) var(--s-4) var(--s-6)}}" ].join("\n"), $f = "__aiAskHookedXHRSend", installXHRHook = (e, t) => {
+  }), Lf = [ '.floating-wrapper{--c-primary: #1672b8;--c-primary-hover: #12659f;--c-primary-active: #0f5789;--c-primary-soft: rgba(22, 114, 184, .09);--c-primary-ring: rgba(22, 114, 184, .28);--c-on-primary: #ffffff;--c-success: #1d8549;--c-success-soft: rgba(29, 133, 73, .1);--c-warning: #a86200;--c-warning-soft: rgba(214, 135, 0, .12);--c-danger: #c93030;--c-danger-soft: rgba(201, 48, 48, .08);--c-info: #1672b8;--c-info-soft: rgba(22, 114, 184, .09);--c-bg-base: #ffffff;--c-bg-surface: #ffffff;--c-bg-subtle: #f6f7f9;--c-bg-hover: #f0f1f4;--c-bg-selected: rgba(22, 114, 184, .08);--c-bg-inverse: #1d2129;--c-text-primary: #1d2129;--c-text-secondary: #4b5260;--c-text-muted: #6b7280;--c-text-disabled: #a9aeb7;--c-text-inverse: #ffffff;--c-border-subtle: #edeef1;--c-border-base: #e1e3e8;--c-border-strong: #c9ccd3;--s-1: 4px;--s-2: 8px;--s-3: 10px;--s-4: 12px;--s-5: 16px;--s-6: 20px;--s-8: 24px;--s-10: 32px;--r-xs: 4px;--r-sm: 6px;--r-md: 8px;--r-lg: 12px;--r-full: 9999px;--shadow-1: none;--shadow-2: 0 1px 2px rgba(20, 24, 33, .06);--shadow-3: 0 8px 24px -6px rgba(20, 24, 33, .16), 0 2px 6px rgba(20, 24, 33, .06);--shadow-4: 0 18px 48px -12px rgba(20, 24, 33, .28), 0 4px 12px rgba(20, 24, 33, .08);--font-xs: 11px;--font-sm: 12px;--font-base: 13px;--font-md: 14px;--font-lg: 15px;--font-xl: 18px;--fw-regular: 400;--fw-medium: 500;--fw-semibold: 600;--font-numeric: tabular-nums;--font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Arial, sans-serif;--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;--row-h: 32px;--control-h: 28px;--control-h-sm: 24px;--ease-out: cubic-bezier(.16, 1, .3, 1);--ease-spring: cubic-bezier(.22, 1, .36, 1);--dur-fast: .12s;--dur-base: .18s;--dur-slow: .26s;--z-base: 1;--z-sticky: 10;--z-overlay: 20;--z-modal: 30;--z-toast: 40;--z-tooltip: 50;color:var(--c-text-primary);color-scheme:light;font-family:var(--font-sans);font-size:var(--font-base);line-height:1.5;text-align:left}.floating-wrapper[data-theme=dark]{color-scheme:dark;--c-primary: #4da3e6;--c-primary-hover: #6cb4eb;--c-primary-active: #3a92d6;--c-primary-soft: rgba(77, 163, 230, .14);--c-primary-ring: rgba(77, 163, 230, .36);--c-on-primary: #08131c;--c-success: #4cc27e;--c-success-soft: rgba(76, 194, 126, .14);--c-warning: #e8a73c;--c-warning-soft: rgba(232, 167, 60, .15);--c-danger: #f0716b;--c-danger-soft: rgba(240, 113, 107, .14);--c-info: #4da3e6;--c-info-soft: rgba(77, 163, 230, .14);--c-bg-base: #18191c;--c-bg-surface: #18191c;--c-bg-subtle: #1f2024;--c-bg-hover: #26282d;--c-bg-selected: rgba(77, 163, 230, .13);--c-bg-inverse: #e6e7ea;--c-text-primary: #e6e7ea;--c-text-secondary: #b4b8c0;--c-text-muted: #8d929b;--c-text-disabled: #565a62;--c-text-inverse: #18191c;--c-border-subtle: #24262a;--c-border-base: #2d3035;--c-border-strong: #3b3f46;--shadow-2: 0 1px 2px rgba(0, 0, 0, .4);--shadow-3: 0 8px 24px -6px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04);--shadow-4: 0 18px 48px -12px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .06)}.floating-wrapper:not([data-theme]){visibility:hidden}.floating-wrapper,.floating-wrapper *{box-sizing:border-box}:where(.floating-wrapper) :where(button,input,select,textarea){font:inherit;color:inherit}:where(.floating-wrapper) :where(button){cursor:pointer}:where(.floating-wrapper) :where(button:disabled){cursor:not-allowed}.floating-wrapper ::selection{background:var(--c-primary-ring);color:var(--c-text-primary)}.floating-wrapper input,.floating-wrapper textarea{caret-color:var(--c-primary);accent-color:var(--c-primary)}.floating-wrapper :focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:1px}.floating-wrapper a{color:var(--c-primary);text-underline-offset:2px}.custom-scroll,.floating-wrapper .scroll{scrollbar-width:thin;scrollbar-color:var(--c-border-strong) transparent}.custom-scroll::-webkit-scrollbar,.floating-wrapper .scroll::-webkit-scrollbar{width:8px;height:8px}.custom-scroll::-webkit-scrollbar-thumb,.floating-wrapper .scroll::-webkit-scrollbar-thumb{background:var(--c-border-strong);border-radius:8px;border:2px solid transparent;background-clip:content-box}.custom-scroll::-webkit-scrollbar-thumb:hover,.floating-wrapper .scroll::-webkit-scrollbar-thumb:hover{background-color:var(--c-text-muted)}.floating-wrapper *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.num{font-variant-numeric:tabular-nums}.flex-grow{flex:1}.icon-inline{display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:middle;position:relative;top:-.05em}.aah-card{background:var(--c-bg-surface);border-radius:var(--r-md);border:1px solid var(--c-border-base);padding:var(--s-4)}.aah-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:var(--control-h);padding:0 var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.aah-btn:hover:enabled{background:var(--c-bg-hover);border-color:var(--c-border-strong)}.aah-btn:active:enabled{background:var(--c-border-subtle)}.aah-btn:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-btn svg{flex:none;width:15px;height:15px}.aah-btn-primary{background:var(--c-primary);color:var(--c-on-primary);border-color:var(--c-primary)}.aah-btn-primary:hover:enabled{background:var(--c-primary-hover);border-color:var(--c-primary-hover)}.aah-btn-primary:active:enabled{background:var(--c-primary-active)}.aah-btn-primary:disabled{background:var(--c-primary-soft);border-color:transparent;color:var(--c-text-disabled)}.aah-btn-plain{background:transparent;border-color:transparent;color:var(--c-text-secondary)}.aah-btn-plain:hover:enabled{background:var(--c-bg-hover);border-color:transparent;color:var(--c-text-primary)}.aah-btn-small{height:var(--control-h-sm);padding:0 var(--s-2);font-size:var(--font-sm);border-radius:var(--r-xs)}.aah-btn-icon{width:var(--control-h);padding:0}.aah-btn-small.aah-btn-icon{width:var(--control-h-sm)}.aah-btn-danger{color:var(--c-danger)}.aah-btn-danger:hover:enabled{background:var(--c-danger-soft);border-color:var(--c-danger)}.aah-btn-danger-solid{background:var(--c-danger);border-color:var(--c-danger);color:#fff}.aah-btn-danger-solid:hover:enabled{filter:brightness(.94);background:var(--c-danger);border-color:var(--c-danger)}.aah-tag{display:inline-flex;align-items:center;gap:var(--s-1);height:20px;padding:0 6px;border-radius:var(--r-xs);font-size:var(--font-sm);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;color:var(--c-text-secondary);background:var(--c-bg-subtle);border:1px solid var(--c-border-base)}button.aah-tag:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.aah-tag-primary{background:var(--c-primary-soft);color:var(--c-primary);border-color:transparent}.aah-tag-success{background:var(--c-success-soft);color:var(--c-success);border-color:transparent}.aah-tag-warning{background:var(--c-warning-soft);color:var(--c-warning);border-color:transparent}.aah-tag-danger{background:var(--c-danger-soft);color:var(--c-danger);border-color:transparent}.aah-input,.aah-select{width:100%;min-height:var(--control-h);padding:4px var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.aah-input::placeholder,.floating-wrapper textarea::placeholder,.floating-wrapper input::placeholder{color:var(--c-text-muted)}.aah-input:hover:enabled,.aah-select:hover:enabled{border-color:var(--c-border-strong)}.aah-input:focus,.aah-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.aah-input:disabled,.aah-select:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-input.recording{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.aah-select{cursor:pointer}.aah-alert{display:flex;align-items:flex-start;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);line-height:1.6;color:var(--c-text-primary);background:var(--c-bg-subtle)}.aah-alert-info{background:var(--c-info-soft)}.aah-alert-success{background:var(--c-success-soft)}.aah-alert-warning{background:var(--c-warning-soft)}.aah-alert-danger{background:var(--c-danger-soft)}.aah-alert-warning svg{color:var(--c-warning)}.aah-alert-danger svg{color:var(--c-danger)}.aah-alert-info svg{color:var(--c-info)}.aah-section-title{display:flex;align-items:center;gap:6px;margin:0 0 var(--s-2);font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-text-secondary)}.aah-section-title svg{width:14px;height:14px;color:var(--c-text-muted)}.aah-menu{position:absolute;z-index:var(--z-overlay);min-width:200px;padding:var(--s-1);background:var(--c-bg-surface);border:1px solid var(--c-border-base);border-radius:var(--r-md);box-shadow:var(--shadow-3)}.aah-menu-item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:6px var(--s-3);border:0;border-radius:var(--r-xs);background:none;text-align:left;color:var(--c-text-primary)}.aah-menu-item:hover{background:var(--c-bg-hover)}.aah-menu-item small{color:var(--c-text-muted);font-size:var(--font-xs)}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.aah-slider{width:100%;accent-color:var(--c-primary)}.radio-group{display:flex;gap:var(--s-3)}.radio-item{display:inline-flex;align-items:center;gap:var(--s-1);cursor:pointer}.floating-wrapper[data-theme=dark] .aah-btn-danger-solid{color:#1f0b0a}.floating-wrapper[data-theme=dark] :is(.panel-body,.notice-full) img:not(.panel-avatar,.user-page__avatar){padding:2px;border-radius:var(--r-xs);background-color:#fff}', '.floating-wrapper{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:999999}.el_wrapper>.floating-wrapper,.el_wrapper>div,.el_wrapper>div>div{pointer-events:none;z-index:999999!important}.floating-dialog{position:fixed;display:flex;flex-direction:column;height:min(720px,calc(100vh - 80px));max-width:calc(100vw - 32px);pointer-events:auto!important;overflow:hidden;background:var(--c-bg-base);border:1px solid var(--c-border-base);border-radius:var(--r-lg);box-shadow:var(--shadow-4);container:panel / inline-size;z-index:999999}.panel-head{display:flex;align-items:center;gap:var(--s-2);height:44px;flex:none;padding:0 var(--s-2) 0 var(--s-4);cursor:move;-webkit-user-select:none;user-select:none}.panel-brand{display:flex;align-items:center;gap:7px;min-width:0;flex:none}.panel-brand img{width:18px;height:18px;border-radius:4px}.panel-name{font-size:var(--font-md);font-weight:var(--fw-semibold);letter-spacing:-.01em;white-space:nowrap}.panel-version{font-size:var(--font-xs);color:var(--c-text-muted)}.panel-status{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;margin-left:var(--s-1);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary);white-space:nowrap}.panel-status:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.panel-status.is-run{color:var(--c-primary);border-color:var(--c-primary-ring);background:var(--c-primary-soft)}.panel-status.is-done{color:var(--c-success)}.panel-status.is-idle{color:var(--c-text-muted)}.panel-spacer{flex:1}.panel-actions{display:flex;align-items:center;gap:2px;flex:none}.panel-tool,.panel-account,.panel-icon-btn{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--c-text-secondary);white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.panel-tool:hover,.panel-account:hover,.panel-icon-btn:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.panel-tool svg,.panel-icon-btn svg{width:16px;height:16px}.panel-tool.is-on{background:var(--c-primary-soft);color:var(--c-primary)}.panel-icon-btn{width:28px;padding:0;justify-content:center}.panel-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.panel-account-name{max-width:96px;overflow:hidden;text-overflow:ellipsis;color:var(--c-text-primary)}.panel-account-score{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 639px){.panel-version,.panel-tool-label,.panel-account-name{display:none}.panel-tool{width:28px;padding:0;justify-content:center}}@container panel (max-width: 519px){.panel-account-score{display:none}}.notice-bar{flex:none;margin:0 var(--s-3) var(--s-2);border-radius:var(--r-sm);background:var(--c-bg-subtle)}.notice-row{display:flex;align-items:center;gap:var(--s-2);height:32px;padding:0 4px 0 var(--s-3)}.notice-icon{flex:none;width:15px;height:15px;color:var(--c-primary)}.notice-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.notice-full{max-height:180px;overflow:auto;padding:0 var(--s-3) var(--s-3) 33px;font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.notice-full img{max-width:100%;height:auto}.panel-nav{display:flex;gap:var(--s-1);flex:none;padding:0 var(--s-3);border-bottom:1px solid var(--c-border-base)}.panel-nav-item{position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 var(--s-2);border:0;background:none;color:var(--c-text-muted);font-size:var(--font-md);font-weight:var(--fw-medium)}.panel-nav-item:hover{color:var(--c-text-primary)}.panel-nav-item:after{content:"";position:absolute;left:var(--s-2);right:var(--s-2);bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:transparent;transition:background-color var(--dur-base) var(--ease-out)}.panel-nav-item.is-active{color:var(--c-text-primary)}.panel-nav-item.is-active:after{background:var(--c-primary)}.panel-nav-count{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.panel-body{position:relative;flex:1 1 auto;min-height:0}.area{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;min-height:0}.area .scroll{min-height:0;overflow:auto;overscroll-behavior:contain}.area-foot{display:flex;align-items:center;gap:var(--s-2);min-height:48px;padding:var(--s-2) var(--s-3) var(--s-2) var(--s-4);border-top:1px solid var(--c-border-base);background:var(--c-bg-base)}.area-foot-spacer{flex:1}.area-foot-pop,.lib-menu-wrap{position:relative}.area-foot-pop .aah-menu,.lib-menu-wrap .aah-menu{right:0;bottom:calc(100% + 6px)}.search-sheet,.area-sheet{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-overlay);display:flex;flex-direction:column;background:var(--c-bg-base);animation:sheet-in var(--dur-slow) var(--ease-out)}.search-sheet-head,.area-sheet-head{display:flex;align-items:center;gap:var(--s-2);flex:none;height:44px;padding:0 var(--s-2) 0 var(--s-4);border-bottom:1px solid var(--c-border-subtle)}.area-sheet-head{padding-left:var(--s-2)}.search-sheet-head h2,.area-sheet-head h2{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.search-sheet-hint{flex:1;font-size:var(--font-sm);color:var(--c-text-muted)}.search-sheet-body,.area-sheet-body{flex:1;min-height:0;overflow:auto}@keyframes sheet-in{0%{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.floating-resize-handle{position:absolute;right:2px;bottom:2px;z-index:var(--z-overlay);width:14px;height:14px;cursor:nwse-resize;-webkit-user-select:none;user-select:none;background-image:linear-gradient(135deg,transparent 45%,var(--c-border-strong) 45%,var(--c-border-strong) 55%,transparent 55%),linear-gradient(135deg,transparent 70%,var(--c-border-strong) 70%,var(--c-border-strong) 80%,transparent 80%);opacity:.8}.floating-resize-handle:hover{opacity:1}.mini-ball-dock{position:fixed;right:20px;bottom:20px;z-index:9999999;display:flex;align-items:center;gap:var(--s-3);pointer-events:none}.mini-ball,.mini-bubble{pointer-events:auto}.mini-ball{--p: 0;position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:50%;background:transparent;transition:transform var(--dur-base) var(--ease-out)}.mini-ball:hover{transform:translateY(-2px)}.mini-ball img{width:52px;height:52px;filter:drop-shadow(0 2px 6px rgba(20,24,33,.25))}.mini-ball.has-progress:before{content:"";position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;border-radius:50%;background:conic-gradient(var(--c-primary) calc(var(--p) * 1%),rgba(20,24,33,.18) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px))}.mini-ball-value{position:absolute;left:50%;bottom:-10px;transform:translate(-50%);padding:0 6px;border-radius:var(--r-full);background:var(--c-bg-surface);box-shadow:var(--shadow-3);font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:16px;color:var(--c-text-primary);white-space:nowrap}.mini-ball-value small{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.mini-ball-badge{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-full);border:2px solid var(--c-bg-surface);background:var(--c-danger);color:#fff;font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:14px}.mini-bubble{display:flex;flex-direction:column;gap:2px;max-width:240px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-md);background:var(--c-bg-surface);box-shadow:var(--shadow-3);text-align:left;font-size:var(--font-sm);color:var(--c-text-secondary);animation:sheet-in var(--dur-slow) var(--ease-out)}.mini-bubble strong{font-size:var(--font-base);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.mini-bubble:hover{border-color:var(--c-border-strong)}.panel-kbd{margin-left:2px}@container panel (max-width: 639px){.panel-tool .panel-kbd{display:none}}', ".modal-mask{position:fixed;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-4);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .modal-mask{background:#00000080}.modal-panel{display:flex;flex-direction:column;width:min(600px,100%);max-height:100%;border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.modal-header{display:flex;align-items:center;justify-content:space-between;flex:none;height:48px;padding:0 var(--s-2) 0 var(--s-5);border-bottom:1px solid var(--c-border-subtle)}.modal-header h3{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.modal-body{display:flex;flex-direction:column;gap:var(--s-4);padding:var(--s-4) var(--s-5);overflow-y:auto}.modal-footer{display:flex;justify-content:flex-end;gap:var(--s-2);flex:none;padding:var(--s-3) var(--s-5);border-top:1px solid var(--c-border-subtle)}.modal-panel-large{width:min(760px,100%)}.form-row{display:flex;flex-direction:column;gap:6px}.form-row label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.form-row label small{margin-left:6px;font-weight:var(--fw-regular);color:var(--c-text-muted)}.option-list{display:flex;flex-direction:column;gap:6px}.option-row{display:flex;align-items:center;gap:var(--s-2)}.option-selector{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--control-h);height:var(--control-h);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);font-weight:var(--fw-semibold);transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.option-selector:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.option-selector.active{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary)}.reading-form-section+.reading-form-section{padding-top:var(--s-4);border-top:1px solid var(--c-border-base)}.reading-section-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.reading-section-icon{width:16px;height:16px;color:var(--c-text-muted)}.reading-section-header h4{flex:1;margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.reading-sub-questions-editor{display:flex;flex-direction:column}.reading-sub-question-editor{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.reading-sub-question-header{display:flex;align-items:center;gap:var(--s-2)}.reading-sub-question-number{min-width:22px;font-size:var(--font-md);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums}.reading-base-select-small{width:auto;min-width:120px}.reading-answer-list{display:flex;flex-direction:column;gap:6px}.reading-answer-row{display:flex;align-items:center;gap:var(--s-2)}.confirm-layer{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-5);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .confirm-layer{background:#00000080}.confirm-box{width:min(360px,100%);padding:var(--s-5);border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.confirm-box h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.confirm-box p{margin:var(--s-2) 0 0;font-size:var(--font-base);line-height:1.6;color:var(--c-text-secondary)}.confirm-actions{display:flex;justify-content:flex-end;gap:var(--s-2);margin-top:var(--s-5)}", ".hljs{display:block;overflow-x:auto;padding:var(--s-3);border-radius:var(--r-sm);font-family:ui-monospace,SF Mono,Consolas,monospace;font-size:var(--font-sm);line-height:1.5}.floating-wrapper:not([data-theme=dark]) .hljs{background:#f6f8fa;color:#24292f;box-shadow:var(--shadow-1)}.floating-wrapper:not([data-theme=dark]) .hljs-keyword,.floating-wrapper:not([data-theme=dark]) .hljs-selector-tag,.floating-wrapper:not([data-theme=dark]) .hljs-built_in{color:#cf222e}.floating-wrapper:not([data-theme=dark]) .hljs-string,.floating-wrapper:not([data-theme=dark]) .hljs-attr{color:#0a3069}.floating-wrapper:not([data-theme=dark]) .hljs-number,.floating-wrapper:not([data-theme=dark]) .hljs-literal{color:#0550ae}.floating-wrapper:not([data-theme=dark]) .hljs-comment{color:#6e7781;font-style:italic}.floating-wrapper:not([data-theme=dark]) .hljs-title,.floating-wrapper:not([data-theme=dark]) .hljs-name{color:#8250df}.floating-wrapper[data-theme=dark] .hljs{background:#1f1f23;color:#f0f6fc;box-shadow:var(--shadow-1)}.floating-wrapper[data-theme=dark] .hljs-keyword,.floating-wrapper[data-theme=dark] .hljs-selector-tag,.floating-wrapper[data-theme=dark] .hljs-built_in{color:#ff7b72}.floating-wrapper[data-theme=dark] .hljs-string,.floating-wrapper[data-theme=dark] .hljs-attr{color:#a5d6ff}.floating-wrapper[data-theme=dark] .hljs-number,.floating-wrapper[data-theme=dark] .hljs-literal{color:#79c0ff}.floating-wrapper[data-theme=dark] .hljs-comment{color:#8b949e;font-style:italic}.floating-wrapper[data-theme=dark] .hljs-title,.floating-wrapper[data-theme=dark] .hljs-name{color:#d2a8ff}", ".segmented{display:inline-flex;padding:2px;gap:2px;background:var(--c-bg-base);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm)}.segment-item{padding:var(--s-1) var(--s-3);border:none;border-radius:calc(var(--r-sm) - 2px);background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.segment-item.active{background:var(--c-bg-surface);color:var(--c-primary);box-shadow:var(--shadow-1)}.segment-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}", '.switch{position:relative;display:inline-block;width:32px;height:18px;flex:none;cursor:pointer}.switch.disabled{cursor:not-allowed;opacity:.5}.switch input{position:absolute;opacity:0;width:0;height:0}.switch-slider{position:absolute;top:0;right:0;bottom:0;left:0;background:var(--c-border-strong);border-radius:var(--r-full);transition:background-color var(--dur-base) var(--ease-out)}.switch-slider:before{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;box-shadow:0 1px 2px #14182133;transition:transform var(--dur-base) var(--ease-spring)}.switch input:checked+.switch-slider{background:var(--c-primary)}.switch input:checked+.switch-slider:before{transform:translate(14px)}.switch input:focus-visible+.switch-slider{box-shadow:0 0 0 3px var(--c-primary-ring)}', '.settings-rows{display:flex;flex-direction:column}.config-item{padding:12px 0;border-bottom:1px solid var(--c-border-subtle)}.config-item:last-child{border-bottom:0}.config-item-content{display:flex;justify-content:space-between;align-items:center;gap:16px}.config-label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0}.label-wrapper{display:flex;flex-direction:column;gap:2px}.label-text{font-size:var(--font-base);font-weight:var(--fw-medium);color:var(--c-text-primary)}.label-desc{font-size:var(--font-sm);color:var(--c-text-muted);line-height:1.5;white-space:pre-line}.settings-range{min-width:220px}.settings-range .aah-slider{width:150px}.settings-range .num{min-width:56px;text-align:right;color:var(--c-text-secondary);font-size:var(--font-sm)}.config-control{display:flex;align-items:center;flex-shrink:0;gap:10px;flex-wrap:wrap;justify-content:flex-end}.checkbox-group{display:flex;flex-wrap:wrap;gap:10px}.alert-icon{flex:none;width:16px;height:16px}.base-input,.base-select{min-width:180px;min-height:var(--control-h);padding:4px 10px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color .2s ease,box-shadow .2s ease}.base-input:focus,.base-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.base-select{min-width:160px}.checkbox-item{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r-sm);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle)}.hotkey-input-wrapper{position:relative;display:inline-flex;align-items:center;gap:8px}.hotkey-input-wrapper .hotkey-hint{font-size:var(--font-sm);color:var(--c-text-muted);background:var(--c-bg-subtle);padding:2px 8px;border-radius:var(--r-xs)}.hotkey-input-wrapper .hotkey-hint.danger{color:var(--c-danger);background:var(--c-danger-soft)}.hotkey-input-wrapper .base-input.recording{border-color:var(--c-danger);box-shadow:0 0 0 3px var(--c-danger-soft)}.hotkey-input-wrapper .base-input{cursor:pointer}.ai-config-panel{container-type:inline-size;container-name:aipanel;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-panel .aah-card{padding:0;border:0;border-radius:0;background:none}.ai-config-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2);flex-wrap:wrap}.ai-config-section-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-config-section-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard{display:flex;flex-direction:column;gap:var(--s-4)}.ai-wizard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2)}.ai-wizard-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-count{color:var(--c-text-muted);font-size:var(--font-sm);font-variant-numeric:tabular-nums}.ai-wizard-steps{display:flex;align-items:center;gap:var(--s-5);margin:0;padding:0 0 var(--s-3);list-style:none;border-bottom:1px solid var(--c-border-base);color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-steps li{position:relative;display:flex;align-items:center;gap:6px}.ai-wizard-steps li+li:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ai-wizard-dot{width:8px;height:8px;border-radius:var(--r-full);border:1.5px solid var(--c-text-disabled)}.ai-wizard-steps li.done .ai-wizard-dot{border-color:var(--c-success);background:var(--c-success)}.ai-wizard-steps li.current{color:var(--c-text-primary);font-weight:var(--fw-medium)}.ai-wizard-steps li.current .ai-wizard-dot{border-color:var(--c-primary);background:var(--c-primary)}.ai-wizard-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-wizard-subject{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-pick{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}.ai-config-card-pick:hover{background:var(--c-bg-hover)}.ai-config-card-tags{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.ai-config-channel-list{display:flex;flex-direction:column;gap:1px}.ai-config-channel-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--s-2);min-height:40px;padding:6px var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left;cursor:pointer}.ai-config-channel-item:hover{background:var(--c-bg-hover)}.ai-config-channel-item.active{background:var(--c-bg-selected);color:var(--c-text-primary)}.ai-config-channel-item.orphan{opacity:.6}.ai-config-channel-text{min-width:0;display:flex;flex-direction:column;gap:1px}.ai-config-channel-text strong,.ai-config-channel-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-config-channel-text strong{font-weight:var(--fw-medium)}.ai-config-channel-text small{color:var(--c-text-muted);font-size:var(--font-xs)}.ai-config-channel-grid{display:flex;flex-direction:column;border-top:1px solid var(--c-border-subtle)}.ai-config-card{display:flex;flex-direction:column;gap:6px;padding:var(--s-3) var(--s-2);border:0;border-bottom:1px solid var(--c-border-subtle);border-radius:0;background:none}.ai-config-card.recommended{background:var(--c-bg-selected)}.ai-config-card-head{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;font-weight:var(--fw-medium)}.ai-config-card-promo{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-config-card-actions,.ai-config-instance-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-instance-remove{align-self:flex-start}@container aipanel (min-width: 560px){.ai-config-channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-4)}}@container aipanel (min-width: 820px){.ai-config-channel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}.ai-config-manager{display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-side{min-width:0;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-list-panel,.ai-config-global,.ai-config-detail{min-width:0;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-global{padding-top:var(--s-3);border-top:1px solid var(--c-border-base)}.ai-config-side-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-inline-action{padding:0;border:none;background:none;color:var(--c-primary);font:inherit;font-weight:var(--fw-medium);cursor:pointer;text-decoration:underline;text-underline-offset:2px}.ai-config-collapse{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);padding:0;border:none;background:none;color:var(--c-text-primary);font:inherit;font-weight:var(--fw-semibold);cursor:pointer}.ai-config-global-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-detail-empty{min-height:200px;align-items:center;justify-content:center;text-align:center}.ai-config-empty-icon{width:28px;height:28px;color:var(--c-text-muted)}.ai-config-add-modal{width:min(760px,100%)}@container aipanel (min-width: 720px){.ai-config-manager{display:grid;grid-template-columns:minmax(200px,240px) minmax(0,1fr);gap:0;align-items:start}.ai-config-side{padding-right:var(--s-4)}.ai-config-detail{min-height:100%;padding-left:var(--s-5);border-left:1px solid var(--c-border-base)}}.ai-config-delete-modal{width:min(420px,100%)}.ai-config-delete-text{margin:0;color:var(--c-text-secondary);line-height:1.6}.ai-config-field{min-width:0;display:flex;flex-direction:column;gap:6px}.ai-config-field span{color:var(--c-text-secondary);font-size:var(--font-sm);font-weight:var(--fw-medium)}.ai-config-field-help{margin:0;color:var(--c-text-muted);font-size:var(--font-sm);line-height:1.55}.ai-config-field-help a{margin-left:var(--s-1);color:var(--c-primary);font-weight:var(--fw-medium);text-decoration:none}.ai-config-field-help a:hover{text-decoration:underline}@container panel (max-width: 519px){.config-item-content{flex-direction:column;align-items:flex-start}.config-control{width:100%;justify-content:flex-start}}', '.user-page{display:flex;flex-direction:column;gap:var(--s-4);max-width:560px}.user-page__tabs{display:flex;gap:var(--s-4);border-bottom:1px solid var(--c-border-base)}.user-page__tab{position:relative;height:32px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.user-page__tab:hover,.user-page__tab.is-active{color:var(--c-text-primary)}.user-page__tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.user-page__form{display:flex;flex-direction:column;gap:var(--s-3)}.user-page__field{display:flex;flex-direction:column;gap:4px}.user-page__field>span{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.user-page__form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4);margin-top:var(--s-1)}.user-page__form-actions .aah-btn{min-width:96px}.user-page__helper{font-size:var(--font-sm);color:var(--c-text-muted)}.user-page__link-btn{padding:0;border:0;background:none;color:var(--c-primary);font-size:inherit}.user-page__link-btn:hover{text-decoration:underline;text-underline-offset:2px}.user-page__avatar{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.user-page__score{margin-left:6px;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.user-page__apikey{margin-top:4px;font-family:var(--font-mono);font-size:var(--font-sm);color:var(--c-text-secondary);word-break:break-all}.user-page__tips{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}', '.ai-workbench{display:flex;flex-direction:column;min-height:100%}.ai-tabs{display:flex;align-items:center;gap:var(--s-4);padding:0 var(--s-3) 0 var(--s-4);border-bottom:1px solid var(--c-border-base)}.ai-tab{position:relative;height:36px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ai-tab:hover,.ai-tab.is-active{color:var(--c-text-primary)}.ai-tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.ai-tabs-spacer{flex:1}.ai-status{display:inline-flex;align-items:center;gap:6px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.ai-status i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--c-success)}.ai-status.is-warning i{background:var(--c-warning)}.ai-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);flex:1;min-height:0}.ai-input{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-4);border-right:1px solid var(--c-border-base)}.ai-field-label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.ai-textarea{width:100%;min-height:160px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);line-height:1.6;resize:vertical}.ai-textarea:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.ai-field-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-command-row{display:flex;gap:var(--s-2)}.ai-service-details{margin-top:auto;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-service-details summary{cursor:pointer}.ai-service-details .copyright-content{margin-top:var(--s-2);line-height:1.7}.ai-result{min-width:0;padding:var(--s-4) var(--s-5) var(--s-6)}.ai-result-head{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.ai-result-head .aah-section-title{margin:0}.ai-result-note{font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder.is-loading{color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}.ai-markdown{font-size:var(--font-base);line-height:1.75;overflow-wrap:anywhere}.ai-result>.aah-alert{margin-bottom:var(--s-3);align-items:center}.official-options li{display:flex;gap:var(--s-2)}.official-result-list{margin:0;padding:0;list-style:none}.official-result-item{display:flex;flex-direction:column;gap:var(--s-2);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.official-result-head{display:flex;align-items:center;gap:var(--s-2)}.official-result-num{font-weight:var(--fw-semibold);color:var(--c-text-muted)}.official-question{line-height:1.65;overflow-wrap:anywhere}.official-options{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none;font-size:var(--font-sm);color:var(--c-text-secondary)}.official-answer{display:flex;flex-wrap:wrap;align-items:center;gap:4px var(--s-2)}.official-answer-label{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.ai-split{grid-template-columns:1fr}.ai-input{border-right:0;border-bottom:1px solid var(--c-border-base)}.ai-status{display:none}}', '.ask-area{grid-template-columns:minmax(240px,300px) 1fr;grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"list detail" "foot foot"}.ask-area.is-empty{grid-template-columns:1fr;grid-template-rows:1fr;grid-template-areas:"detail"}.ask-list{grid-area:list}.ask-detail{grid-area:detail}.ask-strip{display:none}.ask-area>.area-foot{grid-area:foot}@container panel (max-width: 719px){.ask-area{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"strip" "detail" "foot"}.ask-list{display:none}.ask-strip{display:block;grid-area:strip}}.status-glyph{flex:none;display:block}.status-glyph.is-todo{color:var(--c-text-disabled)}.status-glyph.is-run{color:var(--c-primary)}.status-glyph.is-done{color:var(--c-success)}.status-glyph.is-none{color:var(--c-danger)}.status-glyph.is-wait{color:var(--c-warning)}.status-glyph-arc{transform-origin:7px 7px;animation:glyph-spin .9s linear infinite}@keyframes glyph-spin{to{transform:rotate(360deg)}}.ask-list{margin:0;padding:var(--s-1) 0;list-style:none;border-right:1px solid var(--c-border-base)}.ask-row{display:grid;grid-template-columns:22px 14px minmax(0,1fr) auto;align-items:center;gap:var(--s-2);height:var(--row-h);margin:0 var(--s-1);padding:0 var(--s-2);border-radius:var(--r-sm);cursor:pointer}.ask-row:hover{background:var(--c-bg-hover)}.ask-row.is-current{background:var(--c-bg-selected)}.ask-row-num{font-size:var(--font-sm);color:var(--c-text-muted)}.ask-row.is-current .ask-row-num{color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-secondary)}.ask-row.is-current .ask-row-stem{color:var(--c-text-primary)}.ask-row.is-todo .ask-row-stem{color:var(--c-text-muted)}.ask-row-src{max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-xs);color:var(--c-text-muted)}.ask-row.is-none .ask-row-src{color:var(--c-danger)}.ask-row.is-wait .ask-row-src{color:var(--c-warning)}.ask-strip{max-height:166px;overflow:auto;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);padding:var(--s-2) var(--s-4) var(--s-3);border-bottom:1px solid var(--c-border-base)}.ask-strip summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary);list-style:none}.ask-strip summary::-webkit-details-marker{display:none}.ask-strip-meta{font-weight:var(--fw-regular);color:var(--c-text-muted)}.ask-cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:4px;margin-top:var(--s-2)}.ask-cell{display:inline-flex;align-items:center;justify-content:center;gap:3px;height:26px;padding:0;border:1px solid var(--c-border-subtle);border-radius:var(--r-xs);background:var(--c-bg-surface);font-size:var(--font-xs);color:var(--c-text-secondary)}.ask-cell:hover{border-color:var(--c-border-strong)}.ask-cell.is-current{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-detail{padding:var(--s-4) var(--s-6) var(--s-6)}.ask-detail-head{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);margin-bottom:var(--s-4)}.ask-detail-num{font-size:var(--font-xl);font-weight:var(--fw-semibold);letter-spacing:-.02em;line-height:1}.ask-detail-state{display:inline-flex;align-items:center;gap:5px;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-detail-state.is-none{color:var(--c-danger)}.ask-detail-state.is-wait{color:var(--c-warning)}.ask-detail-actions{display:inline-flex;gap:var(--s-1);margin-left:auto}.ask-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-stem img,.ask-option-text img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.reading-passage{max-height:220px;overflow:auto;padding:var(--s-3);border-radius:var(--r-sm);background:var(--c-bg-subtle);font-size:var(--font-base)}.ask-sub{margin-top:var(--s-4)}.ask-sub-title{margin-bottom:var(--s-2);font-weight:var(--fw-medium)}.ask-option{display:flex;align-items:flex-start;gap:var(--s-2);padding:7px var(--s-3);margin-bottom:4px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);line-height:1.55;overflow-wrap:anywhere}.ask-option-key{flex:none;width:14px;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ask-option-text{flex:1;min-width:0}.ask-option.is-hit{border-color:var(--c-primary);background:var(--c-bg-selected)}.ask-option.is-hit .ask-option-key{color:var(--c-primary)}.ask-option-check{flex:none;width:16px;height:16px;margin-top:2px;color:var(--c-primary)}.ask-match-table{width:100%;margin-top:var(--s-2);border-collapse:collapse}.ask-match-table td{padding:6px var(--s-2);border-bottom:1px solid var(--c-border-subtle);vertical-align:middle}.ask-detail>.aah-alert{margin-top:var(--s-3)}.ask-preview{margin-top:var(--s-4);padding:var(--s-3) var(--s-4);border:1px dashed var(--c-warning);border-radius:var(--r-md);background:var(--c-warning-soft)}.ask-preview-head{display:flex;align-items:center;gap:6px;margin-bottom:var(--s-2)}.ask-preview-reason{font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-answer{font-size:var(--font-md);font-weight:var(--fw-semibold)}.ask-preview-note{margin:var(--s-2) 0;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-actions{display:flex;gap:var(--s-2)}.ask-sources,.ask-ai{margin-top:var(--s-6)}.ask-source-table{border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.ask-source-row{display:grid;grid-template-columns:minmax(92px,auto) minmax(0,1fr) auto;align-items:baseline;gap:var(--s-3);padding:8px var(--s-3);border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.ask-source-row:last-child{border-bottom:0}.ask-source-row.is-used{background:var(--c-bg-selected)}.ask-source-name{display:inline-flex;align-items:center;gap:6px;font-weight:var(--fw-medium);color:var(--c-text-primary);white-space:nowrap}.ask-source-name .aah-tag{height:18px;font-size:var(--font-xs)}.ask-source-answer{min-width:0;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-source-answer .aah-btn{margin-left:var(--s-2)}.ask-source-miss{color:var(--c-text-muted)}.ask-source-time{font-size:var(--font-xs);color:var(--c-text-muted)}.ask-source-empty{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.answer-field-html+.answer-field-html{margin-top:2px}.answer-field-html p{margin:0}.ask-ai-streaming{margin-left:var(--s-1);font-weight:var(--fw-regular);color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}@keyframes streaming-pulse{50%{opacity:.45}}.ai-answer-markdown{font-size:var(--font-base);color:var(--c-text-primary);line-height:1.7}.ask-empty{grid-area:detail;align-self:center;justify-self:center;max-width:420px;padding:var(--s-8);color:var(--c-text-secondary)}.ask-empty-icon{width:32px;height:32px;color:var(--c-text-muted)}.ask-empty h2{margin:var(--s-3) 0 var(--s-1);font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-empty p{margin:0 0 var(--s-3)}.ask-empty ul{margin:0 0 var(--s-5);padding-left:18px;font-size:var(--font-sm);line-height:1.9;color:var(--c-text-muted)}.ask-empty-actions{display:flex;gap:var(--s-2)}.ask-empty-types{margin-top:var(--s-4);font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-tally{display:flex;flex-wrap:wrap;gap:4px var(--s-4);font-size:var(--font-sm);color:var(--c-text-muted)}.ask-tally span{display:inline-flex;align-items:center;gap:5px}.ask-tally b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-tally .is-none b{color:var(--c-danger)}.ask-tally .is-wait b{color:var(--c-warning)}.ask-run-btn{min-width:104px}.ask-tips{width:320px;max-height:360px;padding:var(--s-3) var(--s-4);font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.ask-tips-forms{display:flex;flex-wrap:wrap;gap:4px;margin:var(--s-2) 0}.ask-tips summary{cursor:pointer;color:var(--c-text-primary)}@container panel (max-width: 599px){.ask-tally{flex-wrap:nowrap;gap:var(--s-3)}.ask-tally i{display:none}.ask-detail{padding:var(--s-3) var(--s-4) var(--s-5)}}.native-checkbox{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);color:var(--c-text-primary);cursor:pointer}.native-checkbox input{width:16px;height:16px;accent-color:var(--c-primary)}.ask-chain{display:flex;flex-wrap:wrap;gap:4px var(--s-5);margin:0 0 var(--s-2);padding:0;list-style:none;font-size:var(--font-sm)}.ask-chain-step{position:relative;display:inline-flex;align-items:center;gap:6px;color:var(--c-text-secondary)}.ask-chain-step+.ask-chain-step:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ask-chain-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c-text-disabled);transition:background-color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}.ask-chain-state{color:var(--c-text-muted)}.ask-chain-step.is-run .ask-chain-dot{border-color:var(--c-primary);background:var(--c-primary-soft);animation:streaming-pulse 1.2s ease-in-out infinite}.ask-chain-step.is-run .ask-chain-state{color:var(--c-primary)}.ask-chain-step.is-hit .ask-chain-dot{border-color:var(--c-success);background:var(--c-success)}.ask-chain-step.is-hit .ask-chain-state{color:var(--c-success);font-weight:var(--fw-medium)}.ask-chain-step.is-miss .ask-chain-dot{border-color:var(--c-danger)}.ask-chain-step.is-wait .ask-chain-dot{border-color:var(--c-warning);background:linear-gradient(90deg,var(--c-warning) 50%,transparent 50%)}.ask-chain-step.is-wait .ask-chain-state{color:var(--c-warning)}.ask-chain-step.is-off{color:var(--c-text-muted)}.ask-chain-step.is-off .ask-chain-dot{border-style:dashed}.ask-chain-hint{margin-bottom:var(--s-2)}.ask-tally i{font-style:normal}.floating-wrapper kbd{display:inline-flex;align-items:center;min-width:18px;height:18px;padding:0 4px;border:1px solid var(--c-border-base);border-bottom-width:2px;border-radius:var(--r-xs);background:var(--c-bg-subtle);font-family:var(--font-mono);font-size:var(--font-xs);color:var(--c-text-secondary)}.ai-explanation p{color:var(--c-text-secondary);font-size:12px;line-height:1.6}.ai-explanation .explanation-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-pair{padding:10px 0;border-top:1px solid var(--c-border-base)}.ai-explanation .explanation-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;max-height:380px;overflow:auto;margin:6px 0 12px}.ai-explanation .explanation-image{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-image img{max-width:100%;max-height:120px;object-fit:contain}.ai-explanation textarea{width:100%;resize:vertical}', ".question-tool{display:flex;flex-direction:column;gap:var(--s-3);height:100%}.qt-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4)}.qt-strategy{display:inline-flex;align-items:center;gap:var(--s-3);font-size:var(--font-sm)}.qt-strategy-label{color:var(--c-text-secondary)}.qt-radio{display:inline-flex;align-items:center;gap:4px;cursor:pointer}.qt-stats{font-size:var(--font-sm);color:var(--c-text-muted)}.qt-stats b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.qt-stats .qt-stat-error{color:var(--c-danger)}.qt-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;min-height:360px;border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.qt-textarea{width:100%;min-height:100%;padding:var(--s-3);border:0;border-right:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-family:var(--font-mono);font-size:var(--font-sm);line-height:1.7;resize:none}.qt-textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--c-primary-soft)}.qt-preview{margin:0;padding:0 var(--s-3);list-style:none;overflow:auto;background:var(--c-bg-subtle)}.qt-empty{padding:var(--s-8) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-row{display:flex;flex-direction:column;gap:4px;padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-base);font-size:var(--font-sm)}.qt-row-head{display:flex;align-items:center;gap:var(--s-2)}.qt-title-no{min-width:20px;font-weight:var(--fw-semibold);color:var(--c-text-muted)}.qt-status{margin-left:auto;color:var(--c-text-muted)}.qt-row.is-create .qt-status{color:var(--c-success)}.qt-row.is-overwrite .qt-status{color:var(--c-warning)}.qt-row.is-error .qt-status{color:var(--c-danger);font-weight:var(--fw-medium)}.qt-question{margin:0;color:var(--c-text-primary);line-height:1.6;overflow-wrap:anywhere}.qt-options{display:flex;flex-wrap:wrap;gap:2px var(--s-3);color:var(--c-text-secondary)}.qt-options .is-true{color:var(--c-primary);font-weight:var(--fw-medium)}.qt-answer{margin:0;color:var(--c-text-secondary)}.qt-error{margin:0;padding-left:16px;color:var(--c-danger)}@container panel (max-width: 719px){.qt-grid{grid-template-columns:1fr}.qt-textarea{min-height:220px;border-right:0;border-bottom:1px solid var(--c-border-base)}}", ".log-page{display:flex;flex-direction:column;gap:var(--s-2)}.log-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);padding-bottom:var(--s-2);border-bottom:1px solid var(--c-border-base)}.log-count{font-size:var(--font-sm);color:var(--c-text-muted)}.log-list{margin:0;padding:0;list-style:none}.log-row{display:grid;grid-template-columns:148px 52px minmax(0,1fr);align-items:baseline;gap:var(--s-3);padding:6px 0;border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.log-time{color:var(--c-text-muted)}.log-level{display:inline-flex;align-items:center;gap:5px;color:var(--c-text-secondary)}.log-level i{width:6px;height:6px;border-radius:50%;background:var(--c-text-disabled)}.log-row-success .log-level i{background:var(--c-success)}.log-row-warning .log-level{color:var(--c-warning)}.log-row-warning .log-level i{background:var(--c-warning)}.log-row-error .log-level{color:var(--c-danger)}.log-row-error .log-level i{background:var(--c-danger)}.log-msg{min-width:0;color:var(--c-text-primary);line-height:1.5;overflow-wrap:anywhere}.log-empty{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.log-row{grid-template-columns:52px minmax(0,1fr)}.log-time{grid-column:1 / -1}}", ".lib-area{grid-template-rows:auto minmax(0,1fr) auto}.lib-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-3);padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--c-border-base)}.lib-search{display:flex;align-items:center;gap:6px;flex:1 1 220px;min-width:0;height:var(--control-h);padding:0 var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.lib-search:focus-within{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.lib-search svg{flex:none;width:15px;height:15px}.lib-search input{flex:1;min-width:0;height:100%;border:0;outline:none;background:transparent;color:var(--c-text-primary)}.lib-search-state{font-size:var(--font-xs);white-space:nowrap}.lib-chips{display:flex;flex-wrap:wrap;gap:4px}.lib-chip{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 var(--s-2);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary)}.lib-chip:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.lib-chip.is-on{border-color:var(--c-text-primary);background:var(--c-text-primary);color:var(--c-text-inverse)}.lib-chip.is-scope{border-style:dashed;border-color:var(--c-primary);color:var(--c-primary)}.lib-chip.is-scope.is-on{border-style:solid;background:var(--c-primary);border-color:var(--c-primary);color:var(--c-on-primary)}.lib-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,1fr);min-height:0}.lib-list{padding:var(--s-1) 0}.lib-row{margin:0 var(--s-1)}.lib-row-main{display:grid;grid-template-columns:52px minmax(0,1fr);gap:1px var(--s-2);width:100%;padding:7px var(--s-2);border:0;border-radius:var(--r-sm);background:none;text-align:left}.lib-row-main:hover{background:var(--c-bg-hover)}.lib-row.is-current>.lib-row-main{background:var(--c-bg-selected)}.lib-row-type{grid-row:span 2;padding-top:1px;font-size:var(--font-xs);color:var(--c-text-muted)}.lib-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-primary)}.lib-row-answer{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-muted)}.lib-row-inline{display:none}.lib-more{display:flex;width:calc(100% - 16px);margin:var(--s-2) var(--s-2) var(--s-3)}.lib-pane{padding:var(--s-4) var(--s-6) var(--s-6);border-left:1px solid var(--c-border-base)}.lib-pane-empty{margin:var(--s-8) 0;text-align:center;color:var(--c-text-muted)}@container panel (max-width: 719px){.lib-split{grid-template-columns:1fr}.lib-pane{display:none}.lib-row.is-current .lib-row-inline{display:block;padding:var(--s-2) var(--s-3) var(--s-4) calc(52px + var(--s-4))}}.lib-detail-head{display:flex;align-items:center;gap:var(--s-1);margin-bottom:var(--s-3)}.lib-detail-spacer{flex:1}.lib-detail-stem img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.lib-detail-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;overflow-wrap:anywhere}.lib-detail-sub{margin-bottom:var(--s-3)}.lib-detail-sub-title{margin-bottom:6px;font-weight:var(--fw-medium)}.lib-detail-answer{margin-top:var(--s-5)}.lib-detail-answer-list{display:flex;flex-wrap:wrap;gap:4px}.lib-answer-chip{padding:2px var(--s-2);border-radius:var(--r-xs);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-medium)}.floating-wrapper .highlight{padding:0 1px;border-radius:2px;background:var(--c-warning-soft);color:inherit}.lib-empty{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);padding:var(--s-10) var(--s-6);text-align:center;color:var(--c-text-muted)}.lib-empty p{margin:0;font-weight:var(--fw-medium);color:var(--c-text-primary)}.lib-empty span{max-width:320px;font-size:var(--font-sm)}.lib-empty-icon{width:28px;height:28px}.lib-count{font-size:var(--font-sm);color:var(--c-text-muted)}.lib-count b{color:var(--c-text-primary);font-weight:var(--fw-semibold)}.lib-uploading{margin-left:var(--s-2);color:var(--c-primary)}.lib-file-input{display:none}.lib-menu{min-width:240px}.lib-drop{position:absolute;inset:var(--s-2);z-index:var(--z-overlay);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-2);border:2px dashed var(--c-primary);border-radius:var(--r-md);background:color-mix(in srgb,var(--c-bg-base) 88%,transparent);color:var(--c-primary);pointer-events:none}.lib-drop svg{width:28px;height:28px}.lib-drop p{margin:0;font-weight:var(--fw-medium)}.lib-area .area-sheet-body .question-tool{padding:var(--s-4)}", ".settings-area{grid-template-columns:200px minmax(0,1fr)}.settings-nav{display:flex;flex-direction:column;gap:1px;padding:var(--s-3) var(--s-2);border-right:1px solid var(--c-border-base);background:var(--c-bg-subtle)}.settings-search{flex:none;margin-bottom:var(--s-2)}.settings-nav-item{display:flex;align-items:center;gap:var(--s-2);height:30px;padding:0 var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left}.settings-nav-item svg{flex:none;width:16px;height:16px;color:var(--c-text-muted)}.settings-nav-item span{flex:1}.settings-nav-item:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.settings-nav-item.is-active{background:var(--c-bg-surface);color:var(--c-text-primary);font-weight:var(--fw-medium);box-shadow:inset 0 0 0 1px var(--c-border-base)}.settings-nav-item.is-active svg{color:var(--c-primary)}.settings-nav-chevron{display:none}.settings-nav-empty{margin:var(--s-3) var(--s-2);font-size:var(--font-sm);color:var(--c-text-muted)}.settings-pane{padding:var(--s-5) var(--s-6) var(--s-8)}.settings-back{display:none;margin:0 0 var(--s-2) -6px}.settings-pane-head{margin-bottom:var(--s-3)}.settings-pane-head h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.settings-pane-head p{margin:2px 0 0;font-size:var(--font-sm);color:var(--c-text-muted)}.settings-group-title{margin-top:var(--s-6);padding-bottom:var(--s-1);border-bottom:1px solid var(--c-border-base)}.settings-pane-head+.settings-group-title{margin-top:var(--s-2)}.settings-notice-body{font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.settings-notice-body img{max-width:100%;height:auto}@container panel (max-width: 719px){.settings-area{grid-template-columns:1fr}.settings-nav{border-right:0;background:var(--c-bg-base);padding:var(--s-3) var(--s-3)}.settings-nav-item{height:40px;border-bottom:1px solid var(--c-border-subtle);border-radius:0}.settings-nav-item.is-active{background:none;box-shadow:none;font-weight:var(--fw-regular)}.settings-nav-chevron{display:block}.settings-area.is-drilled .settings-nav{display:none}.settings-area:not(.is-drilled) .settings-pane{display:none}.settings-back{display:inline-flex}.settings-pane{padding:var(--s-3) var(--s-4) var(--s-6)}}" ].join("\n"), Mf = "__aiAskHookedXHRSend", installXHRHook = (e, t) => {
     const n = Object.getOwnPropertyDescriptor(e.prototype, "send"), a = (null == n ? void 0 : n.value) ?? e.prototype.send;
-    if ("function" == typeof (i = a) && true === i[$f]) return false;
+    if ("function" == typeof (i = a) && true === i[Mf]) return false;
     var i;
     if ("function" != typeof a) return false;
     if (false === (null == n ? void 0 : n.configurable) && false === n.writable) return false;
@@ -20068,7 +20097,7 @@
         t.call(this, this);
       })), r.call(this, e);
     };
-    return Object.defineProperty(hookedSend, $f, {
+    return Object.defineProperty(hookedSend, Mf, {
       value: true
     }), Object.defineProperty(e.prototype, "send", {
       configurable: false,
@@ -20186,7 +20215,7 @@
         }
       }
     }));
-  }, Mf = [ "copy", "cut", "paste", "selectstart", "contextmenu" ], Hf = new Set([ "text", "password", "email", "search", "url", "tel", "number" ]), isTextControl = e => {
+  }, $f = [ "copy", "cut", "paste", "selectstart", "contextmenu" ], Hf = new Set([ "text", "password", "email", "search", "url", "tel", "number" ]), isTextControl = e => {
     const t = null == e ? void 0 : e.nodeName;
     return "TEXTAREA" === t || "INPUT" === t && Hf.has(e.type);
   };
@@ -20222,10 +20251,10 @@
       }, stopSelectionChange = n => {
         n.target === t && t.activeElement === e.host && isTextControl(e.activeElement) && n.stopPropagation();
       };
-      for (const a of Mf) e.addEventListener(a, stopEditingEvent);
+      for (const a of $f) e.addEventListener(a, stopEditingEvent);
       return null == n || n.addEventListener("selectionchange", stopSelectionChange, true), 
       () => {
-        for (const t of Mf) e.removeEventListener(t, stopEditingEvent);
+        for (const t of $f) e.removeEventListener(t, stopEditingEvent);
         null == n || n.removeEventListener("selectionchange", stopSelectionChange, true);
       };
     }(r);
