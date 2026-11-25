@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         爱问答助手
 // @namespace    aiask/askHelper
-// @version      2.7.12
+// @version      2.7.13
 // @author       aiask
 // @description  全平台网课答题助手，一键解析当前页面试题并获取答案，支持作业 / 考试 / 章节测验的自动收录与答题。已适配【超星学习通、知到智慧树、中国大学MOOC、职教云·智慧职教、云班课、国家开放大学、广东开放大学、上海开放大学、江苏开放大学、云南开放大学、四川开放大学、云上河开、安徽继续教育、河南继续教育、武汉理工继续教育、东北财经大学成教、芯位教育、青书学堂、优课在线UOOC、西财在线、华医网、麦能网、良师在线、川农在线、成教云、电大中专、京人平台、北京联大学堂、绎通继教云、继教云、继教在线、学起Plus、日照专业技术人员继续教育、亿学宝、文顶在线、柠檬文才、春风雨、出头系统、云幕学苑、21tb、168网校、learnin、广西自考助学、UMU互动平台】等 40+ 平台，更多平台持续适配中...
 // @icon         data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAAXNSR0IArs4c6QAAAHVQTFRFR3BMgICBQD8/QUVHQ0ZIRUhKX2FiQD8/Tk1NP0VJPzs7Pz8/QD4+UE9QQD8/PVlnQD8/M6vj////n5+fN5C60NDQSl9qOXWSZL/qTFNXzOr4QWl8yMjItLS02traOIOnNZzN6OfnlJeZ9/f3PYGgpdrzmdXxgSBJqQAAABB0Uk5TAP5E6vys+7/Q0RhsfPFV/OwFarYAAAEESURBVHjapdHrboMgGIBhUHBaD/sAlTE8VOt2/5c4GlBMRZOl7w8j+kQQ0FaVwbG48IDq+piMPcgkO1bD/8DXvhD4/fb9ePDuGiqa2krV7pO1AxSLYIl2ABoeTLSvYMBi4N0sphOAlVaqg1aTPggmZYYaFvNMBYGQz6G6m2vbhEBvF81MxALFTDpbQQd3ZhvBgxqiFfBEO/CJ7ZxkNPcUbWBwn5DJw4KSsJHcHPCTLLDuQxpLkiMLbAIWJs1wBRVkyAFXT7Sa+AYQjTywNfOD74DNA18I9Ifjpg7Es/3Jj5eKyIEcBgNwhk5L8XMPonMQQcfNhBfRpIfbFbiRskCX5enFyz/07TSN9vGxKwAAAABJRU5ErkJggg==
@@ -289,13 +289,13 @@
     }
   }
 
-  let Q = null;
+  let W = null;
 
   function log$1(...e) {}
 
   const addLog = (e, t = "info") => {
     try {
-      const n = null == Q ? void 0 : Q(), a = (new Date).toLocaleString();
+      const n = null == W ? void 0 : W(), a = (new Date).toLocaleString();
       null == n || n.addLog({
         time: a,
         type: t,
@@ -304,7 +304,7 @@
     } catch (n) {
       console.log(e);
     }
-  }, W = {
+  }, Q = {
     success: '<circle cx="8" cy="8" r="6.5"/><path d="M5.2 8.2l1.9 1.9 3.7-3.9"/>',
     error: '<circle cx="8" cy="8" r="6.5"/><path d="M5.8 5.8l4.4 4.4M10.2 5.8l-4.4 4.4"/>',
     warning: '<path d="M8 1.8l6.5 11.4H1.5z"/><path d="M8 6.4v3"/><path d="M8 11.3v.1"/>',
@@ -342,8 +342,8 @@
 
   function msg(e, t = "info") {
     try {
-      const n = W[t] ? t : "info", a = getStack(), i = document.createElement("div");
-      i.className = "toast", i.dataset.type = n, i.setAttribute("aria-label", J[n]), i.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${W[n]}</svg>`;
+      const n = Q[t] ? t : "info", a = getStack(), i = document.createElement("div");
+      i.className = "toast", i.dataset.type = n, i.setAttribute("aria-label", J[n]), i.innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${Q[n]}</svg>`;
       const r = document.createElement("div");
       r.className = "content", r.innerHTML = O.sanitize(e), i.appendChild(r), a.appendChild(i);
       const dismiss = () => {
@@ -2500,7 +2500,7 @@
     baseUrl: e.baseUrl || t,
     providerKind: e.providerKind,
     model: e.model
-  }), Le = "ai_settings", Me = "ai_settings_backup_v1", isRecord = e => "object" == typeof e && null !== e, normalizeCredential = e => {
+  }), Me = "ai_settings", Le = "ai_settings_backup_v1", isRecord = e => "object" == typeof e && null !== e, normalizeCredential = e => {
     if (!isRecord(e)) return;
     const t = "string" == typeof e.value ? e.value.trim() : "";
     return t ? {
@@ -2558,9 +2558,9 @@
       transport: "direct" === e.transport ? "direct" : "auto"
     };
   }, loadAiSettingsFrom = (e, t, n) => {
-    const a = e.get(Le), i = normalizeAiSettingsV2(a);
+    const a = e.get(Me), i = normalizeAiSettingsV2(a);
     if (i) return i;
-    a && !e.get(Me) && e.set(Me, a);
+    a && !e.get(Le) && e.set(Le, a);
     const r = (e => {
       var t, n;
       if (!isRecord$1(e) || !Array.isArray(e.configs)) return null;
@@ -2644,10 +2644,10 @@
       },
       transport: "auto"
     };
-    return e.set(Le, s), s;
+    return e.set(Me, s), s;
   }, saveAiSettingsTo = (e, t) => {
     const n = normalizeAiSettingsV2(t) ?? t;
-    return e.set(Le, n), n;
+    return e.set(Me, n), n;
   }, asChannel = e => (e => !("models" in e))(e) ? {
     id: e.id,
     name: e.name,
@@ -3424,7 +3424,7 @@
     }));
   }
 
-  K.ksv = md5(Re.script.author + Re.script.name.replace(/server:/, "").trim()), Q = getAppStore;
+  K.ksv = md5(Re.script.author + Re.script.name.replace(/server:/, "").trim()), W = getAppStore;
 
   const Fe = [ {
     type: "hook",
@@ -4428,16 +4428,16 @@
 
   __publicField(Ve, "prefix", "paper_"), __publicField(Ve, "lastSyncedPrefix", "paper_last_synced_");
 
-  let Qe = Ve;
+  let We = Ve;
 
   function getDefaultExportFromCjs(e) {
     return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
   }
 
-  var We, Je;
+  var Qe, Je;
 
   const Ze = getDefaultExportFromCjs(function() {
-    if (Je) return We;
+    if (Je) return Qe;
     Je = 1;
     var e = {
       parse: function(t) {
@@ -5465,9 +5465,9 @@
             } else if (5 == x.ltype) {
               var E = x.tabs[k];
               if (2 != E.fmt) continue;
-              var U = e._lctf.getInterval(E.cDef, d), P = E.cDef[U + 2], L = E.scset[P];
-              for (i = 0; i < L.length; i++) {
-                var M = L[i], $ = M.input;
+              var U = e._lctf.getInterval(E.cDef, d), P = E.cDef[U + 2], M = E.scset[P];
+              for (i = 0; i < M.length; i++) {
+                var L = M[i], $ = L.input;
                 if (!($.length > w)) {
                   for (S = true, I = 0; I < $.length; I++) {
                     var H = e._lctf.getInterval(E.cDef, a[p + 1 + I]);
@@ -5477,7 +5477,7 @@
                     }
                   }
                   if (S) {
-                    var O = M.substLookupRecords;
+                    var O = L.substLookupRecords;
                     for (_ = 0; _ < O.length; _ += 2) O[_], O[_ + 1];
                   }
                 }
@@ -5578,8 +5578,8 @@
           b = y + r.shift(), Math.abs(w - p) > Math.abs(b - d) ? p = w + r.shift() : d = b + r.shift(), 
           e.U.P.curveTo(i, h, m, g, f, x, k), e.U.P.curveTo(i, v, y, w, b, p, d)); else if ("o14" == A) {
             if (r.length > 0 && !o && (l = r.shift() + a.nominalWidthX, o = true), 4 == r.length) {
-              var E = r.shift(), U = r.shift(), P = r.shift(), L = r.shift(), M = e.CFF.glyphBySE(a, P), $ = e.CFF.glyphBySE(a, L);
-              e.U._drawCFF(a.CharStrings[M], n, a, i), n.x = E, n.y = U, e.U._drawCFF(a.CharStrings[$], n, a, i);
+              var E = r.shift(), U = r.shift(), P = r.shift(), M = r.shift(), L = e.CFF.glyphBySE(a, P), $ = e.CFF.glyphBySE(a, M);
+              e.U._drawCFF(a.CharStrings[L], n, a, i), n.x = E, n.y = U, e.U._drawCFF(a.CharStrings[$], n, a, i);
             }
             c && (e.U.P.closePath(i), c = false);
           } else if ("o19" == A || "o20" == A) {
@@ -5617,7 +5617,7 @@
         }
       }
       n.x = p, n.y = d, n.nStems = s, n.haveWidth = o, n.width = l, n.open = c;
-    }, We = e;
+    }, Qe = e;
   }()), decode = async () => {
     var e;
     const t = K.document.querySelectorAll("style");
@@ -5628,8 +5628,7 @@
     })), !n) return true;
     const a = null == (e = n.textContent) ? void 0 : e.match(/base64,([\w\W]+?)'/);
     if (!a) return;
-    const i = base64ToUint8Array(a[1]), r = Ze.parse(i);
-    let s = await ttfDownloadJson("https://www.forestpolice.org/ttf/2.0/table.json") || await ttfDownloadJson("https://jsd.vxo.im/gh/chengbianruan/staticfile/c.json") || await ttfDownloadJson("https://cdn.jsdelivr.net/gh/chengbianruan/staticfile/c.json");
+    const i = base64ToUint8Array(a[1]), r = Ze.parse(i), s = await ttfDownloadJson([ "https://www.forestpolice.org/ttf/2.0/table.json", "https://jsd.vxo.im/gh/chengbianruan/staticfile/c.json", "https://cdn.jsdelivr.net/gh/chengbianruan/staticfile/c.json" ], /^[0-9a-f]{8}$/, (e => "number" == typeof e && Number.isInteger(e) && e > 0 && e <= 65535));
     if (!s) return false;
     let o = {};
     for (let l = 19968; l < 40870; l++) {
@@ -5816,7 +5815,7 @@
         hash: `${a}`,
         name: z(".mark_title").text().trim(),
         question: e
-      } ], Qe.setPaper(t.hash, t);
+      } ], We.setPaper(t.hash, t);
     }
   }, {
     type: "save",
@@ -6063,7 +6062,7 @@
         hash: `${a}`,
         name: z(".ceyan_name>h3").text().trim(),
         question: e
-      } ], Qe.setPaper(t.hash, t);
+      } ], We.setPaper(t.hash, t);
     }
   }, {
     type: "ask",
@@ -6563,7 +6562,7 @@
         hash: `${a.id}`,
         name: a.title,
         question: e
-      } ], Qe.setPaper(r.hash, r);
+      } ], We.setPaper(r.hash, r);
     }
   }, {
     type: "save",
@@ -6678,7 +6677,7 @@
         hash: `${r}`,
         name: K.document.title.trim(),
         question: e
-      } ], Qe.setPaper(n.hash, n, {
+      } ], We.setPaper(n.hash, n, {
         replaceQuestions: true
       }));
     }
@@ -6998,7 +6997,7 @@
         hash: `${a}`,
         name: z(".mark_title").text().trim(),
         question: e
-      } ], Qe.setPaper(t.hash, t);
+      } ], We.setPaper(t.hash, t);
     }
   }, {
     type: "ask",
@@ -7113,31 +7112,53 @@
     }
   } ];
 
-  const it = [ {
+  const isHomeworkRoute$1 = () => "xuexi.jsou.cn" === location.host && location.pathname.endsWith("/showHomeworkByStatus"), it = "/newHomework/showHomeworkByStatus", rt = [ '.insert .questionId-option li > .numberCover[onclick="chooseOption(this)"]', ".insert .questionTitle input.tiankong:not(:disabled):not([readonly])", ".insert .jianda-answer .edui-editor-iframeholder iframe" ].join(", ");
+
+  function homeworkMode() {
+    if (!isHomeworkRoute$1()) return null;
+    const e = new URLSearchParams(location.search).getAll("checked");
+    if (e.length > 1) return null;
+    const t = document.querySelector('#myForm .formBtn input[type="button"][onclick="saveDraft()"]');
+    if ("true" === e[0]) return location.pathname.endsWith(it) && "\u5df2\u8bc4\u5206\u7684\u4f5c\u4e1a" === document.title.trim() && !t && document.querySelector(".stu_detail") && document.querySelector(".insert .window-title") ? "save" : null;
+    if (0 === e.length && !location.pathname.endsWith("/student" + it)) return null;
+    if (1 === e.length && "false" !== e[0]) return null;
+    if ("\u505a\u5728\u7ebf\u4f5c\u4e1a" !== document.title.trim() || !t || t.matches(":disabled") || document.querySelector(".stu_detail, .insert .answer") || !document.querySelector(rt)) return null;
+    return Array.from(document.getElementsByClassName("insert")).every((e => {
+      var t;
+      const n = e.querySelector(".questionTitle .window-title");
+      return (null == (t = null == n ? void 0 : n.textContent) ? void 0 : t.trim()) || (null == n ? void 0 : n.querySelector("img, input"));
+    })) ? "ask" : null;
+  }
+
+  let st, ot;
+
+  const lt = [ {
     type: "hook",
-    name: "hook",
-    match: () => "xuexi.jsou.cn" === location.host && location.href.includes("newHomework/showHomeworkByStatus") && location.href.includes("checked=true"),
-    main: e => {
-      K.mainClass = z("#homeworkHistory").find(".active").attr("id");
-      let t = new MutationObserver((async e => {
-        K.mainClass !== z("#homeworkHistory").find(".active").attr("id") && (K.mainClass = z("#homeworkHistory").find(".active").attr("id"), 
-        await waitUntil((function() {
-          return 0 === z(".layui-layer-shade").length;
-        })), vuePageChange(), t.disconnect());
-        for (let n of e) "attributes" === n.type && "class" === n.attributeName && n.target.textContent && (n.target.textContent.includes("\u4e0b\u4e00\u9898") || n.target.textContent.includes("\u4e0a\u4e00\u9898")) && (t.disconnect(), 
-        vuePageChange());
-      }));
-      z("body").length >= 1 && t.observe(z("body")[0], {
+    name: "\u6c5f\u82cf\u5f00\u653e\u5927\u5b66\u4f5c\u4e1a\u72b6\u6001",
+    match: isHomeworkRoute$1,
+    main: () => {
+      null == st || st.disconnect(), null == ot || ot.abort();
+      const e = homeworkMode(), activeHistory = () => {
+        var e;
+        return null == (e = document.querySelector("#homeworkHistory .active")) ? void 0 : e.id;
+      }, t = activeHistory(), n = document.getElementsByClassName("insert"), a = "ask" === e ? Array.from(n) : null;
+      st = new MutationObserver((async i => {
+        const r = "save" === e && t !== activeHistory(), s = "save" === e && i.some((e => "class" === e.attributeName && /\u4e0b\u4e00\u9898|\u4e0a\u4e00\u9898/.test(e.target.textContent || ""))), o = a && (n.length !== a.length || a.some(((e, t) => e !== n[t])));
+        (homeworkMode() !== e || o || r || s) && (null == st || st.disconnect(), null == ot || ot.abort(), 
+        r && await waitUntil((() => 0 === z(".layui-layer-shade").length)), await vuePageChange());
+      })), st.observe(document.documentElement, {
         subtree: true,
+        childList: true,
+        characterData: true,
         attributes: true,
-        childList: true
+        attributeFilter: [ "class", "disabled", "readonly", "onclick", "id" ]
       });
     }
   }, {
     type: "ask",
     name: "\u6c5f\u82cf\u5f00\u653e\u5927\u5b66\u7b54\u9898",
     tips: "",
-    match: () => "xuexi.jsou.cn" === location.host && location.href.includes("/showHomeworkByStatus") && location.href.includes("checked=false"),
+    match: () => "ask" === homeworkMode(),
     types: [ "0", "1", "2", "3" ],
     question: {
       html: ".insert",
@@ -7148,17 +7169,22 @@
       pageType: "jsou"
     },
     init: async () => {
-      document.addEventListener("copy", (function(e) {
+      if ("ask" !== homeworkMode()) return false;
+      ot = new AbortController, document.addEventListener("copy", (function(e) {
         e.stopImmediatePropagation(), layer.msg("\u590d\u5236\u6210\u529f", {
           icon: 4
         }), e.clipboardData.setData("text/plain", window.getSelection().toString());
-      })), document.addEventListener("paste", (() => {
-        event.stopImmediatePropagation();
-        let e = (event.clipboardData || window.clipboardData).getData("text");
+      }), {
+        signal: ot.signal
+      }), document.addEventListener("paste", (e => {
+        e.stopImmediatePropagation();
+        let t = (e.clipboardData || window.clipboardData).getData("text");
         layer.msg("\u7c98\u8d34\u6210\u529f", {
           icon: 4
-        }), document.execCommand("insertText", false, e);
-      }));
+        }), document.execCommand("insertText", false, t);
+      }), {
+        signal: ot.signal
+      });
     },
     ischecked: function(e) {
       if (!e) return false;
@@ -7172,6 +7198,7 @@
     e.type = typeConvert(e.type), e.$options = z(e.html).find(".questionId-option li .numberCover"), 
     "3" == e.type && (e.options = []), e),
     setAnswer: e => {
+      if ("ask" !== homeworkMode() || !document.contains(e.html) || !e.html.querySelector(rt)) throw new Error("\u4f5c\u4e1a\u72b6\u6001\u5df2\u53d8\u5316\uff0c\u8bf7\u91cd\u65b0\u8bc6\u522b\u540e\u7b54\u9898");
       switch (e.type) {
        case "2":
         if (e.$options = z(e.html).find(".questionTitle input"), e.$options.length == e.answer.length) return e.$options.each(((t, n) => {
@@ -7195,7 +7222,7 @@
   }, {
     type: "save",
     name: "\u6c5f\u82cf\u5f00\u653e\u5927\u5b66\u6536\u5f55",
-    match: () => "xuexi.jsou.cn" === location.host && location.href.includes("newHomework/showHomeworkByStatus") && location.href.includes("checked=true"),
+    match: () => "save" === homeworkMode(),
     question: {
       html: ".insert",
       question: ".window-title",
@@ -7245,12 +7272,12 @@
         hash: `${t.homeworkId}`,
         name: t.title,
         question: e
-      } ], Qe.setPaper(n.hash, n);
+      } ], We.setPaper(n.hash, n);
     }
   } ], parseZhijiaoyunTypeText = e => {
     const t = String(e ?? "").match(/\u3010(.*)\u3011/);
     return t ? t[1].trim().replace("\u586b\u7a7a\u9898(\u5ba2\u89c2)", "\u586b\u7a7a\u9898") : "";
-  }, rt = [ {
+  }, ct = [ {
     Content: "\u6b63\u786e",
     order: "1"
   }, {
@@ -7268,7 +7295,7 @@
     } : null;
   }
 
-  const st = [ {
+  const ut = [ {
     type: "hook",
     name: "hook",
     match: "spoc-exam.icve.com.cn" === location.host || location.host.includes("exam.courshare.cn") || location.host.includes("webtrn.cn"),
@@ -7678,7 +7705,7 @@
       if (!n || !t || "string" != typeof t.id && "number" != typeof t.id || !String(t.id).trim() || !Number.isInteger(t.px) || "string" != typeof t.title || !Array.isArray(t.dataArr) || t.dataArr.some((e => "string" != typeof (null == e ? void 0 : e.Content)))) return null;
       const a = String(t.typeId);
       if (e.type = "1" === a ? "0" : "2" === a ? "1" : "3" === a ? "3" : "8", e.question = titleClean(t.title), 
-      e.options = "3" === a ? rt.map((e => e.Content)) : t.dataArr.map((e => removeHtml(e.Content))), 
+      e.options = "3" === a ? ct.map((e => e.Content)) : t.dataArr.map((e => removeHtml(e.Content))), 
       e.html = n.root, "8" !== e.type) {
         const {options: a} = normalizeQuestionForAsk({
           type: e.type,
@@ -7689,7 +7716,7 @@
           const {root: a, view: i} = e, {id: r, px: s, title: o, typeId: l} = t, c = "2" === String(l), u = "3" === String(l), p = c ? "multiple" : u ? "judge" : "single", d = c ? ".multiple-item" : ".sinle-item", h = c ? "checkbox" : "radio", m = t.dataArr.map((({Content: e, SortOrder: t}) => ({
             Content: e,
             order: String(t)
-          }))), g = u ? rt : m, failure = () => new Error("\u667a\u6167\u804c\u6559\u5f53\u524d\u9898\u76ee\u6216\u9009\u9879\u672a\u786e\u8ba4\uff0c\u5df2\u505c\u6b62\u56de\u586b"), indexOf = () => {
+          }))), g = u ? ct : m, failure = () => new Error("\u667a\u6167\u804c\u6559\u5f53\u524d\u9898\u76ee\u6216\u9009\u9879\u672a\u786e\u8ba4\uff0c\u5df2\u505c\u6b62\u56de\u586b"), indexOf = () => {
             var e;
             if (!a.isConnected || (null == (e = readAiExam(a.ownerDocument)) ? void 0 : e.view) !== i) return -1;
             const t = i.tmActivelist.flatMap(((e, t) => e.id === r ? [ t ] : []));
@@ -7885,7 +7912,7 @@
       }
       return e;
     }
-  } ], ot = [ {
+  } ], pt = [ {
     type: "ask",
     name: "\u5ddd\u519c\u5728\u7ebf\u7b54\u9898",
     tips: "",
@@ -7945,13 +7972,13 @@
       }
       return e;
     }
-  } ], lt = new WeakMap;
+  } ], dt = new WeakMap;
 
   function currentAnhuiMultiple(e) {
     var t;
     const n = e.ownerDocument, a = n.querySelector("micro-app-body>#app>div"), i = null == a ? void 0 : a.__vue__, r = e.parentElement, s = null == (t = null == i ? void 0 : i.topicObjCc) ? void 0 : t.Id;
     if (!s || true !== (null == i ? void 0 : i.isAlreadyPaper) || !e.isConnected || "LI" !== e.tagName || !(null == r ? void 0 : r.matches('ul.answer-list[data-question-type="2"]')) || r.getAttribute("data-question-id") !== s || 1 !== n.querySelectorAll("ul.answer-list").length) throw new Error("\u5b89\u5fbd\u7ee7\u7eed\u6559\u80b2\u5f53\u524d\u9898\u5df2\u53d8\u5316\uff0c\u8bf7\u91cd\u65b0\u8bc6\u522b\u540e\u91cd\u7b54");
-    const o = lt.get(i) ?? {
+    const o = dt.get(i) ?? {
       at: 0,
       uncertain: new Set
     };
@@ -7963,7 +7990,7 @@
     };
   }
 
-  const ct = [ {
+  const ht = [ {
     type: "ask",
     name: "\u5b89\u5fbd\u7ee7\u7eed\u6559\u80b2\u7b54\u9898(\u65e7\u7248)",
     tips: "",
@@ -8108,7 +8135,7 @@
         hash: `${t.cell.id}`,
         name: t.cell.title,
         question: e
-      } ], Qe.setPaper(n.hash, n);
+      } ], We.setPaper(n.hash, n);
     }
   }, {
     type: "save",
@@ -8162,7 +8189,7 @@
       n.answerQuestion = function(...e) {
         const t = l.apply(this, e);
         return e[1] === a && (c = t.then((() => true), (() => false))), t;
-      }, i.at = Date.now(), lt.set(n, i);
+      }, i.at = Date.now(), dt.set(n, i);
       try {
         e.click();
       } finally {
@@ -8395,7 +8422,7 @@
     } catch (e) {
       return false;
     }
-  }, ut = [ {
+  }, mt = [ {
     type: "save",
     name: "\u9752\u4e66\u4f5c\u4e1a\u7b54\u6848\u6536\u5f55",
     match: () => isQingshuPage(location.href),
@@ -8468,7 +8495,7 @@
       if (!a) throw new Error("\u9752\u4e66\u9898\u76ee\u6216\u9009\u9879\u5df2\u53d8\u5316\uff0c\u8bf7\u5237\u65b0\u540e\u91cd\u8bd5");
       e.$options = z(a);
     }
-  } ], pt = [ {
+  } ], gt = [ {
     type: "save",
     name: "\u4f18\u8bfe\u5728\u7ebf\u6536\u5f55",
     match: () => "cce.org.uooconline.com" === location.host && (location.href.includes("/exam/paper") || location.href.includes("/exam/")),
@@ -8491,7 +8518,7 @@
       e.answer = t.answer.map((e => t.options[e])), "3" === e.type) e.options = [], e.answer = judgeAnswer(e.answer[0]);
       return e;
     }
-  } ], dt = [ {
+  } ], ft = [ {
     type: "ask",
     name: "\u4eac\u4eba\u5e73\u53f0\u7b54\u9898",
     tips: "",
@@ -8560,7 +8587,7 @@
       }
       return e;
     }
-  } ], ht = [ {
+  } ], vt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("ytccr.com"),
@@ -8616,7 +8643,7 @@
       if ("3" === e.type) e.options = [], e.answer = judgeAnswer(e.answer[0]);
       return e;
     }
-  } ], mt = [ {
+  } ], yt = [ {
     type: "ask",
     name: "\u5b66\u8d77\u8003\u8bd5",
     tips: "",
@@ -8718,9 +8745,9 @@
         hash: `${n.arrangementid}`,
         name: n.arrangementname,
         question: e
-      } ], Qe.setPaper(a.hash, a);
+      } ], We.setPaper(a.hash, a);
     }
-  } ], gt = [ {
+  } ], wt = [ {
     type: "hook",
     name: "hook",
     match: "gdrtvu.exam-cloud.cn" === location.host,
@@ -8757,7 +8784,7 @@
     finish: e => {
       z(".next .qm-primary-button").length && z(".next .qm-primary-button")[0].click();
     }
-  } ], ft = [ {
+  } ], bt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("open.ha.cn"),
@@ -8833,9 +8860,9 @@
         hash: `${t.homeworkId}`,
         name: t.title,
         question: e
-      } ], Qe.setPaper(n.hash, n);
+      } ], We.setPaper(n.hash, n);
     }
-  } ], vt = [ {
+  } ], xt = [ {
     type: "ask",
     name: "\u6cb3\u5357\u7ee7\u7eed\u6559\u80b2\u7b54\u9898",
     tips: "",
@@ -8981,7 +9008,7 @@
       }
       return e;
     }
-  } ], yt = [ {
+  } ], kt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("sclecb.cn"),
@@ -9097,7 +9124,7 @@
       }
       if ((a || !(e.answer.length > 0) || "3" != e.type) && a) return e;
     }
-  } ], wt = [ {
+  } ], qt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("superchutou.com"),
@@ -9162,7 +9189,7 @@
       }
       return e;
     }
-  } ], bt = [ {
+  } ], At = [ {
     type: "ask",
     name: "\u826f\u5e08\u5728\u7ebf\u7b54\u9898",
     tips: "",
@@ -9298,7 +9325,7 @@
         return e.options && e.options[n] ? e.options[n] : null;
       })).filter((e => null !== e)), e;
     }
-  } ], xt = [ {
+  } ], _t = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("jijiaox.com"),
@@ -9400,7 +9427,7 @@
       }
       return console.log(e), e;
     }
-  } ], kt = /^(?:\u5bf9|\u9519|\u6b63\u786e|\u9519\u8bef|\u662f|\u5426|\u221a|\xd7|true|false|T|F)$/i;
+  } ], Ct = /^(?:\u5bf9|\u9519|\u6b63\u786e|\u9519\u8bef|\u662f|\u5426|\u221a|\xd7|true|false|T|F)$/i;
 
   function parseWencaiHomework(e, t) {
     var n, a;
@@ -9420,7 +9447,7 @@
     let g;
     if ("radio" === h || "checkbox" === h) {
       if (m.length || d.length < 2 || d.some((e => !e)) || new Set(d).size !== d.length) return null;
-      const e = 2 === d.length && d.every((e => kt.test(e))) && 2 === new Set(d.map((e => judgeAnswer(e)[0]))).size;
+      const e = 2 === d.length && d.every((e => Ct.test(e))) && 2 === new Set(d.map((e => judgeAnswer(e)[0]))).size;
       g = "checkbox" === h ? "1" : e ? "3" : "0";
     } else {
       if (u || !m.length) return null;
@@ -9444,7 +9471,7 @@
     };
   }
 
-  const isJudgeOptions$1 = e => Array.isArray(e) && 2 === e.length && e.every((e => isTrue(e) || isFalse(e))), qt = [ {
+  const isJudgeOptions$1 = e => Array.isArray(e) && 2 === e.length && e.every((e => isTrue(e) || isFalse(e))), Tt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("wencaischool.net") && z("#app").length,
@@ -9687,7 +9714,7 @@
         answer: t.answer
       } : null;
     }
-  } ], At = [ {
+  } ], St = [ {
     type: "save",
     name: "yxlearning\u6536\u5f55",
     match: () => location.host.includes("yxlearning.com") && location.href.includes("exam/start?myExamRecordId"),
@@ -9759,7 +9786,7 @@
     }
   } ];
 
-  const _t = [ {
+  const It = [ {
     type: "ask",
     name: "\u9ea6\u80fd\u7f51\u7b54\u9898",
     tips: "",
@@ -9876,7 +9903,7 @@
       }
       return e;
     }
-  } ], Ct = [ {
+  } ], Et = [ {
     type: "ask",
     name: "\u9ea6\u80fd\u7f51\u7b54\u9898",
     tips: "",
@@ -9944,7 +9971,7 @@
       }
       return e;
     }
-  } ], Tt = [ {
+  } ], Ut = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("91huayi.com"),
@@ -10006,7 +10033,7 @@
     questionHook: e => (e.question = titleClean(e.question), e.question = e.question.replace(/^\d+\u3001/, ""), 
     e.options = removeStartChar(e.options), 0 !== e.options.length && (e.type = "0"), 
     e)
-  } ], St = [ {
+  } ], Pt = [ {
     type: "ask",
     name: "\u4e91\u5357\u5f00\u653e\u5927\u5b66\u7b54\u9898",
     tips: "",
@@ -10095,7 +10122,7 @@
       }
       return e;
     }
-  } ], It = [ {
+  } ], Mt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("21tb.com"),
@@ -10242,7 +10269,7 @@
       const l = null == (r = null == e ? void 0 : e.querySelector) ? void 0 : r.call(e, ".ql-editor");
       l && setEditorText(l, s);
     })), false);
-  }, Et = [ {
+  }, Lt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("168wangxiao.com"),
@@ -10356,7 +10383,7 @@
       }
       return true;
     }
-  } ], Ut = /^\/web\/cc-detail\/([^/]+)\/act\/quiz-answer\/([^/?#]+)/, Pt = /^\/web(?:-old)?\/index\.php$/, Lt = {
+  } ], $t = /^\/web\/cc-detail\/([^/]+)\/act\/quiz-answer\/([^/?#]+)/, Ht = /^\/web(?:-old)?\/index\.php$/, Ot = {
     SINGLE: "0",
     MULTI: "1",
     TF: "3"
@@ -10364,7 +10391,7 @@
     try {
       const t = new URL(e);
       if ("www.mosoteach.cn" !== t.hostname) return null;
-      const n = t.pathname.match(Ut);
+      const n = t.pathname.match($t);
       return n ? {
         ccId: n[1],
         quizId: n[2]
@@ -10375,32 +10402,32 @@
   }, isMosoteachQuizAnswerUrl = (e = location.href) => null !== getMosoteachQuizIds(e), isMosoteachLegacyQuizReplyUrl = (e = location.href) => {
     try {
       const t = new URL(e);
-      return "www.mosoteach.cn" === t.hostname && (!!Pt.test(t.pathname) && ("interaction_quiz" === t.searchParams.get("c") && "reply" === t.searchParams.get("m")));
+      return "www.mosoteach.cn" === t.hostname && (!!Ht.test(t.pathname) && ("interaction_quiz" === t.searchParams.get("c") && "reply" === t.searchParams.get("m")));
     } catch {
       return false;
     }
   }, isMosoteachAskUrl = (e = location.href) => isMosoteachQuizAnswerUrl(e) || isMosoteachLegacyQuizReplyUrl(e), isMosoteachReviewUrl = (e = location.href) => {
     try {
       const t = new URL(e);
-      return "https:" === t.protocol && "www.mosoteach.cn" === t.hostname && (/^\/web\/cc-detail\/[^/]+\/act\/quiz-single-result\/[^/]+\/?$/.test(t.pathname) || Pt.test(t.pathname) && "interaction_quiz" === t.searchParams.get("c") && "person_quiz_result" === t.searchParams.get("m"));
+      return "https:" === t.protocol && "www.mosoteach.cn" === t.hostname && (/^\/web\/cc-detail\/[^/]+\/act\/quiz-single-result\/[^/]+\/?$/.test(t.pathname) || Ht.test(t.pathname) && "interaction_quiz" === t.searchParams.get("c") && "person_quiz_result" === t.searchParams.get("m"));
     } catch {
       return false;
     }
   }, getOptionNo = e => e.itemNo ?? e.item_no ?? 0, getSortedOptions = e => [ ...e.options || [] ].sort(((e, t) => getOptionNo(e) - getOptionNo(t))), getMosoteachTopicOptions = (e, t) => {
     var n;
     return "TF" !== e.type || (null == (n = e.options) ? void 0 : n.length) ? t(getSortedOptions(e).map((e => e.content || ""))) : [ "\u6b63\u786e", "\u9519\u8bef" ];
-  }, Mt = ".topic-answer-align,label.d-flex.align-center:has(.v-radio)", $t = `.pt-10.d-flex.list-item:has(.topic-subject):has(${Mt})`, Ht = `${Mt},.t-option.t-item label,.t-judge.t-item label`, Ot = ".v-chip__content,.t-type", jt = "__aiAskMosoteachRouteHook", zt = "__aiAskMosoteachHref", Dt = "__aiAskMosoteachRouteTimer";
+  }, jt = ".topic-answer-align,label.d-flex.align-center:has(.v-radio)", zt = `.pt-10.d-flex.list-item:has(.topic-subject):has(${jt})`, Dt = `${jt},.t-option.t-item label,.t-judge.t-item label`, Nt = ".v-chip__content,.t-type", Rt = "__aiAskMosoteachRouteHook", Ft = "__aiAskMosoteachHref", Bt = "__aiAskMosoteachRouteTimer";
 
-  let Nt = [];
+  let Gt = [];
 
-  const Rt = {
+  const Kt = {
     cleanText: (e = "") => titleClean(removeHtml(e)),
     cleanOptions: e => removeStartChar(e.map((e => removeHtml(e)))),
     judgeAnswer: judgeAnswer
   }, getMosoteachQuestionType = (e = "", t = []) => ((e = "", t = []) => {
-    const n = Lt[e.trim()];
+    const n = Ot[e.trim()];
     return "0" === n && (e => 2 === e.length && e.every((e => /^(\u6b63\u786e|\u9519\u8bef|\u5bf9|\u9519|\u662f|\u5426|T|F|true|false)$/i.test(e.trim()))))(t) ? "3" : n || "";
-  })(e, t) || typeMatch(e), getMosoteachQuestionElements = () => isMosoteachReviewUrl() ? z(location.pathname.endsWith("/index.php") ? ".topic-item" : ".quiz-topic-content") : isMosoteachLegacyQuizReplyUrl() ? z(".topic-item") : z($t), getMosoteachLegacyTopics = () => {
+  })(e, t) || typeMatch(e), getMosoteachQuestionElements = () => isMosoteachReviewUrl() ? z(location.pathname.endsWith("/index.php") ? ".topic-item" : ".quiz-topic-content") : isMosoteachLegacyQuizReplyUrl() ? z(".topic-item") : z(zt), getMosoteachLegacyTopics = () => {
     var e, t;
     const n = z("#app")[0], a = null == (t = null == (e = null == n ? void 0 : n.__vue__) ? void 0 : e.$data) ? void 0 : t.topics;
     return Array.isArray(a) ? a : [];
@@ -10417,12 +10444,12 @@
         const t = getMosoteachTopicOptions(e, a.cleanOptions).sort().join("\n");
         return a.cleanText(e.subject || "") === i && t === r;
       }));
-    })(e.question, e.options, Nt, Rt);
+    })(e.question, e.options, Gt, Kt);
     if (!t) return;
     const n = ((e, t) => {
       const n = t.cleanOptions(getSortedOptions(e).map((e => e.content || "")));
       return Array.isArray(e.answers) && e.answers.length > 0 ? e.answers.map((e => n[e] || "")).filter(Boolean) : "TF" === e.type ? t.judgeAnswer(e.tfAnswer || "") : [];
-    })(t, Rt);
+    })(t, Kt);
     if (!n.length) return;
     const a = {
       type: e.type,
@@ -10432,30 +10459,30 @@
     };
     Answer.cacheAnswer(a);
   }, parseMosoteachDomQuestion = e => {
-    const t = z(e.html), n = t.find(".topic-subject").first().html(), a = t.find(Mt);
+    const t = z(e.html), n = t.find(".topic-subject").first().html(), a = t.find(jt);
     if (!n || !a.length) return e;
-    e.question = Rt.cleanText(n);
+    e.question = Kt.cleanText(n);
     const i = a.map(((e, t) => z(t).find(".topic-answer").first().html() || z(t).html())).get();
-    return e.options = Rt.cleanOptions(i), e.$options = (e => z(e.map(((e, t) => z(t).closest("label,.d-flex.align-start")[0] || t)).get()))(a), 
+    return e.options = Kt.cleanOptions(i), e.$options = (e => z(e.map(((e, t) => z(t).closest("label,.d-flex.align-start")[0] || t)).get()))(a), 
     e.type = getMosoteachQuestionType(t.find(".v-chip__content").first().text(), e.options), 
     cacheMosoteachAnswer(e), e;
   }, parseMosoteachLegacyQuestion = (e, t) => {
-    const n = z(e.html), a = getMosoteachLegacyTopics()[t], i = n.find(Ht), r = i.map(((e, t) => z(t).html())).get();
-    if (a) e.question = Rt.cleanText(a.subject || ""), e.options = ((e, t, n) => {
+    const n = z(e.html), a = getMosoteachLegacyTopics()[t], i = n.find(Dt), r = i.map(((e, t) => z(t).html())).get();
+    if (a) e.question = Kt.cleanText(a.subject || ""), e.options = ((e, t, n) => {
       const a = n(t);
       return a.length ? a : getMosoteachTopicOptions(e || {}, n);
-    })(a, r, Rt.cleanOptions), e.type = getMosoteachQuestionType(a.type, e.options); else {
+    })(a, r, Kt.cleanOptions), e.type = getMosoteachQuestionType(a.type, e.options); else {
       const t = n.find(".t-subject").first().html();
-      e.question = Rt.cleanText(t || e.question), e.options = Rt.cleanOptions(r.length ? r : e.options), 
-      e.type = getMosoteachQuestionType(n.find(Ot).first().text() || e.type, e.options);
+      e.question = Kt.cleanText(t || e.question), e.options = Kt.cleanOptions(r.length ? r : e.options), 
+      e.type = getMosoteachQuestionType(n.find(Nt).first().text() || e.type, e.options);
     }
     return i.length && (e.$options = i), cacheMosoteachAnswer(e), e;
   }, watchMosoteachRouteChange = () => {
     const e = K;
-    if (e[jt]) return;
-    e[jt] = true, e[zt] = location.href;
+    if (e[Rt]) return;
+    e[Rt] = true, e[Ft] = location.href;
     const checkRouteChange = () => {
-      e[zt] !== location.href && (e[zt] = location.href, clearTimeout(e[Dt]), e[Dt] = setTimeout((() => vuePageChange()), 100));
+      e[Ft] !== location.href && (e[Ft] = location.href, clearTimeout(e[Bt]), e[Bt] = setTimeout((() => vuePageChange()), 100));
     }, bindHistoryChange = e => {
       const t = history[e];
       history[e] = function(...e) {
@@ -10464,7 +10491,7 @@
       };
     };
     bindHistoryChange("pushState"), bindHistoryChange("replaceState"), window.addEventListener("popstate", (() => setTimeout(checkRouteChange, 0)));
-  }, Ft = [ {
+  }, Vt = [ {
     type: "hook",
     name: "\u4e91\u73ed\u8bfe\u8def\u7531\u76d1\u542c",
     match: () => "www.mosoteach.cn" === location.host,
@@ -10480,14 +10507,14 @@
     question: {
       html: getMosoteachQuestionElements,
       question: ".topic-subject,.t-subject",
-      options: Ht,
-      type: Ot,
+      options: Dt,
+      type: Nt,
       workType: "mosoteach",
       pageType: "mosoteach"
     },
     init: async () => {
-      if (await sleep(500), !isMosoteachAskUrl()) return Nt = [], false;
-      return !!(await waitForMosoteachQuestionElements()) && (Nt = isMosoteachQuizAnswerUrl() ? await (async () => {
+      if (await sleep(500), !isMosoteachAskUrl()) return Gt = [], false;
+      return !!(await waitForMosoteachQuestionElements()) && (Gt = isMosoteachQuizAnswerUrl() ? await (async () => {
         const e = getMosoteachQuizIds(), t = localStorage.getItem("teach_token") || "";
         if (!e || !t) return [];
         try {
@@ -10523,14 +10550,14 @@
       html: getMosoteachQuestionElements,
       question: ".topic-subject,.t-subject",
       options: ".topic-answer,.opt-content",
-      type: Ot,
+      type: Nt,
       workType: "mosoteach",
       pageType: "mosoteach"
     },
     init: waitForMosoteachQuestionElements,
     answerHook: e => {
       var t, n;
-      const a = e.html, i = a.matches(".topic-item"), r = a.querySelector(i ? ".t-subject" : ".topic-subject"), s = Rt.cleanText((null == r ? void 0 : r.innerHTML) || ""), o = getMosoteachQuestionType((null == (t = a.querySelector(i ? ".t-type" : ".v-chip__content")) ? void 0 : t.textContent) || "");
+      const a = e.html, i = a.matches(".topic-item"), r = a.querySelector(i ? ".t-subject" : ".topic-subject"), s = Kt.cleanText((null == r ? void 0 : r.innerHTML) || ""), o = getMosoteachQuestionType((null == (t = a.querySelector(i ? ".t-type" : ".v-chip__content")) ? void 0 : t.textContent) || "");
       if (!s || ![ "0", "1", "3" ].includes(o)) return null;
       const l = Array.from(a.querySelectorAll(i ? ".answer-l" : ".label")).filter((e => {
         var t;
@@ -10576,12 +10603,12 @@
         answer: f
       } : null;
     }
-  } ], Bt = ".store-question-item-container", buttonCount = e => z("button").filter(((t, n) => {
+  } ], Wt = ".store-question-item-container", buttonCount = e => z("button").filter(((t, n) => {
     var a;
     return (null == (a = n.textContent) ? void 0 : a.trim()) === e;
   })).length, paperState = e => "https://www.learnin.com.cn" === location.origin && "/user/" === location.pathname && /^#\/user\/student\/course\/[a-f0-9]{32}\/topic\/[a-f0-9]{32}\/do$/.test(location.hash) && (e ? 0 === buttonCount("\u63d0\u4ea4\u4f5c\u4e1a") && 0 === buttonCount("\u4fdd\u5b58\u5e76\u79bb\u5f00") && 1 === buttonCount("\u5173\u95ed") && isExist(".question-answer-exhibition") : 1 === buttonCount("\u63d0\u4ea4\u4f5c\u4e1a") && 1 === buttonCount("\u4fdd\u5b58\u5e76\u79bb\u5f00") && !isExist(".question-answer-exhibition")), waitPaper = async () => {
     try {
-      return await waitUntil((() => isExist(Bt)), {
+      return await waitUntil((() => isExist(Wt)), {
         timeout: 1e4
       }), !0;
     } catch {
@@ -10609,11 +10636,11 @@
     });
   }
 
-  const Gt = [ {
+  const Qt = [ {
     type: "hook",
     name: "hook",
     match: "www.learnin.com.cn" === location.host,
-    main: () => observeVuePageChange(z("#app")[0], (() => `${location.href}:${buttonCount("\u63d0\u4ea4\u4f5c\u4e1a")}:${z(Bt).length}`))
+    main: () => observeVuePageChange(z("#app")[0], (() => `${location.href}:${buttonCount("\u63d0\u4ea4\u4f5c\u4e1a")}:${z(Wt).length}`))
   }, {
     type: "ask",
     name: "learnin\u7b54\u9898",
@@ -10621,7 +10648,7 @@
     match: () => paperState(false),
     types: [ "0", "1", "3" ],
     question: {
-      html: Bt,
+      html: Wt,
       question: ".question-title>div:first-child",
       options: ".question-info>.question-option-list>.option-item>.option-content>div:first-child",
       type: ".item-question-header>.header-left",
@@ -10639,7 +10666,7 @@
     name: "learnin\u6536\u5f55",
     match: () => paperState(true),
     question: {
-      html: Bt,
+      html: Wt,
       question: ".question-title>div:first-child",
       options: ".question-info>.question-option-list>.option-item>.option-content>div:first-child",
       type: ".item-question-header>.header-left",
@@ -10673,7 +10700,7 @@
       } else e.answer = i;
       return e;
     }
-  } ], Kt = [ {
+  } ], Jt = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("ouchn.edu.cn"),
@@ -10725,7 +10752,7 @@
         a.push(n[e.charCodeAt(0) - 65]);
       })), 1 == a.length ? e.type = "0" : e.type = "1", e.answer = a, e;
     }
-  } ], Vt = [ {
+  } ], Zt = [ {
     type: "hook",
     name: "mooc",
     match: "www.icourse163.org" === location.host,
@@ -10845,7 +10872,7 @@
       }
       return e;
     }
-  } ], Qt = [ {
+  } ], Yt = [ {
     host: "swufe-online.com",
     display: "\u897f\u8d22\u5728\u7ebf",
     key: "swufe"
@@ -10853,19 +10880,19 @@
     host: "jsnu.edu.cn",
     display: "\u6c5f\u82cf\u5e08\u5927",
     key: "jsnu"
-  } ], matchSite = () => Qt.find((e => location.host.includes(e.host))), siteDisplay = () => {
+  } ], matchSite = () => Yt.find((e => location.host.includes(e.host))), siteDisplay = () => {
     var e;
     return (null == (e = matchSite()) ? void 0 : e.display) ?? "learnspace";
   }, siteKey = () => {
     var e;
     return (null == (e = matchSite()) ? void 0 : e.key) ?? "learnspace";
-  }, Wt = [ "learnspace/course/test/coursewareTest_intoRedoTestPage.action", "learnspace/learn/learn/templateeight/index.action", "learnspace/course/test/coursewareTest_intoTestPage.action" ], Jt = [ "learnspace/course/test/coursewareTest_intoTestAnswerPage.action", "learnspace/learn/learn/templateeight/index.action" ], pathHit = e => e.some((e => location.href.includes(e))), titleCleanup = e => e.replace(/^[.*?]\s*/, "").replace(/^\u3010.*?\u3011\s*/, "").replace(/\s*\uff08\d+\.\d+\u5206\uff09$/, "").replace(/^\d+\./, "").trim().replace(/^\d+\uff0e/, "").trim().replace(/^\d+ ./, "").trim(), Zt = [ {
+  }, Xt = [ "learnspace/course/test/coursewareTest_intoRedoTestPage.action", "learnspace/learn/learn/templateeight/index.action", "learnspace/course/test/coursewareTest_intoTestPage.action" ], en = [ "learnspace/course/test/coursewareTest_intoTestAnswerPage.action", "learnspace/learn/learn/templateeight/index.action" ], pathHit = e => e.some((e => location.href.includes(e))), titleCleanup = e => e.replace(/^[.*?]\s*/, "").replace(/^\u3010.*?\u3011\s*/, "").replace(/\s*\uff08\d+\.\d+\u5206\uff09$/, "").replace(/^\d+\./, "").trim().replace(/^\d+\uff0e/, "").trim().replace(/^\d+ ./, "").trim(), tn = [ {
     type: "ask",
     get name() {
       return `${siteDisplay()}\u7b54\u9898`;
     },
     tips: "",
-    match: () => Boolean(matchSite()) && pathHit(Wt),
+    match: () => Boolean(matchSite()) && pathHit(Xt),
     types: [ "0", "1", "3" ],
     question: {
       html: ".bank_test > .test_item",
@@ -10897,7 +10924,7 @@
     get name() {
       return `${siteDisplay()}\u9636\u6bb5\u6d4b\u9a8c\u6536\u5f55`;
     },
-    match: () => Boolean(matchSite()) && pathHit(Jt),
+    match: () => Boolean(matchSite()) && pathHit(en),
     question: {
       html: ".bank_test > .test_item",
       question: ".test_item_tit",
@@ -11016,7 +11043,7 @@
       }
       return e;
     }
-  } ], Yt = [ {
+  } ], nn = [ {
     type: "ask",
     name: "\u91cd\u5e86\u6cd5\u6cbb\u8003\u8bd5\u7b54\u9898",
     tips: "\u672c\u5e73\u53f0\u65e0\u7b54\u6848\u6536\u5f55\uff0c\u9700\u8981\u81ea\u884c\u8865\u5145\u9898\u5e93\uff0c\u5efa\u8bae\u4f7f\u7528\u9898\u5e93\u5bfc\u5165\u529f\u80fd",
@@ -11045,9 +11072,9 @@
       e.options = e.options.map((e => e.replace(/\u206B/g, "").trim())), "3" === e.type) e.options = [];
       return e;
     }
-  } ], isOlearnHost = () => location.host.includes("telfri-edu.com") || "cjzzxylearning.o-learn.cn" === location.host, isHomeworkRoute = e => "cjzzxylearning.o-learn.cn" === location.host ? "/student/" === location.pathname && new RegExp(`^#/course/[A-Za-z0-9_-]+/learn/(?:outline/)?homework/${e}/[A-Za-z0-9_-]+$`).test(location.hash) : new RegExp(`/learn/(?:outline/)?homework/${e}/`).test(location.href), Xt = ".topic-group>.topic-container", en = [ "0", "1", "3" ], topicType = e => typeMatch(z(e).prevAll(".topic-title").first().find(".title-bold").text().trim()), waitTextPaper = async () => (await waitUntil((() => isExist(Xt) || isExist(".card-all-topic-container"))), 
-  !!isExist(Xt) || (addLog("O-Learn \u6587\u6863\u578b\u4f5c\u4e1a\u9898\u9762\u4e0d\u5728\u9875\u9762\u5185\uff0c\u6682\u4e0d\u652f\u6301\u7b54\u9898\u4e0e\u6536\u5f55", "warning"), 
-  false)), tn = [ {
+  } ], isOlearnHost = () => location.host.includes("telfri-edu.com") || "cjzzxylearning.o-learn.cn" === location.host, isHomeworkRoute = e => "cjzzxylearning.o-learn.cn" === location.host ? "/student/" === location.pathname && new RegExp(`^#/course/[A-Za-z0-9_-]+/learn/(?:outline/)?homework/${e}/[A-Za-z0-9_-]+$`).test(location.hash) : new RegExp(`/learn/(?:outline/)?homework/${e}/`).test(location.href), an = ".topic-group>.topic-container", rn = [ "0", "1", "3" ], topicType = e => typeMatch(z(e).prevAll(".topic-title").first().find(".title-bold").text().trim()), waitTextPaper = async () => (await waitUntil((() => isExist(an) || isExist(".card-all-topic-container"))), 
+  !!isExist(an) || (addLog("O-Learn \u6587\u6863\u578b\u4f5c\u4e1a\u9898\u9762\u4e0d\u5728\u9875\u9762\u5185\uff0c\u6682\u4e0d\u652f\u6301\u7b54\u9898\u4e0e\u6536\u5f55", "warning"), 
+  false)), sn = [ {
     type: "hook",
     name: "hook",
     match: isOlearnHost(),
@@ -11071,7 +11098,7 @@
     init: waitTextPaper,
     ischecked: e => e.hasClass("is-active") || e.hasClass("is-checked"),
     questionHook: e => (e.$options = z(e.html).find(".topic-answer .radio-wrap>label"), 
-    e.type = topicType(e.html), en.includes(e.type) && (e.$options.length < 2 || e.$options.length !== e.options.length || e.$options.toArray().some((t => {
+    e.type = topicType(e.html), rn.includes(e.type) && (e.$options.length < 2 || e.$options.length !== e.options.length || e.$options.toArray().some((t => {
       const n = t.querySelectorAll("input");
       return 1 !== n.length || t.control !== n[0] || n[0].disabled || n[0].type !== ("1" === e.type ? "checkbox" : "radio");
     }))) ? null : e)
@@ -11091,12 +11118,12 @@
     answerHook: e => {
       e.type = topicType(e.html);
       const t = z(e.html).find(".topic-answer .radio-wrap>label input").map(((e, t) => t.value)).get(), n = z(e.html).find(".standard-answer>.analysis-text"), a = (1 === n.length ? n.text().trim() : "").split("");
-      if (!en.includes(e.type) || !e.question || t.length < 2 || t.length !== e.options.length || t.some((e => !/^[A-Z]$/.test(e))) || new Set(t).size !== t.length || e.options.some((e => !e)) || new Set(e.options).size !== e.options.length || !a.length || new Set(a).size !== a.length || "1" !== e.type && 1 !== a.length) return null;
+      if (!rn.includes(e.type) || !e.question || t.length < 2 || t.length !== e.options.length || t.some((e => !/^[A-Z]$/.test(e))) || new Set(t).size !== t.length || e.options.some((e => !e)) || new Set(e.options).size !== e.options.length || !a.length || new Set(a).size !== a.length || "1" !== e.type && 1 !== a.length) return null;
       const i = a.map((n => e.options[t.indexOf(n)]));
       return i.some((e => void 0 === e)) ? null : "3" === e.type ? (e.options = [], e.answer = judgeAnswer(i[0]), 
       e.answer.length ? e : null) : (e.answer = i, e);
     }
-  } ], nn = [ {
+  } ], on = [ {
     type: "hook",
     name: "hook",
     match: () => location.host.includes("yxbyun.com") && !location.host.includes("yxb4student"),
@@ -11253,7 +11280,7 @@
       }
       return true;
     }
-  } ], an = [ {
+  } ], ln = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("wdjycj.com") || location.host.includes("iwdjy.com"),
@@ -11383,7 +11410,7 @@
       a = e.textContent || "";
     }
     return typeMatch(a);
-  }, rn = [ {
+  }, cn = [ {
     type: "ask",
     name: "\u6b66\u6c49\u7406\u5de5\u7ee7\u7eed\u6559\u80b2\u7b54\u9898",
     tips: "\u6b66\u6c49\u7406\u5de5\u7ee7\u7eed\u6559\u80b2\u4ec5\u652f\u6301\u9009\u62e9\u3001\u5224\u65ad\u9898\u5176\u4ed6\u9898\u578b\u6682\u4e0d\u652f\u6301\uff0c\u82e5\u6709\u9700\u8981\u8bf7\u53cd\u9988\u7ed9\u4f5c\u8005",
@@ -11440,7 +11467,7 @@
       })), "3" === e.type ? (e.answer = n.length ? n[0] : "", e.options = []) : e.answer = n, 
       e;
     }
-  } ], sn = [ {
+  } ], un = [ {
     type: "save",
     name: "\u4e1c\u5317\u8d22\u7ecf\u5927\u5b66\u6210\u6559\u6536\u5f55",
     match: () => location.host.includes("dufe.edu.cn") && (location.href.includes("/HomeWorkPaper") || location.href.includes("/HomeWorkHistoryPaper") || location.href.includes("/ExercisesPaper")),
@@ -11576,11 +11603,11 @@
       }
       return true;
     }
-  } ], on = {
+  } ], pn = {
     single: "0",
     multiple: "1",
     judge: "3"
-  }, parseCfyOptions = e => JSON.parse(e).map((e => removeHtml(e.content))), ln = [ {
+  }, parseCfyOptions = e => JSON.parse(e).map((e => removeHtml(e.content))), dn = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("lygtc.edu.cn") || location.host.includes("cfyedu.com"),
@@ -11606,7 +11633,7 @@
       const t = z(e.html).find(">div")[0].__vue__.question;
       return e.question = titleClean(removeHtml(t.title)), e.options = parseCfyOptions(t.options), 
       e.answer = t.answer.split("").map((t => e.options[t.charCodeAt(0) - 65])).filter(Boolean), 
-      e.type = on[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
+      e.type = pn[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
       t.type, e;
     }
   }, {
@@ -11614,7 +11641,7 @@
     name: "\u6625\u98ce\u96e8\u7b54\u9898",
     tips: "\u516c\u544a",
     match: () => location.host.includes("lygtc.edu.cn") && location.href.includes("/student/#/my-study/homework"),
-    types: Object.values(on),
+    types: Object.values(pn),
     question: {
       html: ".question>div>div[id]",
       question: ".question-title>.title",
@@ -11630,7 +11657,7 @@
     questionHook: e => {
       const t = z(e.html).find(">div")[0].__vue__.question;
       return e.question = titleClean(removeHtml(t.title)), e.options = parseCfyOptions(t.options), 
-      e.type = on[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
+      e.type = pn[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
       e;
     }
   }, {
@@ -11652,7 +11679,7 @@
       const t = z(e.html).find(">div")[0].__vue__.question;
       return e.question = titleClean(removeHtml(t.title)), e.options = parseCfyOptions(t.options), 
       e.answer = t.answer.split("").map((t => e.options[t.charCodeAt(0) - 65])).filter(Boolean), 
-      e.type = on[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
+      e.type = pn[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
       t.type, e;
     }
   }, {
@@ -11660,7 +11687,7 @@
     name: "\u6625\u98ce\u96e8\u6d4b\u9a8c\u7b54\u9898",
     tips: "\u516c\u544a",
     match: () => location.host.includes("cfyedu.com") && location.href.includes("/student/#/my-test/do-test"),
-    types: Object.values(on),
+    types: Object.values(pn),
     question: {
       html: ".answer div[id]",
       question: ".question-title>.title",
@@ -11676,10 +11703,10 @@
     questionHook: e => {
       const t = z(e.html).find(">div")[0].__vue__.question;
       return e.question = titleClean(removeHtml(t.title)), e.options = parseCfyOptions(t.options), 
-      e.type = on[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
+      e.type = pn[t.type] || "", "judge" === t.type && (e.options = [], e.answer = [ judgeAnswer(t.answer) ]), 
       e;
     }
-  } ], cn = [ {
+  } ], hn = [ {
     type: "hook",
     name: "hook",
     match: location.host.includes("jijiaool.com"),
@@ -11763,7 +11790,7 @@
       }
       return e.answer, e;
     }
-  } ], un = [ {
+  } ], mn = [ {
     type: "save",
     name: "\u5317\u4eac\u8054\u5927\u5b66\u5802\u6536\u5f55",
     match: () => location.host.includes("jxjypt.cn") && location.href.includes("/paper/start?pid="),
@@ -11881,7 +11908,7 @@
     };
     return "3" === r && (s.options = [], s.answer = judgeAnswer(i[0] || ""), s.answerIndexes = []), 
     s;
-  }, isAntai = () => "antai.geovisearth.com" === location.host, pn = [ {
+  }, isAntai = () => "antai.geovisearth.com" === location.host, gn = [ {
     type: "save",
     name: "\u5b89\u6cf0\u5b89\u57f9\u6536\u5f55",
     match: () => isAntai() && !!K.antaiques,
@@ -11945,7 +11972,7 @@
         answer: r
       }), e;
     }
-  } ], dn = {
+  } ], fn = {
     1: "0",
     2: "1",
     3: "4",
@@ -11958,7 +11985,7 @@
     11: "6",
     14: "14"
   }, parseBgzkQuestion = e => {
-    const t = (e => dn[Number(e.questionType)] || "8")(e), n = e.options ?? [], a = n.map((e => (null == e ? void 0 : e.description) ?? "")), i = ((e, t) => {
+    const t = (e => fn[Number(e.questionType)] || "8")(e), n = e.options ?? [], a = n.map((e => (null == e ? void 0 : e.description) ?? "")), i = ((e, t) => {
       const n = [];
       return e.forEach(((e, a) => {
         const i = String((null == e ? void 0 : e.label) ?? "").trim().toUpperCase(), r = /^[A-Z]$/.test(i) ? i.charCodeAt(0) - 65 : a;
@@ -11974,11 +12001,11 @@
       answerIndexes: s,
       type: t
     };
-  }, hasBgzkSolution = e => !!(null == e ? void 0 : e.solution) || ((null == e ? void 0 : e.subQuestions) ?? []).some((e => !!(null == e ? void 0 : e.solution))), hn = [ 2, 3, 4 ], mn = [ -1, 0, 1 ], gn = [ /\/Student\/Course\/Quiz\/Detail/i, /\/Student\/course\/resource\/quizDetail/i, /\/Student\/exam\/quiz/i ], fn = ".question-quiz > .question-detail-container", isQuizPage = () => location.host.endsWith("bgzk-edu.cn") && gn.some((e => e.test(location.pathname))), getQuestions$1 = () => K.bgzkques || [], hasSolutions = () => getQuestions$1().some(hasBgzkSolution), isAnalysisMode = () => (e => {
+  }, hasBgzkSolution = e => !!(null == e ? void 0 : e.solution) || ((null == e ? void 0 : e.subQuestions) ?? []).some((e => !!(null == e ? void 0 : e.solution))), vn = [ 2, 3, 4 ], yn = [ -1, 0, 1 ], wn = [ /\/Student\/Course\/Quiz\/Detail/i, /\/Student\/course\/resource\/quizDetail/i, /\/Student\/exam\/quiz/i ], bn = ".question-quiz > .question-detail-container", isQuizPage = () => location.host.endsWith("bgzk-edu.cn") && wn.some((e => e.test(location.pathname))), getQuestions$1 = () => K.bgzkques || [], hasSolutions = () => getQuestions$1().some(hasBgzkSolution), isAnalysisMode = () => (e => {
     if (!e) return false;
     const t = Number(e.answerStatus);
-    return !!hn.includes(t) || 2 === Number(e.quizStatus) && mn.includes(t);
-  })(K.bgzkquiz || null), questionsLoaded = () => getQuestions$1().length > 0, containersReady = () => isExist(fn) && questionsLoaded(), waitOrSkip = async e => {
+    return !!vn.includes(t) || 2 === Number(e.quizStatus) && yn.includes(t);
+  })(K.bgzkquiz || null), questionsLoaded = () => getQuestions$1().length > 0, containersReady = () => isExist(bn) && questionsLoaded(), waitOrSkip = async e => {
     try {
       return await waitUntil(e, {
         timeout: 3e4
@@ -11988,15 +12015,15 @@
     }
   };
 
-  let vn = false;
+  let xn = false;
 
-  const yn = [ {
+  const kn = [ {
     type: "hook",
     name: "\u5e7f\u897f\u81ea\u8003\u52a9\u5b66hook",
     match: () => isQuizPage(),
     main: () => {
-      if (vn) return;
-      vn = true;
+      if (xn) return;
+      xn = true;
       const getHash = () => `${getQuestions$1().map((e => (null == e ? void 0 : e.questionId) ?? "")).join(",")}|${hasSolutions()}|${isAnalysisMode()}`;
       waitUntil(questionsLoaded, {
         timeout: 6e4
@@ -12004,11 +12031,11 @@
         const e = z("#app")[0];
         e ? observeVuePageChange(e, getHash, {
           beforeChange: () => {
-            vn = false;
+            xn = false;
           }
-        }) : vn = false;
+        }) : xn = false;
       })).catch((() => {
-        vn = false;
+        xn = false;
       }));
     }
   }, {
@@ -12038,7 +12065,7 @@
     match: () => isQuizPage(),
     types: [ "0", "1", "3" ],
     question: {
-      html: fn,
+      html: bn,
       question: ".question-detail-description",
       options: ".question-detail-options .question-detail-option > label, .question-detail-judgment .el-radio",
       type: ".question-detail-type-desc",
@@ -12056,9 +12083,9 @@
       const a = parseBgzkQuestion(n);
       return e.question = a.question, e.options = a.options, e.type = a.type, e;
     }
-  } ], wn = "data-aiask-line", isPageClaimedByNewLine = e => {
+  } ], qn = "data-aiask-line", isPageClaimedByNewLine = e => {
     var t;
-    return "new" === (null == (t = e.documentElement) ? void 0 : t.getAttribute(wn));
+    return "new" === (null == (t = e.documentElement) ? void 0 : t.getAttribute(qn));
   }, idText = e => ("string" == typeof e || "number" == typeof e && Number.isSafeInteger(e)) && /^[1-9]\d{0,15}$/.test(String(e)) ? String(e) : "", getUmuAttemptRoot = e => {
     const t = e.querySelectorAll(".card-quiz, .single-quiz");
     if (1 !== t.length) return null;
@@ -12112,24 +12139,24 @@
     return parseUmuSections(null == (t = null == (e = K.pageData) ? void 0 : e.data) ? void 0 : t.sectionArr, removeHtml);
   };
 
-  let bn = false, xn = true, kn = "";
+  let An = false, _n = true, Cn = "";
 
   const getPageKey = () => {
     var e, t, n, a;
     return `${location.href}|${null == (e = getUmuAttemptRoot(document)) ? void 0 : e.className}|${document.querySelectorAll(".question-section, .section-item").length}|${null == (a = null == (n = null == (t = K.pageData) ? void 0 : t.data) ? void 0 : n.sectionArr) ? void 0 : a.length}`;
-  }, qn = [ {
+  }, Tn = [ {
     type: "hook",
     name: "UMU \u9875\u9762\u5207\u6362",
     match: () => "https:" === location.protocol && "m.umu.cn" === location.hostname,
     main: () => {
-      if (bn) return;
-      bn = true, kn = getPageKey();
+      if (An) return;
+      An = true, Cn = getPageKey();
       let e = false, t = 14400;
       const n = setInterval((async () => {
         if (--t <= 0) return void clearInterval(n);
         const a = getPageKey();
-        if (isPageClaimedByNewLine(document)) kn = a; else if (xn && !e && a !== kn) {
-          e = true, kn = a;
+        if (isPageClaimedByNewLine(document)) Cn = a; else if (_n && !e && a !== Cn) {
+          e = true, Cn = a;
           try {
             getAskStore().pause(), await vuePageChange();
           } catch (i) {} finally {
@@ -12159,7 +12186,7 @@
       pageType: "umu"
     },
     init: async () => {
-      xn = false;
+      _n = false;
       try {
         await waitUntil((() => !!getUmuAttemptRoot(document)), {
           timeout: 1e4,
@@ -12168,7 +12195,7 @@
       } catch (e) {
         return false;
       } finally {
-        kn = getPageKey(), xn = true;
+        Cn = getPageKey(), _n = true;
       }
       return getQuestions().length > 0;
     },
@@ -12263,7 +12290,7 @@
       return "m.umu.cn" === t.hostname && "/session/quiz/result" === t.pathname;
     })(location.href),
     init: () => {
-      xn = false;
+      _n = false;
     },
     question: {
       html: ".section-item.show-result",
@@ -12294,7 +12321,7 @@
       } : null;
     },
     next: () => {
-      xn = true;
+      _n = true;
     }
   } ], isQuanshianPracticeUrl = e => {
     try {
@@ -12384,7 +12411,7 @@
       timeout: 3e3,
       timeoutMessage: "\u5168\u65f6\u5b89\u5207\u9898\u672a\u786e\u8ba4\uff0c\u62d2\u7edd\u56de\u586b"
     });
-  }, An = {
+  }, Sn = {
     judg: "\u5224\u65ad\u9898",
     sing: "\u5355\u9009\u9898"
   }, getQuanshianExam = e => {
@@ -12399,7 +12426,7 @@
     const a = n[0];
     return "string" != typeof (null == (t = a.examInfo) ? void 0 : t.historyId) || !a.examInfo.historyId || !Array.isArray(a.stmpList) || !a.mapVal || "object" != typeof a.mapVal || a.isFiling || a.isInner || a.isTimeOver || a.isStop || a.disabled || a.isPreview ? null : a;
   }, parseQuanshianExam = (e, t) => {
-    const n = e.stmpList.flatMap((e => e && "string" == typeof e.typeCode && An[e.typeCode] && Array.isArray(e.questions) ? e.questions.map((t => ({
+    const n = e.stmpList.flatMap((e => e && "string" == typeof e.typeCode && Sn[e.typeCode] && Array.isArray(e.questions) ? e.questions.map((t => ({
       raw: t,
       typeCode: e.typeCode
     }))) : [])), a = n.map((({raw: e}) => null == e ? void 0 : e.questionId)), i = Object.values(e.mapVal).map((e => null == e ? void 0 : e.key));
@@ -12410,7 +12437,7 @@
       const o = parseQuanshianQuestion({
         ...n,
         id: n.questionId,
-        typeName: An[r],
+        typeName: Sn[r],
         serialNumber: s.key
       }, t);
       return o ? [ o ] : [];
@@ -12476,22 +12503,22 @@
     return e ? parseQuanshianExam(e, removeHtml) : [];
   };
 
-  let _n = false;
+  let In = false;
 
-  const Cn = [ {
+  const En = [ {
     type: "hook",
     name: "\u5168\u65f6\u5b89\u7ec3\u4e60\u5207\u6362",
     match: () => "https:" === location.protocol && "new.oberyun.com" === location.hostname,
     main: () => {
-      if (_n) return;
-      _n = true;
+      if (In) return;
+      In = true;
       const key = () => {
         var e;
         return JSON.stringify([ location.pathname, null == (e = getGroup()) ? void 0 : e.component.list.map((e => null == e ? void 0 : e.id)), getExamQuestions().map((e => e.id)) ]);
       };
       let e = key(), t = false, n = 14400;
       const stop = () => {
-        clearInterval(a), _n = false;
+        clearInterval(a), In = false;
       }, a = setInterval((async () => {
         if (--n <= 0 || isPageClaimedByNewLine(document)) return void stop();
         const a = key();
@@ -12695,11 +12722,11 @@
         });
       }), shouldContinue), false;
     }
-  } ], Tn = ".exam-container .exam-main > .question-section > .question-item", Sn = ".el-radio__label, .el-checkbox__label", In = "https://ybu.edu-gp.com";
+  } ], Un = ".exam-container .exam-main > .question-section > .question-item", Pn = ".el-radio__label, .el-checkbox__label", Mn = "https://ybu.edu-gp.com";
 
   function exam(e) {
     var t, n;
-    if (location.origin !== In || "/examPaper" !== location.pathname) return null;
+    if (location.origin !== Mn || "/examPaper" !== location.pathname) return null;
     const a = document.querySelectorAll(".exam-container");
     if (1 !== a.length) return null;
     const i = a[0], r = i.querySelectorAll(".exam-title button.back-btn"), s = i.querySelectorAll(".exam-sidebar .submit-btn-wrapper button"), o = i.querySelector(".exam-sidebar .countdown-section");
@@ -12707,7 +12734,7 @@
   }
 
   function examReady(e) {
-    const t = exam(e), n = (null == t ? void 0 : t.querySelectorAll(Tn).length) ?? 0;
+    const t = exam(e), n = (null == t ? void 0 : t.querySelectorAll(Un).length) ?? 0;
     return n > 0 && n <= 200 && (!e || !!(null == t ? void 0 : t.querySelector(".answer-card .answer-num-btn.answered")));
   }
 
@@ -12722,7 +12749,7 @@
     if (!a || !i || 1 !== r.length || s.length < 2 || s.length > 26 || "3" === a && 2 !== s.length) return null;
     const o = [], l = [];
     for (const u of s) {
-      const e = u.control, r = u.querySelectorAll(Sn);
+      const e = u.control, r = u.querySelectorAll(Pn);
       if (!(e instanceof i.HTMLInputElement && u.contains(e) && 1 === u.querySelectorAll("input").length && 1 === r.length && e.type === ("1" === a ? "checkbox" : "radio") && e.matches(":disabled") === t)) return null;
       const s = (null == (n = removeHtml(r[0].innerHTML)) ? void 0 : n.trim()) ?? "";
       if (!s || "3" === a && ![ "\u5bf9", "\u9519" ].includes(s)) return null;
@@ -12740,24 +12767,24 @@
     } : null;
   }
 
-  const En = {
-    html: Tn,
+  const Ln = {
+    html: Un,
     question: ".question-text > span:not(.question-number)",
-    options: Sn,
+    options: Pn,
     type: ".section-header",
     workType: "exam",
     pageType: "ybu"
-  }, Un = [ {
+  }, $n = [ {
     type: "hook",
     name: "\u5ef6\u8fb9\u5927\u5b66\u8003\u8bd5\u9875\u9762\u8bc6\u522b",
-    match: () => location.origin === In,
+    match: () => location.origin === Mn,
     main: () => observeVuePageChange(document.querySelector("#app"), (() => `${location.pathname}:${examReady(false)}:${examReady(true)}`))
   }, {
     type: "ask",
     name: "\u5ef6\u8fb9\u5927\u5b66\u8003\u8bd5\u7b54\u9898",
     match: () => examReady(false),
     types: [ "0", "1", "3" ],
-    question: En,
+    question: Ln,
     questionHook: e => {
       var t;
       return (null == (t = exam(false)) ? void 0 : t.contains(e.html)) ? function(e, t) {
@@ -12816,12 +12843,12 @@
     type: "save",
     name: "\u5ef6\u8fb9\u5927\u5b66\u8003\u8bd5\u6536\u5f55",
     match: () => examReady(true),
-    question: En,
+    question: Ln,
     answerHook: function(e) {
       const t = exam(true), n = (null == t ? void 0 : t.contains(e.html)) ? readQuestion(e.html, true) : null;
       if (!t || !n || "1" === n.type) return null;
       const a = questionNumber(e.html);
-      if (!a || 1 !== Array.from(t.querySelectorAll(Tn)).filter((e => questionNumber(e) === a)).length) return null;
+      if (!a || 1 !== Array.from(t.querySelectorAll(Un)).filter((e => questionNumber(e) === a)).length) return null;
       const i = Array.from(t.querySelectorAll(".answer-card button.answer-num-btn")).filter((e => {
         var t;
         return (null == (t = e.textContent) ? void 0 : t.trim()) === a;
@@ -12836,57 +12863,57 @@
         answer: "3" === n.type ? judgeAnswer(s) : [ s ]
       };
     }
-  } ], Pn = Object.freeze(Object.defineProperty({
+  } ], Hn = Object.freeze(Object.defineProperty({
     __proto__: null,
-    a21tb: It,
-    ahjxjy: ct,
-    antai: pn,
-    bgzk: yn,
-    cfy: ln,
+    a21tb: Mt,
+    ahjxjy: ht,
+    antai: gn,
+    bgzk: kn,
+    cfy: dn,
     chaoxing: Ye,
     chengjiaoyun: at,
-    chutou: wt,
-    cjedu: dt,
-    cjnep: _t,
-    cloudwis: vt,
-    cnzx: ot,
-    cqsdx: Yt,
-    dufe: sn,
-    gkks: gt,
+    chutou: qt,
+    cjedu: ft,
+    cjnep: It,
+    cloudwis: xt,
+    cnzx: pt,
+    cqsdx: nn,
+    dufe: un,
+    gkks: wt,
     guokai: nt,
-    huayi: Tt,
-    jhjypt: un,
-    jijiaool: cn,
-    jijiaox: xt,
-    jsou: it,
-    learnin: Gt,
-    learnspace: Zt,
-    ls365: bt,
-    mooc: Vt,
-    mosoteach: Ft,
-    mynep: Ct,
-    olearn: tn,
-    openha: ft,
-    ouchn: Kt,
-    qingshu: ut,
-    quanshian: Cn,
-    sclecb: yt,
-    umu: qn,
-    uooc: pt,
-    wdjycj: an,
-    wencai: qt,
-    whut: rn,
-    wx168: Et,
+    huayi: Ut,
+    jhjypt: mn,
+    jijiaool: hn,
+    jijiaox: _t,
+    jsou: lt,
+    learnin: Qt,
+    learnspace: tn,
+    ls365: At,
+    mooc: Zt,
+    mosoteach: Vt,
+    mynep: Et,
+    olearn: sn,
+    openha: bt,
+    ouchn: Jt,
+    qingshu: mt,
+    quanshian: En,
+    sclecb: kt,
+    umu: Tn,
+    uooc: gt,
+    wdjycj: ln,
+    wencai: Tt,
+    whut: cn,
+    wx168: Lt,
     xinwei: et,
-    xueqi: mt,
-    ybuExam: Un,
-    ynou: St,
-    ytccr: ht,
+    xueqi: yt,
+    ybuExam: $n,
+    ynou: Pt,
+    ytccr: vt,
     yunmuxueyuan: Fe,
-    yxbyun: nn,
-    yxlearning: At,
+    yxbyun: on,
+    yxlearning: St,
     zhihuishu: Xe,
-    zhijiaoyun: st
+    zhijiaoyun: ut
   }, Symbol.toStringTag, {
     value: "Module"
   })), resolveRuleHtml = e => "function" == typeof e ? e() : e;
@@ -12902,9 +12929,9 @@
       workType: e.workType,
       pageType: e.pageType
     };
-  }, Ln = [];
+  }, On = [];
 
-  for (const zf in Pn) Ln.push(...Pn[zf]);
+  for (const Ff in Hn) On.push(...Hn[Ff]);
 
   const isRuleMatched = e => "function" == typeof e.match ? e.match() : Boolean(e.match), parseRule = async e => {
     if (isPageClaimedByNewLine(document)) return;
@@ -13011,7 +13038,7 @@
     if (K.vuePageChangeLock) return;
     K.vuePageChangeLock = true;
     const e = getAppStore(), t = getAskStore();
-    t.questionInx = 0, e.app.showFloat = false, e.setPage("ask"), t.clearQuestion(), await parseRule(Ln), 
+    t.questionInx = 0, e.app.showFloat = false, e.setPage("ask"), t.clearQuestion(), await parseRule(On), 
     K.vuePageChangeLock = false;
   }, observeVuePageChange = (e, t, n = {}) => {
     if (K.mainClass = t(), !e) return;
@@ -13036,7 +13063,7 @@
       if (e < t) return -1;
     }
     return 0;
-  }, compareVersions = (e, t) => compareVersionOrder(e, t) < 0, Mn = 864e5, formatDate = e => formatUpdateDate(e), $n = [ {
+  }, compareVersions = (e, t) => compareVersionOrder(e, t) < 0, jn = 864e5, formatDate = e => formatUpdateDate(e), zn = [ {
     id: "492563",
     name: "GreasyFork",
     home: "https://greasyfork.org/zh-CN/scripts/492563-%E7%88%B1%E9%97%AE%E7%AD%94%E5%8A%A9%E6%89%8B",
@@ -13076,10 +13103,10 @@
     const t = Cache.get("app", {});
     if (e && !t.checkUpdate) return;
     const n = Cache.get("lastCheckTime");
-    if (e && n && Date.now() - n < Mn) {
-      new Date(n + Mn).toLocaleString();
+    if (e && n && Date.now() - n < jn) {
+      new Date(n + jn).toLocaleString();
     } else try {
-      const t = await Promise.allSettled($n.map((async e => {
+      const t = await Promise.allSettled(zn.map((async e => {
         try {
           e.name, e.updateurl, addLog(`[${e.name}] \u5f00\u59cb\u68c0\u6d4b\u66f4\u65b0`, "info");
           const t = await request(e.updateurl, "GET", {}, {}), n = e.getdata(t);
@@ -13124,23 +13151,26 @@
     } catch (a) {
       console.error("\u66f4\u65b0\u68c0\u6d4b\u6d41\u7a0b\u5f02\u5e38", a), addLog(`\u66f4\u65b0\u68c0\u6d4b\u5931\u8d25: ${String(a)}`, "error"), e || msg("\u6240\u6709\u66f4\u65b0\u6e90\u5747\u68c0\u6d4b\u5931\u8d25\uff0c\u8bf7\u5c1d\u8bd5\u5207\u6362\u7f51\u7edc\u6216\u8005\u53cd\u9988\u7ed9\u4f5c\u8005", "error");
     }
-  }, ttfDownloadJson = async e => new Promise((t => {
-    G({
-      method: "GET",
-      url: e,
-      onload: function(e) {
-        try {
-          const n = e.responseText, a = JSON.parse(n);
-          t(a);
-        } catch (n) {
-          msg("\u5b57\u4f53\u6587\u4ef6\u4e0b\u8f7d\u5931\u8d25", "error"), t(null);
-        }
-      },
-      onerror: function(e) {
-        msg("\u5b57\u4f53\u6587\u4ef6\u4e0b\u8f7d\u5931\u8d25", "error"), t(null);
+  }, ttfDownloadJson = async (e, t, n) => {
+    for (const i of e) try {
+      const e = await new Promise(((e, t) => {
+        G({
+          method: "GET",
+          url: i,
+          timeout: 15e3,
+          onload: n => n.status >= 200 && n.status < 300 ? e(n.responseText) : t(new Error(`HTTP ${n.status}`)),
+          onerror: () => t(new Error("\u7f51\u7edc\u9519\u8bef")),
+          ontimeout: () => t(new Error("\u8bf7\u6c42\u8d85\u65f6")),
+          onabort: () => t(new Error("\u8bf7\u6c42\u4e2d\u6b62"))
+        });
+      })), a = JSON.parse(e);
+      if (a && "object" == typeof a && !Array.isArray(a)) {
+        const e = Object.entries(a).filter((([e]) => t.test(e)));
+        if (e.length && e.every((e => n(e[1])))) return Object.fromEntries(e);
       }
-    });
-  })), randomIndex = (e, t) => Math.floor(t() * e), defaultResolveOptions = e => {
+    } catch (a) {
+    }
+  }, randomIndex = (e, t) => Math.floor(t() * e), defaultResolveOptions = e => {
     const resolve = e => "function" == typeof (null == e ? void 0 : e.$options) ? {
       ...e,
       $options: e.$options()
@@ -13226,10 +13256,10 @@
     if ("8" !== e.type) return false;
     const a = questionMediaMarkup(e);
     return /<textarea\b/i.test(a) || /ueditor/i.test(a) || Boolean(null == (n = null == (t = e.html) ? void 0 : t.querySelector) ? void 0 : n.call(t, 'textarea, iframe[id^="ueditor_"], iframe[name^="ueditor_"]'));
-  }, Hn = /<\s*img\b[^>]*>/gi, On = /\bsrc\s*=\s*["']([^"']+)["']/i, alignQuestionImages = (e, t) => {
+  }, Dn = /<\s*img\b[^>]*>/gi, Nn = /\bsrc\s*=\s*["']([^"']+)["']/i, alignQuestionImages = (e, t) => {
     const n = t.parts || [], a = t.failures || [];
     if (!n.length && !a.length) return {
-      text: e.replace(Hn, ""),
+      text: e.replace(Dn, ""),
       parts: [],
       markers: new Map
     };
@@ -13237,9 +13267,9 @@
     n.forEach((e => {
       e.url && r.set(resolveImageSrc(e.url), e);
     }));
-    const s = [], o = new Map, l = e.replace(Hn, (e => {
+    const s = [], o = new Map, l = e.replace(Dn, (e => {
       var t;
-      const n = resolveImageSrc((null == (t = e.match(On)) ? void 0 : t[1]) || "");
+      const n = resolveImageSrc((null == (t = e.match(Nn)) ? void 0 : t[1]) || "");
       if (!n) return "";
       if (o.has(n)) return `[\u56fe${o.get(n)}]`;
       const a = r.get(n);
@@ -13309,9 +13339,9 @@
       return createFallbackResult(d, "\u9898\u9762\u4e0e\u56fe\u7247\u4f4d\u7f6e\u65e0\u6cd5\u5b8c\u6574\u5bf9\u5e94");
     }
     const y = h ? ((e, t) => {
-      if (Array.isArray(e) && e.every((e => "string" == typeof e))) return e.map((e => e.replace(Hn, (e => {
+      if (Array.isArray(e) && e.every((e => "string" == typeof e))) return e.map((e => e.replace(Dn, (e => {
         var n;
-        const a = resolveImageSrc((null == (n = e.match(On)) ? void 0 : n[1]) || ""), i = t.get(a);
+        const a = resolveImageSrc((null == (n = e.match(Nn)) ? void 0 : n[1]) || ""), i = t.get(a);
         return i ? `[\u56fe${i}]` : "";
       }))));
     })(i.options, v.markers) : void 0, w = ((e, t) => "8" === e && isTextAnswerUnknownQuestion(t) ? "4" : e)(a, i), b = ((e, t) => t.length ? [ {
@@ -13553,9 +13583,9 @@
     });
   };
 
-  let jn = 0;
+  let Rn = 0;
 
-  const createQuestionTaskId = (e, t, n, a) => `${e}:${t}:${n}:${a}`, createQuestionTask = ({kind: e, index: t, runToken: n, preview: a, now: i = Date.now, nextSeq: r = () => ++jn}) => {
+  const createQuestionTaskId = (e, t, n, a) => `${e}:${t}:${n}:${a}`, createQuestionTask = ({kind: e, index: t, runToken: n, preview: a, now: i = Date.now, nextSeq: r = () => ++Rn}) => {
     const s = r();
     return {
       id: createQuestionTaskId(e, t, n, s),
@@ -13656,10 +13686,10 @@
       const n = o instanceof Error ? o.message : "string" == typeof o ? o : "";
       return finishWithPhase(t, e, "failed", n ? `\u7b54\u9898\u5931\u8d25\uff1a${n}` : "\u7b54\u9898\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5");
     }
-  }, zn = [ "ask", "library", "settings" ], Dn = {
+  }, Fn = [ "ask", "library", "settings" ], Bn = {
     page: "ask",
     subPage: ""
-  }, Nn = {
+  }, Gn = {
     home: {
       page: "ask",
       subPage: ""
@@ -13696,32 +13726,32 @@
       page: "settings",
       subPage: "account"
     }
-  }, Rn = {
+  }, Kn = {
     settings: "",
     logs: "about",
     account: "account"
-  }, Fn = {
+  }, Vn = {
     display: "general",
     hotkey: "general",
     system: "general",
     data: "general",
     logs: "about"
-  }, Bn = new Set([ "manage", "preview", "tool" ]);
+  }, Wn = new Set([ "manage", "preview", "tool" ]);
 
   function resolveNextPage(e, t) {
-    return void 0 !== Nn[e] ? Nn[e] : "system" === e ? {
+    return void 0 !== Gn[e] ? Gn[e] : "system" === e ? {
       page: "settings",
-      subPage: Rn[t ?? ""] ?? ""
-    } : "settings" === e && void 0 !== Fn[t ?? ""] ? {
+      subPage: Kn[t ?? ""] ?? ""
+    } : "settings" === e && void 0 !== Vn[t ?? ""] ? {
       page: "settings",
-      subPage: Fn[t ?? ""]
-    } : "library" === e && Bn.has(t ?? "") ? {
+      subPage: Vn[t ?? ""]
+    } : "library" === e && Wn.has(t ?? "") ? {
       page: "library",
       subPage: ""
-    } : zn.includes(e) ? {
+    } : Fn.includes(e) ? {
       page: e,
       subPage: t ?? ""
-    } : Dn;
+    } : Bn;
   }
 
   function normalizeDialogWidth(e) {
@@ -13729,7 +13759,7 @@
     return Number.isFinite(t) ? Math.max(480, Math.min(1200, Math.round(t))) : 760;
   }
 
-  const Gn = {
+  const Qn = {
     debug: true,
     searchApi: [],
     defaultShowFloat: false,
@@ -13752,26 +13782,26 @@
     dialogWidth: 760
   };
 
-  const Kn = function() {
+  const Jn = function() {
     const e = Cache.get("app") || {}, t = {
-      ...Gn
+      ...Qn
     };
     for (const [n, a] of Object.entries(e)) "gpt" !== n && "alert" !== n && void 0 !== a && (t[n] = a);
     if (e.gpt) {
       const n = new Map;
       e.gpt.forEach((e => {
         n.set(e.name, e.key);
-      })), t.gpt = Gn.gpt.map((e => ({
+      })), t.gpt = Qn.gpt.map((e => ({
         ...e,
         key: n.get(e.name) || ""
       })));
     }
-    return t.alert = Gn.alert, t.gptIndex >= t.gpt.length && (t.gptIndex = 0), t.dialogWidth = normalizeDialogWidth(t.dialogWidth), 
+    return t.alert = Qn.alert, t.gptIndex >= t.gpt.length && (t.gptIndex = 0), t.dialogWidth = normalizeDialogWidth(t.dialogWidth), 
     t;
   }();
 
   function getApp() {
-    return Cache.get("app") || Gn;
+    return Cache.get("app") || Qn;
   }
 
   !function(e) {
@@ -13780,28 +13810,28 @@
       ...e
     };
     Cache.set("app", t);
-  }(Kn);
+  }(Jn);
 
-  const Vn = {
+  const Zn = {
     display: [ {
       type: "switch",
       label: "\u9ed8\u8ba4\u663e\u793a\u60ac\u6d6e",
       name: "defaultShowFloat",
-      value: Kn.defaultShowFloat,
+      value: Jn.defaultShowFloat,
       desc: "\u6253\u5f00\u9875\u9762\u65f6\u662f\u5426\u663e\u793a\u60ac\u6d6e\u7a97",
       options: []
     }, {
       type: "switch",
       label: "\u5f3a\u5236\u9690\u85cf",
       name: "hideFloat",
-      value: Kn.hideFloat,
+      value: Jn.hideFloat,
       desc: "\u4ec5\u70ed\u952e\u6216\u70b9\u51fb\u53f3\u4e0b\u89d2\u56fe\u7247\u624d\u663e\u793a\u60ac\u6d6e\u7a97",
       options: []
     }, {
       type: "switch",
       label: "\u6c14\u6ce1\u63d0\u793a",
       name: "alertBubble",
-      value: Kn.alertBubble,
+      value: Jn.alertBubble,
       desc: "\u53f3\u4e0b\u89d2\u6c14\u6ce1\u63d0\u793a\u662f\u5426\u5f00\u542f",
       options: []
     } ],
@@ -13809,14 +13839,14 @@
       type: "switch",
       label: "\u68c0\u6d4b\u66f4\u65b0",
       name: "checkUpdate",
-      value: Kn.checkUpdate,
+      value: Jn.checkUpdate,
       desc: "\u6253\u5f00\u9875\u9762\u65f6\u662f\u5426\u68c0\u6d4b\u66f4\u65b0",
       options: []
     }, {
       type: "switch",
       label: "iframe\u4f18\u5316(\u6d4b\u8bd5)",
       name: "iframe",
-      value: Kn.iframe,
+      value: Jn.iframe,
       desc: "\u9488\u5bf9\u6df1\u5ea6\u5d4c\u5957\u7f51\u9875\u7684\u4f18\u5316\uff0c\u9002\u5408\u5355\u4efb\u52a1\u9875\u4f7f\u7528\uff0c\u591a\u4efb\u52a1\u53ef\u80fd\u4f1a\u5bfc\u81f4\u5f39\u7a97\u8fc7\u591a\u3002\n \u6ce8\u610f\uff1a\u8be5\u529f\u80fd\u4e3a\u6d4b\u8bd5\u529f\u80fd\uff0c\u53ef\u80fd\u5b58\u5728\u672a\u77e5\u95ee\u9898\uff0c\u8bf7\u8c28\u614e\u4f7f\u7528",
       options: []
     } ],
@@ -13825,26 +13855,26 @@
       type: "switch",
       label: "\u542f\u7528\u5feb\u6377\u952e",
       name: "hotkeyEnabled",
-      value: Kn.hotkeyEnabled,
+      value: Jn.hotkeyEnabled,
       desc: "\u662f\u5426\u542f\u7528\u5feb\u6377\u952e\u663e\u9690\u60ac\u6d6e\u7a97",
       options: []
     }, {
       type: "hotkey",
       label: "\u5feb\u6377\u952e\u8bbe\u7f6e",
       name: "hotkey",
-      value: Kn.hotkey,
+      value: Jn.hotkey,
       desc: "\u70b9\u51fb\u8f93\u5165\u6846\u540e\u6309\u4e0b\u60f3\u8981\u8bbe\u7f6e\u7684\u5feb\u6377\u952e\u7ec4\u5408\uff08\u652f\u6301Ctrl\u3001Shift\u3001Alt\u7ec4\u5408\u952e\uff09",
       options: []
     } ]
-  }, Qn = pinia.defineStore("app", {
+  }, Yn = pinia.defineStore("app", {
     state: () => {
-      const e = resolveNextPage(Kn.page, Kn.subPage);
+      const e = resolveNextPage(Jn.page, Jn.subPage);
       return {
-        app: Kn,
+        app: Jn,
         script: Re.script,
         page: e.page,
         subPage: e.subPage,
-        ConfigInput: Vn,
+        ConfigInput: Zn,
         searchOpen: false,
         logs: [ {
           time: (new Date).toLocaleString(),
@@ -13898,15 +13928,15 @@
     };
   }
 
-  const Wn = Cache.get("user", {}), Jn = pinia.defineStore("user", {
+  const Xn = Cache.get("user", {}), ea = pinia.defineStore("user", {
     state: () => ({
-      user: Wn.user || null,
+      user: Xn.user || null,
       notice: "",
       noticeLoaded: false,
       noticeFetchedAt: 0,
-      apiKey: Wn.api_key || "",
-      isLoggedIn: !!Wn.user,
-      loginTime: Wn.login_time || 0
+      apiKey: Xn.api_key || "",
+      isLoggedIn: !!Xn.user,
+      loginTime: Xn.login_time || 0
     }),
     getters: {
       username: e => {
@@ -14082,15 +14112,15 @@
         this.isLoggedIn = true);
       }
     }
-  }), Zn = {
+  }), ta = {
     get: e => Cache.get(e),
     set: (e, t) => Cache.set(e, t)
   };
 
-  const Yn = new WeakMap, operationMap = e => {
-    let t = Yn.get(e);
-    return t || (t = new Map, Yn.set(e, t)), t;
-  }, Xn = "ai_gateway_credential", ea = new WeakMap, imageContext = e => JSON.stringify({
+  const na = new WeakMap, operationMap = e => {
+    let t = na.get(e);
+    return t || (t = new Map, na.set(e, t)), t;
+  }, aa = "ai_gateway_credential", ia = new WeakMap, imageContext = e => JSON.stringify({
     connection: e.settings.connection || "cloud",
     gateway: e.settings.gateway,
     gatewayKey: e.gatewayCredential(),
@@ -14102,21 +14132,21 @@
     transport: e.settings.transport
   }), imageState = e => {
     const t = imageContext(e);
-    let n = ea.get(e);
+    let n = ia.get(e);
     return n || (n = {
       context: t,
       proofs: new ImageVerification,
       sequences: new Map,
       nextSequence: 0
-    }, ea.set(e, n)), n.context !== t && (n.context = t, n.proofs.clear(), n.sequences.clear(), 
+    }, ia.set(e, n)), n.context !== t && (n.context = t, n.proofs.clear(), n.sequences.clear(), 
     e.imageChecks = {}), n;
-  }, ta = pinia.defineStore("ai", {
+  }, ra = pinia.defineStore("ai", {
     state: () => ({
       imageChecks: {},
       gatewayKeyVersion: 0,
       aiMsg: "",
       aiLoading: false,
-      settings: loadAiSettingsFrom(Zn, _e, getApp),
+      settings: loadAiSettingsFrom(ta, _e, getApp),
       catalog: {
         seq: 0,
         fetchedAt: 0,
@@ -14184,11 +14214,11 @@
       gatewayCredential(e) {
         var t;
         e ?? (e = (null == (t = this.settings.gateway) ? void 0 : t.baseUrl) || ue);
-        const n = Cache.get(Xn);
+        const n = Cache.get(aa);
         return normalizeGatewayUrl(e) && (null == n ? void 0 : n.baseUrl) === normalizeGatewayUrl(e) && "string" == typeof n.value ? n.value : "";
       },
       removeGatewayCredential() {
-        this.cancelOperations(), Cache.remove(Xn), this.gatewayKeyVersion++, imageState(this), 
+        this.cancelOperations(), Cache.remove(aa), this.gatewayKeyVersion++, imageState(this), 
         delete this.connectionMessages["local-gateway"];
       },
       saveGateway(e, t) {
@@ -14203,10 +14233,10 @@
           baseUrl: n,
           model: i.model,
           providerKind: i.providerKind
-        }, a ? Cache.set(Xn, {
+        }, a ? Cache.set(aa, {
           baseUrl: n,
           value: a
-        }) : Cache.remove(Xn), this.gatewayKeyVersion++, this.saveSettings(), delete this.connectionMessages["local-gateway"];
+        }) : Cache.remove(aa), this.gatewayKeyVersion++, this.saveSettings(), delete this.connectionMessages["local-gateway"];
       },
       async loadGatewayModels(e, t = "") {
         const n = createGatewayConfig({
@@ -14268,7 +14298,7 @@
         this.aiMsg = "", this.aiLoading = false;
       },
       saveSettings() {
-        this.cancelOperations(), this.settings = saveAiSettingsTo(Zn, this.settings), imageState(this);
+        this.cancelOperations(), this.settings = saveAiSettingsTo(ta, this.settings), imageState(this);
       },
       saveCustomChannel(e, t) {
         this.cancelOperations();
@@ -14307,7 +14337,7 @@
             defaultChannelId: e.defaultChannelId || n
           };
         }(this.settings, t, e);
-        this.settings = saveAiSettingsTo(Zn, n), imageState(this), delete this.connectionMessages[e], 
+        this.settings = saveAiSettingsTo(ta, n), imageState(this), delete this.connectionMessages[e], 
         delete this.connectionRequestTokens[e], delete this.connectionTestingIds[e];
       },
       async loadCatalog() {
@@ -14345,14 +14375,14 @@
       },
       isImageVerified(e) {
         var t;
-        const n = ea.get(this);
+        const n = ia.get(this);
         return "passed" === (null == (t = this.imageChecks[e.config.id]) ? void 0 : t.status) && !!n && n.context === imageContext(this) && n.proofs.passed({
           config: e.config,
           route: this.routeContextFor(e)
         });
       },
       imageStatus(e) {
-        const t = this.selectTargetById(e), n = this.imageChecks[e], a = ea.get(this);
+        const t = this.selectTargetById(e), n = this.imageChecks[e], a = ia.get(this);
         return a && a.context === imageContext(this) ? "passed" !== (null == n ? void 0 : n.status) || t && this.isImageVerified(t) ? n || {
           status: "untested",
           message: "\u672c\u9875\u5c1a\u672a\u5b8c\u6210\u56fe\u7247\u6d4b\u8bd5"
@@ -14438,7 +14468,7 @@
       routeContextFor(e) {
         if (!e.config.local) return {
           channel: e.channel,
-          apiKey: Jn().apiKey || "",
+          apiKey: ea().apiKey || "",
           transport: this.settings.transport,
           modelId: e.instance.modelId
         };
@@ -14528,7 +14558,7 @@
         }));
       }));
     }();
-  }, na = new WeakMap, aa = new WeakMap, ia = pinia.defineStore("ask", {
+  }, sa = new WeakMap, oa = new WeakMap, la = pinia.defineStore("ask", {
     state: () => ({
       questionList: [],
       questionInx: 0,
@@ -14564,9 +14594,9 @@
     }),
     actions: {
       beginRun(e) {
-        const n = na.get(vue.toRaw(this));
+        const n = sa.get(vue.toRaw(this));
         null == n || n.controller.abort();
-        const a = ta();
+        const a = ra();
         a.releaseCancellation("answer-run"), a.cancelOperation("answer");
         const i = createNextRunToken(this), capture = e => {
           const t = a.selectTarget("ask", e);
@@ -14575,7 +14605,7 @@
             route: a.routeContextFor(t)
           })) : void 0;
         };
-        return na.set(vue.toRaw(this), {
+        return sa.set(vue.toRaw(this), {
           token: i,
           scope: e,
           controller: new AbortController,
@@ -14604,7 +14634,7 @@
         });
       },
       clearQuestion() {
-        this.pause(), na.delete(vue.toRaw(this)), this.resumePending = false, this.aiPreview = null, 
+        this.pause(), sa.delete(vue.toRaw(this)), this.resumePending = false, this.aiPreview = null, 
         this.aiProgress = null, this.questionList = [];
       },
       getQuestion() {
@@ -14664,8 +14694,8 @@
             var e, i, r;
             const s = this.beginRun("auto");
             a = s;
-            const o = null == (e = na.get(vue.toRaw(this))) ? void 0 : e.completed;
-            for (let a = (null == (i = na.get(vue.toRaw(this))) ? void 0 : i.startIndex) ?? this.questionInx; a < this.questionList.length && this.start; a++) {
+            const o = null == (e = sa.get(vue.toRaw(this))) ? void 0 : e.completed;
+            for (let a = (null == (i = sa.get(vue.toRaw(this))) ? void 0 : i.startIndex) ?? this.questionInx; a < this.questionList.length && this.start; a++) {
               const e = null == o ? void 0 : o.get(a);
               if (e && e.question === this.questionList[a] && e.identity === questionIdentity(this.questionList[a])) continue;
               if (this.skipFinish && 1 === this.questionList[a].status) continue;
@@ -14695,7 +14725,7 @@
           if (this.restartPending && "noop" !== i) return this.restartPending = !1, this.loadingRunToken === a && (this.loading = !1), 
           void (await this.toggleStart());
           if ("start" !== i) return;
-          isRunTokenCurrent(this, a) && !(null == (e = na.get(vue.toRaw(this))) ? void 0 : e.controller.signal.aborted) && this.finishRun(n);
+          isRunTokenCurrent(this, a) && !(null == (e = sa.get(vue.toRaw(this))) ? void 0 : e.controller.signal.aborted) && this.finishRun(n);
         } catch (i) {
           n.app.alert = "\u7b54\u9898\u4e2d\u65ad\uff0c\u8bf7\u91cd\u8bd5";
         } finally {
@@ -14706,7 +14736,7 @@
       },
       finishRun(e = getAppStore()) {
         var t;
-        ta().releaseCancellation("answer-run"), this.resumePending = false, "running" === (null == (t = this.aiProgress) ? void 0 : t.phase) && (this.aiProgress.phase = "done", 
+        ra().releaseCancellation("answer-run"), this.resumePending = false, "running" === (null == (t = this.aiProgress) ? void 0 : t.phase) && (this.aiProgress.phase = "done", 
         this.aiProgress.endedAt = Date.now()), this.autoNext && this.rule.finish && this.rule.finish({
           question: this.questionList
         }), this.formMap = {}, this.questionList.forEach((t => {
@@ -14731,11 +14761,11 @@
       },
       publishQuestionTaskPreview(e, t) {
         const n = this.questionList[e];
-        t && n ? (aa.set(this, {
+        t && n ? (oa.set(this, {
           question: n,
           html: n.html,
           identity: questionIdentity(n)
-        }), this.aiProgress && (this.aiProgress.phase = "preview")) : aa.delete(this), this.aiPreview = t ? {
+        }), this.aiProgress && (this.aiProgress.phase = "preview")) : oa.delete(this), this.aiPreview = t ? {
           index: e,
           answer: t.answer,
           rawText: t.rawText,
@@ -14746,7 +14776,7 @@
       },
       createQuestionRunnerDeps(e) {
         getAppStore();
-        const n = na.get(vue.toRaw(this)), isCurrent = () => isRunTokenCurrent(this, e) && (null == n ? void 0 : n.token) === e && !n.controller.signal.aborted;
+        const n = sa.get(vue.toRaw(this)), isCurrent = () => isRunTokenCurrent(this, e) && (null == n ? void 0 : n.token) === e && !n.controller.signal.aborted;
         return {
           getQuestion: e => this.questionList[e],
           isCurrentRun: t => t === e && isCurrent(),
@@ -14897,7 +14927,7 @@
       async fetchAIAnswer(e, n, a) {
         var i;
         a ?? (a = this.runToken);
-        const r = ta(), s = na.get(vue.toRaw(this));
+        const r = ra(), s = sa.get(vue.toRaw(this));
         if (!s || s.token !== a || s.controller.signal.aborted || "off" === s.usage) throw new Error("AI \u5df2\u5173\u95ed\u6216\u8bf7\u6c42\u5df2\u53d6\u6d88");
         const o = questionIdentity(n), l = n.html;
         n.aiQuality = {
@@ -14968,10 +14998,10 @@
       async confirmAiPreview() {
         var e;
         if (!this.aiPreview || this.loading || this.lock) return;
-        const n = this.aiPreview, a = this.questionList[n.index], i = aa.get(this);
+        const n = this.aiPreview, a = this.questionList[n.index], i = oa.get(this);
         if (!a || !i || i.question !== a || i.html !== a.html || i.identity !== questionIdentity(a)) return void (this.aiPreview = null);
         const r = this.beginRun("manual");
-        na.get(vue.toRaw(this)).attempted.add(n.index), this.aiProgress && (this.aiProgress.token = r, 
+        sa.get(vue.toRaw(this)).attempted.add(n.index), this.aiProgress && (this.aiProgress.token = r, 
         this.aiProgress.phase = "running");
         const s = createQuestionTask({
           kind: "confirm-ai-preview",
@@ -15005,7 +15035,7 @@
       },
       async prepareAiImageAnswer(e, n) {
         var a, i;
-        const r = na.get(vue.toRaw(this)), s = this.questionList[e];
+        const r = sa.get(vue.toRaw(this)), s = this.questionList[e];
         if (r && r.token === n && s) {
           this.loading = true, this.loadingRunToken = n, this.aiLoadingIndex = e, this.loadingText = "\u6b63\u5728\u51c6\u5907\u9898\u5e72\u4e0e\u9009\u9879\u56fe\u7247\uff0c\u786e\u8ba4\u524d\u4e0d\u8c03\u7528\u7b54\u9898\u6a21\u578b";
           try {
@@ -15020,7 +15050,7 @@
               phase: "running"
             }, !r.image) throw new Error("\u8bf7\u5148\u5728 AI \u8bbe\u7f6e\u4e2d\u5b8c\u6210\u5f53\u524d\u6a21\u578b\u7684\u771f\u5b9e\u56fe\u7247\u6d4b\u8bd5");
             r.deadline = Date.now() + 3e5, this.setQuestionPhase(e, "preparing");
-            const t = Date.now(), o = await ta().runOperation("answer", (e => prepareImageQuestion(s, {
+            const t = Date.now(), o = await ra().runOperation("answer", (e => prepareImageQuestion(s, {
               signal: e
             })), Math.min(r.image.config.timeout, 6e4), r.controller.signal);
             if (!isRunTokenCurrent(this, n) || r.controller.signal.aborted || this.questionList[e] !== s || !validPreparedImages(s, o)) return;
@@ -15041,13 +15071,13 @@
             this.setQuestionPhase(e, "failed", void 0, t), this.aiProgress && (this.aiProgress.phase = "done", 
             this.aiProgress.endedAt = Date.now());
           } finally {
-            this.loadingRunToken === n && (this.loading = false, this.aiLoadingIndex = -1, this.aiImagePreview || ta().releaseCancellation("answer-run"), 
+            this.loadingRunToken === n && (this.loading = false, this.aiLoadingIndex = -1, this.aiImagePreview || ra().releaseCancellation("answer-run"), 
             this.finishLoading(n));
           }
         }
       },
       async confirmAiImageAnswer() {
-        const e = this.aiImagePreview, n = na.get(vue.toRaw(this));
+        const e = this.aiImagePreview, n = sa.get(vue.toRaw(this));
         if (!e || !n || this.loading || this.lock) return;
         const a = this.questionList[e.index];
         isRunTokenCurrent(this, e.token) && !n.controller.signal.aborted && this.questionInx === e.index && n.imageQuestion === a && n.prepared && validPreparedImages(a, n.prepared) ? (this.aiImagePreview = null, 
@@ -15055,7 +15085,7 @@
       },
       async aiAnswer(e) {
         if (this.fillInProgress) return;
-        if ("off" === ta().usage) return void (this.loadingText = "AI \u5df2\u5173\u95ed\uff0c\u8bf7\u5728 AI \u8bbe\u7f6e\u4e2d\u9009\u62e9\u4ec5\u624b\u52a8\u6216\u81ea\u52a8\u8865\u7b54");
+        if ("off" === ra().usage) return void (this.loadingText = "AI \u5df2\u5173\u95ed\uff0c\u8bf7\u5728 AI \u8bbe\u7f6e\u4e2d\u9009\u62e9\u4ec5\u624b\u52a8\u6216\u81ea\u52a8\u8865\u7b54");
         const t = this.beginRun("manual"), n = this.questionList[e];
         return n && hasQuestionImages(n) ? this.prepareAiImageAnswer(e, t) : this.executeAiAnswer(e, t);
       },
@@ -15071,32 +15101,32 @@
           this.aiLoadingIndex = e, c.aiMsg = "";
           try {
             const s = await runQuestionTask(l, this.createQuestionRunnerDeps(n));
-            if (!isRunTokenCurrent(this, n) || (null == (a = na.get(vue.toRaw(this))) ? void 0 : a.controller.signal.aborted) || "cancelled" === s.phase) return;
+            if (!isRunTokenCurrent(this, n) || (null == (a = sa.get(vue.toRaw(this))) ? void 0 : a.controller.signal.aborted) || "cancelled" === s.phase) return;
             if ("preview" === s.phase && (null == (i = this.aiPreview) ? void 0 : i.index) === e) return void (c.aiMsg = this.aiPreview.rawText || s.reason || "");
             if (s.reason) c.aiMsg = createManualAiDisplayMessage(!1, "", s.reason); else if (null == (r = c.answer) ? void 0 : r.length) {
               const e = c.answer[c.answer.length - 1], t = (null == e ? void 0 : e.rawText) || (Array.isArray(null == e ? void 0 : e.answer) ? e.answer.join("\u3001") : "");
               c.aiMsg = createManualAiDisplayMessage("done" === s.phase, t, "AI \u672a\u91c7\u7eb3\u8be5\u7b54\u6848");
             }
           } catch {
-            if (!isRunTokenCurrent(this, n) || (null == (s = na.get(vue.toRaw(this))) ? void 0 : s.controller.signal.aborted)) return;
+            if (!isRunTokenCurrent(this, n) || (null == (s = sa.get(vue.toRaw(this))) ? void 0 : s.controller.signal.aborted)) return;
             const a = "AI \u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u68c0\u67e5 AI \u8bbe\u7f6e\u4e2d\u7684\u8fde\u63a5\u3001\u6a21\u578b\u548c\u5bc6\u94a5";
             c.aiMsg = a, this.aiFailureMap[e] = a, this.setQuestionPhase(e, "failed", l, a);
           } finally {
             this.loadingRunToken === n && (this.loading = false, this.aiLoadingIndex = -1, (null == (o = this.aiProgress) ? void 0 : o.token) === n && "running" === this.aiProgress.phase && (this.aiProgress.phase = "done", 
-            this.aiProgress.endedAt = Date.now()), this.aiPreview || this.aiImagePreview || ta().releaseCancellation("answer-run"), 
+            this.aiProgress.endedAt = Date.now()), this.aiPreview || this.aiImagePreview || ra().releaseCancellation("answer-run"), 
             this.finishLoading(n));
           }
         }
       },
       pause() {
         this.restartPending = false;
-        const e = na.get(vue.toRaw(this));
-        this.aiPreview = null, this.aiImagePreview = null, aa.delete(this), e && (e.prepared = void 0, 
+        const e = sa.get(vue.toRaw(this));
+        this.aiPreview = null, this.aiImagePreview = null, oa.delete(this), e && (e.prepared = void 0, 
         e.preparedMs = void 0, e.imageQuestion = void 0), this.resumePending = "auto" === (null == e ? void 0 : e.scope), 
         null == e || e.controller.abort();
         const n = this.aiLoadingIndex >= 0 ? this.aiLoadingIndex : this.questionInx, a = this.questionList[n];
         e && a && [ "preparing", "searching", "matched", "published", "rendering", "filling", "preview" ].includes(a.phase || "") && this.setQuestionPhase(n, "cancelled"), 
-        ta().releaseCancellation("answer-run"), ta().cancelOperation("answer"), !this.aiProgress || "running" !== this.aiProgress.phase && "preview" !== this.aiProgress.phase || (this.aiProgress.phase = "stopped", 
+        ra().releaseCancellation("answer-run"), ra().cancelOperation("answer"), !this.aiProgress || "running" !== this.aiProgress.phase && "preview" !== this.aiProgress.phase || (this.aiProgress.phase = "stopped", 
         this.aiProgress.endedAt = Date.now()), this.start = false, createNextRunToken(this);
       },
       finishLoading(e) {
@@ -15104,7 +15134,7 @@
         this.toggleStart()));
       },
       restart() {
-        this.pause(), na.delete(vue.toRaw(this)), this.resumePending = false;
+        this.pause(), sa.delete(vue.toRaw(this)), this.resumePending = false;
         const e = {
           questionInx: 0,
           start: false
@@ -15353,45 +15383,45 @@
     }
   }
 
-  const ra = {
+  const ca = {
     class: "aah-card ai-explanation",
     "aria-label": "\u672c\u9898 AI \u8bb2\u89e3"
-  }, sa = {
+  }, ua = {
     class: "explanation-toolbar"
-  }, oa = vue.createElementVNode("strong", null, "\u672c\u9898\u8bb2\u89e3", -1), la = [ "disabled" ], ca = vue.createElementVNode("p", null, "\u4ec5\u4f9b\u5b66\u4e60\u6838\u5bf9\uff0c\u4e0d\u5199\u5377\u9762\u6216\u7b54\u6848\u7f13\u5b58\u3001\u4e0d\u8ba1\u5165\u7b54\u9898\u547d\u4e2d\u4e0e\u63d0\u4ea4\u7edf\u8ba1\uff0c\u4e5f\u4e0d\u6263\u7231\u95ee\u7b54\u79ef\u5206\u3002\u9898\u76ee\u53ef\u80fd\u7531\u7f51\u5173\u6216\u6240\u9009\u6e20\u9053\u8f6c\u53d1\u5230\u4e91\u7aef\uff0c\u670d\u52a1\u5546\u8d39\u7528\u7531\u6240\u9009\u670d\u52a1\u7ed3\u7b97\uff1b\u505c\u6b62\u6216\u8d85\u65f6\u4ecd\u53ef\u80fd\u8ba1\u8d39\u3002", -1), ua = vue.createElementVNode("p", null, "\u4ec5\u672c\u9875\u4fdd\u7559\u6700\u8fd1 5 \u8f6e\uff0c\u53d1\u9001\u6700\u8fd1\u81f3\u591a 4 \u8f6e\uff1b\u5207\u9898\u3001\u6362\u914d\u7f6e\u6216\u79bb\u5f00\u7b54\u9898\u9875\u5373\u6e05\u7a7a\u3002\u53c2\u8003\u7b54\u6848\u672a\u7ecf\u8ba4\u8bc1\u3002\u672c\u8f6e\u672a\u8054\u7f51\u3002", -1), pa = vue.createElementVNode("strong", null, "\u4f60\u7684\u95ee\u9898", -1), da = {
+  }, pa = vue.createElementVNode("strong", null, "\u672c\u9898\u8bb2\u89e3", -1), da = [ "disabled" ], ha = vue.createElementVNode("p", null, "\u4ec5\u4f9b\u5b66\u4e60\u6838\u5bf9\uff0c\u4e0d\u5199\u5377\u9762\u6216\u7b54\u6848\u7f13\u5b58\u3001\u4e0d\u8ba1\u5165\u7b54\u9898\u547d\u4e2d\u4e0e\u63d0\u4ea4\u7edf\u8ba1\uff0c\u4e5f\u4e0d\u6263\u7231\u95ee\u7b54\u79ef\u5206\u3002\u9898\u76ee\u53ef\u80fd\u7531\u7f51\u5173\u6216\u6240\u9009\u6e20\u9053\u8f6c\u53d1\u5230\u4e91\u7aef\uff0c\u670d\u52a1\u5546\u8d39\u7528\u7531\u6240\u9009\u670d\u52a1\u7ed3\u7b97\uff1b\u505c\u6b62\u6216\u8d85\u65f6\u4ecd\u53ef\u80fd\u8ba1\u8d39\u3002", -1), ma = vue.createElementVNode("p", null, "\u4ec5\u672c\u9875\u4fdd\u7559\u6700\u8fd1 5 \u8f6e\uff0c\u53d1\u9001\u6700\u8fd1\u81f3\u591a 4 \u8f6e\uff1b\u5207\u9898\u3001\u6362\u914d\u7f6e\u6216\u79bb\u5f00\u7b54\u9898\u9875\u5373\u6e05\u7a7a\u3002\u53c2\u8003\u7b54\u6848\u672a\u7ecf\u8ba4\u8bc1\u3002\u672c\u8f6e\u672a\u8054\u7f51\u3002", -1), ga = vue.createElementVNode("strong", null, "\u4f60\u7684\u95ee\u9898", -1), fa = {
     class: "explanation-text"
-  }, ha = vue.createElementVNode("strong", null, "AI \u8bb2\u89e3 \xb7 \u5f85\u6838\u5bf9", -1), ma = {
+  }, va = vue.createElementVNode("strong", null, "AI \u8bb2\u89e3 \xb7 \u5f85\u6838\u5bf9", -1), ya = {
     class: "explanation-text",
     "aria-label": "AI \u8bb2\u89e3\u5185\u5bb9"
-  }, ga = {
+  }, wa = {
     key: 0
-  }, fa = {
+  }, ba = {
     key: 0,
     role: "status"
-  }, va = {
+  }, xa = {
     key: 1,
     role: "status"
-  }, ya = {
+  }, ka = {
     key: 2,
     role: "status"
-  }, wa = {
+  }, qa = {
     key: 3,
     class: "explanation-pair",
     "aria-label": "\u8bb2\u89e3\u53d1\u9001\u9884\u89c8"
-  }, ba = vue.createElementVNode("strong", null, "\u786e\u8ba4\u53d1\u9001\u672c\u9898\u8bb2\u89e3", -1), xa = {
+  }, Aa = vue.createElementVNode("strong", null, "\u786e\u8ba4\u53d1\u9001\u672c\u9898\u8bb2\u89e3", -1), _a = {
     class: "explanation-text"
-  }, ka = {
+  }, Ca = {
     class: "explanation-text"
-  }, qa = vue.createElementVNode("summary", null, "\u67e5\u770b\u53d1\u9001\u9898\u9762", -1), Aa = {
+  }, Ta = vue.createElementVNode("summary", null, "\u67e5\u770b\u53d1\u9001\u9898\u9762", -1), Sa = {
     class: "explanation-text"
-  }, _a = [ "src", "alt" ], Ca = {
+  }, Ia = [ "src", "alt" ], Ea = {
     class: "explanation-toolbar"
-  }, Ta = [ "disabled" ], Sa = [ "disabled" ], Ia = {
+  }, Ua = [ "disabled" ], Pa = [ "disabled" ], Ma = {
     class: "explanation-toolbar"
-  }, Ea = [ "disabled" ], Ua = [ "disabled" ], Pa = "\u8bb2\u89e3\u8fd9\u9053\u9898\u7684\u601d\u8def\u3001\u6b65\u9aa4\u548c\u6613\u9519\u70b9\u3002", La = vue.defineComponent({
+  }, La = [ "disabled" ], $a = [ "disabled" ], Ha = "\u8bb2\u89e3\u8fd9\u9053\u9898\u7684\u601d\u8def\u3001\u6b65\u9aa4\u548c\u6613\u9519\u70b9\u3002", Oa = vue.defineComponent({
     __name: "AiExplanation",
     setup(e) {
-      const t = ia(), n = ta(), a = Qn(), w = vue.ref(false), b = vue.ref(Pa), x = vue.computed((() => t.start || t.loading || !!t.aiImagePreview || !!t.aiPreview)), capture = e => {
+      const t = la(), n = ra(), a = Yn(), w = vue.ref(false), b = vue.ref(Ha), x = vue.computed((() => t.start || t.loading || !!t.aiImagePreview || !!t.aiPreview)), capture = e => {
         const t = n.selectTarget("ask", e ? "image" : "text");
         return t ? {
           config: t.config,
@@ -15405,7 +15435,7 @@
         }
       }), q = vue.shallowRef(k.snapshot()), A = vue.computed((() => !!capture(false)));
       function clear() {
-        k.clear(), b.value = Pa;
+        k.clear(), b.value = Ha;
       }
       vue.watch((() => {
         try {
@@ -15437,38 +15467,38 @@
         _(), k.clear();
       }));
       const C = vue.computed((() => [ "preparing", "waiting" ].includes(q.value.phase)));
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("section", ra, [ vue.createElementVNode("div", sa, [ oa, A.value ? (vue.openBlock(), vue.createElementBlock("button", {
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("section", ca, [ vue.createElementVNode("div", ua, [ pa, A.value ? (vue.openBlock(), vue.createElementBlock("button", {
         key: 1,
         class: "aah-btn aah-btn-small",
         disabled: x.value,
         onClick: t[1] || (t[1] = e => w.value ? (clear(), w.value = false) : preview())
-      }, vue.toDisplayString(w.value ? "\u5173\u95ed\u8bb2\u89e3" : "AI \u8bb2\u89e3"), 9, la)) : (vue.openBlock(), 
+      }, vue.toDisplayString(w.value ? "\u5173\u95ed\u8bb2\u89e3" : "AI \u8bb2\u89e3"), 9, da)) : (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn aah-btn-small",
         onClick: t[0] || (t[0] = e => vue.unref(a).setPage("settings", "ai"))
       }, "\u914d\u7f6e\u8bb2\u89e3\u6a21\u578b")) ]), w.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ ca, ua, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(q.value.pairs, ((e, t) => (vue.openBlock(), vue.createElementBlock("article", {
+      }, [ ha, ma, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(q.value.pairs, ((e, t) => (vue.openBlock(), vue.createElementBlock("article", {
         key: t,
         class: "explanation-pair"
-      }, [ pa, vue.createElementVNode("div", da, vue.toDisplayString(e.user), 1), ha, vue.createElementVNode("div", ma, vue.toDisplayString(e.assistant), 1), e.truncated ? (vue.openBlock(), 
-      vue.createElementBlock("p", ga, "\u672c\u6b21\u5185\u5bb9\u8fbe\u5230\u957f\u5ea6\u4e0a\u9650\uff0c\u53ef\u80fd\u4e0d\u5b8c\u6574\uff1b\u53ef\u8ffd\u95ee\u5177\u4f53\u6b65\u9aa4\u3002")) : vue.createCommentVNode("", true) ])))), 128)), "preparing" === q.value.phase ? (vue.openBlock(), 
-      vue.createElementBlock("p", fa, "\u6b63\u5728\u51c6\u5907\u5b8c\u6574\u9898\u9762\u4e0e\u56fe\u7247\uff0c\u5c1a\u672a\u8c03\u7528\u8bb2\u89e3\u6a21\u578b\u3002")) : vue.createCommentVNode("", true), "waiting" === q.value.phase ? (vue.openBlock(), 
-      vue.createElementBlock("p", va, "\u6b63\u5728\u7b49\u5f85 " + vue.toDisplayString(q.value.label) + "\uff1b\u51c6\u5907\u4e0e\u6a21\u578b\u5171\u7528\u5355\u6b21\u6700\u591a 60 \u79d2\u9884\u7b97\u3002", 1)) : vue.createCommentVNode("", true), q.value.message ? (vue.openBlock(), 
-      vue.createElementBlock("p", ya, vue.toDisplayString(q.value.message), 1)) : vue.createCommentVNode("", true), "preview" === q.value.phase ? (vue.openBlock(), 
-      vue.createElementBlock("div", wa, [ ba, vue.createElementVNode("p", null, vue.toDisplayString(q.value.label) + " \xb7 \u5c06\u53d1\u9001\u672c\u9898\u9898\u9762\u3001\u5b8c\u6574\u9009\u9879\u3001\u53c2\u8003\u7b54\u6848\u53ca\u6700\u8fd1\u5bf9\u8bdd\uff0c\u53ef\u80fd\u4ea7\u751f\u6a21\u578b\u8d39\u7528\u3002\u9884\u89c8\u6700\u591a\u4fdd\u7559\u4e94\u5206\u949f\u3002", 1), vue.createElementVNode("div", xa, "\u8ffd\u95ee\uff1a" + vue.toDisplayString(q.value.question), 1), vue.createElementVNode("div", ka, "\u53c2\u8003\u7b54\u6848\uff08\u672a\u8ba4\u8bc1\uff09\uff1a" + vue.toDisplayString(q.value.reference || "\u65e0"), 1), vue.createElementVNode("details", null, [ qa, vue.createElementVNode("div", Aa, vue.toDisplayString(q.value.context), 1) ]), (vue.openBlock(true), 
+      }, [ ga, vue.createElementVNode("div", fa, vue.toDisplayString(e.user), 1), va, vue.createElementVNode("div", ya, vue.toDisplayString(e.assistant), 1), e.truncated ? (vue.openBlock(), 
+      vue.createElementBlock("p", wa, "\u672c\u6b21\u5185\u5bb9\u8fbe\u5230\u957f\u5ea6\u4e0a\u9650\uff0c\u53ef\u80fd\u4e0d\u5b8c\u6574\uff1b\u53ef\u8ffd\u95ee\u5177\u4f53\u6b65\u9aa4\u3002")) : vue.createCommentVNode("", true) ])))), 128)), "preparing" === q.value.phase ? (vue.openBlock(), 
+      vue.createElementBlock("p", ba, "\u6b63\u5728\u51c6\u5907\u5b8c\u6574\u9898\u9762\u4e0e\u56fe\u7247\uff0c\u5c1a\u672a\u8c03\u7528\u8bb2\u89e3\u6a21\u578b\u3002")) : vue.createCommentVNode("", true), "waiting" === q.value.phase ? (vue.openBlock(), 
+      vue.createElementBlock("p", xa, "\u6b63\u5728\u7b49\u5f85 " + vue.toDisplayString(q.value.label) + "\uff1b\u51c6\u5907\u4e0e\u6a21\u578b\u5171\u7528\u5355\u6b21\u6700\u591a 60 \u79d2\u9884\u7b97\u3002", 1)) : vue.createCommentVNode("", true), q.value.message ? (vue.openBlock(), 
+      vue.createElementBlock("p", ka, vue.toDisplayString(q.value.message), 1)) : vue.createCommentVNode("", true), "preview" === q.value.phase ? (vue.openBlock(), 
+      vue.createElementBlock("div", qa, [ Aa, vue.createElementVNode("p", null, vue.toDisplayString(q.value.label) + " \xb7 \u5c06\u53d1\u9001\u672c\u9898\u9898\u9762\u3001\u5b8c\u6574\u9009\u9879\u3001\u53c2\u8003\u7b54\u6848\u53ca\u6700\u8fd1\u5bf9\u8bdd\uff0c\u53ef\u80fd\u4ea7\u751f\u6a21\u578b\u8d39\u7528\u3002\u9884\u89c8\u6700\u591a\u4fdd\u7559\u4e94\u5206\u949f\u3002", 1), vue.createElementVNode("div", _a, "\u8ffd\u95ee\uff1a" + vue.toDisplayString(q.value.question), 1), vue.createElementVNode("div", Ca, "\u53c2\u8003\u7b54\u6848\uff08\u672a\u8ba4\u8bc1\uff09\uff1a" + vue.toDisplayString(q.value.reference || "\u65e0"), 1), vue.createElementVNode("details", null, [ Ta, vue.createElementVNode("div", Sa, vue.toDisplayString(q.value.context), 1) ]), (vue.openBlock(true), 
       vue.createElementBlock(vue.Fragment, null, vue.renderList(q.value.images, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
         key: t,
         class: "explanation-image"
       }, [ vue.createElementVNode("span", null, vue.toDisplayString(e.label), 1), vue.createElementVNode("img", {
         src: e.src,
         alt: e.label
-      }, null, 8, _a) ])))), 128)), vue.createElementVNode("div", Ca, [ vue.createElementVNode("button", {
+      }, null, 8, Ia) ])))), 128)), vue.createElementVNode("div", Ea, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary aah-btn-small",
         disabled: x.value,
         onClick: confirm
-      }, "\u786e\u8ba4\u53d1\u9001\u8bb2\u89e3", 8, Ta), vue.createElementVNode("button", {
+      }, "\u786e\u8ba4\u53d1\u9001\u8bb2\u89e3", 8, Ua), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         onClick: t[2] || (t[2] = e => vue.unref(k).cancel())
       }, "\u53d6\u6d88\u8bb2\u89e3\u9884\u89c8") ]) ])) : vue.createCommentVNode("", true), C.value || "preview" === q.value.phase ? vue.createCommentVNode("", true) : (vue.openBlock(), 
@@ -15482,17 +15512,17 @@
         "aria-label": "\u672c\u9898\u8ffd\u95ee",
         placeholder: "\u56f4\u7ed5\u672c\u9898\u7ee7\u7eed\u8ffd\u95ee",
         disabled: x.value
-      }, null, 8, Sa), [ [ vue.vModelText, b.value ] ]), vue.createElementVNode("div", Ia, [ vue.createElementVNode("button", {
+      }, null, 8, Pa), [ [ vue.vModelText, b.value ] ]), vue.createElementVNode("div", Ma, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         disabled: x.value || !b.value.trim(),
         onClick: t[4] || (t[4] = e => preview())
-      }, vue.toDisplayString(q.value.pairs.length ? "\u9884\u89c8\u8ffd\u95ee" : "\u9884\u89c8\u8bb2\u89e3"), 9, Ea), q.value.pairs.length ? (vue.openBlock(), 
+      }, vue.toDisplayString(q.value.pairs.length ? "\u9884\u89c8\u8ffd\u95ee" : "\u9884\u89c8\u8bb2\u89e3"), 9, La), q.value.pairs.length ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn aah-btn-small",
         disabled: x.value,
         onClick: t[5] || (t[5] = e => preview("\u6362\u4e00\u79cd\u8bb2\u6cd5\uff0c\u5e76\u4e3e\u4e00\u4e2a\u76f8\u5173\u4f8b\u5b50\u3002"))
-      }, "\u6362\u4e00\u79cd\u8bb2\u6cd5", 8, Ua)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+      }, "\u6362\u4e00\u79cd\u8bb2\u6cd5", 8, $a)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         onClick: clear
       }, "\u6e05\u7a7a\u5bf9\u8bdd") ]) ], 64)), C.value ? (vue.openBlock(), vue.createElementBlock("button", {
@@ -15506,7 +15536,7 @@
         onClick: clear
       }, "\u6e05\u7a7a\u5bf9\u8bdd")) : vue.createCommentVNode("", true) ], 64)) : vue.createCommentVNode("", true) ]));
     }
-  }), Ma = new Set([ "preparing", "searching", "matched", "published", "rendering", "filling" ]), $a = {
+  }), ja = new Set([ "preparing", "searching", "matched", "published", "rendering", "filling" ]), za = {
     todo: "\u672a\u7b54",
     run: "\u67e5\u627e\u4e2d",
     done: "\u5df2\u7b54",
@@ -15525,13 +15555,13 @@
     return t;
   }
 
-  const Ha = "\u672c\u5730\u7f13\u5b58", isAiForm = (e = "") => /AI/i.test(e), hasAnswer = e => {
+  const Da = "\u672c\u5730\u7f13\u5b58", isAiForm = (e = "") => /AI/i.test(e), hasAnswer = e => {
     if (e.needLogin) return false;
     const t = e.answer;
     return Array.isArray(t) ? t.length > 0 : t && "object" == typeof t ? Object.keys(t).length > 0 : "string" == typeof t ? t.trim().length > 0 : !!t;
   };
 
-  const Oa = [ "width", "height", "aria-label" ], ja = {
+  const Na = [ "width", "height", "aria-label" ], Ra = {
     key: 0,
     cx: "7",
     cy: "7",
@@ -15540,7 +15570,7 @@
     stroke: "currentColor",
     "stroke-width": "1.5",
     "stroke-dasharray": "2.2 1.8"
-  }, za = vue.createElementVNode("circle", {
+  }, Fa = vue.createElementVNode("circle", {
     cx: "7",
     cy: "7",
     r: "5.5",
@@ -15548,48 +15578,48 @@
     stroke: "currentColor",
     "stroke-opacity": "0.25",
     "stroke-width": "1.5"
-  }, null, -1), Da = vue.createElementVNode("path", {
+  }, null, -1), Ba = vue.createElementVNode("path", {
     class: "status-glyph-arc",
     d: "M7 1.5a5.5 5.5 0 0 1 5.5 5.5",
     fill: "none",
     stroke: "currentColor",
     "stroke-width": "1.5",
     "stroke-linecap": "round"
-  }, null, -1), Na = vue.createElementVNode("circle", {
+  }, null, -1), Ga = vue.createElementVNode("circle", {
     cx: "7",
     cy: "7",
     r: "6.25",
     fill: "currentColor"
-  }, null, -1), Ra = vue.createElementVNode("path", {
+  }, null, -1), Ka = vue.createElementVNode("path", {
     d: "M4.4 7.2l1.8 1.8 3.5-3.7",
     fill: "none",
     stroke: "var(--c-bg-surface)",
     "stroke-width": "1.5",
     "stroke-linecap": "round",
     "stroke-linejoin": "round"
-  }, null, -1), Fa = vue.createElementVNode("circle", {
+  }, null, -1), Va = vue.createElementVNode("circle", {
     cx: "7",
     cy: "7",
     r: "5.5",
     fill: "none",
     stroke: "currentColor",
     "stroke-width": "1.5"
-  }, null, -1), Ba = vue.createElementVNode("path", {
+  }, null, -1), Wa = vue.createElementVNode("path", {
     d: "M5 5l4 4M9 5l-4 4",
     stroke: "currentColor",
     "stroke-width": "1.5",
     "stroke-linecap": "round"
-  }, null, -1), Ga = vue.createElementVNode("circle", {
+  }, null, -1), Qa = vue.createElementVNode("circle", {
     cx: "7",
     cy: "7",
     r: "5.5",
     fill: "none",
     stroke: "currentColor",
     "stroke-width": "1.5"
-  }, null, -1), Ka = vue.createElementVNode("path", {
+  }, null, -1), Ja = vue.createElementVNode("path", {
     d: "M7 3.25a3.75 3.75 0 0 0 0 7.5z",
     fill: "currentColor"
-  }, null, -1), Va = vue.defineComponent({
+  }, null, -1), Za = vue.defineComponent({
     __name: "StatusGlyph",
     props: {
       mark: {},
@@ -15603,23 +15633,23 @@
       height: e.size,
       viewBox: "0 0 14 14",
       role: "img",
-      "aria-label": vue.unref($a)[e.mark]
-    }, [ "todo" === e.mark ? (vue.openBlock(), vue.createElementBlock("circle", ja)) : "run" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+      "aria-label": vue.unref(za)[e.mark]
+    }, [ "todo" === e.mark ? (vue.openBlock(), vue.createElementBlock("circle", Ra)) : "run" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 1
-    }, [ za, Da ], 64)) : "done" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ Fa, Ba ], 64)) : "done" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 2
-    }, [ Na, Ra ], 64)) : "none" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ Ga, Ka ], 64)) : "none" === e.mark ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 3
-    }, [ Fa, Ba ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+    }, [ Va, Wa ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
       key: 4
-    }, [ Ga, Ka ], 64)) ], 10, Oa))
+    }, [ Qa, Ja ], 64)) ], 10, Na))
   });
 
   function useAskOverview() {
-    const e = ia();
+    const e = la();
     return vue.computed((() => {
       const t = e.aiPreview ? e.aiPreview.index : -1, n = e.questionList.map(((e, n) => function(e, t = false) {
-        return t || "preview" === e.phase ? "wait" : e.phase && Ma.has(e.phase) ? "run" : "done" === e.phase || 1 === e.status ? "done" : "no-answer" === e.phase || "failed" === e.phase || 2 === e.status ? "none" : "todo";
+        return t || "preview" === e.phase ? "wait" : e.phase && ja.has(e.phase) ? "run" : "done" === e.phase || 1 === e.status ? "done" : "no-answer" === e.phase || "failed" === e.phase || 2 === e.status ? "none" : "todo";
       }(e, n === t)));
       return {
         marks: n,
@@ -15630,168 +15660,168 @@
     }));
   }
 
-  const Qa = [ "data-index", "aria-current", "onClick" ], Wa = {
+  const Ya = [ "data-index", "aria-current", "onClick" ], Xa = {
     class: "ask-row-num num"
-  }, Ja = {
+  }, ei = {
     class: "ask-row-stem"
-  }, Za = {
+  }, ti = {
     class: "ask-row-src"
-  }, Ya = {
+  }, ni = {
     class: "ask-strip",
     open: ""
-  }, Xa = vue.createElementVNode("span", null, "\u9898\u53f7", -1), ei = {
+  }, ai = vue.createElementVNode("span", null, "\u9898\u53f7", -1), ii = {
     class: "ask-strip-meta num"
-  }, ti = {
+  }, ri = {
     class: "ask-cells"
-  }, ni = [ "aria-label", "onClick" ], ai = {
+  }, si = [ "aria-label", "onClick" ], oi = {
     class: "ask-detail scroll",
     "aria-live": "polite"
-  }, ii = {
+  }, li = {
     key: 0,
     class: "aah-card",
     "aria-label": "AI \u4efb\u52a1\u8fdb\u5ea6"
-  }, ri = vue.createElementVNode("p", null, "\u505c\u6b62\u4fdd\u7559\u5df2\u6709\u56de\u586b\uff1b\u4fdd\u5b58\u7ed3\u679c\u8bf7\u5728\u5e73\u53f0\u6838\u5bf9\u3002\u6a21\u578b\u8c03\u7528\u4e0d\u81ea\u52a8\u91cd\u8bd5\uff0c\u505c\u6b62\u6216\u8d85\u65f6\u4ecd\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002", -1), si = {
+  }, ci = vue.createElementVNode("p", null, "\u505c\u6b62\u4fdd\u7559\u5df2\u6709\u56de\u586b\uff1b\u4fdd\u5b58\u7ed3\u679c\u8bf7\u5728\u5e73\u53f0\u6838\u5bf9\u3002\u6a21\u578b\u8c03\u7528\u4e0d\u81ea\u52a8\u91cd\u8bd5\uff0c\u505c\u6b62\u6216\u8d85\u65f6\u4ecd\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002", -1), ui = {
     key: 1,
     class: "aah-card",
     "aria-label": "\u672c\u9898 AI \u8d28\u91cf\u9636\u6bb5"
-  }, oi = vue.createElementVNode("strong", null, "\u672c\u6b21 AI \u7ed3\u679c", -1), li = {
+  }, pi = vue.createElementVNode("strong", null, "\u672c\u6b21 AI \u7ed3\u679c", -1), di = {
     key: 2,
     class: "aah-alert aah-alert-info"
-  }, ci = {
+  }, hi = {
     class: "ask-detail-head"
-  }, ui = {
+  }, mi = {
     class: "ask-detail-num num"
-  }, pi = {
+  }, gi = {
     class: "aah-tag"
-  }, di = {
+  }, fi = {
     class: "ask-detail-actions"
-  }, hi = [ "disabled" ], mi = [ "disabled" ], gi = [ "innerHTML" ], fi = [ "innerHTML" ], vi = {
+  }, vi = [ "disabled" ], yi = [ "disabled" ], wi = [ "innerHTML" ], bi = [ "innerHTML" ], xi = {
     class: "ask-option-key"
-  }, yi = [ "innerHTML" ], wi = [ "innerHTML" ], bi = {
+  }, ki = [ "innerHTML" ], qi = [ "innerHTML" ], Ai = {
     class: "ask-option-key"
-  }, xi = [ "innerHTML" ], ki = {
+  }, _i = [ "innerHTML" ], Ci = {
     key: 0,
     class: "ask-match-table"
-  }, qi = [ "innerHTML" ], Ai = {
+  }, Ti = [ "innerHTML" ], Si = {
     class: "aah-select"
-  }, _i = [ "value" ], Ci = {
+  }, Ii = [ "value" ], Ei = {
     key: 5,
     class: "aah-alert aah-alert-danger"
-  }, Ti = {
+  }, Ui = {
     key: 6,
     class: "ask-preview",
     "aria-label": "\u56fe\u7247\u53d1\u9001\u9884\u89c8"
-  }, Si = vue.createElementVNode("div", {
+  }, Pi = vue.createElementVNode("div", {
     class: "ask-preview-head"
-  }, [ vue.createElementVNode("strong", null, "\u6838\u5bf9\u5b8c\u6574\u56fe\u7247\u540e\u518d\u53d1\u9001 AI") ], -1), Ii = [ "src", "alt" ], Ei = {
+  }, [ vue.createElementVNode("strong", null, "\u6838\u5bf9\u5b8c\u6574\u56fe\u7247\u540e\u518d\u53d1\u9001 AI") ], -1), Mi = [ "src", "alt" ], Li = {
     class: "ask-preview-actions"
-  }, Ui = [ "disabled" ], Pi = {
+  }, $i = [ "disabled" ], Hi = {
     key: 7,
     class: "ask-preview"
-  }, Li = {
+  }, Oi = {
     class: "ask-preview-head"
-  }, Mi = vue.createElementVNode("strong", null, "AI \u5efa\u8bae", -1), $i = {
+  }, ji = vue.createElementVNode("strong", null, "AI \u5efa\u8bae", -1), zi = {
     class: "ask-preview-reason"
-  }, Hi = vue.createElementVNode("p", {
+  }, Di = vue.createElementVNode("p", {
     class: "ask-preview-note"
-  }, "AI \u7ed3\u679c\u4ec5\u4f9b\u53c2\u8003\uff0c\u786e\u8ba4\u540e\u624d\u4f1a\u586b\u5165\u9875\u9762\u3002", -1), Oi = {
+  }, "AI \u7ed3\u679c\u4ec5\u4f9b\u53c2\u8003\uff0c\u786e\u8ba4\u540e\u624d\u4f1a\u586b\u5165\u9875\u9762\u3002", -1), Ni = {
     class: "ask-preview-actions"
-  }, ji = {
+  }, Ri = {
     key: 8,
     class: "aah-alert aah-alert-warning"
-  }, zi = {
+  }, Fi = {
     class: "ask-sources"
-  }, Di = vue.createElementVNode("h3", {
+  }, Bi = vue.createElementVNode("h3", {
     class: "aah-section-title"
-  }, "\u7b54\u6848\u6765\u6e90", -1), Ni = {
+  }, "\u7b54\u6848\u6765\u6e90", -1), Gi = {
     class: "ask-chain",
     "aria-label": "\u67e5\u627e\u94fe"
-  }, Ri = vue.createElementVNode("span", {
+  }, Ki = vue.createElementVNode("span", {
     class: "ask-chain-dot",
     "aria-hidden": "true"
-  }, null, -1), Fi = {
+  }, null, -1), Vi = {
     class: "ask-chain-label"
-  }, Bi = {
+  }, Wi = {
     class: "ask-chain-state"
-  }, Gi = {
-    key: 0,
-    class: "ask-source-empty ask-chain-hint"
-  }, Ki = {
-    key: 1,
-    class: "ask-source-table"
-  }, Vi = {
-    class: "ask-source-name"
   }, Qi = {
     key: 0,
+    class: "ask-source-empty ask-chain-hint"
+  }, Ji = {
+    key: 1,
+    class: "ask-source-table"
+  }, Zi = {
+    class: "ask-source-name"
+  }, Yi = {
+    key: 0,
     class: "aah-tag aah-tag-primary"
-  }, Wi = {
+  }, Xi = {
     class: "ask-source-answer"
-  }, Ji = [ "innerHTML" ], Zi = [ "innerHTML" ], Yi = [ "innerHTML" ], Xi = [ "innerHTML" ], er = {
+  }, er = [ "innerHTML" ], tr = [ "innerHTML" ], nr = [ "innerHTML" ], ar = [ "innerHTML" ], ir = {
     class: "ask-source-time num"
-  }, tr = {
+  }, rr = {
     key: 2,
     class: "ask-source-empty"
-  }, nr = {
+  }, sr = {
     key: 9,
     class: "ask-ai"
-  }, ar = {
+  }, or = {
     class: "aah-section-title"
-  }, ir = {
+  }, lr = {
     key: 0,
     class: "ask-ai-streaming"
-  }, rr = [ "innerHTML" ], sr = {
+  }, cr = [ "innerHTML" ], ur = {
     key: 1,
     class: "ask-source-empty"
-  }, or = {
+  }, pr = {
     key: 1,
     class: "ask-empty"
-  }, lr = vue.createElementVNode("h2", null, "\u5f53\u524d\u9875\u9762\u672a\u8bc6\u522b\u5230\u9898\u76ee", -1), cr = vue.createElementVNode("p", null, "\u6253\u5f00\u4f5c\u4e1a\u3001\u8003\u8bd5\u6216\u7ae0\u8282\u6d4b\u9a8c\u9875\u9762\u540e\u4f1a\u81ea\u52a8\u8bc6\u522b\u5e76\u5f00\u59cb\u67e5\u627e\u7b54\u6848\u3002", -1), ur = vue.createElementVNode("li", null, "\u786e\u8ba4\u5f53\u524d\u7f51\u7ad9\u5728\u652f\u6301\u7684\u5e73\u53f0\u5217\u8868\u91cc", -1), pr = vue.createElementVNode("li", null, "\u9898\u76ee\u5728 iframe \u91cc\u65f6\uff0c\u7b49\u9875\u9762\u5b8c\u5168\u52a0\u8f7d\u540e\u518d\u6253\u5f00\u9762\u677f", -1), dr = vue.createElementVNode("li", null, "\u8bc6\u522b\u4e0d\u5230\u53ef\u4ee5\u5148\u7528\u300c\u641c\u9898\u300d\uff0c\u5e76\u628a\u9875\u9762\u5730\u5740\u53cd\u9988\u7ed9\u4f5c\u8005", -1), hr = {
+  }, dr = vue.createElementVNode("h2", null, "\u5f53\u524d\u9875\u9762\u672a\u8bc6\u522b\u5230\u9898\u76ee", -1), hr = vue.createElementVNode("p", null, "\u6253\u5f00\u4f5c\u4e1a\u3001\u8003\u8bd5\u6216\u7ae0\u8282\u6d4b\u9a8c\u9875\u9762\u540e\u4f1a\u81ea\u52a8\u8bc6\u522b\u5e76\u5f00\u59cb\u67e5\u627e\u7b54\u6848\u3002", -1), mr = vue.createElementVNode("li", null, "\u786e\u8ba4\u5f53\u524d\u7f51\u7ad9\u5728\u652f\u6301\u7684\u5e73\u53f0\u5217\u8868\u91cc", -1), gr = vue.createElementVNode("li", null, "\u9898\u76ee\u5728 iframe \u91cc\u65f6\uff0c\u7b49\u9875\u9762\u5b8c\u5168\u52a0\u8f7d\u540e\u518d\u6253\u5f00\u9762\u677f", -1), fr = vue.createElementVNode("li", null, "\u8bc6\u522b\u4e0d\u5230\u53ef\u4ee5\u5148\u7528\u300c\u641c\u9898\u300d\uff0c\u5e76\u628a\u9875\u9762\u5730\u5740\u53cd\u9988\u7ed9\u4f5c\u8005", -1), vr = {
     class: "ask-empty-actions"
-  }, mr = [ "innerHTML" ], gr = {
+  }, yr = [ "innerHTML" ], wr = {
     key: 2,
     class: "area-foot"
-  }, fr = {
+  }, br = {
     class: "ask-tally num"
-  }, vr = {
+  }, xr = {
     class: "is-done",
     title: "\u5df2\u7b54"
-  }, yr = vue.createElementVNode("i", null, "\u5df2\u7b54", -1), wr = {
+  }, kr = vue.createElementVNode("i", null, "\u5df2\u7b54", -1), qr = {
     class: "is-none",
     title: "\u65e0\u7b54\u6848"
-  }, br = vue.createElementVNode("i", null, "\u65e0\u7b54\u6848", -1), xr = {
+  }, Ar = vue.createElementVNode("i", null, "\u65e0\u7b54\u6848", -1), _r = {
     key: 0,
     class: "is-wait",
     title: "AI \u5f85\u786e\u8ba4"
-  }, kr = vue.createElementVNode("i", null, "\u5f85\u786e\u8ba4", -1), qr = {
+  }, Cr = vue.createElementVNode("i", null, "\u5f85\u786e\u8ba4", -1), Tr = {
     class: "is-todo",
     title: "\u672a\u7b54"
-  }, Ar = vue.createElementVNode("i", null, "\u672a\u7b54", -1), _r = vue.createElementVNode("span", {
+  }, Sr = vue.createElementVNode("i", null, "\u672a\u7b54", -1), Ir = vue.createElementVNode("span", {
     class: "area-foot-spacer"
-  }, null, -1), Cr = {
+  }, null, -1), Er = {
     class: "area-foot-pop"
-  }, Tr = [ "aria-expanded" ], Sr = {
+  }, Ur = [ "aria-expanded" ], Pr = {
     key: 0,
     class: "ask-tips aah-menu scroll",
     role: "note"
-  }, Ir = [ "innerHTML" ], Er = {
+  }, Mr = [ "innerHTML" ], Lr = {
     key: 0,
     class: "ask-tips-forms"
-  }, Ur = vue.createElementVNode("summary", null, "\u652f\u6301\u7684\u9898\u578b", -1), Pr = [ "innerHTML" ], Lr = vue.defineComponent({
+  }, $r = vue.createElementVNode("summary", null, "\u652f\u6301\u7684\u9898\u578b", -1), Hr = [ "innerHTML" ], Or = vue.defineComponent({
     __name: "Ask",
     setup(e) {
-      const t = ia(), a = Qn(), s = ta(), l = useAskOverview(), v = vue.ref(null), y = vue.ref(false), q = vue.computed((() => t.questionList.map((e => (e => {
+      const t = la(), a = Yn(), s = ra(), l = useAskOverview(), v = vue.ref(null), y = vue.ref(false), q = vue.computed((() => t.questionList.map((e => (e => {
         const t = document.createElement("div");
         return t.innerHTML = e ?? "", (t.textContent || "").replace(/\s+/g, " ").trim();
       })(e.question))))), sourceLabel = (e, n) => {
         var a, i;
-        return "done" === n ? (null == (i = null == (a = t.questionList[e]) ? void 0 : a.form) ? void 0 : i.form) || "\u5df2\u4f5c\u7b54" : "todo" === n ? "" : $a[n];
+        return "done" === n ? (null == (i = null == (a = t.questionList[e]) ? void 0 : a.form) ? void 0 : i.form) || "\u5df2\u4f5c\u7b54" : "todo" === n ? "" : za[n];
       }, A = vue.computed((() => l.value.marks[t.questionInx] ?? "todo")), _ = vue.computed((() => t.aiLoadingIndex === t.questionInx)), C = vue.computed((() => Boolean(t.current && (t.current.aiMsg || _.value)))), T = vue.computed((() => !!t.aiPreview && t.aiPreview.index === t.questionInx)), S = vue.computed((() => !(!t.current || "8" != t.current.type && t.current.type))), I = vue.computed((() => t.current ? typeConvert(t.current.type ?? "", false) : "")), E = vue.computed((() => {
         var e, n;
         return (null == (n = null == (e = t.current) ? void 0 : e.form) ? void 0 : n.form) ?? "";
       })), U = vue.computed((() => {
         var e;
         return function(e) {
-          const t = e.answers.filter((e => e.form === Ha)), n = e.answers.filter((e => isAiForm(e.form))), a = e.answers.filter((e => e.form !== Ha && !isAiForm(e.form))), settled = e => e.length ? e.some(hasAnswer) ? "hit" : "miss" : null, i = [ {
+          const t = e.answers.filter((e => e.form === Da)), n = e.answers.filter((e => isAiForm(e.form))), a = e.answers.filter((e => e.form !== Da && !isAiForm(e.form))), settled = e => e.length ? e.some(hasAnswer) ? "hit" : "miss" : null, i = [ {
             key: "cache",
             label: "\u672c\u5730\u7f13\u5b58",
             state: settled(t) ?? "pending"
@@ -15826,7 +15856,7 @@
         miss: "\u672a\u547d\u4e2d",
         wait: "\u5f85\u786e\u8ba4",
         off: "\u4e0d\u67e5"
-      }, L = vue.computed((() => "off" === U.value[2].state && U.value.every((e => "hit" !== e.state)) ? "AI \u672a\u5f00\u542f\uff1a\u53ef\u5728 \u8bbe\u7f6e \u2192 \u7b54\u9898 \u4e2d\u542f\u7528\uff0c\u7ed3\u679c\u9700\u8981\u4f60\u786e\u8ba4\u540e\u624d\u586b\u5165" : "")), $ = vue.computed((() => {
+      }, M = vue.computed((() => "off" === U.value[2].state && U.value.every((e => "hit" !== e.state)) ? "AI \u672a\u5f00\u542f\uff1a\u53ef\u5728 \u8bbe\u7f6e \u2192 \u7b54\u9898 \u4e2d\u542f\u7528\uff0c\u7ed3\u679c\u9700\u8981\u4f60\u786e\u8ba4\u540e\u624d\u586b\u5165" : "")), $ = vue.computed((() => {
         var e, n;
         const a = null == (n = null == (e = t.current) ? void 0 : e.form) ? void 0 : n.match;
         return Array.isArray(a) ? a : [];
@@ -15857,76 +15887,76 @@
           } ] ]),
           "aria-current": n === vue.unref(t).questionInx ? "true" : void 0,
           onClick: e => vue.unref(t).toQuestion(n)
-        }, [ vue.createElementVNode("span", Wa, vue.toDisplayString(pad(n + 1)), 1), vue.createVNode(Va, {
+        }, [ vue.createElementVNode("span", Xa, vue.toDisplayString(pad(n + 1)), 1), vue.createVNode(Za, {
           mark: vue.unref(l).marks[n]
-        }, null, 8, [ "mark" ]), vue.createElementVNode("span", Ja, vue.toDisplayString(q.value[n] || "\uff08\u65e0\u9898\u5e72\uff09"), 1), vue.createElementVNode("span", Za, vue.toDisplayString(sourceLabel(n, vue.unref(l).marks[n])), 1) ], 10, Qa)))), 128)) ], 512), vue.createElementVNode("details", Ya, [ vue.createElementVNode("summary", null, [ Xa, vue.createElementVNode("span", ei, "\u7b2c " + vue.toDisplayString(vue.unref(t).questionInx + 1) + " / " + vue.toDisplayString(vue.unref(t).questionList.length) + " \u9898", 1) ]), vue.createElementVNode("div", ti, [ (vue.openBlock(true), 
+        }, null, 8, [ "mark" ]), vue.createElementVNode("span", ei, vue.toDisplayString(q.value[n] || "\uff08\u65e0\u9898\u5e72\uff09"), 1), vue.createElementVNode("span", ti, vue.toDisplayString(sourceLabel(n, vue.unref(l).marks[n])), 1) ], 10, Ya)))), 128)) ], 512), vue.createElementVNode("details", ni, [ vue.createElementVNode("summary", null, [ ai, vue.createElementVNode("span", ii, "\u7b2c " + vue.toDisplayString(vue.unref(t).questionInx + 1) + " / " + vue.toDisplayString(vue.unref(t).questionList.length) + " \u9898", 1) ]), vue.createElementVNode("div", ri, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).questionList, ((e, n) => (vue.openBlock(), vue.createElementBlock("button", {
           key: n,
           type: "button",
           class: vue.normalizeClass([ "ask-cell num", [ `is-${vue.unref(l).marks[n]}`, {
             "is-current": n === vue.unref(t).questionInx
           } ] ]),
-          "aria-label": `\u7b2c ${n + 1} \u9898\uff0c${vue.unref($a)[vue.unref(l).marks[n]]}`,
+          "aria-label": `\u7b2c ${n + 1} \u9898\uff0c${vue.unref(za)[vue.unref(l).marks[n]]}`,
           onClick: e => vue.unref(t).toQuestion(n)
-        }, [ vue.createVNode(Va, {
+        }, [ vue.createVNode(Za, {
           mark: vue.unref(l).marks[n],
           size: 11
-        }, null, 8, [ "mark" ]), vue.createTextVNode(vue.toDisplayString(n + 1), 1) ], 10, ni)))), 128)) ]) ]), vue.createElementVNode("section", ai, [ vue.unref(t).aiProgress ? (vue.openBlock(), 
-        vue.createElementBlock("div", ii, [ vue.createElementVNode("strong", null, vue.toDisplayString("running" === vue.unref(t).aiProgress.phase ? "AI \u4efb\u52a1\u8fdb\u884c\u4e2d" : "stopped" === vue.unref(t).aiProgress.phase ? "AI \u4efb\u52a1\u5df2\u505c\u6b62" : "preview" === vue.unref(t).aiProgress.phase ? "AI \u7b49\u5f85\u786e\u8ba4" : "AI \u672c\u8f6e\u7ed3\u675f"), 1), vue.createElementVNode("p", null, vue.toDisplayString(vue.unref(t).aiProgress.model) + " \xb7 \u5df2\u53d1\u9001 " + vue.toDisplayString(vue.unref(t).aiProgress.requested) + " \u9898 \xb7 \u5df2\u5904\u7406 " + vue.toDisplayString(vue.unref(t).aiProgress.processed) + " \u9898 \xb7 \u5b9e\u9645\u56de\u586b " + vue.toDisplayString(vue.unref(t).aiProgress.filled) + " \u9898", 1), ri, "running" === vue.unref(t).aiProgress.phase || "preview" === vue.unref(t).aiProgress.phase ? (vue.openBlock(), 
+        }, null, 8, [ "mark" ]), vue.createTextVNode(vue.toDisplayString(n + 1), 1) ], 10, si)))), 128)) ]) ]), vue.createElementVNode("section", oi, [ vue.unref(t).aiProgress ? (vue.openBlock(), 
+        vue.createElementBlock("div", li, [ vue.createElementVNode("strong", null, vue.toDisplayString("running" === vue.unref(t).aiProgress.phase ? "AI \u4efb\u52a1\u8fdb\u884c\u4e2d" : "stopped" === vue.unref(t).aiProgress.phase ? "AI \u4efb\u52a1\u5df2\u505c\u6b62" : "preview" === vue.unref(t).aiProgress.phase ? "AI \u7b49\u5f85\u786e\u8ba4" : "AI \u672c\u8f6e\u7ed3\u675f"), 1), vue.createElementVNode("p", null, vue.toDisplayString(vue.unref(t).aiProgress.model) + " \xb7 \u5df2\u53d1\u9001 " + vue.toDisplayString(vue.unref(t).aiProgress.requested) + " \u9898 \xb7 \u5df2\u5904\u7406 " + vue.toDisplayString(vue.unref(t).aiProgress.processed) + " \u9898 \xb7 \u5b9e\u9645\u56de\u586b " + vue.toDisplayString(vue.unref(t).aiProgress.filled) + " \u9898", 1), ci, "running" === vue.unref(t).aiProgress.phase || "preview" === vue.unref(t).aiProgress.phase ? (vue.openBlock(), 
         vue.createElementBlock("button", {
           key: 0,
           class: "aah-btn",
           "aria-label": "\u505c\u6b62 AI \u4efb\u52a1",
           onClick: n[0] || (n[0] = e => vue.unref(t).pause())
         }, "\u505c\u6b62 AI \u4efb\u52a1")) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), vue.unref(t).current.aiQuality ? (vue.openBlock(), 
-        vue.createElementBlock("div", si, [ oi, vue.createElementVNode("p", null, "\u6a21\u578b\u8fd4\u56de " + vue.toDisplayString(vue.unref(t).current.aiQuality.modelReturned ? "\u662f" : "\u5426") + " \xb7 \u89e3\u6790\u6210\u529f " + vue.toDisplayString(vue.unref(t).current.aiQuality.parsed ? "\u662f" : "\u5426") + " \xb7 \u5b89\u5168\u53ef\u7528 " + vue.toDisplayString(vue.unref(t).current.aiQuality.usable ? "\u662f" : "\u5426") + " \xb7 \u5b9e\u9645\u56de\u586b " + vue.toDisplayString(vue.unref(t).current.aiQuality.filled ? "\u662f" : "\u5426"), 1), vue.createElementVNode("p", null, "\u672c\u673a\u4fdd\u5b58\uff1a" + vue.toDisplayString({
+        vue.createElementBlock("div", ui, [ pi, vue.createElementVNode("p", null, "\u6a21\u578b\u8fd4\u56de " + vue.toDisplayString(vue.unref(t).current.aiQuality.modelReturned ? "\u662f" : "\u5426") + " \xb7 \u89e3\u6790\u6210\u529f " + vue.toDisplayString(vue.unref(t).current.aiQuality.parsed ? "\u662f" : "\u5426") + " \xb7 \u5b89\u5168\u53ef\u7528 " + vue.toDisplayString(vue.unref(t).current.aiQuality.usable ? "\u662f" : "\u5426") + " \xb7 \u5b9e\u9645\u56de\u586b " + vue.toDisplayString(vue.unref(t).current.aiQuality.filled ? "\u662f" : "\u5426"), 1), vue.createElementVNode("p", null, "\u672c\u673a\u4fdd\u5b58\uff1a" + vue.toDisplayString({
           off: "\u672a\u4fdd\u5b58",
           saved: "\u5df2\u4fdd\u5b58",
           kept: "\u4fdd\u7559\u5df2\u6709\u975e AI \u7f13\u5b58",
           failed: "\u4fdd\u5b58\u5931\u8d25"
         }[vue.unref(t).current.aiQuality.localSave]) + " \xb7 \u539f\u751f\u4fdd\u5b58\u5f85\u5e73\u53f0\u6838\u9a8c \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1", 1) ])) : vue.createCommentVNode("", true), (null == (i = vue.unref(t).current.form) ? void 0 : i.aiGenerated) ? (vue.openBlock(), 
-        vue.createElementBlock("p", li, "AI \u751f\u6210" + vue.toDisplayString("\u672c\u5730\u7f13\u5b58" === (null == (r = vue.unref(t).current.form) ? void 0 : r.form) ? " \xb7 \u672c\u5730\u7f13\u5b58" : "") + "\uff0c\u4ec5\u8868\u793a\u6765\u6e90\uff0c\u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("header", ci, [ vue.createElementVNode("span", ui, vue.toDisplayString(pad(vue.unref(t).questionInx + 1)), 1), vue.createElementVNode("span", pi, vue.toDisplayString("15" == vue.unref(t).current.type ? "\u9605\u8bfb\u7406\u89e3" : I.value || "\u672a\u77e5\u9898\u578b"), 1), vue.createElementVNode("span", {
+        vue.createElementBlock("p", di, "AI \u751f\u6210" + vue.toDisplayString("\u672c\u5730\u7f13\u5b58" === (null == (r = vue.unref(t).current.form) ? void 0 : r.form) ? " \xb7 \u672c\u5730\u7f13\u5b58" : "") + "\uff0c\u4ec5\u8868\u793a\u6765\u6e90\uff0c\u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("header", hi, [ vue.createElementVNode("span", mi, vue.toDisplayString(pad(vue.unref(t).questionInx + 1)), 1), vue.createElementVNode("span", gi, vue.toDisplayString("15" == vue.unref(t).current.type ? "\u9605\u8bfb\u7406\u89e3" : I.value || "\u672a\u77e5\u9898\u578b"), 1), vue.createElementVNode("span", {
           class: vue.normalizeClass([ "ask-detail-state", `is-${A.value}` ])
-        }, [ vue.createVNode(Va, {
+        }, [ vue.createVNode(Za, {
           mark: A.value
-        }, null, 8, [ "mark" ]), vue.createTextVNode(" " + vue.toDisplayString(vue.unref(t).loading && "run" === A.value ? vue.unref(t).loadingText : vue.unref($a)[A.value]), 1) ], 2), vue.createElementVNode("span", di, [ vue.createElementVNode("button", {
+        }, null, 8, [ "mark" ]), vue.createTextVNode(" " + vue.toDisplayString(vue.unref(t).loading && "run" === A.value ? vue.unref(t).loadingText : vue.unref(za)[A.value]), 1) ], 2), vue.createElementVNode("span", fi, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           disabled: vue.unref(t).loading,
           onClick: n[1] || (n[1] = e => vue.unref(t).reAnswer(vue.unref(t).questionInx))
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:refresh"
-        }), vue.createTextVNode("\u91cd\u7b54 ") ], 8, hi), vue.createElementVNode("button", {
+        }), vue.createTextVNode("\u91cd\u7b54 ") ], 8, vi), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           type: "button",
           disabled: vue.unref(t).loading || "off" === vue.unref(s).usage,
           onClick: n[2] || (n[2] = e => vue.unref(t).aiAnswer(vue.unref(t).questionInx))
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:creation-outline"
-        }), vue.createTextVNode("AI \u4f5c\u7b54 ") ], 8, mi) ]) ]), (vue.openBlock(), vue.createBlock(La, {
+        }), vue.createTextVNode("AI \u4f5c\u7b54 ") ], 8, yi) ]) ]), (vue.openBlock(), vue.createBlock(Oa, {
           key: vue.unref(t).questionInx
         })), "15" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 3
         }, [ vue.createElementVNode("div", {
           class: "ask-stem reading-passage",
           innerHTML: vue.unref(t).current.question
-        }, null, 8, gi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, n) => (vue.openBlock(), vue.createElementBlock("div", {
+        }, null, 8, wi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, n) => (vue.openBlock(), vue.createElementBlock("div", {
           key: n,
           class: "ask-sub"
         }, [ vue.createElementVNode("div", {
           class: "ask-sub-title",
           innerHTML: n + 1 + ". " + e.question
-        }, null, 8, fi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, a) => {
+        }, null, 8, bi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, a) => {
           var i, r, s, o, l, m;
           return vue.openBlock(), vue.createElementBlock("div", {
             key: a,
             class: vue.normalizeClass([ "ask-option", {
               "is-hit": null == (s = null == (r = null == (i = vue.unref(t).current.form) ? void 0 : i.match) ? void 0 : r[n]) ? void 0 : s.includes(a)
             } ])
-          }, [ vue.createElementVNode("span", vi, vue.toDisplayString(optionKey(a)), 1), vue.createElementVNode("span", {
+          }, [ vue.createElementVNode("span", xi, vue.toDisplayString(optionKey(a)), 1), vue.createElementVNode("span", {
             class: "ask-option-text",
             innerHTML: e
-          }, null, 8, yi), (null == (m = null == (l = null == (o = vue.unref(t).current.form) ? void 0 : o.match) ? void 0 : l[n]) ? void 0 : m.includes(a)) ? (vue.openBlock(), 
+          }, null, 8, ki), (null == (m = null == (l = null == (o = vue.unref(t).current.form) ? void 0 : o.match) ? void 0 : l[n]) ? void 0 : m.includes(a)) ? (vue.openBlock(), 
           vue.createBlock(vue.unref(vue$1.Icon), {
             key: 0,
             icon: "mdi:check",
@@ -15937,32 +15967,32 @@
         }, [ vue.createElementVNode("div", {
           class: "ask-stem",
           innerHTML: vue.unref(t).current.question
-        }, null, 8, wi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
+        }, null, 8, qi), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: t,
           class: vue.normalizeClass([ "ask-option", {
             "is-hit": $.value.includes(t)
           } ])
-        }, [ vue.createElementVNode("span", bi, vue.toDisplayString(optionKey(t)), 1), vue.createElementVNode("span", {
+        }, [ vue.createElementVNode("span", Ai, vue.toDisplayString(optionKey(t)), 1), vue.createElementVNode("span", {
           class: "ask-option-text",
           innerHTML: e
-        }, null, 8, xi), $.value.includes(t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
+        }, null, 8, _i), $.value.includes(t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
           key: 0,
           icon: "mdi:check",
           class: "ask-option-check"
-        })) : vue.createCommentVNode("", true) ], 2)))), 128)), "24" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock("table", ki, [ (vue.openBlock(true), 
+        })) : vue.createCommentVNode("", true) ], 2)))), 128)), "24" == vue.unref(t).current.type ? (vue.openBlock(), vue.createElementBlock("table", Ci, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.match, ((e, n) => (vue.openBlock(), vue.createElementBlock("tr", {
           key: n
         }, [ vue.createElementVNode("td", {
           innerHTML: e
-        }, null, 8, qi), vue.createElementVNode("td", null, [ vue.createElementVNode("select", Ai, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.selects[n], (e => (vue.openBlock(), 
+        }, null, 8, Ti), vue.createElementVNode("td", null, [ vue.createElementVNode("select", Si, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.selects[n], (e => (vue.openBlock(), 
         vue.createElementBlock("option", {
           key: e.value,
           value: e.value
-        }, vue.toDisplayString(e.text), 9, _i)))), 128)) ]) ]) ])))), 128)) ])) : vue.createCommentVNode("", true) ], 64)), S.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Ci, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, vue.toDisplayString(e.text), 9, Ii)))), 128)) ]) ]) ])))), 128)) ])) : vue.createCommentVNode("", true) ], 64)), S.value ? (vue.openBlock(), 
+        vue.createElementBlock("div", Ei, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:alert-circle-outline"
         }), vue.createTextVNode("\u5f53\u524d\u9898\u578b\u6682\u4e0d\u652f\u6301\uff0c\u8bf7\u628a\u9875\u9762\u5730\u5740\u53cd\u9988\u7ed9\u4f5c\u8005 ") ])) : vue.createCommentVNode("", true), (null == (o = vue.unref(t).aiImagePreview) ? void 0 : o.index) === vue.unref(t).questionInx ? (vue.openBlock(), 
-        vue.createElementBlock("div", Ti, [ Si, vue.createElementVNode("p", null, "\u5171 " + vue.toDisplayString(vue.unref(t).aiImagePreview.images.length) + " \u4e2a\u56fe\u7247\u4f4d\u7f6e\u3002\u5f53\u524d\u5c1a\u672a\u8c03\u7528\u7b54\u9898\u6a21\u578b\uff1b\u786e\u8ba4\u540e\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002", 1), (vue.openBlock(true), 
+        vue.createElementBlock("div", Ui, [ Pi, vue.createElementVNode("p", null, "\u5171 " + vue.toDisplayString(vue.unref(t).aiImagePreview.images.length) + " \u4e2a\u56fe\u7247\u4f4d\u7f6e\u3002\u5f53\u524d\u5c1a\u672a\u8c03\u7528\u7b54\u9898\u6a21\u578b\uff1b\u786e\u8ba4\u540e\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002", 1), (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).aiImagePreview.images, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: t,
           class: "ai-image-preview-item"
@@ -15976,21 +16006,21 @@
             "object-fit": "contain",
             background: "#fff"
           }
-        }, null, 8, Ii) ])))), 128)), vue.createElementVNode("div", Ei, [ vue.createElementVNode("button", {
+        }, null, 8, Mi) ])))), 128)), vue.createElementVNode("div", Li, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           disabled: vue.unref(t).loading,
           onClick: n[3] || (n[3] = e => vue.unref(t).confirmAiImageAnswer())
-        }, "\u786e\u8ba4\u56fe\u7247\u5e76\u8c03\u7528 AI", 8, Ui), vue.createElementVNode("button", {
+        }, "\u786e\u8ba4\u56fe\u7247\u5e76\u8c03\u7528 AI", 8, $i), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small",
           onClick: n[4] || (n[4] = e => vue.unref(t).pause())
         }, "\u53d6\u6d88\u56fe\u7247\u8865\u7b54") ]) ])) : vue.createCommentVNode("", true), T.value && vue.unref(t).aiPreview ? (vue.openBlock(), 
-        vue.createElementBlock("div", Pi, [ vue.createElementVNode("div", Li, [ vue.createVNode(Va, {
+        vue.createElementBlock("div", Hi, [ vue.createElementVNode("div", Oi, [ vue.createVNode(Za, {
           mark: "wait"
-        }), Mi, vue.createElementVNode("span", $i, vue.toDisplayString(vue.unref(t).aiPreview.reason), 1) ]), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).aiPreview.answer, ((e, n) => (vue.openBlock(), 
+        }), ji, vue.createElementVNode("span", zi, vue.toDisplayString(vue.unref(t).aiPreview.reason), 1) ]), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).aiPreview.answer, ((e, n) => (vue.openBlock(), 
         vue.createElementBlock("div", {
           class: "ask-preview-answer",
           key: n
-        }, vue.toDisplayString(vue.unref(answerPreviewLabel)(vue.unref(t).current, e)), 1)))), 128)), Hi, vue.createElementVNode("div", Oi, [ vue.createElementVNode("button", {
+        }, vue.toDisplayString(vue.unref(answerPreviewLabel)(vue.unref(t).current, e)), 1)))), 128)), Di, vue.createElementVNode("div", Ni, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
           onClick: n[5] || (n[5] = e => vue.unref(t).confirmAiPreview())
@@ -15999,21 +16029,21 @@
           type: "button",
           onClick: n[6] || (n[6] = e => vue.unref(t).skipAiPreview())
         }, "\u8df3\u8fc7") ]) ])) : vue.createCommentVNode("", true), vue.unref(t).aiFailureMap[vue.unref(t).questionInx] ? (vue.openBlock(), 
-        vue.createElementBlock("div", ji, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        vue.createElementBlock("div", Ri, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:alert-outline"
-        }), vue.createTextVNode(vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("section", zi, [ Di, vue.createElementVNode("ol", Ni, [ (vue.openBlock(true), 
+        }), vue.createTextVNode(vue.toDisplayString(vue.unref(t).aiFailureMap[vue.unref(t).questionInx]), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("section", Fi, [ Bi, vue.createElementVNode("ol", Gi, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(U.value, (e => (vue.openBlock(), vue.createElementBlock("li", {
           key: e.key,
           class: vue.normalizeClass([ "ask-chain-step", `is-${e.state}` ])
-        }, [ Ri, vue.createElementVNode("span", Fi, vue.toDisplayString(e.label), 1), vue.createElementVNode("span", Bi, vue.toDisplayString(P[e.state]), 1) ], 2)))), 128)) ]), L.value ? (vue.openBlock(), 
-        vue.createElementBlock("p", Gi, vue.toDisplayString(L.value), 1)) : vue.createCommentVNode("", true), (null == (H = vue.unref(t).current.answer) ? void 0 : H.length) ? (vue.openBlock(), 
-        vue.createElementBlock("div", Ki, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
+        }, [ Ki, vue.createElementVNode("span", Vi, vue.toDisplayString(e.label), 1), vue.createElementVNode("span", Wi, vue.toDisplayString(P[e.state]), 1) ], 2)))), 128)) ]), M.value ? (vue.openBlock(), 
+        vue.createElementBlock("p", Qi, vue.toDisplayString(M.value), 1)) : vue.createCommentVNode("", true), (null == (H = vue.unref(t).current.answer) ? void 0 : H.length) ? (vue.openBlock(), 
+        vue.createElementBlock("div", Ji, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).current.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
           key: t,
           class: vue.normalizeClass([ "ask-source-row", {
             "is-used": e.form && e.form === E.value
           } ])
-        }, [ vue.createElementVNode("span", Vi, [ vue.createTextVNode(vue.toDisplayString(e.form) + " ", 1), e.form && e.form === E.value ? (vue.openBlock(), 
-        vue.createElementBlock("span", Qi, "\u91c7\u7528")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Wi, [ "object" == typeof e.answer && e.answer ? (vue.openBlock(true), 
+        }, [ vue.createElementVNode("span", Zi, [ vue.createTextVNode(vue.toDisplayString(e.form) + " ", 1), e.form && e.form === E.value ? (vue.openBlock(), 
+        vue.createElementBlock("span", Yi, "\u91c7\u7528")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Xi, [ "object" == typeof e.answer && e.answer ? (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, {
           key: 0
         }, vue.renderList(e.answer, ((e, t) => {
@@ -16021,37 +16051,37 @@
             key: t,
             class: "answer-field-html",
             innerHTML: (n = e, createSafeMarkdownHtml("string" == typeof n ? n : String(n ?? "")))
-          }, null, 8, Ji);
+          }, null, 8, er);
           var n;
         })), 128)) : e.needLogin ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 1
         }, [ vue.createElementVNode("span", {
           innerHTML: e.msg
-        }, null, 8, Zi), vue.createElementVNode("button", {
+        }, null, 8, tr), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-small aah-btn-primary",
           type: "button",
           onClick: n[7] || (n[7] = e => vue.unref(a).setPage("settings", "account"))
         }, "\u53bb\u767b\u5f55") ], 64)) : e.answer ? (vue.openBlock(), vue.createElementBlock("span", {
           key: 2,
           innerHTML: e.answer
-        }, null, 8, Yi)) : (vue.openBlock(), vue.createElementBlock("span", {
+        }, null, 8, nr)) : (vue.openBlock(), vue.createElementBlock("span", {
           key: 3,
           class: "ask-source-miss",
           innerHTML: e.msg ?? "\u672a\u547d\u4e2d"
-        }, null, 8, Xi)) ]), vue.createElementVNode("span", er, vue.toDisplayString(e.duration ? `${e.duration}ms` : ""), 1) ], 2)))), 128)) ])) : (vue.openBlock(), 
-        vue.createElementBlock("p", tr, vue.toDisplayString("run" === A.value ? "\u6b63\u5728\u67e5\u627e\uff0c\u5404\u6765\u6e90\u7684\u7ed3\u679c\u4f1a\u9010\u6761\u51fa\u73b0\u5728\u8fd9\u91cc\u3002" : "\u8fd8\u6ca1\u6709\u67e5\u8be2\u8fd9\u9053\u9898\u3002\u70b9\u300c\u5f00\u59cb\u7b54\u9898\u300d\u6216\u300c\u91cd\u7b54\u300d\u5f00\u59cb\u67e5\u627e\u3002"), 1)) ]), C.value ? (vue.openBlock(), 
-        vue.createElementBlock("section", nr, [ vue.createElementVNode("h3", ar, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, ar)) ]), vue.createElementVNode("span", ir, vue.toDisplayString(e.duration ? `${e.duration}ms` : ""), 1) ], 2)))), 128)) ])) : (vue.openBlock(), 
+        vue.createElementBlock("p", rr, vue.toDisplayString("run" === A.value ? "\u6b63\u5728\u67e5\u627e\uff0c\u5404\u6765\u6e90\u7684\u7ed3\u679c\u4f1a\u9010\u6761\u51fa\u73b0\u5728\u8fd9\u91cc\u3002" : "\u8fd8\u6ca1\u6709\u67e5\u8be2\u8fd9\u9053\u9898\u3002\u70b9\u300c\u5f00\u59cb\u7b54\u9898\u300d\u6216\u300c\u91cd\u7b54\u300d\u5f00\u59cb\u67e5\u627e\u3002"), 1)) ]), C.value ? (vue.openBlock(), 
+        vue.createElementBlock("section", sr, [ vue.createElementVNode("h3", or, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:creation-outline"
-        }), vue.createTextVNode("AI \u89e3\u6790 "), _.value ? (vue.openBlock(), vue.createElementBlock("span", ir, "\u751f\u6210\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.unref(t).current.aiMsg ? (vue.openBlock(), 
+        }), vue.createTextVNode("AI \u89e3\u6790 "), _.value ? (vue.openBlock(), vue.createElementBlock("span", lr, "\u751f\u6210\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.unref(t).current.aiMsg ? (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: 0,
           innerHTML: vue.unref(t).currentAiMd,
           class: "ai-answer-markdown"
-        }, null, 8, rr)) : (vue.openBlock(), vue.createElementBlock("p", sr, "AI \u6b63\u5728\u601d\u8003\uff0c\u5185\u5bb9\u4f1a\u5b9e\u65f6\u51fa\u73b0\u5728\u8fd9\u91cc\u3002")) ])) : vue.createCommentVNode("", true) ]) ], 64)) : (vue.openBlock(), 
-        vue.createElementBlock("div", or, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, null, 8, cr)) : (vue.openBlock(), vue.createElementBlock("p", ur, "AI \u6b63\u5728\u601d\u8003\uff0c\u5185\u5bb9\u4f1a\u5b9e\u65f6\u51fa\u73b0\u5728\u8fd9\u91cc\u3002")) ])) : vue.createCommentVNode("", true) ]) ], 64)) : (vue.openBlock(), 
+        vue.createElementBlock("div", pr, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:text-box-search-outline",
           class: "ask-empty-icon"
-        }), lr, cr, vue.createElementVNode("ul", null, [ vue.createElementVNode("li", null, [ vue.createTextVNode("\u6309 "), vue.createElementVNode("kbd", null, vue.toDisplayString(vue.unref(a).app.hotkey), 1), vue.createTextVNode(" \u53ef\u4ee5\u968f\u65f6\u547c\u51fa\u6216\u6536\u8d77\u9762\u677f") ]), ur, pr, dr ]), vue.createElementVNode("div", hr, [ vue.createElementVNode("button", {
+        }), dr, hr, vue.createElementVNode("ul", null, [ vue.createElementVNode("li", null, [ vue.createTextVNode("\u6309 "), vue.createElementVNode("kbd", null, vue.toDisplayString(vue.unref(a).app.hotkey), 1), vue.createTextVNode(" \u53ef\u4ee5\u968f\u65f6\u547c\u51fa\u6216\u6536\u8d77\u9762\u677f") ]), mr, gr, fr ]), vue.createElementVNode("div", vr, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary",
           type: "button",
           onClick: n[8] || (n[8] = e => vue.unref(a).openSearch())
@@ -16065,19 +16095,19 @@
           key: 0,
           class: "ask-empty-types",
           innerHTML: vue.unref(t).typesMd
-        }, null, 8, mr)) : vue.createCommentVNode("", true) ])), vue.unref(t).questionList.length ? (vue.openBlock(), vue.createElementBlock("footer", gr, [ vue.createElementVNode("div", fr, [ vue.createElementVNode("span", vr, [ vue.createVNode(Va, {
+        }, null, 8, yr)) : vue.createCommentVNode("", true) ])), vue.unref(t).questionList.length ? (vue.openBlock(), vue.createElementBlock("footer", wr, [ vue.createElementVNode("div", br, [ vue.createElementVNode("span", xr, [ vue.createVNode(Za, {
           mark: "done",
           size: 12
-        }), yr, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.done), 1) ]), vue.createElementVNode("span", wr, [ vue.createVNode(Va, {
+        }), kr, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.done), 1) ]), vue.createElementVNode("span", qr, [ vue.createVNode(Za, {
           mark: "none",
           size: 12
-        }), br, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.none), 1) ]), vue.unref(l).tally.wait ? (vue.openBlock(), vue.createElementBlock("span", xr, [ vue.createVNode(Va, {
+        }), Ar, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.none), 1) ]), vue.unref(l).tally.wait ? (vue.openBlock(), vue.createElementBlock("span", _r, [ vue.createVNode(Za, {
           mark: "wait",
           size: 12
-        }), kr, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.wait), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("span", qr, [ vue.createVNode(Va, {
+        }), Cr, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.wait), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("span", Tr, [ vue.createVNode(Za, {
           mark: "todo",
           size: 12
-        }), Ar, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.todo), 1) ]) ]), _r, vue.createElementVNode("div", Cr, [ vue.createElementVNode("button", {
+        }), Sr, vue.createTextVNode(), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(l).tally.todo), 1) ]) ]), Ir, vue.createElementVNode("div", Er, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-icon",
           type: "button",
           "aria-label": "\u4f7f\u7528\u63d0\u793a",
@@ -16086,16 +16116,16 @@
           onClick: n[10] || (n[10] = e => y.value = !y.value)
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:help-circle-outline"
-        }) ], 8, Tr), y.value ? (vue.openBlock(), vue.createElementBlock("div", Sr, [ vue.createElementVNode("div", {
+        }) ], 8, Ur), y.value ? (vue.openBlock(), vue.createElementBlock("div", Pr, [ vue.createElementVNode("div", {
           class: "ask-tips-body",
           innerHTML: vue.unref(t).tipsMd
-        }, null, 8, Ir), Object.keys(vue.unref(t).formMap || {}).length ? (vue.openBlock(), vue.createElementBlock("div", Er, [ (vue.openBlock(true), 
+        }, null, 8, Mr), Object.keys(vue.unref(t).formMap || {}).length ? (vue.openBlock(), vue.createElementBlock("div", Lr, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(t).formMap, ((e, t) => (vue.openBlock(), vue.createElementBlock("span", {
           class: "aah-tag",
           key: t
-        }, vue.toDisplayString(t) + " \xb7 " + vue.toDisplayString(e) + " \u6b21", 1)))), 128)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("details", null, [ Ur, vue.createElementVNode("div", {
+        }, vue.toDisplayString(t) + " \xb7 " + vue.toDisplayString(e) + " \u6b21", 1)))), 128)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("details", null, [ $r, vue.createElementVNode("div", {
           innerHTML: vue.unref(t).typesMd
-        }, null, 8, Pr) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("button", {
+        }, null, 8, Hr) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: n[11] || (n[11] = e => vue.unref(t).restart())
@@ -16128,7 +16158,7 @@
     }
   }
 
-  const Mr = [ {
+  const jr = [ {
     value: "0",
     label: "\u5355\u9009"
   }, {
@@ -16143,7 +16173,7 @@
   }, {
     value: "15",
     label: "\u9605\u8bfb\u7406\u89e3"
-  } ], $r = [ "\u5bf9", "\u9519" ], withNoReferrer = e => e && e.trim() ? e.replace(/<img\b(?!.*?\breferrerPolicy\b)[^>]*>/gi, (e => e.replace(/\/?>$/, ' referrerPolicy="no-referrer">'))) : e, normalizeAnswer$1 = e => null == e ? [] : Array.isArray(e) ? e.length > 0 && Array.isArray(e[0]) ? [] : e.map((e => String(e))) : [ String(e) ], visibleOptions = e => "3" === e.type ? Array.isArray(e.options) && 2 === e.options.length && "string" == typeof e.options[0] ? e.options : $r : "2" === e.type ? [] : Array.isArray(e.options) && e.options.length > 0 && "string" == typeof e.options[0] ? e.options : [], isCorrectOption = (e, t, n) => {
+  } ], zr = [ "\u5bf9", "\u9519" ], withNoReferrer = e => e && e.trim() ? e.replace(/<img\b(?!.*?\breferrerPolicy\b)[^>]*>/gi, (e => e.replace(/\/?>$/, ' referrerPolicy="no-referrer">'))) : e, normalizeAnswer$1 = e => null == e ? [] : Array.isArray(e) ? e.length > 0 && Array.isArray(e[0]) ? [] : e.map((e => String(e))) : [ String(e) ], visibleOptions = e => "3" === e.type ? Array.isArray(e.options) && 2 === e.options.length && "string" == typeof e.options[0] ? e.options : zr : "2" === e.type ? [] : Array.isArray(e.options) && e.options.length > 0 && "string" == typeof e.options[0] ? e.options : [], isCorrectOption = (e, t, n) => {
     const a = normalizeAnswer$1(e.answer);
     return 0 !== a.length && (!!a.includes(String(t)) || (!!a.includes(n) || a.includes(String.fromCharCode(65 + t))));
   }, answerSummary = e => {
@@ -16184,9 +16214,9 @@
     }), "\u7231\u95ee\u7b54\u52a9\u624b.html");
   };
 
-  let Hr = null;
+  let Dr = null;
 
-  const getFuseWorker = () => Hr || (Hr = function(e) {
+  const getFuseWorker = () => Dr || (Dr = function(e) {
     const t = new Blob([ `(${e.toString()})()` ], {
       type: "application/javascript"
     }), n = URL.createObjectURL(t);
@@ -16201,35 +16231,35 @@
         }));
       })), self.postMessage(a);
     };
-  })), Hr), Or = {
+  })), Dr), Nr = {
     class: "lib-detail"
-  }, jr = {
+  }, Rr = {
     class: "lib-detail-head"
-  }, zr = {
+  }, Fr = {
     class: "aah-tag"
-  }, Dr = vue.createElementVNode("span", {
+  }, Br = vue.createElementVNode("span", {
     class: "lib-detail-spacer"
-  }, null, -1), Nr = {
+  }, null, -1), Gr = {
     key: 0,
     class: "aah-alert aah-alert-info"
-  }, Rr = [ "innerHTML" ], Fr = [ "innerHTML" ], Br = {
+  }, Kr = [ "innerHTML" ], Vr = [ "innerHTML" ], Wr = {
     class: "ask-option-key"
-  }, Gr = [ "innerHTML" ], Kr = {
+  }, Qr = [ "innerHTML" ], Jr = {
     key: 2,
     class: "aah-alert aah-alert-info"
-  }, Vr = {
+  }, Zr = {
     class: "ask-option-key"
-  }, Qr = [ "innerHTML" ], Wr = {
+  }, Yr = [ "innerHTML" ], Xr = {
     class: "lib-detail-answer"
-  }, Jr = vue.createElementVNode("h3", {
+  }, es = vue.createElementVNode("h3", {
     class: "aah-section-title"
-  }, "\u7b54\u6848", -1), Zr = {
+  }, "\u7b54\u6848", -1), ts = {
     key: 0,
     class: "lib-detail-answer-list"
-  }, Yr = [ "innerHTML" ], Xr = {
+  }, ns = [ "innerHTML" ], as = {
     key: 2,
     class: "ask-source-empty"
-  }, es = vue.defineComponent({
+  }, is = vue.defineComponent({
     __name: "LibraryDetail",
     props: {
       item: {},
@@ -16240,7 +16270,7 @@
     emits: [ "edit", "remove" ],
     setup(e) {
       const optionKey = e => String.fromCharCode(65 + e);
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Or, [ vue.createElementVNode("header", jr, [ vue.createElementVNode("span", zr, vue.toDisplayString(vue.unref(typeLabel)(e.item)), 1), Dr, vue.createElementVNode("button", {
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Nr, [ vue.createElementVNode("header", Rr, [ vue.createElementVNode("span", Fr, vue.toDisplayString(vue.unref(typeLabel)(e.item)), 1), Br, vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-small",
         onClick: t[0] || (t[0] = t => e.$emit("edit"))
@@ -16253,10 +16283,10 @@
         onClick: t[1] || (t[1] = t => e.$emit("remove"))
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:trash-can-outline"
-      }), vue.createTextVNode("\u5220\u9664 ") ])) : vue.createCommentVNode("", true) ]), true === e.item.aiGenerated ? (vue.openBlock(), vue.createElementBlock("p", Nr, "AI \u751f\u6210 \xb7 " + vue.toDisplayString("local" === e.item.aiOrigin ? "\u672c\u673a\u7f51\u5173" : "AI \u670d\u52a1") + " \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u6b64\u8bb0\u5f55\u4ec5\u4fdd\u5b58\u5728\u672c\u673a\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", {
+      }), vue.createTextVNode("\u5220\u9664 ") ])) : vue.createCommentVNode("", true) ]), true === e.item.aiGenerated ? (vue.openBlock(), vue.createElementBlock("p", Gr, "AI \u751f\u6210 \xb7 " + vue.toDisplayString("local" === e.item.aiOrigin ? "\u672c\u673a\u7f51\u5173" : "AI \u670d\u52a1") + " \xb7 \u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u6b64\u8bb0\u5f55\u4ec5\u4fdd\u5b58\u5728\u672c\u673a\u3002", 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", {
         class: "lib-detail-stem",
         innerHTML: vue.unref(withNoReferrer)(e.item.question1 || e.item.question)
-      }, null, 8, Rr), "15" === e.item.type && Array.isArray(e.item.options) && "object" == typeof e.item.options[0] ? (vue.openBlock(true), 
+      }, null, 8, Kr), "15" === e.item.type && Array.isArray(e.item.options) && "object" == typeof e.item.options[0] ? (vue.openBlock(true), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
       }, vue.renderList(e.item.options, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
@@ -16265,16 +16295,16 @@
       }, [ vue.createElementVNode("div", {
         class: "lib-detail-sub-title",
         innerHTML: vue.unref(withNoReferrer)(`${t + 1}. ${e.question ?? ""}`)
-      }, null, 8, Fr), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options || [], ((t, n) => (vue.openBlock(), vue.createElementBlock("div", {
+      }, null, 8, Vr), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options || [], ((t, n) => (vue.openBlock(), vue.createElementBlock("div", {
         key: n,
         class: vue.normalizeClass([ "ask-option", {
           "is-hit": vue.unref(isCorrectOption)(e, n, t)
         } ])
-      }, [ vue.createElementVNode("span", Br, vue.toDisplayString(optionKey(n)), 1), vue.createElementVNode("span", {
+      }, [ vue.createElementVNode("span", Wr, vue.toDisplayString(optionKey(n)), 1), vue.createElementVNode("span", {
         class: "ask-option-text",
         innerHTML: vue.unref(withNoReferrer)(t)
-      }, null, 8, Gr) ], 2)))), 128)) ])))), 128)) : Array.isArray(e.item.options) && "object" == typeof e.item.options[0] ? (vue.openBlock(), 
-      vue.createElementBlock("div", Kr, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, null, 8, Qr) ], 2)))), 128)) ])))), 128)) : Array.isArray(e.item.options) && "object" == typeof e.item.options[0] ? (vue.openBlock(), 
+      vue.createElementBlock("div", Jr, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:information-outline"
       }), vue.createTextVNode("\u590d\u5408\u9898\u578b\uff0c\u70b9\u300c\u7f16\u8f91\u300d\u67e5\u770b\u5b8c\u6574\u5185\u5bb9 ") ])) : (vue.openBlock(true), 
       vue.createElementBlock(vue.Fragment, {
@@ -16284,44 +16314,44 @@
         class: vue.normalizeClass([ "ask-option", {
           "is-hit": vue.unref(isCorrectOption)(e.item, n, t)
         } ])
-      }, [ vue.createElementVNode("span", Vr, vue.toDisplayString(optionKey(n)), 1), vue.createElementVNode("span", {
+      }, [ vue.createElementVNode("span", Zr, vue.toDisplayString(optionKey(n)), 1), vue.createElementVNode("span", {
         class: "ask-option-text",
         innerHTML: vue.unref(withNoReferrer)(t)
-      }, null, 8, Qr), vue.unref(isCorrectOption)(e.item, n, t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
+      }, null, 8, Yr), vue.unref(isCorrectOption)(e.item, n, t) ? (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
         key: 0,
         icon: "mdi:check",
         class: "ask-option-check"
-      })) : vue.createCommentVNode("", true) ], 2)))), 128)), vue.createElementVNode("section", Wr, [ Jr, Array.isArray(e.item.answer) && e.item.answer.length ? (vue.openBlock(), 
-      vue.createElementBlock("div", Zr, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("span", {
+      })) : vue.createCommentVNode("", true) ], 2)))), 128)), vue.createElementVNode("section", Xr, [ es, Array.isArray(e.item.answer) && e.item.answer.length ? (vue.openBlock(), 
+      vue.createElementBlock("div", ts, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.answer, ((e, t) => (vue.openBlock(), vue.createElementBlock("span", {
         key: t,
         class: "lib-answer-chip"
       }, vue.toDisplayString(Array.isArray(e) ? e.join(", ") : e), 1)))), 128)) ])) : e.item.answer && !Array.isArray(e.item.answer) ? (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: 1,
         innerHTML: vue.unref(withNoReferrer)(String(e.item.answer))
-      }, null, 8, Yr)) : (vue.openBlock(), vue.createElementBlock("p", Xr, "\u6682\u65e0\u7b54\u6848")) ]) ]));
+      }, null, 8, ns)) : (vue.openBlock(), vue.createElementBlock("p", as, "\u6682\u65e0\u7b54\u6848")) ]) ]));
     }
-  }), ts = {
+  }), rs = {
     class: "modal-panel"
-  }, ns = {
+  }, ss = {
     class: "modal-header"
-  }, as = vue.createElementVNode("h3", null, "\u7f16\u8f91\u9898\u76ee", -1), is = {
+  }, os = vue.createElementVNode("h3", null, "\u7f16\u8f91\u9898\u76ee", -1), ls = {
     class: "modal-body"
-  }, rs = {
+  }, cs = {
     class: "form-row"
-  }, ss = vue.createElementVNode("label", null, "\u9898\u578b", -1), os = [ "value" ], ls = {
+  }, us = vue.createElementVNode("label", null, "\u9898\u578b", -1), ps = [ "value" ], ds = {
     class: "form-row"
-  }, cs = vue.createElementVNode("label", null, "\u9898\u5e72", -1), us = {
+  }, hs = vue.createElementVNode("label", null, "\u9898\u5e72", -1), ms = {
     key: 0,
     class: "form-row"
-  }, ps = vue.createElementVNode("label", null, [ vue.createTextVNode("\u9009\u9879 "), vue.createElementVNode("small", null, "\u70b9\u5b57\u6bcd\u6807\u8bb0\u6b63\u786e\u7b54\u6848") ], -1), ds = {
+  }, gs = vue.createElementVNode("label", null, [ vue.createTextVNode("\u9009\u9879 "), vue.createElementVNode("small", null, "\u70b9\u5b57\u6bcd\u6807\u8bb0\u6b63\u786e\u7b54\u6848") ], -1), fs = {
     class: "option-list"
-  }, hs = [ "onClick" ], ms = [ "onUpdate:modelValue" ], gs = [ "onClick" ], fs = {
+  }, vs = [ "onClick" ], ys = [ "onUpdate:modelValue" ], ws = [ "onClick" ], bs = {
     key: 1,
     class: "form-row"
-  }, vs = vue.createElementVNode("label", null, "\u7b54\u6848", -1), ys = {
+  }, xs = vue.createElementVNode("label", null, "\u7b54\u6848", -1), ks = {
     class: "option-list"
-  }, ws = [ "onUpdate:modelValue" ], bs = [ "onClick" ], xs = vue.defineComponent({
+  }, qs = [ "onUpdate:modelValue" ], As = [ "onClick" ], _s = vue.defineComponent({
     __name: "QuestionEdit",
     props: {
       ques: {},
@@ -16351,25 +16381,25 @@
         key: 0,
         class: "modal-mask",
         onClick: vue.withModifiers(handleCancel, [ "self" ])
-      }, [ vue.createElementVNode("div", ts, [ vue.createElementVNode("div", ns, [ as, vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("div", rs, [ vue.createElementVNode("div", ss, [ os, vue.createElementVNode("button", {
         class: "aah-btn aah-btn-plain aah-btn-icon",
         type: "button",
         "aria-label": "\u5173\u95ed",
         onClick: handleCancel
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:close"
-      }) ]) ]), vue.createElementVNode("div", is, [ vue.createElementVNode("div", rs, [ ss, vue.withDirectives(vue.createElementVNode("select", {
+      }) ]) ]), vue.createElementVNode("div", ls, [ vue.createElementVNode("div", cs, [ us, vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t[0] || (t[0] = t => e.ques.type = t),
         class: "base-select"
       }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(De), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
-      }, vue.toDisplayString(t), 9, os)))), 128)) ], 512), [ [ vue.vModelSelect, e.ques.type ] ]) ]), vue.createElementVNode("div", ls, [ cs, vue.withDirectives(vue.createElementVNode("textarea", {
+      }, vue.toDisplayString(t), 9, ps)))), 128)) ], 512), [ [ vue.vModelSelect, e.ques.type ] ]) ]), vue.createElementVNode("div", ds, [ hs, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t[1] || (t[1] = t => e.ques.question = t),
         class: "base-input",
         rows: "5"
       }, null, 512), [ [ vue.vModelText, e.ques.question ] ]) ]), e.ques.options && Array.isArray(e.ques.options) && e.ques.options.length > 0 ? (vue.openBlock(), 
-      vue.createElementBlock("div", us, [ ps, vue.createElementVNode("div", ds, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.options, ((t, a) => (vue.openBlock(), 
+      vue.createElementBlock("div", ms, [ gs, vue.createElementVNode("div", fs, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.options, ((t, a) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: a,
         class: "option-row"
@@ -16382,30 +16412,30 @@
           n.ques.answer = n.ques.answer.includes(e) ? n.ques.answer.filter((t => t !== e)) : [ ...n.ques.answer, e ], 
           n.ques.answer.sort(((e, t) => n.ques.options.indexOf(e) - n.ques.options.indexOf(t)));
         })(t)
-      }, vue.toDisplayString(String.fromCharCode(65 + a)), 11, hs), vue.withDirectives(vue.createElementVNode("input", {
+      }, vue.toDisplayString(String.fromCharCode(65 + a)), 11, vs), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t => e.ques.options[a] = t,
         class: "base-input flex-grow"
-      }, null, 8, ms), [ [ vue.vModelText, e.ques.options[a] ] ]), vue.createElementVNode("button", {
+      }, null, 8, ys), [ [ vue.vModelText, e.ques.options[a] ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: e => 0 !== a ? handleDelete(a) : handleAdd()
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: 0 !== a ? "mdi:minus" : "mdi:plus"
-      }, null, 8, [ "icon" ]) ], 8, gs) ])))), 128)) ]) ])) : Array.isArray(e.ques.answer) && 0 === e.ques.options.length ? (vue.openBlock(), 
-      vue.createElementBlock("div", fs, [ vs, vue.createElementVNode("div", ys, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.answer, ((t, n) => (vue.openBlock(), 
+      }, null, 8, [ "icon" ]) ], 8, ws) ])))), 128)) ]) ])) : Array.isArray(e.ques.answer) && 0 === e.ques.options.length ? (vue.openBlock(), 
+      vue.createElementBlock("div", bs, [ xs, vue.createElementVNode("div", ks, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.ques.answer, ((t, n) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: n,
         class: "option-row"
       }, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t => e.ques.answer[n] = t,
         class: "base-input flex-grow"
-      }, null, 8, ws), [ [ vue.vModelText, e.ques.answer[n] ] ]), vue.createElementVNode("button", {
+      }, null, 8, qs), [ [ vue.vModelText, e.ques.answer[n] ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: e => 0 !== n ? handleDelete(n) : handleAdd()
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: 0 !== n ? "mdi:minus" : "mdi:plus"
-      }, null, 8, [ "icon" ]) ], 8, bs) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
+      }, null, 8, [ "icon" ]) ], 8, As) ])))), 128)) ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
         class: "modal-footer"
       }, [ vue.createElementVNode("button", {
         class: "aah-btn",
@@ -16417,41 +16447,41 @@
         onClick: handleSave
       }, "\u4fdd\u5b58") ]) ]) ])) : vue.createCommentVNode("", true);
     }
-  }), ks = {
+  }), Cs = {
     class: "modal-panel modal-panel-large"
-  }, qs = {
-    class: "modal-header"
-  }, As = vue.createElementVNode("h3", null, "\u7f16\u8f91\u9605\u8bfb\u7406\u89e3\u9898", -1), _s = {
-    class: "modal-body"
-  }, Cs = {
-    class: "reading-form-section"
   }, Ts = {
-    class: "reading-section-header"
-  }, Ss = vue.createElementVNode("h4", null, "\u9605\u8bfb\u6750\u6599", -1), Is = {
-    class: "form-row"
-  }, Es = vue.createElementVNode("label", null, "\u9898\u5e72\u5185\u5bb9", -1), Us = {
+    class: "modal-header"
+  }, Ss = vue.createElementVNode("h3", null, "\u7f16\u8f91\u9605\u8bfb\u7406\u89e3\u9898", -1), Is = {
+    class: "modal-body"
+  }, Es = {
     class: "reading-form-section"
-  }, Ps = {
+  }, Us = {
     class: "reading-section-header"
-  }, Ls = vue.createElementVNode("h4", null, "\u5b50\u9898\u76ee\u5217\u8868", -1), Ms = {
-    class: "reading-sub-questions-editor"
-  }, $s = {
-    class: "reading-sub-question-header"
-  }, Hs = {
-    class: "reading-sub-question-number"
-  }, Os = [ "onUpdate:modelValue" ], js = [ "value" ], zs = [ "onClick", "disabled" ], Ds = {
+  }, Ps = vue.createElementVNode("h4", null, "\u9605\u8bfb\u6750\u6599", -1), Ms = {
     class: "form-row"
-  }, Ns = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), Rs = [ "onUpdate:modelValue", "placeholder" ], Fs = {
+  }, Ls = vue.createElementVNode("label", null, "\u9898\u5e72\u5185\u5bb9", -1), $s = {
+    class: "reading-form-section"
+  }, Hs = {
+    class: "reading-section-header"
+  }, Os = vue.createElementVNode("h4", null, "\u5b50\u9898\u76ee\u5217\u8868", -1), js = {
+    class: "reading-sub-questions-editor"
+  }, zs = {
+    class: "reading-sub-question-header"
+  }, Ds = {
+    class: "reading-sub-question-number"
+  }, Ns = [ "onUpdate:modelValue" ], Rs = [ "value" ], Fs = [ "onClick", "disabled" ], Bs = {
+    class: "form-row"
+  }, Gs = vue.createElementVNode("label", null, "\u9898\u76ee\u5185\u5bb9", -1), Ks = [ "onUpdate:modelValue", "placeholder" ], Vs = {
     key: 0,
     class: "form-row"
-  }, Bs = vue.createElementVNode("label", null, "\u9009\u9879\u8bbe\u7f6e", -1), Gs = {
+  }, Ws = vue.createElementVNode("label", null, "\u9009\u9879\u8bbe\u7f6e", -1), Qs = {
     class: "option-list"
-  }, Ks = [ "onClick" ], Vs = [ "onUpdate:modelValue", "placeholder" ], Qs = [ "onClick" ], Ws = {
+  }, Js = [ "onClick" ], Zs = [ "onUpdate:modelValue", "placeholder" ], Ys = [ "onClick" ], Xs = {
     key: 1,
     class: "form-row"
-  }, Js = vue.createElementVNode("label", null, "\u53c2\u8003\u7b54\u6848", -1), Zs = {
+  }, eo = vue.createElementVNode("label", null, "\u53c2\u8003\u7b54\u6848", -1), to = {
     class: "reading-answer-list"
-  }, Ys = [ "onUpdate:modelValue", "placeholder" ], Xs = [ "onClick" ], eo = vue.defineComponent({
+  }, no = [ "onUpdate:modelValue", "placeholder" ], ao = [ "onClick" ], io = vue.defineComponent({
     __name: "ReadingComprehensionEdit",
     props: {
       ques: {},
@@ -16495,54 +16525,54 @@
         key: 0,
         class: "modal-mask",
         onClick: vue.withModifiers(handleCancel, [ "self" ])
-      }, [ vue.createElementVNode("div", ks, [ vue.createElementVNode("div", qs, [ As, vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("div", Cs, [ vue.createElementVNode("div", Ts, [ Ss, vue.createElementVNode("button", {
         class: "aah-btn aah-btn-plain aah-btn-icon",
         type: "button",
         "aria-label": "\u5173\u95ed",
         onClick: handleCancel
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:close"
-      }) ]) ]), vue.createElementVNode("div", _s, [ vue.createElementVNode("div", Cs, [ vue.createElementVNode("div", Ts, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }) ]) ]), vue.createElementVNode("div", Is, [ vue.createElementVNode("div", Es, [ vue.createElementVNode("div", Us, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:book-open-variant",
         class: "reading-section-icon"
-      }), Ss ]), vue.createElementVNode("div", Is, [ Es, vue.withDirectives(vue.createElementVNode("textarea", {
+      }), Ps ]), vue.createElementVNode("div", Ms, [ Ls, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t[0] || (t[0] = e => s.value.question = e),
         class: "base-input",
         rows: "8",
         placeholder: "\u8bf7\u8f93\u5165\u9605\u8bfb\u7406\u89e3\u7684\u4e3b\u8981\u6750\u6599\u5185\u5bb9..."
-      }, "\n            ", 512), [ [ vue.vModelText, s.value.question ] ]) ]) ]), vue.createElementVNode("div", Us, [ vue.createElementVNode("div", Ps, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, "\n            ", 512), [ [ vue.vModelText, s.value.question ] ]) ]) ]), vue.createElementVNode("div", $s, [ vue.createElementVNode("div", Hs, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:help-circle",
         class: "reading-section-icon"
-      }), Ls, vue.createElementVNode("button", {
+      }), Os, vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary aah-btn-small",
         type: "button",
         onClick: addSubQuestion
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:plus"
-      }), vue.createTextVNode(" \u6dfb\u52a0\u9898\u76ee ") ]) ]), vue.createElementVNode("div", Ms, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(s.value.options, ((e, t) => (vue.openBlock(), 
+      }), vue.createTextVNode(" \u6dfb\u52a0\u9898\u76ee ") ]) ]), vue.createElementVNode("div", js, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(s.value.options, ((e, t) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: t,
         class: "reading-sub-question-editor"
-      }, [ vue.createElementVNode("div", $s, [ vue.createElementVNode("span", Hs, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
+      }, [ vue.createElementVNode("div", zs, [ vue.createElementVNode("span", Ds, vue.toDisplayString(t + 1), 1), vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t => e.type = t,
         class: "base-select reading-base-select-small"
       }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(De), ((e, t) => (vue.openBlock(), vue.createElementBlock("option", {
         key: e,
         value: e
-      }, vue.toDisplayString(t), 9, js)))), 128)) ], 8, Os), [ [ vue.vModelSelect, e.type ] ]), vue.createElementVNode("button", {
+      }, vue.toDisplayString(t), 9, Rs)))), 128)) ], 8, Ns), [ [ vue.vModelSelect, e.type ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-danger aah-btn-small",
         type: "button",
         onClick: e => (e => {
           s.value.options.length > 1 && s.value.options.splice(e, 1);
         })(t),
         disabled: s.value.options.length <= 1
-      }, " \u5220\u9664 ", 8, zs) ]), vue.createElementVNode("div", Ds, [ Ns, vue.withDirectives(vue.createElementVNode("textarea", {
+      }, " \u5220\u9664 ", 8, Fs) ]), vue.createElementVNode("div", Bs, [ Gs, vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": t => e.question = t,
         class: "base-input",
         rows: "3",
         placeholder: `\u8bf7\u8f93\u5165\u7b2c ${t + 1} \u9898\u7684\u9898\u76ee\u5185\u5bb9...`
-      }, "\n                ", 8, Rs), [ [ vue.vModelText, e.question ] ]) ]), [ "0", "1" ].includes(e.type) ? (vue.openBlock(), 
-      vue.createElementBlock("div", Fs, [ Bs, vue.createElementVNode("div", Gs, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((n, a) => (vue.openBlock(), 
+      }, "\n                ", 8, Ks), [ [ vue.vModelText, e.question ] ]) ]), [ "0", "1" ].includes(e.type) ? (vue.openBlock(), 
+      vue.createElementBlock("div", Vs, [ Ws, vue.createElementVNode("div", Qs, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((n, a) => (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: a,
         class: "option-row"
@@ -16556,11 +16586,11 @@
           a > -1 ? n.answer.splice(a, 1) : "0" === n.type ? n.answer = [ t ] : (n.answer.push(t), 
           n.answer.sort(((e, t) => n.options.indexOf(e) - n.options.indexOf(t))));
         })(t, n)
-      }, vue.toDisplayString(String.fromCharCode(65 + a)), 11, Ks), vue.withDirectives(vue.createElementVNode("input", {
+      }, vue.toDisplayString(String.fromCharCode(65 + a)), 11, Js), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t => e.options[a] = t,
         class: "base-input flex-grow",
         placeholder: `\u9009\u9879 ${String.fromCharCode(65 + a)}`
-      }, null, 8, Vs), [ [ vue.vModelText, e.options[a] ] ]), vue.createElementVNode("button", {
+      }, null, 8, Zs), [ [ vue.vModelText, e.options[a] ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: e => {
@@ -16574,7 +16604,7 @@
         }
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: 0 === a ? "mdi:plus" : "mdi:minus"
-      }, null, 8, [ "icon" ]) ], 8, Qs) ])))), 128)) ]) ])) : (vue.openBlock(), vue.createElementBlock("div", Ws, [ Js, vue.createElementVNode("div", Zs, [ (vue.openBlock(true), 
+      }, null, 8, [ "icon" ]) ], 8, Ys) ])))), 128)) ]) ])) : (vue.openBlock(), vue.createElementBlock("div", Xs, [ eo, vue.createElementVNode("div", to, [ (vue.openBlock(true), 
       vue.createElementBlock(vue.Fragment, null, vue.renderList(e.answer, ((n, a) => (vue.openBlock(), vue.createElementBlock("div", {
         key: a,
         class: "reading-answer-row"
@@ -16582,7 +16612,7 @@
         "onUpdate:modelValue": t => e.answer[a] = t,
         class: "base-input flex-grow",
         placeholder: `\u7b54\u6848 ${a + 1}`
-      }, null, 8, Ys), [ [ vue.vModelText, e.answer[a] ] ]), vue.createElementVNode("button", {
+      }, null, 8, no), [ [ vue.vModelText, e.answer[a] ] ]), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         onClick: e => {
@@ -16593,7 +16623,7 @@
         }
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: 0 === a ? "mdi:plus" : "mdi:minus"
-      }, null, 8, [ "icon" ]) ], 8, Xs) ])))), 128)) ]) ])) ])))), 128)) ]) ]) ]), vue.createElementVNode("div", {
+      }, null, 8, [ "icon" ]) ], 8, ao) ])))), 128)) ]) ])) ])))), 128)) ]) ]) ]), vue.createElementVNode("div", {
         class: "modal-footer"
       }, [ vue.createElementVNode("button", {
         class: "aah-btn",
@@ -16605,14 +16635,14 @@
         onClick: handleSave
       }, "\u4fdd\u5b58\u4fee\u6539") ]) ]) ])) : vue.createCommentVNode("", true);
     }
-  }), to = {
+  }), ro = {
     0: "\u5355\u9009\u9898",
     1: "\u591a\u9009\u9898",
     2: "\u586b\u7a7a\u9898",
     3: "\u5224\u65ad\u9898",
     4: "\u7b80\u7b54\u9898",
     8: "\u5176\u5b83"
-  }, no = /^\s*(?:(\d+)[.\u3001\uff0e)]|[\uff08(](\d+)[\uff09)])\s*(.*)$/, ao = /^(?:[\[\u3010]\s*)?(?:\u53c2\u8003\u7b54\u6848|\u6807\u51c6\u7b54\u6848|\u6b63\u786e\u7b54\u6848|\u7b54\u6848)(?:\s*[\]\u3011])?\s*[\uff1a:]\s*(.*)$/, io = /^\s*([\[\u3010]\s*([^\]\u3011]+?)\s*[\]\u3011])\s*/, ro = /^\s*(\u5355\u9009\u9898|\u5355\u9879\u9009\u62e9\u9898|\u591a\u9009\u9898|\u591a\u9879\u9009\u62e9\u9898|\u5224\u65ad\u9898|\u586b\u7a7a\u9898|\u7b80\u7b54\u9898|\u7b80\u7b54|\u95ee\u7b54\u9898|\u95ee\u7b54|\u5176\u5b83|\u5176\u4ed6)\s*[\uff1a:]\s*/, so = /([A-Za-z])\s*[.\u3001\uff0e)\uff09]\s*/g, splitQuestionBlocks = e => {
+  }, so = /^\s*(?:(\d+)[.\u3001\uff0e)]|[\uff08(](\d+)[\uff09)])\s*(.*)$/, oo = /^(?:[\[\u3010]\s*)?(?:\u53c2\u8003\u7b54\u6848|\u6807\u51c6\u7b54\u6848|\u6b63\u786e\u7b54\u6848|\u7b54\u6848)(?:\s*[\]\u3011])?\s*[\uff1a:]\s*(.*)$/, lo = /^\s*([\[\u3010]\s*([^\]\u3011]+?)\s*[\]\u3011])\s*/, co = /^\s*(\u5355\u9009\u9898|\u5355\u9879\u9009\u62e9\u9898|\u591a\u9009\u9898|\u591a\u9879\u9009\u62e9\u9898|\u5224\u65ad\u9898|\u586b\u7a7a\u9898|\u7b80\u7b54\u9898|\u7b80\u7b54|\u95ee\u7b54\u9898|\u95ee\u7b54|\u5176\u5b83|\u5176\u4ed6)\s*[\uff1a:]\s*/, uo = /([A-Za-z])\s*[.\u3001\uff0e)\uff09]\s*/g, splitQuestionBlocks = e => {
     const t = [];
     let n = null;
     const pushCurrent = () => {
@@ -16626,14 +16656,14 @@
     for (const a of e.replace(/\r\n?/g, "\n").split("\n")) {
       const e = normalizeSpaces(a);
       if (!e) {
-        (null == n ? void 0 : n.lines.some((e => ao.test(e)))) && pushCurrent();
+        (null == n ? void 0 : n.lines.some((e => oo.test(e)))) && pushCurrent();
         continue;
       }
-      const t = e.match(no);
+      const t = e.match(so);
       t ? (pushCurrent(), n = {
         titleNo: t[1] || t[2] || "",
         lines: [ normalizeSpaces(t[3] || "") ]
-      }) : (n ? n.lines.some((e => ao.test(e))) && (pushCurrent(), n = {
+      }) : (n ? n.lines.some((e => oo.test(e))) && (pushCurrent(), n = {
         titleNo: "",
         lines: []
       }) : n = {
@@ -16650,7 +16680,7 @@
     };
     e.lines.forEach(((e, t) => {
       var n;
-      const o = e.match(ao);
+      const o = e.match(oo);
       if (o) return void (r = (null == (n = o[1]) ? void 0 : n.trim()) || "");
       let l = e;
       if (0 === t) {
@@ -16667,7 +16697,7 @@
       sourceIndex: t,
       titleNo: e.titleNo,
       type: c,
-      typeLabel: c !== l ? to[c] : s.label || to[c],
+      typeLabel: c !== l ? ro[c] : s.label || ro[c],
       question: o,
       options: a,
       answer: u,
@@ -16684,7 +16714,7 @@
     let t = normalizeSpaces(e);
     const n = [];
     for (;t; ) {
-      const e = t.match(io);
+      const e = t.match(lo);
       if (e) {
         const a = (e[2] || "").trim(), i = typeFromLabel(a);
         if (t = normalizeSpaces(t.slice(e[0].length)), i) return {
@@ -16697,7 +16727,7 @@
         n.push((e[1] || "").trim());
         continue;
       }
-      const a = t.match(ro);
+      const a = t.match(co);
       if (a) {
         const e = (a[1] || "").trim(), i = typeFromLabel(e);
         if (t = normalizeSpaces(t.slice(a[0].length)), i) return {
@@ -16728,7 +16758,7 @@
       });
     }));
   }, parseOptionsFromLine = e => {
-    const t = Array.from(e.matchAll(so)).filter((t => {
+    const t = Array.from(e.matchAll(uo)).filter((t => {
       const n = t.index || 0;
       return 0 === n || !/[A-Za-z0-9]/.test(e[n - 1] || "");
     }));
@@ -16788,7 +16818,7 @@
     if (/^[A-Z]+$/.test(t)) return Array.from(t);
     const n = t.split(/[\s|,\uff0c\u3001;\uff1b]+/).map((e => e.trim())).filter(Boolean);
     return n.every((e => /^[A-Z]$/.test(e))) ? n : [];
-  }, hasBlankPlaceholder = e => countBlankPlaceholders(e) > 0, normalizeSpaces = e => normalizeQuestionWhitespace(e), isChoiceType = e => "0" === e || "1" === e, normalizeImportText = e => e.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim(), oo = "ques1_", lo = "AiAsk_ques1_", buildQuestionImportPlan = (e, t, n) => {
+  }, hasBlankPlaceholder = e => countBlankPlaceholders(e) > 0, normalizeSpaces = e => normalizeQuestionWhitespace(e), isChoiceType = e => "0" === e || "1" === e, normalizeImportText = e => e.replace(/<[^>]*>/g, "").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim(), po = "ques1_", ho = "AiAsk_ques1_", buildQuestionImportPlan = (e, t, n) => {
     const a = new Set(t.map(getHashFromCacheKey).filter(Boolean)), i = {
       total: e.length,
       valid: 0,
@@ -16818,7 +16848,7 @@
       const r = (e => {
         const t = Array.from(e.options);
         return t.sort(), md5(`${e.type}${e.question}${t.join("")}`.replace(/\s/g, ""));
-      })(t), s = `${oo}${r}`, o = a.has(r) ? n : "create";
+      })(t), s = `${po}${r}`, o = a.has(r) ? n : "create";
       return i[o] += 1, a.add(r), {
         parsed: e,
         question: t,
@@ -16832,59 +16862,59 @@
       items: r,
       stats: i
     };
-  }, getHashFromCacheKey = e => e.startsWith(lo) ? e.slice(12) : e.startsWith(oo) ? e.slice(6) : "", co = {
+  }, getHashFromCacheKey = e => e.startsWith(ho) ? e.slice(12) : e.startsWith(po) ? e.slice(6) : "", mo = {
     class: "question-tool"
-  }, uo = vue.createElementVNode("p", {
+  }, go = vue.createElementVNode("p", {
     class: "qt-hint"
-  }, "\u7c98\u8d34\u9898\u76ee\u6587\u672c\uff0c\u53f3\u4fa7\u5b9e\u65f6\u9884\u89c8\u89e3\u6790\u7ed3\u679c\uff1b\u5bfc\u5165\u540e\u5199\u5165\u672c\u5730\u9898\u5e93\uff0c\u7b54\u9898\u65f6\u4f18\u5148\u5339\u914d\u3002\u9898\u5e72\u8981\u548c\u5e73\u53f0\u4e0a\u7684\u4e00\u81f4\u624d\u80fd\u5339\u914d\u4e0a\u3002", -1), po = {
+  }, "\u7c98\u8d34\u9898\u76ee\u6587\u672c\uff0c\u53f3\u4fa7\u5b9e\u65f6\u9884\u89c8\u89e3\u6790\u7ed3\u679c\uff1b\u5bfc\u5165\u540e\u5199\u5165\u672c\u5730\u9898\u5e93\uff0c\u7b54\u9898\u65f6\u4f18\u5148\u5339\u914d\u3002\u9898\u5e72\u8981\u548c\u5e73\u53f0\u4e0a\u7684\u4e00\u81f4\u624d\u80fd\u5339\u914d\u4e0a\u3002", -1), fo = {
     class: "qt-toolbar"
-  }, ho = {
+  }, vo = {
     class: "qt-strategy",
     role: "radiogroup",
     "aria-label": "\u91cd\u590d\u9898\u5904\u7406"
-  }, mo = vue.createElementVNode("span", {
+  }, yo = vue.createElementVNode("span", {
     class: "qt-strategy-label"
-  }, "\u5df2\u5b58\u5728\u7684\u9898", -1), go = {
+  }, "\u5df2\u5b58\u5728\u7684\u9898", -1), wo = {
     class: "qt-radio"
-  }, fo = {
+  }, bo = {
     class: "qt-radio"
-  }, vo = {
+  }, xo = {
     class: "qt-stats num"
-  }, yo = {
+  }, ko = {
     class: "qt-stat-error"
-  }, wo = vue.createElementVNode("span", {
+  }, qo = vue.createElementVNode("span", {
     class: "area-foot-spacer"
-  }, null, -1), bo = [ "disabled" ], xo = [ "disabled" ], ko = {
+  }, null, -1), Ao = [ "disabled" ], _o = [ "disabled" ], Co = {
     class: "qt-grid"
-  }, qo = {
+  }, To = {
     class: "qt-preview scroll",
     "aria-label": "\u89e3\u6790\u9884\u89c8"
-  }, Ao = {
+  }, So = {
     key: 0,
     class: "qt-empty"
-  }, _o = {
-    class: "qt-row-head"
-  }, Co = {
-    class: "qt-title-no num"
-  }, To = {
-    class: "aah-tag"
-  }, So = {
-    class: "qt-status"
   }, Io = {
-    class: "qt-question"
+    class: "qt-row-head"
   }, Eo = {
+    class: "qt-title-no num"
+  }, Uo = {
+    class: "aah-tag"
+  }, Po = {
+    class: "qt-status"
+  }, Mo = {
+    class: "qt-question"
+  }, Lo = {
     key: 0,
     class: "qt-options"
-  }, Uo = {
+  }, $o = {
     key: 1,
     class: "qt-answer"
-  }, Po = {
+  }, Ho = {
     key: 2,
     class: "qt-error"
-  }, Lo = vue.defineComponent({
+  }, Oo = vue.defineComponent({
     __name: "QuestionTool",
     setup(e) {
-      const t = vue.ref(""), n = ta(), a = vue.ref(false);
+      const t = vue.ref(""), n = ra(), a = vue.ref(false);
       vue.onBeforeUnmount((() => n.cancelOperation("repair")));
       const s = vue.ref("overwrite"), o = vue.ref(Cache.match("ques1_")), d = vue.computed((() => (e => splitQuestionBlocks(e).map(((e, t) => parseQuestionBlock(e, t))))(t.value))), b = vue.computed((() => buildQuestionImportPlan(d.value, o.value, s.value))), k = vue.computed((() => b.value.items.filter((e => e.question && "skip" !== e.status)))), q = {
         create: "\u5c06\u65b0\u589e",
@@ -16968,49 +16998,49 @@
         const n = e.stats;
         msg(`\u5bfc\u5165\u5b8c\u6210\uff1a\u65b0\u589e ${n.create} \u9898\uff0c\u8986\u76d6 ${n.overwrite} \u9898\uff0c\u8df3\u8fc7 ${n.skip} \u9898\uff0c\u9519\u8bef ${n.error} \u9898`, "success");
       };
-      return (e, n) => (vue.openBlock(), vue.createElementBlock("div", co, [ uo, vue.createElementVNode("div", po, [ vue.createElementVNode("div", ho, [ mo, vue.createElementVNode("label", go, [ vue.withDirectives(vue.createElementVNode("input", {
+      return (e, n) => (vue.openBlock(), vue.createElementBlock("div", mo, [ go, vue.createElementVNode("div", fo, [ vue.createElementVNode("div", vo, [ yo, vue.createElementVNode("label", wo, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": n[0] || (n[0] = e => s.value = e),
         type: "radio",
         value: "overwrite"
-      }, null, 512), [ [ vue.vModelRadio, s.value ] ]), vue.createTextVNode("\u8986\u76d6") ]), vue.createElementVNode("label", fo, [ vue.withDirectives(vue.createElementVNode("input", {
+      }, null, 512), [ [ vue.vModelRadio, s.value ] ]), vue.createTextVNode("\u8986\u76d6") ]), vue.createElementVNode("label", bo, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": n[1] || (n[1] = e => s.value = e),
         type: "radio",
         value: "skip"
-      }, null, 512), [ [ vue.vModelRadio, s.value ] ]), vue.createTextVNode("\u8df3\u8fc7") ]) ]), vue.createElementVNode("span", vo, [ vue.createTextVNode(" \u5171 "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.total), 1), vue.createTextVNode(" \xb7 \u65b0\u589e "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.create), 1), vue.createTextVNode(" \xb7 \u8986\u76d6 "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.overwrite), 1), vue.createTextVNode(" \xb7 \u8df3\u8fc7 "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.skip), 1), b.value.stats.error ? (vue.openBlock(), 
+      }, null, 512), [ [ vue.vModelRadio, s.value ] ]), vue.createTextVNode("\u8df3\u8fc7") ]) ]), vue.createElementVNode("span", xo, [ vue.createTextVNode(" \u5171 "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.total), 1), vue.createTextVNode(" \xb7 \u65b0\u589e "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.create), 1), vue.createTextVNode(" \xb7 \u8986\u76d6 "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.overwrite), 1), vue.createTextVNode(" \xb7 \u8df3\u8fc7 "), vue.createElementVNode("b", null, vue.toDisplayString(b.value.stats.skip), 1), b.value.stats.error ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ vue.createTextVNode(" \xb7 "), vue.createElementVNode("b", yo, "\u9519\u8bef " + vue.toDisplayString(b.value.stats.error), 1) ], 64)) : vue.createCommentVNode("", true) ]), wo, vue.createElementVNode("button", {
+      }, [ vue.createTextVNode(" \xb7 "), vue.createElementVNode("b", ko, "\u9519\u8bef " + vue.toDisplayString(b.value.stats.error), 1) ], 64)) : vue.createCommentVNode("", true) ]), qo, vue.createElementVNode("button", {
         class: "aah-btn",
         type: "button",
         disabled: a.value || !t.value.trim(),
         onClick: repairQuestionText
-      }, vue.toDisplayString(a.value ? "AI \u6574\u7406\u4e2d\u2026" : "AI \u6574\u7406\u683c\u5f0f"), 9, bo), vue.createElementVNode("button", {
+      }, vue.toDisplayString(a.value ? "AI \u6574\u7406\u4e2d\u2026" : "AI \u6574\u7406\u683c\u5f0f"), 9, Ao), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary",
         type: "button",
         disabled: 0 === k.value.length,
         onClick: importQuestion
-      }, vue.toDisplayString(k.value.length ? `\u5bfc\u5165 ${k.value.length} \u9898` : "\u5bfc\u5165"), 9, xo) ]), vue.createElementVNode("div", ko, [ vue.withDirectives(vue.createElementVNode("textarea", {
+      }, vue.toDisplayString(k.value.length ? `\u5bfc\u5165 ${k.value.length} \u9898` : "\u5bfc\u5165"), 9, _o) ]), vue.createElementVNode("div", Co, [ vue.withDirectives(vue.createElementVNode("textarea", {
         "onUpdate:modelValue": n[2] || (n[2] = e => t.value = e),
         class: "qt-textarea",
         placeholder: "\u652f\u6301\u9898\u578b\uff1a\u5355\u9009\u3001\u591a\u9009\u3001\u5224\u65ad\u3001\u586b\u7a7a\u3001\u7b80\u7b54\n\n\u57fa\u7840\u89c4\u5219\uff1a\n1. \u63a8\u8350\u4f7f\u7528\u9898\u53f7\uff0c\u5982 1. 1\u30011\uff0e\uff081\uff09\u6216 (1)\n2. \u65e0\u9898\u53f7\u65f6\uff0c\u7cfb\u7edf\u4f1a\u6309\u7a7a\u884c\u548c\u7b54\u6848\u884c\u63a8\u65ad\u9898\u5757\n3. \u7b54\u6848\u884c\u652f\u6301\uff1a\u7b54\u6848\uff1a\u53c2\u8003\u7b54\u6848\uff1a\u6b63\u786e\u7b54\u6848\uff1a\u6807\u51c6\u7b54\u6848\uff1a\n4. \u9009\u9879\u652f\u6301\uff1aA. A\u3001A\uff0eA) A\uff09\n5. \u652f\u6301\u884c\u5185\u9009\u9879\uff1aA.\u7532 B.\u4e59 C.\u4e19 D.\u4e01\n6. \u586b\u7a7a\u9898\u591a\u4e2a\u7b54\u6848\u7528 | \u5206\u9694\n7. \u5224\u65ad\u9898\u652f\u6301\uff1a\u6b63\u786e\u3001\u9519\u8bef\u3001\u5bf9\u3001\u9519\u3001\u662f\u3001\u5426\u3001\u221a\u3001\xd7\u3001T\u3001F\n\n\u793a\u4f8b\uff1a\n1. [\u5355\u9009\u9898] \u9a7e\u9a76\u4eba\u6709\u4e0b\u5217\u54ea\u79cd\u8fdd\u6cd5\u884c\u4e3a\u4e00\u6b21\u8bb06\u5206\uff1f\nA\u3001\u4f7f\u7528\u5176\u4ed6\u8f66\u8f86\u884c\u9a76\u8bc1\nB\u3001\u996e\u9152\u540e\u9a7e\u9a76\u673a\u52a8\u8f66\nC\u3001\u8f66\u901f\u8d85\u8fc7\u89c4\u5b9a\u65f6\u901f50%\u4ee5\u4e0a\nD\u3001\u8fdd\u6cd5\u5360\u7528\u5e94\u6025\u8f66\u9053\u884c\u9a76\n\u7b54\u6848:D\n\n2\u3001\u3010\u591a\u9009\u9898\u3011 \u4e0b\u5217\u5c5e\u4e8e\u6625\u5b63\u7684\u6708\u4efd\u662f\uff1f\nA.\u4e00\u6708 B.\u4e09\u6708 C.\u56db\u6708 D.\u5341\u4e8c\u6708\n\u53c2\u8003\u7b54\u6848\uff1aBC\n\n3\uff0e\u56fd\u9645\u8c61\u68cb\u8d77\u6e90\u4e8e\u82f1\u56fd\u5417\uff1f\n\u7b54\u6848: \u5bf9\n\n\uff084\uff09\u6211\u56fd\u53e4\u5178\u56db\u5927\u540d\u8457\u662f\uff08\uff09\uff08\uff09\uff08\uff09\uff08\uff09\n\u7b54\u6848: \u7ea2\u697c\u68a6|\u6c34\u6d52\u4f20|\u4e09\u56fd\u6f14\u4e49|\u897f\u6e38\u8bb0\n\n(5) \u5982\u4f55\u4fdd\u6301\u8eab\u4f53\u5065\u5eb7\uff1f\n\u6807\u51c6\u7b54\u6848: \u89c4\u5f8b\u996e\u98df\u3001\u575a\u6301\u953b\u70bc\uff0c\u65e9\u7761\u65e9\u8d77\uff0c\u5b9a\u671f\u4f53\u68c0\u3002",
         "aria-label": "\u9898\u76ee\u6587\u672c"
-      }, null, 512), [ [ vue.vModelText, t.value ] ]), vue.createElementVNode("ol", qo, [ 0 === b.value.items.length ? (vue.openBlock(), 
-      vue.createElementBlock("li", Ao, "\u8f93\u5165\u9898\u76ee\u540e\u4f1a\u5728\u8fd9\u91cc\u9010\u9898\u9884\u89c8")) : vue.createCommentVNode("", true), (vue.openBlock(true), 
+      }, null, 512), [ [ vue.vModelText, t.value ] ]), vue.createElementVNode("ol", To, [ 0 === b.value.items.length ? (vue.openBlock(), 
+      vue.createElementBlock("li", So, "\u8f93\u5165\u9898\u76ee\u540e\u4f1a\u5728\u8fd9\u91cc\u9010\u9898\u9884\u89c8")) : vue.createCommentVNode("", true), (vue.openBlock(true), 
       vue.createElementBlock(vue.Fragment, null, vue.renderList(b.value.items, (e => (vue.openBlock(), vue.createElementBlock("li", {
         key: e.parsed.id,
         class: vue.normalizeClass([ "qt-row", `is-${e.status}` ])
-      }, [ vue.createElementVNode("div", _o, [ vue.createElementVNode("span", Co, vue.toDisplayString(e.parsed.titleNo || e.parsed.sourceIndex + 1), 1), vue.createElementVNode("span", To, vue.toDisplayString(e.parsed.typeLabel), 1), vue.createElementVNode("span", So, vue.toDisplayString(q[e.status]), 1) ]), vue.createElementVNode("p", Io, vue.toDisplayString(e.parsed.question), 1), e.parsed.options.length ? (vue.openBlock(), 
-      vue.createElementBlock("div", Eo, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(formatOptions(e), (e => (vue.openBlock(), vue.createElementBlock("span", {
+      }, [ vue.createElementVNode("div", Io, [ vue.createElementVNode("span", Eo, vue.toDisplayString(e.parsed.titleNo || e.parsed.sourceIndex + 1), 1), vue.createElementVNode("span", Uo, vue.toDisplayString(e.parsed.typeLabel), 1), vue.createElementVNode("span", Po, vue.toDisplayString(q[e.status]), 1) ]), vue.createElementVNode("p", Mo, vue.toDisplayString(e.parsed.question), 1), e.parsed.options.length ? (vue.openBlock(), 
+      vue.createElementBlock("div", Lo, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(formatOptions(e), (e => (vue.openBlock(), vue.createElementBlock("span", {
         key: e.label,
         class: vue.normalizeClass({
           "is-true": e.isTrue
         })
-      }, vue.toDisplayString(e.label), 3)))), 128)) ])) : vue.createCommentVNode("", true), e.parsed.answer.length ? (vue.openBlock(), vue.createElementBlock("p", Uo, "\u7b54\u6848\uff1a" + vue.toDisplayString(e.parsed.answer.join(" | ")), 1)) : vue.createCommentVNode("", true), e.errors.length ? (vue.openBlock(), 
-      vue.createElementBlock("ul", Po, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.errors, (e => (vue.openBlock(), vue.createElementBlock("li", {
+      }, vue.toDisplayString(e.label), 3)))), 128)) ])) : vue.createCommentVNode("", true), e.parsed.answer.length ? (vue.openBlock(), vue.createElementBlock("p", $o, "\u7b54\u6848\uff1a" + vue.toDisplayString(e.parsed.answer.join(" | ")), 1)) : vue.createCommentVNode("", true), e.errors.length ? (vue.openBlock(), 
+      vue.createElementBlock("ul", Ho, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.errors, (e => (vue.openBlock(), vue.createElementBlock("li", {
         key: e
       }, vue.toDisplayString(e), 1)))), 128)) ])) : vue.createCommentVNode("", true) ], 2)))), 128)) ]) ]) ]));
     }
-  }), Mo = Cache.get("apiList", []), $o = [ {
+  }), jo = Cache.get("apiList", []), zo = [ {
     name: "\u4e00\u4e4b\u9898\u5e93",
     url: "http://cx.icodef.com/wyn-nb?v=4",
     method: "POST",
@@ -17027,10 +17057,10 @@
       value: "data"
     },
     weight: 0
-  } ], Ho = pinia.defineStore("api", {
+  } ], Do = pinia.defineStore("api", {
     state: () => ({
-      apiList: Mo,
-      defApiList: $o
+      apiList: jo,
+      defApiList: zo
     }),
     actions: {},
     getters: {
@@ -17040,17 +17070,17 @@
         })), this.apiList.concat(this.defApiList);
       }
     }
-  }), Oo = vue.ref(Cache.match("ques1_").length);
+  }), No = vue.ref(Cache.match("ques1_").length);
 
   function refreshLibraryCount() {
-    Oo.value = Cache.match("ques1_").length;
+    No.value = Cache.match("ques1_").length;
   }
 
   function useLibraryCount() {
-    return Oo;
+    return No;
   }
 
-  const jo = vue.reactive({
+  const Ro = vue.reactive({
     open: false,
     title: "",
     message: "",
@@ -17061,8 +17091,8 @@
 
   function confirmAction(e) {
     var t;
-    return null == (t = jo.resolve) || t.call(jo, false), new Promise((t => {
-      Object.assign(jo, {
+    return null == (t = Ro.resolve) || t.call(Ro, false), new Promise((t => {
+      Object.assign(Ro, {
         open: true,
         title: e.title,
         message: e.message ?? "",
@@ -17074,78 +17104,78 @@
   }
 
   function settleConfirm(e) {
-    const t = jo.resolve;
-    jo.open = false, jo.resolve = null, null == t || t(e);
+    const t = Ro.resolve;
+    Ro.open = false, Ro.resolve = null, null == t || t(e);
   }
 
-  const zo = {
+  const Fo = {
     class: "lib-toolbar"
-  }, Do = {
+  }, Bo = {
     class: "lib-search"
-  }, No = {
+  }, Go = {
     key: 0,
     class: "lib-search-state"
-  }, Ro = {
+  }, Ko = {
     class: "lib-chips",
     role: "group",
     "aria-label": "\u7b5b\u9009"
-  }, Fo = [ "aria-pressed" ], Bo = {
+  }, Vo = [ "aria-pressed" ], Wo = {
     class: "num"
-  }, Go = [ "onClick" ], Ko = {
+  }, Qo = [ "onClick" ], Jo = {
     class: "lib-split"
-  }, Vo = {
-    class: "lib-list scroll"
-  }, Qo = [ "onClick" ], Wo = {
-    class: "lib-row-type"
-  }, Jo = {
-    class: "lib-row-stem"
   }, Zo = {
+    class: "lib-list scroll"
+  }, Yo = [ "onClick" ], Xo = {
+    class: "lib-row-type"
+  }, el = {
+    class: "lib-row-stem"
+  }, tl = {
     class: "lib-row-answer"
-  }, Yo = {
+  }, nl = {
     key: 1,
     class: "lib-empty"
-  }, Xo = vue.createElementVNode("p", null, "\u6ca1\u6709\u5339\u914d\u7684\u9898\u76ee", -1), el = vue.createElementVNode("p", null, "\u672c\u5730\u9898\u5e93\u8fd8\u662f\u7a7a\u7684", -1), tl = vue.createElementVNode("span", null, "\u5728\u652f\u6301\u6536\u5f55\u7684\u5e73\u53f0\u505a\u5b8c\u9898\u3001\u67e5\u770b\u7b54\u6848\u540e\u4f1a\u81ea\u52a8\u6536\u5f55\uff0c\u4e5f\u53ef\u4ee5\u4ece\u5e95\u680f\u300c\u5bfc\u5165\u300d\u3002", -1), nl = {
+  }, al = vue.createElementVNode("p", null, "\u6ca1\u6709\u5339\u914d\u7684\u9898\u76ee", -1), il = vue.createElementVNode("p", null, "\u672c\u5730\u9898\u5e93\u8fd8\u662f\u7a7a\u7684", -1), rl = vue.createElementVNode("span", null, "\u5728\u652f\u6301\u6536\u5f55\u7684\u5e73\u53f0\u505a\u5b8c\u9898\u3001\u67e5\u770b\u7b54\u6848\u540e\u4f1a\u81ea\u52a8\u6536\u5f55\uff0c\u4e5f\u53ef\u4ee5\u4ece\u5e95\u680f\u300c\u5bfc\u5165\u300d\u3002", -1), sl = {
     class: "lib-pane scroll"
-  }, al = {
+  }, ol = {
     key: 1,
     class: "lib-pane-empty"
-  }, il = {
+  }, ll = {
     class: "area-foot"
-  }, rl = {
+  }, cl = {
     class: "lib-count num"
-  }, sl = {
+  }, ul = {
     key: 2,
     class: "lib-uploading"
-  }, ol = vue.createElementVNode("span", {
+  }, pl = vue.createElementVNode("span", {
     class: "area-foot-spacer"
-  }, null, -1), ll = {
+  }, null, -1), dl = {
     class: "lib-menu-wrap"
-  }, cl = [ "aria-expanded" ], ul = {
+  }, hl = [ "aria-expanded" ], ml = {
     key: 0,
     class: "aah-menu lib-menu",
     role: "menu"
-  }, pl = [ "disabled" ], dl = vue.createElementVNode("small", null, "\u4e5f\u53ef\u4ee5\u76f4\u63a5\u628a\u6587\u4ef6\u62d6\u8fdb\u9875\u9762", -1), hl = vue.createElementVNode("small", null, "\u7c98\u8d34\u9898\u76ee\u6587\u672c\uff0c\u53ef\u7528 AI \u6574\u7406\u683c\u5f0f", -1), ml = {
+  }, gl = [ "disabled" ], fl = vue.createElementVNode("small", null, "\u4e5f\u53ef\u4ee5\u76f4\u63a5\u628a\u6587\u4ef6\u62d6\u8fdb\u9875\u9762", -1), vl = vue.createElementVNode("small", null, "\u7c98\u8d34\u9898\u76ee\u6587\u672c\uff0c\u53ef\u7528 AI \u6574\u7406\u683c\u5f0f", -1), yl = {
     class: "lib-menu-wrap"
-  }, gl = [ "aria-expanded" ], fl = {
+  }, wl = [ "aria-expanded" ], bl = {
     key: 0,
     class: "aah-menu lib-menu",
     role: "menu"
-  }, vl = vue.createElementVNode("small", null, "\u52a0\u5bc6\u6587\u4ef6\uff0c\u53ef\u5728\u5176\u4ed6\u6d4f\u89c8\u5668\u5bfc\u5165", -1), yl = {
+  }, xl = vue.createElementVNode("small", null, "\u52a0\u5bc6\u6587\u4ef6\uff0c\u53ef\u5728\u5176\u4ed6\u6d4f\u89c8\u5668\u5bfc\u5165", -1), kl = {
     key: 0,
     class: "area-sheet",
     role: "dialog",
     "aria-label": "\u6587\u672c\u5bfc\u5165"
-  }, wl = {
+  }, ql = {
     class: "area-sheet-head"
-  }, bl = vue.createElementVNode("h2", null, "\u6587\u672c\u5bfc\u5165", -1), xl = {
+  }, Al = vue.createElementVNode("h2", null, "\u6587\u672c\u5bfc\u5165", -1), _l = {
     class: "area-sheet-body scroll"
-  }, kl = {
+  }, Cl = {
     key: 1,
     class: "lib-drop"
-  }, ql = vue.createElementVNode("p", null, "\u677e\u5f00\u5bfc\u5165\u5907\u4efd\u6587\u4ef6\uff08.bak\uff09", -1), Al = 100, _l = vue.defineComponent({
+  }, Tl = vue.createElementVNode("p", null, "\u677e\u5f00\u5bfc\u5165\u5907\u4efd\u6587\u4ef6\uff08.bak\uff09", -1), Sl = 100, Il = vue.defineComponent({
     __name: "Library",
     setup(e) {
-      const t = Qn(), n = ia(), a = useLibraryCount(), q = vue.shallowRef(Cache.matchGet("ques1_") || []), A = vue.shallowRef(null), _ = vue.ref(""), C = vue.ref(false), S = vue.ref(""), I = vue.ref(Al), E = vue.ref(0), U = vue.ref(""), P = vue.ref(false), L = vue.ref(false), $ = vue.ref(null), H = vue.ref(false);
+      const t = Yn(), n = la(), a = useLibraryCount(), q = vue.shallowRef(Cache.matchGet("ques1_") || []), A = vue.shallowRef(null), _ = vue.ref(""), C = vue.ref(false), S = vue.ref(""), I = vue.ref(Sl), E = vue.ref(0), U = vue.ref(""), P = vue.ref(false), M = vue.ref(false), $ = vue.ref(null), H = vue.ref(false);
       let O = 0;
       const j = vue.computed((() => n.saveQuestionData.length > 0)), z = vue.ref("saved" === t.subPage && j.value ? "saved" : "all");
       vue.watch(j, (e => {
@@ -17180,9 +17210,9 @@
         _.value.trim() === t && (A.value = a), C.value = false;
       };
       vue.watch([ _, z ], (() => {
-        I.value = Al, E.value = 0, runSearch();
+        I.value = Sl, E.value = 0, runSearch();
       })), vue.watch(S, (() => {
-        I.value = Al, E.value = 0;
+        I.value = Sl, E.value = 0;
       }));
       const N = vue.computed((() => {
         const e = A.value ?? D.value;
@@ -17208,7 +17238,7 @@
         var e;
         U.value = "", null == (e = $.value) || e.click();
       }, importFile = e => {
-        L.value = true, ((e, t) => {
+        M.value = true, ((e, t) => {
           const n = new FileReader;
           n.onload = async e => {
             var n;
@@ -17227,7 +17257,7 @@
             msg("\u8bfb\u53d6\u6587\u4ef6\u5931\u8d25\uff0c\u8bf7\u91cd\u8bd5", "error"), t(0);
           }, n.readAsText(e);
         })(e, (() => {
-          L.value = false, reload();
+          M.value = false, reload();
         }));
       }, handleFileChange = e => {
         var t;
@@ -17283,22 +17313,22 @@
       })), (e, i) => (vue.openBlock(), vue.createElementBlock("div", {
         class: "area lib-area",
         onClick: closeMenus
-      }, [ vue.createVNode(xs, {
+      }, [ vue.createVNode(_s, {
         visible: G.value,
         ques: B.value,
         onHandleClose: closeEdit
-      }, null, 8, [ "visible", "ques" ]), vue.createVNode(eo, {
+      }, null, 8, [ "visible", "ques" ]), vue.createVNode(io, {
         visible: K.value,
         ques: B.value,
         onHandleClose: closeEdit
-      }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", zo, [ vue.createElementVNode("label", Do, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, null, 8, [ "visible", "ques" ]), vue.createElementVNode("div", Fo, [ vue.createElementVNode("label", Bo, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:magnify"
       }), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": i[0] || (i[0] = e => _.value = e),
         type: "search",
         placeholder: "\u641c\u7d22\u9898\u5e72\u3001\u9009\u9879\u6216\u7b54\u6848",
         "aria-label": "\u641c\u7d22\u9898\u5e93"
-      }, null, 512), [ [ vue.vModelText, _.value ] ]), C.value ? (vue.openBlock(), vue.createElementBlock("span", No, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ro, [ j.value ? (vue.openBlock(), 
+      }, null, 512), [ [ vue.vModelText, _.value ] ]), C.value ? (vue.openBlock(), vue.createElementBlock("span", Go, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", Ko, [ j.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         type: "button",
@@ -17310,20 +17340,20 @@
           return n = "saved" === z.value ? "all" : "saved", z.value = n, void t.setPage("library", "saved" === n ? "saved" : "");
           var n;
         })
-      }, [ vue.createTextVNode("\u672c\u9875\u6536\u5f55 "), vue.createElementVNode("span", Bo, vue.toDisplayString(vue.unref(n).saveQuestionData.length), 1) ], 10, Fo)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+      }, [ vue.createTextVNode("\u672c\u9875\u6536\u5f55 "), vue.createElementVNode("span", Wo, vue.toDisplayString(vue.unref(n).saveQuestionData.length), 1) ], 10, Vo)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
         type: "button",
         class: vue.normalizeClass([ "lib-chip", {
           "is-on": !S.value
         } ]),
         onClick: i[2] || (i[2] = e => S.value = "")
-      }, "\u5168\u90e8", 2), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(Mr), (e => (vue.openBlock(), vue.createElementBlock("button", {
+      }, "\u5168\u90e8", 2), (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(jr), (e => (vue.openBlock(), vue.createElementBlock("button", {
         key: e.value,
         type: "button",
         class: vue.normalizeClass([ "lib-chip", {
           "is-on": S.value === e.value
         } ]),
         onClick: t => S.value = S.value === e.value ? "" : e.value
-      }, vue.toDisplayString(e.label), 11, Go)))), 128)) ]) ]), vue.createElementVNode("div", Ko, [ vue.createElementVNode("div", Vo, [ R.value.length ? (vue.openBlock(), 
+      }, vue.toDisplayString(e.label), 11, Qo)))), 128)) ]) ]), vue.createElementVNode("div", Jo, [ vue.createElementVNode("div", Zo, [ R.value.length ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 0
       }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(R.value, ((e, t) => (vue.openBlock(), vue.createElementBlock("div", {
@@ -17335,8 +17365,8 @@
         type: "button",
         class: "lib-row-main",
         onClick: e => E.value = t
-      }, [ vue.createElementVNode("span", Wo, vue.toDisplayString(vue.unref(typeLabel)(e)) + vue.toDisplayString(true === e.aiGenerated ? " \xb7 AI" : ""), 1), vue.createElementVNode("span", Jo, vue.toDisplayString(stemText(e.question) || "\uff08\u65e0\u9898\u5e72\uff09"), 1), vue.createElementVNode("span", Zo, vue.toDisplayString(vue.unref(answerSummary)(e) || "\u6682\u65e0\u7b54\u6848"), 1) ], 8, Qo), t === E.value ? (vue.openBlock(), 
-      vue.createBlock(es, {
+      }, [ vue.createElementVNode("span", Xo, vue.toDisplayString(vue.unref(typeLabel)(e)) + vue.toDisplayString(true === e.aiGenerated ? " \xb7 AI" : ""), 1), vue.createElementVNode("span", el, vue.toDisplayString(stemText(e.question) || "\uff08\u65e0\u9898\u5e72\uff09"), 1), vue.createElementVNode("span", tl, vue.toDisplayString(vue.unref(answerSummary)(e) || "\u6682\u65e0\u7b54\u6848"), 1) ], 8, Yo), t === E.value ? (vue.openBlock(), 
+      vue.createBlock(is, {
         key: 0,
         class: "lib-row-inline",
         item: e,
@@ -17348,14 +17378,14 @@
         key: 0,
         type: "button",
         class: "aah-btn aah-btn-plain lib-more",
-        onClick: i[3] || (i[3] = e => I.value += Al)
-      }, "\u518d\u663e\u793a " + vue.toDisplayString(Math.min(Al, N.value.length - R.value.length)) + " \u6761\uff08\u8fd8\u5269 " + vue.toDisplayString(N.value.length - R.value.length) + " \u6761\uff09", 1)) : vue.createCommentVNode("", true) ], 64)) : (vue.openBlock(), 
-      vue.createElementBlock("div", Yo, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        onClick: i[3] || (i[3] = e => I.value += Sl)
+      }, "\u518d\u663e\u793a " + vue.toDisplayString(Math.min(Sl, N.value.length - R.value.length)) + " \u6761\uff08\u8fd8\u5269 " + vue.toDisplayString(N.value.length - R.value.length) + " \u6761\uff09", 1)) : vue.createCommentVNode("", true) ], 64)) : (vue.openBlock(), 
+      vue.createElementBlock("div", nl, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:database-search-outline",
         class: "lib-empty-icon"
       }), _.value || S.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ Xo, vue.createElementVNode("button", {
+      }, [ al, vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-small",
         onClick: i[4] || (i[4] = e => {
@@ -17363,57 +17393,57 @@
         })
       }, "\u6e05\u9664\u7b5b\u9009") ], 64)) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 1
-      }, [ el, tl ], 64)) ])) ]), vue.createElementVNode("aside", nl, [ F.value ? (vue.openBlock(), vue.createBlock(es, {
+      }, [ il, rl ], 64)) ])) ]), vue.createElementVNode("aside", sl, [ F.value ? (vue.openBlock(), vue.createBlock(is, {
         key: 0,
         item: F.value,
         deletable: !!F.value.key,
         onEdit: i[5] || (i[5] = e => editItem(F.value)),
         onRemove: i[6] || (i[6] = e => removeItem(F.value))
-      }, null, 8, [ "item", "deletable" ])) : (vue.openBlock(), vue.createElementBlock("p", al, "\u5728\u5de6\u4fa7\u9009\u4e00\u9053\u9898\u67e5\u770b\u8be6\u60c5")) ]) ]), vue.createElementVNode("footer", il, [ vue.createElementVNode("div", rl, [ vue.createTextVNode(" \u5171 "), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(a).toLocaleString()), 1), vue.createTextVNode(" \u9898 "), "saved" === z.value ? (vue.openBlock(), 
+      }, null, 8, [ "item", "deletable" ])) : (vue.openBlock(), vue.createElementBlock("p", ol, "\u5728\u5de6\u4fa7\u9009\u4e00\u9053\u9898\u67e5\u770b\u8be6\u60c5")) ]) ]), vue.createElementVNode("footer", ll, [ vue.createElementVNode("div", cl, [ vue.createTextVNode(" \u5171 "), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(a).toLocaleString()), 1), vue.createTextVNode(" \u9898 "), "saved" === z.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 0
       }, [ vue.createTextVNode(" \xb7 \u672c\u9875\u6536\u5f55 "), vue.createElementVNode("b", null, vue.toDisplayString(vue.unref(n).saveQuestionData.length), 1) ], 64)) : vue.createCommentVNode("", true), _.value || S.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
-      }, [ vue.createTextVNode(" \xb7 \u7b5b\u9009\u540e "), vue.createElementVNode("b", null, vue.toDisplayString(N.value.length), 1) ], 64)) : vue.createCommentVNode("", true), L.value ? (vue.openBlock(), 
-      vue.createElementBlock("span", sl, "\u5bfc\u5165\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), ol, vue.createElementVNode("input", {
+      }, [ vue.createTextVNode(" \xb7 \u7b5b\u9009\u540e "), vue.createElementVNode("b", null, vue.toDisplayString(N.value.length), 1) ], 64)) : vue.createCommentVNode("", true), M.value ? (vue.openBlock(), 
+      vue.createElementBlock("span", ul, "\u5bfc\u5165\u4e2d\u2026")) : vue.createCommentVNode("", true) ]), pl, vue.createElementVNode("input", {
         ref_key: "uploadInput",
         ref: $,
         type: "file",
         accept: ".bak",
         class: "lib-file-input",
         onChange: handleFileChange
-      }, null, 544), vue.createElementVNode("div", ll, [ vue.createElementVNode("button", {
+      }, null, 544), vue.createElementVNode("div", dl, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn",
         "aria-expanded": "import" === U.value,
         onClick: i[7] || (i[7] = e => U.value = "import" === U.value ? "" : "import")
       }, [ vue.createTextVNode(" \u5bfc\u5165"), vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:chevron-down"
-      }) ], 8, cl), "import" === U.value ? (vue.openBlock(), vue.createElementBlock("div", ul, [ vue.createElementVNode("button", {
+      }) ], 8, hl), "import" === U.value ? (vue.openBlock(), vue.createElementBlock("div", ml, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-menu-item",
         role: "menuitem",
-        disabled: L.value,
+        disabled: M.value,
         onClick: startImportFile
-      }, [ vue.createTextVNode(" \u5907\u4efd\u6587\u4ef6\uff08.bak\uff09"), dl ], 8, pl), vue.createElementVNode("button", {
+      }, [ vue.createTextVNode(" \u5907\u4efd\u6587\u4ef6\uff08.bak\uff09"), fl ], 8, gl), vue.createElementVNode("button", {
         type: "button",
         class: "aah-menu-item",
         role: "menuitem",
         onClick: openTool
-      }, [ vue.createTextVNode(" \u6587\u672c\u5bfc\u5165"), hl ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", ml, [ vue.createElementVNode("button", {
+      }, [ vue.createTextVNode(" \u6587\u672c\u5bfc\u5165"), vl ]) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", yl, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn",
         "aria-expanded": "export" === U.value,
         onClick: i[8] || (i[8] = e => U.value = "export" === U.value ? "" : "export")
       }, [ vue.createTextVNode(" \u5bfc\u51fa"), vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:chevron-down"
-      }) ], 8, gl), "export" === U.value ? (vue.openBlock(), vue.createElementBlock("div", fl, [ vue.createElementVNode("button", {
+      }) ], 8, wl), "export" === U.value ? (vue.openBlock(), vue.createElementBlock("div", bl, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-menu-item",
         role: "menuitem",
         onClick: i[9] || (i[9] = e => doExport("backup"))
-      }, [ vue.createTextVNode(" \u5bfc\u51fa\u5907\u4efd\uff08.bak\uff09"), vl ]), V.value > 10 ? (vue.openBlock(), 
+      }, [ vue.createTextVNode(" \u5bfc\u51fa\u5907\u4efd\uff08.bak\uff09"), xl ]), V.value > 10 ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 0
       }, [ vue.createElementVNode("button", {
@@ -17427,28 +17457,28 @@
         role: "menuitem",
         onClick: i[11] || (i[11] = e => doExport("doc-all"))
       }, "\u5bfc\u51fa Word \xb7 \u5168\u90e8") ], 64)) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true) ]) ]), P.value ? (vue.openBlock(), 
-      vue.createElementBlock("section", yl, [ vue.createElementVNode("header", wl, [ vue.createElementVNode("button", {
+      vue.createElementBlock("section", kl, [ vue.createElementVNode("header", ql, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-plain aah-btn-small",
         onClick: closeTool
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:arrow-left"
-      }), vue.createTextVNode("\u8fd4\u56de\u9898\u5e93 ") ]), bl ]), vue.createElementVNode("div", xl, [ vue.createVNode(Lo) ]) ])) : vue.createCommentVNode("", true), H.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", kl, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }), vue.createTextVNode("\u8fd4\u56de\u9898\u5e93 ") ]), Al ]), vue.createElementVNode("div", _l, [ vue.createVNode(Oo) ]) ])) : vue.createCommentVNode("", true), H.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", Cl, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:tray-arrow-down"
-      }), ql ])) : vue.createCommentVNode("", true) ]));
+      }), Tl ])) : vue.createCommentVNode("", true) ]));
     }
-  }), Cl = {
+  }), El = {
     class: "segmented",
     role: "tablist"
-  }, Tl = [ "aria-selected", "onClick" ], Sl = vue.defineComponent({
+  }, Ul = [ "aria-selected", "onClick" ], Pl = vue.defineComponent({
     __name: "SegmentedControl",
     props: {
       segments: {},
       modelValue: {}
     },
     emits: [ "update:modelValue" ],
-    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", Cl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.segments, (t => (vue.openBlock(), 
+    setup: e => (e, t) => (vue.openBlock(), vue.createElementBlock("div", El, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.segments, (t => (vue.openBlock(), 
     vue.createElementBlock("button", {
       key: t.key,
       type: "button",
@@ -17458,11 +17488,11 @@
         active: e.modelValue === t.key
       } ]),
       onClick: n => e.$emit("update:modelValue", t.key)
-    }, vue.toDisplayString(t.label), 11, Tl)))), 128)) ]))
-  }), Il = [ "checked", "disabled" ], El = vue.createElementVNode("span", {
+    }, vue.toDisplayString(t.label), 11, Ul)))), 128)) ]))
+  }), Ml = [ "checked", "disabled" ], Ll = vue.createElementVNode("span", {
     class: "switch-slider",
     "aria-hidden": "true"
-  }, null, -1), Ul = vue.defineComponent({
+  }, null, -1), $l = vue.defineComponent({
     __name: "Switch",
     props: {
       modelValue: {
@@ -17482,38 +17512,38 @@
       checked: e.modelValue,
       disabled: e.disabled,
       onChange: t[0] || (t[0] = t => e.$emit("update:modelValue", t.target.checked))
-    }, null, 40, Il), El ], 2))
-  }), Pl = {
+    }, null, 40, Ml), Ll ], 2))
+  }), Hl = {
     class: "config-item"
-  }, Ll = {
-    class: "config-item-content"
-  }, Ml = {
-    class: "config-label"
-  }, $l = {
-    class: "label-wrapper"
-  }, Hl = {
-    class: "label-text"
   }, Ol = {
+    class: "config-item-content"
+  }, jl = {
+    class: "config-label"
+  }, zl = {
+    class: "label-wrapper"
+  }, Dl = {
+    class: "label-text"
+  }, Nl = {
     key: 0,
     class: "label-desc"
-  }, jl = {
+  }, Rl = {
     class: "config-control"
-  }, zl = [ "value" ], Dl = {
+  }, Fl = [ "value" ], Bl = {
     key: 4,
     class: "hotkey-input-wrapper"
-  }, Nl = [ "value", "placeholder" ], Rl = {
+  }, Gl = [ "value", "placeholder" ], Kl = {
     key: 0,
     class: "hotkey-hint danger"
-  }, Fl = {
+  }, Vl = {
     key: 1,
     class: "hotkey-hint"
-  }, Bl = {
+  }, Wl = {
     key: 5,
     class: "checkbox-group"
-  }, Gl = [ "value" ], Kl = {
+  }, Ql = [ "value" ], Jl = {
     key: 6,
     class: "radio-group"
-  }, Vl = [ "value" ], Ql = [ "min", "max", "step" ], Wl = vue.defineComponent({
+  }, Zl = [ "value" ], Yl = [ "min", "max", "step" ], Xl = vue.defineComponent({
     __name: "ConfigItem",
     props: {
       item: {},
@@ -17526,9 +17556,9 @@
       }, handleHotkeyKeydown = e => {
         a("hotkey-keydown", e, n.item);
       };
-      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Pl, [ vue.createElementVNode("div", Ll, [ vue.createElementVNode("div", Ml, [ vue.createElementVNode("div", $l, [ vue.createElementVNode("span", Hl, vue.toDisplayString(e.item.label), 1), e.item.desc ? (vue.openBlock(), 
-      vue.createElementBlock("span", Ol, vue.toDisplayString(e.item.desc), 1)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("div", jl, [ "switch" === i.value ? (vue.openBlock(), 
-      vue.createBlock(Ul, {
+      return (e, t) => (vue.openBlock(), vue.createElementBlock("div", Hl, [ vue.createElementVNode("div", Ol, [ vue.createElementVNode("div", jl, [ vue.createElementVNode("div", zl, [ vue.createElementVNode("span", Dl, vue.toDisplayString(e.item.label), 1), e.item.desc ? (vue.openBlock(), 
+      vue.createElementBlock("span", Nl, vue.toDisplayString(e.item.desc), 1)) : vue.createCommentVNode("", true) ]) ]), vue.createElementVNode("div", Rl, [ "switch" === i.value ? (vue.openBlock(), 
+      vue.createBlock($l, {
         key: 0,
         modelValue: e.item.value,
         "onUpdate:modelValue": t[0] || (t[0] = t => e.item.value = t)
@@ -17551,8 +17581,8 @@
       }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (e => (vue.openBlock(), vue.createElementBlock("option", {
         key: e.value,
         value: e.value
-      }, vue.toDisplayString(e.label), 9, zl)))), 128)) ], 512)), [ [ vue.vModelSelect, e.item.value ] ]) : "hotkey" === i.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Dl, [ vue.createElementVNode("input", {
+      }, vue.toDisplayString(e.label), 9, Fl)))), 128)) ], 512)), [ [ vue.vModelSelect, e.item.value ] ]) : "hotkey" === i.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", Bl, [ vue.createElementVNode("input", {
         class: vue.normalizeClass([ "aah-input", {
           recording: e.recordingHotkey === e.item.name
         } ]),
@@ -17561,25 +17591,25 @@
         readonly: "",
         onFocus: handleStartRecording,
         onKeydown: handleHotkeyKeydown
-      }, null, 42, Nl), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", Rl, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
-      vue.createElementBlock("span", Fl, "\u70b9\u51fb\u5f55\u5236")) ])) : "checkbox" === i.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Bl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (n => (vue.openBlock(), vue.createElementBlock("label", {
+      }, null, 42, Gl), e.recordingHotkey === e.item.name ? (vue.openBlock(), vue.createElementBlock("span", Kl, "\u5f55\u5236\u4e2d...")) : (vue.openBlock(), 
+      vue.createElementBlock("span", Vl, "\u70b9\u51fb\u5f55\u5236")) ])) : "checkbox" === i.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", Wl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (n => (vue.openBlock(), vue.createElementBlock("label", {
         key: n.value,
         class: "checkbox-item"
       }, [ vue.withDirectives(vue.createElementVNode("input", {
         type: "checkbox",
         value: n.value,
         "onUpdate:modelValue": t[4] || (t[4] = t => e.item.value = t)
-      }, null, 8, Gl), [ [ vue.vModelCheckbox, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(n.label), 1) ])))), 128)) ])) : "radio" === i.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", Kl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (n => (vue.openBlock(), vue.createElementBlock("label", {
+      }, null, 8, Ql), [ [ vue.vModelCheckbox, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(n.label), 1) ])))), 128)) ])) : "radio" === i.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", Jl, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.item.options, (n => (vue.openBlock(), vue.createElementBlock("label", {
         key: n.value,
         class: "radio-item"
       }, [ vue.withDirectives(vue.createElementVNode("input", {
         type: "radio",
         value: n.value,
         "onUpdate:modelValue": t[5] || (t[5] = t => e.item.value = t)
-      }, null, 8, Vl), [ [ vue.vModelRadio, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(n.label), 1) ])))), 128)) ])) : "segment" === i.value ? (vue.openBlock(), 
-      vue.createBlock(Sl, {
+      }, null, 8, Zl), [ [ vue.vModelRadio, e.item.value ] ]), vue.createElementVNode("span", null, vue.toDisplayString(n.label), 1) ])))), 128)) ])) : "segment" === i.value ? (vue.openBlock(), 
+      vue.createBlock(Pl, {
         key: 7,
         modelValue: e.item.value,
         "onUpdate:modelValue": t[6] || (t[6] = t => e.item.value = t),
@@ -17595,92 +17625,92 @@
         max: e.item.max ?? 100,
         step: e.item.step ?? 1,
         class: "aah-slider"
-      }, null, 8, Ql)), [ [ vue.vModelText, e.item.value, void 0, {
+      }, null, 8, Yl)), [ [ vue.vModelText, e.item.value, void 0, {
         number: true
       } ] ]) : vue.createCommentVNode("", true) ]) ]) ]));
     }
-  }), Jl = {
+  }), ec = {
     class: "ai-config-field",
     "aria-label": "\u56fe\u7247\u80fd\u529b\u6d4b\u8bd5"
-  }, Zl = vue.createElementVNode("span", null, "\u56fe\u7247\u80fd\u529b", -1), Yl = {
+  }, tc = vue.createElementVNode("span", null, "\u56fe\u7247\u80fd\u529b", -1), nc = {
     class: "ai-config-field-help"
-  }, Xl = {
+  }, ac = {
     class: "ai-wizard-actions"
-  }, ec = [ "disabled" ], tc = {
+  }, ic = [ "disabled" ], rc = {
     role: "status",
     class: "ai-config-field-help"
-  }, nc = vue.createElementVNode("p", {
+  }, sc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u53d1\u9001\u672c\u673a\u751f\u6210\u7684\u6570\u5b57\u56fe\u7247\uff0c\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002\u7ed3\u679c\u4ec5\u672c\u9875\u6709\u6548\uff0c\u5207\u6362\u8fde\u63a5\u3001\u534f\u8bae\u3001\u6a21\u578b\u6216\u5bc6\u94a5\u540e\u9700\u91cd\u6d4b\u3002", -1), ac = vue.defineComponent({
+  }, "\u53d1\u9001\u672c\u673a\u751f\u6210\u7684\u6570\u5b57\u56fe\u7247\uff0c\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002\u7ed3\u679c\u4ec5\u672c\u9875\u6709\u6548\uff0c\u5207\u6362\u8fde\u63a5\u3001\u534f\u8bae\u3001\u6a21\u578b\u6216\u5bc6\u94a5\u540e\u9700\u91cd\u6d4b\u3002", -1), oc = vue.defineComponent({
     __name: "AiImageCapability",
     props: {
       configId: {}
     },
     setup(e) {
-      const t = e, n = ta(), a = vue.computed((() => n.imageStatus(t.configId))), i = vue.computed((() => {
+      const t = e, n = ra(), a = vue.computed((() => n.imageStatus(t.configId))), i = vue.computed((() => {
         var e, a;
         const i = null == (e = n.selectTargetById(t.configId)) ? void 0 : e.config;
         return (null == i ? void 0 : i.local) ? "\u672c\u673a\u76ee\u5f55\u4e0d\u63a8\u6d4b\u56fe\u7247\u80fd\u529b" : (null == (a = null == i ? void 0 : i.capabilities) ? void 0 : a.image) ? "\u76ee\u5f55\u58f0\u660e\u652f\u6301\u56fe\u7247" : "\u5f53\u524d\u6a21\u578b\u6ca1\u6709\u56fe\u7247\u80fd\u529b\u58f0\u660e";
       }));
       return vue.onBeforeUnmount((() => n.cancelOperation(`image-test:${t.configId}`))), (e, t) => (vue.openBlock(), 
-      vue.createElementBlock("section", Jl, [ Zl, vue.createElementVNode("p", Yl, vue.toDisplayString(i.value) + "\u3002\u8fde\u63a5\u6210\u529f\u4e0d\u80fd\u4ee3\u66ff\u56fe\u7247\u6d4b\u8bd5\u3002", 1), vue.createElementVNode("div", Xl, [ vue.createElementVNode("button", {
+      vue.createElementBlock("section", ec, [ tc, vue.createElementVNode("p", nc, vue.toDisplayString(i.value) + "\u3002\u8fde\u63a5\u6210\u529f\u4e0d\u80fd\u4ee3\u66ff\u56fe\u7247\u6d4b\u8bd5\u3002", 1), vue.createElementVNode("div", ac, [ vue.createElementVNode("button", {
         class: "aah-btn",
         disabled: "testing" === a.value.status,
         onClick: t[0] || (t[0] = t => vue.unref(n).testImageCapability(e.configId))
-      }, vue.toDisplayString("testing" === a.value.status ? "\u56fe\u7247\u6d4b\u8bd5\u4e2d\u2026" : "\u6d4b\u8bd5\u56fe\u7247\u80fd\u529b"), 9, ec), "testing" === a.value.status ? (vue.openBlock(), 
+      }, vue.toDisplayString("testing" === a.value.status ? "\u56fe\u7247\u6d4b\u8bd5\u4e2d\u2026" : "\u6d4b\u8bd5\u56fe\u7247\u80fd\u529b"), 9, ic), "testing" === a.value.status ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn",
         onClick: t[1] || (t[1] = t => vue.unref(n).cancelOperation(`image-test:${e.configId}`))
-      }, "\u505c\u6b62\u56fe\u7247\u6d4b\u8bd5")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("p", tc, vue.toDisplayString(a.value.message), 1), nc ]));
+      }, "\u505c\u6b62\u56fe\u7247\u6d4b\u8bd5")) : vue.createCommentVNode("", true) ]), vue.createElementVNode("p", rc, vue.toDisplayString(a.value.message), 1), sc ]));
     }
-  }), ic = {
+  }), lc = {
     class: "ai-config-global-body",
     "aria-label": "\u672c\u673a AI \u7f51\u5173\u914d\u7f6e"
-  }, rc = vue.createElementVNode("h4", null, "\u672c\u673a\u7f51\u5173", -1), sc = vue.createElementVNode("p", {
+  }, cc = vue.createElementVNode("h4", null, "\u672c\u673a\u7f51\u5173", -1), uc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u9898\u76ee\u76f4\u63a5\u53d1\u9001\u5230\u672c\u673a\u7f51\u5173\uff0c\u4e0d\u7ecf\u7231\u95ee\u7b54\u540e\u7aef\u3001\u4e0d\u8981\u6c42\u7231\u95ee\u7b54\u767b\u5f55\u3002\u7f51\u5173\u4ecd\u53ef\u80fd\u8f6c\u53d1\u5230\u4e91\u7aef\u6a21\u578b\u6216\u641c\u7d22\u670d\u52a1\uff0c\u8d39\u7528\u7531\u6240\u9009\u670d\u52a1\u7ed3\u7b97\u3002", -1), oc = {
+  }, "\u9898\u76ee\u76f4\u63a5\u53d1\u9001\u5230\u672c\u673a\u7f51\u5173\uff0c\u4e0d\u7ecf\u7231\u95ee\u7b54\u540e\u7aef\u3001\u4e0d\u8981\u6c42\u7231\u95ee\u7b54\u767b\u5f55\u3002\u7f51\u5173\u4ecd\u53ef\u80fd\u8f6c\u53d1\u5230\u4e91\u7aef\u6a21\u578b\u6216\u641c\u7d22\u670d\u52a1\uff0c\u8d39\u7528\u7531\u6240\u9009\u670d\u52a1\u7ed3\u7b97\u3002", -1), pc = {
     class: "ai-config-field"
-  }, lc = vue.createElementVNode("span", null, "\u7f51\u5173\u5730\u5740", -1), cc = {
+  }, dc = vue.createElementVNode("span", null, "\u7f51\u5173\u5730\u5740", -1), hc = {
     key: 0,
     class: "ai-config-field-help"
-  }, uc = {
+  }, mc = {
     class: "ai-config-field"
-  }, pc = vue.createElementVNode("span", null, "\u63a5\u53e3", -1), dc = vue.createElementVNode("option", {
+  }, gc = vue.createElementVNode("span", null, "\u63a5\u53e3", -1), fc = vue.createElementVNode("option", {
     value: "anthropic-messages"
-  }, "Claude \u517c\u5bb9 \xb7 Magpie \u63a8\u8350", -1), hc = vue.createElementVNode("option", {
+  }, "Claude \u517c\u5bb9 \xb7 Magpie \u63a8\u8350", -1), vc = vue.createElementVNode("option", {
     value: "openai-compatible"
-  }, "OpenAI \u517c\u5bb9", -1), mc = [ dc, hc ], gc = {
+  }, "OpenAI \u517c\u5bb9", -1), yc = [ fc, vc ], wc = {
     class: "ai-config-field"
-  }, fc = vue.createElementVNode("span", null, "\u72ec\u7acb\u7f51\u5173\u5bc6\u94a5\uff08\u53ef\u9009\uff09", -1), vc = [ "placeholder" ], yc = {
+  }, bc = vue.createElementVNode("span", null, "\u72ec\u7acb\u7f51\u5173\u5bc6\u94a5\uff08\u53ef\u9009\uff09", -1), xc = [ "placeholder" ], kc = {
     class: "ai-wizard-actions"
-  }, wc = [ "disabled" ], bc = {
+  }, Ac = [ "disabled" ], _c = {
     key: 1,
     class: "ai-config-field"
-  }, xc = vue.createElementVNode("span", null, "\u76ee\u5f55\u6a21\u578b", -1), kc = vue.createElementVNode("option", {
+  }, Cc = vue.createElementVNode("span", null, "\u76ee\u5f55\u6a21\u578b", -1), Tc = vue.createElementVNode("option", {
     value: ""
-  }, "\u9009\u62e9\u6a21\u578b", -1), Ac = [ "value" ], _c = {
+  }, "\u9009\u62e9\u6a21\u578b", -1), Sc = [ "value" ], Ic = {
     class: "ai-config-field"
-  }, Cc = vue.createElementVNode("span", null, "\u6a21\u578b ID", -1), Tc = vue.createElementVNode("p", {
+  }, Ec = vue.createElementVNode("span", null, "\u6a21\u578b ID", -1), Uc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u56fe\u7247\u8865\u7b54\u9700\u5148\u901a\u8fc7\u672c\u9875\u56fe\u7247\u6d4b\u8bd5\uff0c\u81ea\u52a8\u56fe\u7247\u6279\u6b21\u53e6\u884c\u5f00\u542f\u3002\u8054\u7f51\u5c1a\u672a\u542f\u7528\u3002\u6d4b\u8bd5\u8fde\u63a5\u4f1a\u8c03\u7528\u6a21\u578b\uff0c\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002", -1), Sc = {
+  }, "\u56fe\u7247\u8865\u7b54\u9700\u5148\u901a\u8fc7\u672c\u9875\u56fe\u7247\u6d4b\u8bd5\uff0c\u81ea\u52a8\u56fe\u7247\u6279\u6b21\u53e6\u884c\u5f00\u542f\u3002\u8054\u7f51\u5c1a\u672a\u542f\u7528\u3002\u6d4b\u8bd5\u8fde\u63a5\u4f1a\u8c03\u7528\u6a21\u578b\uff0c\u53ef\u80fd\u4ea7\u751f\u670d\u52a1\u5546\u8d39\u7528\u3002", -1), Pc = {
     class: "ai-wizard-actions"
-  }, Ic = [ "disabled" ], Ec = {
+  }, Mc = [ "disabled" ], Lc = {
     key: 2,
     class: "ai-config-field-help"
-  }, Uc = {
+  }, $c = {
     key: 3,
     role: "status",
     class: "ai-config-field-help"
-  }, Pc = {
+  }, Hc = {
     key: 4,
     role: "status",
     class: "ai-config-field-help"
-  }, Lc = vue.defineComponent({
+  }, Oc = vue.defineComponent({
     __name: "LocalGatewayConfig",
     setup(e) {
       var t, n, a;
-      const s = ta(), w = vue.ref((null == (t = s.settings.gateway) ? void 0 : t.baseUrl) || ue), b = vue.ref((null == (n = s.settings.gateway) ? void 0 : n.model) || ""), x = vue.ref((null == (a = s.settings.gateway) ? void 0 : a.providerKind) || "anthropic-messages"), q = vue.ref(""), _ = vue.ref(""), C = vue.ref([]), T = vue.ref(false);
+      const s = ra(), w = vue.ref((null == (t = s.settings.gateway) ? void 0 : t.baseUrl) || ue), b = vue.ref((null == (n = s.settings.gateway) ? void 0 : n.model) || ""), x = vue.ref((null == (a = s.settings.gateway) ? void 0 : a.providerKind) || "anthropic-messages"), q = vue.ref(""), _ = vue.ref(""), C = vue.ref([]), T = vue.ref(false);
       let S = 0;
       const draft = () => ({
         baseUrl: w.value,
@@ -17721,17 +17751,17 @@
       })), vue.onBeforeUnmount((() => {
         S++, s.cancelOperation("gateway-models"), s.cancelOperation("test:local-gateway"), 
         q.value = "";
-      })), (e, t) => (vue.openBlock(), vue.createElementBlock("section", ic, [ rc, sc, vue.createElementVNode("label", oc, [ lc, vue.withDirectives(vue.createElementVNode("input", {
+      })), (e, t) => (vue.openBlock(), vue.createElementBlock("section", lc, [ cc, uc, vue.createElementVNode("label", pc, [ dc, vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t[0] || (t[0] = e => w.value = e),
         class: "aah-input",
         "aria-label": "\u672c\u673a\u7f51\u5173\u5730\u5740",
         maxlength: "512"
       }, null, 512), [ [ vue.vModelText, w.value ] ]) ]), vue.unref(normalizeGatewayUrl)(w.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-      vue.createElementBlock("p", cc, "\u4ec5\u652f\u6301 localhost \u6216 127.0.0.1 \u7684 HTTP(S) /v1 \u5730\u5740\uff0c\u4e0d\u542b\u51ed\u8bc1\u3001\u67e5\u8be2\u53c2\u6570\u6216\u7247\u6bb5\u3002")), vue.createElementVNode("label", uc, [ pc, vue.withDirectives(vue.createElementVNode("select", {
+      vue.createElementBlock("p", hc, "\u4ec5\u652f\u6301 localhost \u6216 127.0.0.1 \u7684 HTTP(S) /v1 \u5730\u5740\uff0c\u4e0d\u542b\u51ed\u8bc1\u3001\u67e5\u8be2\u53c2\u6570\u6216\u7247\u6bb5\u3002")), vue.createElementVNode("label", mc, [ gc, vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t[1] || (t[1] = e => x.value = e),
         class: "aah-select",
         "aria-label": "\u672c\u673a\u7f51\u5173\u63a5\u53e3"
-      }, mc, 512), [ [ vue.vModelSelect, x.value ] ]) ]), vue.createElementVNode("label", gc, [ fc, vue.withDirectives(vue.createElementVNode("input", {
+      }, yc, 512), [ [ vue.vModelSelect, x.value ] ]) ]), vue.createElementVNode("label", wc, [ bc, vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t[2] || (t[2] = e => q.value = e),
         class: "aah-input",
         "aria-label": "\u672c\u673a\u7f51\u5173\u5bc6\u94a5",
@@ -17739,310 +17769,310 @@
         autocomplete: "off",
         maxlength: "1024",
         placeholder: U.value ? "\u5df2\u4fdd\u5b58 \xb7 \u8f93\u5165\u65b0\u503c\u53ef\u66ff\u6362" : "\u540c\u673a\u901a\u5e38\u53ef\u7559\u7a7a\uff0c\u52ff\u586b\u4e91\u7aef\u670d\u52a1\u5546 Key"
-      }, null, 8, vc), [ [ vue.vModelText, q.value ] ]) ]), vue.createElementVNode("div", yc, [ vue.createElementVNode("button", {
+      }, null, 8, xc), [ [ vue.vModelText, q.value ] ]) ]), vue.createElementVNode("div", kc, [ vue.createElementVNode("button", {
         class: "aah-btn",
         disabled: T.value || !vue.unref(normalizeGatewayUrl)(w.value),
         onClick: loadModels
-      }, vue.toDisplayString(T.value ? "\u8bfb\u53d6\u4e2d\u2026" : "\u8bfb\u53d6\u6a21\u578b"), 9, wc), U.value ? (vue.openBlock(), 
+      }, vue.toDisplayString(T.value ? "\u8bfb\u53d6\u4e2d\u2026" : "\u8bfb\u53d6\u6a21\u578b"), 9, Ac), U.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn",
         onClick: t[3] || (t[3] = e => vue.unref(s).removeGatewayCredential())
       }, "\u5220\u9664\u7f51\u5173\u5bc6\u94a5")) : vue.createCommentVNode("", true) ]), C.value.length ? (vue.openBlock(), 
-      vue.createElementBlock("label", bc, [ xc, vue.withDirectives(vue.createElementVNode("select", {
+      vue.createElementBlock("label", _c, [ Cc, vue.withDirectives(vue.createElementVNode("select", {
         "onUpdate:modelValue": t[4] || (t[4] = e => b.value = e),
         class: "aah-select",
         "aria-label": "\u672c\u673a\u7f51\u5173\u6a21\u578b"
-      }, [ kc, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(C.value, (e => (vue.openBlock(), vue.createElementBlock("option", {
+      }, [ Tc, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(C.value, (e => (vue.openBlock(), vue.createElementBlock("option", {
         key: e.id,
         value: e.id
-      }, vue.toDisplayString(e.label), 9, Ac)))), 128)) ], 512), [ [ vue.vModelSelect, b.value ] ]) ])) : vue.createCommentVNode("", true), vue.createElementVNode("label", _c, [ Cc, vue.withDirectives(vue.createElementVNode("input", {
+      }, vue.toDisplayString(e.label), 9, Sc)))), 128)) ], 512), [ [ vue.vModelSelect, b.value ] ]) ])) : vue.createCommentVNode("", true), vue.createElementVNode("label", Ic, [ Ec, vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": t[5] || (t[5] = e => b.value = e),
         class: "aah-input",
         "aria-label": "\u672c\u673a\u7f51\u5173\u6a21\u578b ID",
         maxlength: "128",
         placeholder: "\u8bfb\u53d6\u6a21\u578b\u540e\u9009\u62e9\uff0c\u6216\u586b\u5199\u7f51\u5173\u63d0\u4f9b\u7684\u6a21\u578b ID"
-      }, null, 512), [ [ vue.vModelText, b.value ] ]) ]), Tc, vue.createElementVNode("div", Sc, [ vue.createElementVNode("button", {
+      }, null, 512), [ [ vue.vModelText, b.value ] ]) ]), Uc, vue.createElementVNode("div", Pc, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary",
         onClick: save
       }, "\u4fdd\u5b58\u672c\u673a\u914d\u7f6e"), vue.createElementVNode("button", {
         class: "aah-btn",
         disabled: !E.value || I.value || P.value,
         onClick: t[6] || (t[6] = e => vue.unref(s).testConfig("local-gateway"))
-      }, vue.toDisplayString(P.value ? "\u6d4b\u8bd5\u4e2d\u2026" : "\u6d4b\u8bd5\u7f51\u5173\u8fde\u63a5"), 9, Ic), P.value ? (vue.openBlock(), 
+      }, vue.toDisplayString(P.value ? "\u6d4b\u8bd5\u4e2d\u2026" : "\u6d4b\u8bd5\u7f51\u5173\u8fde\u63a5"), 9, Mc), P.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn",
         onClick: t[7] || (t[7] = e => vue.unref(s).cancelOperation("test:local-gateway"))
-      }, "\u505c\u6b62\u6d4b\u8bd5")) : vue.createCommentVNode("", true) ]), I.value ? (vue.openBlock(), vue.createElementBlock("p", Ec, "\u914d\u7f6e\u5c1a\u672a\u4fdd\u5b58\uff0c\u4fdd\u5b58\u540e\u624d\u80fd\u6d4b\u8bd5\u548c\u8865\u7b54\u3002")) : vue.createCommentVNode("", true), _.value ? (vue.openBlock(), 
-      vue.createElementBlock("p", Uc, vue.toDisplayString(_.value), 1)) : vue.createCommentVNode("", true), !I.value && vue.unref(s).connectionMessages["local-gateway"] ? (vue.openBlock(), 
-      vue.createElementBlock("p", Pc, vue.toDisplayString(vue.unref(s).connectionMessages["local-gateway"]), 1)) : vue.createCommentVNode("", true), E.value && !I.value ? (vue.openBlock(), 
-      vue.createBlock(ac, {
+      }, "\u505c\u6b62\u6d4b\u8bd5")) : vue.createCommentVNode("", true) ]), I.value ? (vue.openBlock(), vue.createElementBlock("p", Lc, "\u914d\u7f6e\u5c1a\u672a\u4fdd\u5b58\uff0c\u4fdd\u5b58\u540e\u624d\u80fd\u6d4b\u8bd5\u548c\u8865\u7b54\u3002")) : vue.createCommentVNode("", true), _.value ? (vue.openBlock(), 
+      vue.createElementBlock("p", $c, vue.toDisplayString(_.value), 1)) : vue.createCommentVNode("", true), !I.value && vue.unref(s).connectionMessages["local-gateway"] ? (vue.openBlock(), 
+      vue.createElementBlock("p", Hc, vue.toDisplayString(vue.unref(s).connectionMessages["local-gateway"]), 1)) : vue.createCommentVNode("", true), E.value && !I.value ? (vue.openBlock(), 
+      vue.createBlock(oc, {
         key: 5,
         "config-id": "local-gateway"
       })) : vue.createCommentVNode("", true) ]));
     }
-  }), Mc = {
+  }), jc = {
     class: "ai-config-panel"
-  }, $c = {
+  }, zc = {
     class: "aah-card ai-config-global-body"
-  }, Hc = {
+  }, Dc = {
     class: "ai-config-field"
-  }, Oc = vue.createElementVNode("span", null, "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f", -1), jc = [ "value" ], zc = vue.createElementVNode("option", {
+  }, Nc = vue.createElementVNode("span", null, "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f", -1), Rc = [ "value" ], Fc = vue.createElementVNode("option", {
     value: "off"
-  }, "\u5173\u95ed\u8865\u7b54", -1), Dc = vue.createElementVNode("option", {
+  }, "\u5173\u95ed\u8865\u7b54", -1), Bc = vue.createElementVNode("option", {
     value: "manual"
-  }, "\u4ec5\u624b\u52a8", -1), Nc = vue.createElementVNode("option", {
+  }, "\u4ec5\u624b\u52a8", -1), Gc = vue.createElementVNode("option", {
     value: "auto"
-  }, "\u81ea\u52a8\u8865\u7b54", -1), Rc = [ zc, Dc, Nc ], Fc = {
+  }, "\u81ea\u52a8\u8865\u7b54", -1), Kc = [ Fc, Bc, Gc ], Vc = {
     class: "ai-config-field"
-  }, Bc = vue.createElementVNode("span", null, "\u4fdd\u5b58 AI \u7b54\u6848\u5230\u672c\u673a", -1), Gc = vue.createElementVNode("p", {
+  }, Wc = vue.createElementVNode("span", null, "\u4fdd\u5b58 AI \u7b54\u6848\u5230\u672c\u673a", -1), Qc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u9ed8\u8ba4\u5173\u95ed\uff1b\u53ea\u4fdd\u5b58\u5df2\u901a\u8fc7\u5b89\u5168\u95f8\u4e14\u5b9e\u9645\u56de\u586b\u7684\u7b54\u6848\uff0c\u6807\u8bb0\u4e3a AI \u751f\u6210\u3001\u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u5f00\u542f\u540e\u4e0d\u8986\u76d6\u5df2\u6709\u7684\u975e AI \u7f13\u5b58\uff1b\u5173\u95ed\u4e0d\u5220\u9664\u65e7\u7f13\u5b58\uff0c\u53ef\u5728\u9898\u5e93\u4e2d\u7f16\u8f91\u6216\u5220\u9664\u3002", -1), Kc = vue.createElementVNode("p", {
+  }, "\u9ed8\u8ba4\u5173\u95ed\uff1b\u53ea\u4fdd\u5b58\u5df2\u901a\u8fc7\u5b89\u5168\u95f8\u4e14\u5b9e\u9645\u56de\u586b\u7684\u7b54\u6848\uff0c\u6807\u8bb0\u4e3a AI \u751f\u6210\u3001\u6b63\u786e\u6027\u672a\u8ba4\u8bc1\u3002\u5f00\u542f\u540e\u4e0d\u8986\u76d6\u5df2\u6709\u7684\u975e AI \u7f13\u5b58\uff1b\u5173\u95ed\u4e0d\u5220\u9664\u65e7\u7f13\u5b58\uff0c\u53ef\u5728\u9898\u5e93\u4e2d\u7f16\u8f91\u6216\u5220\u9664\u3002", -1), Jc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "AI \u540e\u7aef\u5171\u4eab\uff1a\u672a\u63a5\u5165\u3002\u4fdd\u5b58\u5230\u672c\u673a\u4e0d\u4f1a\u4e0a\u4f20\u7b54\u6848\uff1b\u539f\u6709\u516c\u5e03\u7b54\u6848\u6536\u5f55\u4fdd\u6301\u539f\u884c\u4e3a\u3002\u7f51\u5173\u4ecd\u53ef\u80fd\u8f6c\u53d1\u9898\u76ee\u5230\u4e91\u7aef\u3002", -1), Vc = vue.createElementVNode("p", {
+  }, "AI \u540e\u7aef\u5171\u4eab\uff1a\u672a\u63a5\u5165\u3002\u4fdd\u5b58\u5230\u672c\u673a\u4e0d\u4f1a\u4e0a\u4f20\u7b54\u6848\uff1b\u539f\u6709\u516c\u5e03\u7b54\u6848\u6536\u5f55\u4fdd\u6301\u539f\u884c\u4e3a\u3002\u7f51\u5173\u4ecd\u53ef\u80fd\u8f6c\u53d1\u9898\u76ee\u5230\u4e91\u7aef\u3002", -1), Zc = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u5173\u95ed\u65f6\u4e0d\u8c03\u7528\u7b54\u9898 AI\uff1b\u4ec5\u624b\u52a8\u53ea\u54cd\u5e94\u5355\u9898\u6309\u94ae\uff1b\u81ea\u52a8\u8865\u7b54\u63a5\u7eed\u9898\u5e93\u672a\u5b8c\u6210\u9879\u3002\u624b\u52a8\u4efb\u52a1\u4e0d\u89e6\u53d1\u6574\u5377\u5b8c\u6210\u52a8\u4f5c\u3002\u914d\u7f6e\u53d8\u66f4\u4f1a\u505c\u6b62\u5f53\u524d AI \u4efb\u52a1\u3002", -1), Qc = {
+  }, "\u5173\u95ed\u65f6\u4e0d\u8c03\u7528\u7b54\u9898 AI\uff1b\u4ec5\u624b\u52a8\u53ea\u54cd\u5e94\u5355\u9898\u6309\u94ae\uff1b\u81ea\u52a8\u8865\u7b54\u63a5\u7eed\u9898\u5e93\u672a\u5b8c\u6210\u9879\u3002\u624b\u52a8\u4efb\u52a1\u4e0d\u89e6\u53d1\u6574\u5377\u5b8c\u6210\u52a8\u4f5c\u3002\u914d\u7f6e\u53d8\u66f4\u4f1a\u505c\u6b62\u5f53\u524d AI \u4efb\u52a1\u3002", -1), Yc = {
     class: "ai-config-field"
-  }, Wc = vue.createElementVNode("span", null, "\u8fde\u63a5\u65b9\u5f0f", -1), Jc = [ "value" ], Zc = vue.createElementVNode("option", {
+  }, Xc = vue.createElementVNode("span", null, "\u8fde\u63a5\u65b9\u5f0f", -1), eu = [ "value" ], tu = vue.createElementVNode("option", {
     value: "cloud"
-  }, "\u4e91\u7aef\u6e20\u9053", -1), Yc = vue.createElementVNode("option", {
+  }, "\u4e91\u7aef\u6e20\u9053", -1), nu = vue.createElementVNode("option", {
     value: "local"
-  }, "\u672c\u5730\u7f51\u5173", -1), Xc = [ Zc, Yc ], eu = {
+  }, "\u672c\u5730\u7f51\u5173", -1), au = [ tu, nu ], iu = {
     class: "ai-config-field"
-  }, tu = vue.createElementVNode("span", null, "AI \u91c7\u7eb3\u7b56\u7565", -1), nu = vue.createElementVNode("option", {
+  }, ru = vue.createElementVNode("span", null, "AI \u91c7\u7eb3\u7b56\u7565", -1), su = vue.createElementVNode("option", {
     value: "conservative"
-  }, "\u4fdd\u5b88\u586b", -1), au = vue.createElementVNode("option", {
+  }, "\u4fdd\u5b88\u586b", -1), ou = vue.createElementVNode("option", {
     value: "direct"
-  }, "\u76f4\u63a5\u586b", -1), iu = vue.createElementVNode("option", {
+  }, "\u76f4\u63a5\u586b", -1), lu = vue.createElementVNode("option", {
     value: "preview"
-  }, "\u9884\u89c8\u786e\u8ba4", -1), ru = [ nu, au, iu ], su = {
+  }, "\u9884\u89c8\u786e\u8ba4", -1), cu = [ su, ou, lu ], uu = {
     class: "ai-config-field",
     "aria-label": "\u56fe\u7247\u81ea\u52a8\u8865\u7b54\u8bbe\u7f6e"
-  }, ou = {
+  }, pu = {
     class: "native-checkbox"
-  }, lu = [ "checked", "disabled" ], cu = vue.createElementVNode("span", null, "\u5141\u8bb8\u56fe\u7247\u81ea\u52a8\u8865\u7b54", -1), uu = vue.createElementVNode("p", {
+  }, du = [ "checked", "disabled" ], hu = vue.createElementVNode("span", null, "\u5141\u8bb8\u56fe\u7247\u81ea\u52a8\u8865\u7b54", -1), mu = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u9ed8\u8ba4\u5173\u95ed\u3002\u5f53\u524d\u56fe\u7247\u6a21\u578b\u901a\u8fc7\u5b9e\u6d4b\u540e\u53ef\u5f00\u542f\uff1b\u9010\u9898\u6536\u9f50\u9898\u5e72\u4e0e\u9009\u9879\u56fe\u7247\uff0c\u518d\u8c03\u7528\u6a21\u578b\uff0c\u51c6\u5907\u4e0e\u8c03\u7528\u5171\u7528\u65f6\u9650\u3002\u5355\u9898\u53ef\u5148\u9884\u89c8\u56fe\u7247\u518d\u786e\u8ba4\u53d1\u9001\u3002", -1), pu = {
+  }, "\u9ed8\u8ba4\u5173\u95ed\u3002\u5f53\u524d\u56fe\u7247\u6a21\u578b\u901a\u8fc7\u5b9e\u6d4b\u540e\u53ef\u5f00\u542f\uff1b\u9010\u9898\u6536\u9f50\u9898\u5e72\u4e0e\u9009\u9879\u56fe\u7247\uff0c\u518d\u8c03\u7528\u6a21\u578b\uff0c\u51c6\u5907\u4e0e\u8c03\u7528\u5171\u7528\u65f6\u9650\u3002\u5355\u9898\u53ef\u5148\u9884\u89c8\u56fe\u7247\u518d\u786e\u8ba4\u53d1\u9001\u3002", -1), gu = {
     key: 0,
     class: "aah-card ai-wizard"
-  }, du = {
+  }, fu = {
     class: "ai-wizard-head"
-  }, hu = vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, "\u5f00\u59cb\u4f7f\u7528 AI"), vue.createElementVNode("p", null, "\u4e09\u6b65\u914d\u597d\uff0c\u4e4b\u540e\u968f\u65f6\u80fd\u6539") ], -1), mu = {
+  }, vu = vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, "\u5f00\u59cb\u4f7f\u7528 AI"), vue.createElementVNode("p", null, "\u4e09\u6b65\u914d\u597d\uff0c\u4e4b\u540e\u968f\u65f6\u80fd\u6539") ], -1), yu = {
     class: "ai-wizard-count"
-  }, gu = {
+  }, wu = {
     class: "ai-wizard-steps",
     "aria-label": "\u914d\u7f6e\u8fdb\u5ea6"
-  }, fu = vue.createElementVNode("span", {
+  }, bu = vue.createElementVNode("span", {
     class: "ai-wizard-dot",
     "aria-hidden": "true"
-  }, null, -1), vu = {
+  }, null, -1), xu = {
     key: 0,
     class: "ai-wizard-body"
-  }, yu = vue.createElementVNode("p", {
+  }, ku = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, " \u4efb\u9009\u4e00\u5bb6\uff0c\u7528\u5b83\u81ea\u5df1\u7684 API Key\u3002\u5e26\u300c\u6709\u514d\u8d39\u989d\u5ea6\u300d\u7684\u6ce8\u518c\u540e\u5373\u53ef\u9886\u53d6\uff0c\u4e0d\u7528\u5145\u503c\u3002 ", -1), wu = {
+  }, " \u4efb\u9009\u4e00\u5bb6\uff0c\u7528\u5b83\u81ea\u5df1\u7684 API Key\u3002\u5e26\u300c\u6709\u514d\u8d39\u989d\u5ea6\u300d\u7684\u6ce8\u518c\u540e\u5373\u53ef\u9886\u53d6\uff0c\u4e0d\u7528\u5145\u503c\u3002 ", -1), qu = {
     class: "ai-config-channel-grid"
-  }, bu = [ "onClick" ], xu = {
+  }, Au = [ "onClick" ], _u = {
     class: "ai-config-card-head"
-  }, ku = {
+  }, Cu = {
     class: "ai-config-card-tags"
-  }, qu = {
+  }, Tu = {
     key: 0,
     class: "ai-config-card-promo"
-  }, Au = {
+  }, Su = {
     class: "ai-wizard-actions"
-  }, _u = {
+  }, Iu = {
     key: 1,
     class: "ai-wizard-body"
-  }, Cu = {
+  }, Eu = {
     class: "ai-wizard-subject"
-  }, Tu = {
+  }, Uu = {
     class: "ai-config-field-help"
-  }, Su = {
+  }, Pu = {
     key: 0,
     class: "ai-config-card-promo"
-  }, Iu = [ "href" ], Eu = {
+  }, Mu = [ "href" ], Lu = {
     class: "ai-wizard-actions"
-  }, Uu = {
+  }, $u = {
     key: 2,
     class: "ai-wizard-body"
-  }, Pu = {
+  }, Hu = {
     class: "ai-wizard-subject"
-  }, Lu = {
+  }, Ou = {
     class: "ai-config-field"
-  }, Mu = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), $u = [ "value" ], Hu = {
+  }, ju = vue.createElementVNode("span", null, "\u628a API Key \u7c98\u5230\u8fd9\u91cc", -1), zu = [ "value" ], Du = {
     class: "ai-wizard-actions"
-  }, Ou = [ "disabled" ], ju = [ "disabled" ], zu = {
+  }, Nu = [ "disabled" ], Ru = [ "disabled" ], Fu = {
     key: 0,
     class: "aah-alert aah-alert-info"
-  }, Du = {
+  }, Bu = {
     key: 1,
     class: "ai-config-manager"
-  }, Nu = {
+  }, Gu = {
     class: "ai-config-side"
-  }, Ru = {
+  }, Ku = {
     class: "aah-card ai-config-list-panel"
-  }, Fu = vue.createElementVNode("header", {
+  }, Vu = vue.createElementVNode("header", {
     class: "ai-config-section-head"
-  }, [ vue.createElementVNode("h4", null, "\u6211\u7684\u6e20\u9053") ], -1), Bu = {
+  }, [ vue.createElementVNode("h4", null, "\u6211\u7684\u6e20\u9053") ], -1), Wu = {
     key: 0,
     class: "ai-config-channel-list"
-  }, Gu = [ "onClick" ], Ku = {
+  }, Qu = [ "onClick" ], Ju = {
     class: "ai-config-channel-text"
-  }, Vu = {
-    key: 0
-  }, Qu = {
-    key: 1
-  }, Wu = {
-    key: 2
-  }, Ju = {
-    key: 3
   }, Zu = {
+    key: 0
+  }, Yu = {
+    key: 1
+  }, Xu = {
+    key: 2
+  }, ep = {
+    key: 3
+  }, tp = {
     key: 0,
     class: "aah-tag aah-tag-primary"
-  }, Yu = {
+  }, np = {
     key: 1,
     class: "ai-config-field-help"
-  }, Xu = {
+  }, ap = {
     class: "ai-config-side-actions"
-  }, ep = {
+  }, ip = {
     class: "aah-card ai-config-global"
-  }, tp = [ "aria-expanded" ], np = vue.createElementVNode("span", null, "\u5168\u5c40\u8bbe\u7f6e", -1), ap = {
+  }, rp = [ "aria-expanded" ], sp = vue.createElementVNode("span", null, "\u5168\u5c40\u8bbe\u7f6e", -1), op = {
     key: 0,
     class: "ai-config-global-body"
-  }, ip = {
+  }, lp = {
     class: "ai-config-field"
-  }, rp = vue.createElementVNode("span", null, "\u56fe\u7247\u9898\u6e20\u9053", -1), sp = vue.createElementVNode("option", {
+  }, cp = vue.createElementVNode("span", null, "\u56fe\u7247\u9898\u6e20\u9053", -1), up = vue.createElementVNode("option", {
     value: ""
-  }, "\u81ea\u52a8\u9009\u62e9", -1), op = [ "value" ], lp = {
+  }, "\u81ea\u52a8\u9009\u62e9", -1), pp = [ "value" ], dp = {
     key: 0,
     class: "ai-config-field-help"
-  }, cp = {
+  }, hp = {
     class: "ai-config-field"
-  }, up = vue.createElementVNode("span", null, "\u8c03\u7528\u65b9\u5f0f", -1), pp = vue.createElementVNode("option", {
+  }, mp = vue.createElementVNode("span", null, "\u8c03\u7528\u65b9\u5f0f", -1), gp = vue.createElementVNode("option", {
     value: "auto"
-  }, "\u81ea\u52a8\uff08\u767b\u5f55\u540e\u4f18\u5148\u4e2d\u8f6c\uff0c\u672a\u767b\u5f55\u76f4\u8fde\uff09", -1), dp = vue.createElementVNode("option", {
+  }, "\u81ea\u52a8\uff08\u767b\u5f55\u540e\u4f18\u5148\u4e2d\u8f6c\uff0c\u672a\u767b\u5f55\u76f4\u8fde\uff09", -1), fp = vue.createElementVNode("option", {
     value: "direct"
-  }, "\u4ec5\u76f4\u8fde\uff08\u4e0d\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\uff09", -1), hp = [ pp, dp ], mp = vue.createElementVNode("p", {
+  }, "\u4ec5\u76f4\u8fde\uff08\u4e0d\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\uff09", -1), vp = [ gp, fp ], yp = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, " \u9009\u300c\u81ea\u52a8\u300d\u65f6\uff0c\u767b\u5f55\u540e\u4f60\u7684 API Key \u4f1a\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\u8f6c\u53d1\u7ed9\u5382\u5546\uff1b\u6211\u4eec\u4e0d\u4fdd\u5b58\u5b83\u3002\u5f53\u524d\u4efb\u52a1\u5931\u8d25\u4e0d\u81ea\u52a8\u91cd\u53d1\uff0c\u53ef\u4e3b\u52a8\u5207\u6362\u94fe\u8def\u540e\u91cd\u8bd5\u3002 \u4ecb\u610f\u7684\u8bdd\u9009\u300c\u4ec5\u76f4\u8fde\u300d\u3002 ", -1), gp = {
+  }, " \u9009\u300c\u81ea\u52a8\u300d\u65f6\uff0c\u767b\u5f55\u540e\u4f60\u7684 API Key \u4f1a\u7ecf\u7231\u95ee\u7b54\u670d\u52a1\u5668\u8f6c\u53d1\u7ed9\u5382\u5546\uff1b\u6211\u4eec\u4e0d\u4fdd\u5b58\u5b83\u3002\u5f53\u524d\u4efb\u52a1\u5931\u8d25\u4e0d\u81ea\u52a8\u91cd\u53d1\uff0c\u53ef\u4e3b\u52a8\u5207\u6362\u94fe\u8def\u540e\u91cd\u8bd5\u3002 \u4ecb\u610f\u7684\u8bdd\u9009\u300c\u4ec5\u76f4\u8fde\u300d\u3002 ", -1), wp = {
     key: 0,
     class: "aah-card ai-config-detail"
-  }, fp = {
+  }, bp = {
     class: "ai-config-section-head"
-  }, vp = {
+  }, xp = {
     class: "ai-config-card-tags"
-  }, yp = {
+  }, kp = {
     key: 0,
     class: "aah-tag aah-tag-success"
-  }, wp = {
+  }, qp = {
     key: 1,
     class: "aah-tag"
-  }, bp = {
+  }, Ap = {
     key: 0
-  }, xp = {
+  }, _p = {
     class: "ai-config-field-help"
-  }, kp = vue.createElementVNode("p", {
+  }, Cp = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u81ea\u5b9a\u4e49 API \u4ec5\u652f\u6301\u516c\u7f51 HTTPS OpenAI \u517c\u5bb9\u683c\u5f0f\u3002\u9700\u767b\u5f55\uff0c\u7ecf\u7231\u95ee\u7b54\u8f6c\u53d1\uff0c\u4e0d\u56de\u843d\u76f4\u8fde\u3002\u540e\u7aef\u4e0d\u4fdd\u5b58 Key\u3002", -1), qp = {
+  }, "\u81ea\u5b9a\u4e49 API \u4ec5\u652f\u6301\u516c\u7f51 HTTPS OpenAI \u517c\u5bb9\u683c\u5f0f\u3002\u9700\u767b\u5f55\uff0c\u7ecf\u7231\u95ee\u7b54\u8f6c\u53d1\uff0c\u4e0d\u56de\u843d\u76f4\u8fde\u3002\u540e\u7aef\u4e0d\u4fdd\u5b58 Key\u3002", -1), Tp = {
     key: 1,
     class: "ai-config-field"
-  }, Ap = vue.createElementVNode("span", null, "API Key", -1), _p = [ "value" ], Cp = {
+  }, Sp = vue.createElementVNode("span", null, "API Key", -1), Ip = [ "value" ], Ep = {
     class: "ai-config-field-help"
-  }, Tp = [ "href" ], Sp = {
+  }, Up = [ "href" ], Pp = {
     key: 2,
     class: "ai-config-field"
-  }, Ip = vue.createElementVNode("span", null, "\u6a21\u578b", -1), Ep = [ "value" ], Up = [ "value" ], Pp = {
+  }, Mp = vue.createElementVNode("span", null, "\u6a21\u578b", -1), Lp = [ "value" ], $p = [ "value" ], Hp = {
     key: 0,
     class: "ai-config-field-help"
-  }, Lp = {
+  }, Op = {
     key: 1,
-    class: "ai-config-field-help"
-  }, Mp = {
-    class: "native-checkbox"
-  }, $p = [ "checked" ], Hp = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), Op = {
-    key: 3,
     class: "ai-config-field-help"
   }, jp = {
+    class: "native-checkbox"
+  }, zp = [ "checked" ], Dp = vue.createElementVNode("span", null, "\u542f\u7528\u8be5\u6e20\u9053", -1), Np = {
+    key: 3,
+    class: "ai-config-field-help"
+  }, Rp = {
     key: 4,
     class: "ai-config-field-help"
-  }, zp = {
+  }, Fp = {
     class: "ai-config-instance-actions"
-  }, Dp = [ "disabled" ], Np = {
+  }, Bp = [ "disabled" ], Gp = {
     key: 5,
     class: "aah-alert aah-alert-info"
-  }, Rp = {
+  }, Kp = {
     key: 1,
     class: "aah-card ai-config-detail ai-config-detail-empty"
-  }, Fp = {
+  }, Vp = {
     class: "ai-config-field-help"
-  }, Bp = {
-    class: "modal-panel ai-config-add-modal"
-  }, Gp = {
-    class: "modal-header"
-  }, Kp = vue.createElementVNode("h3", {
-    id: "ai-add-channel-title"
-  }, "\u6dfb\u52a0\u6e20\u9053", -1), Vp = {
-    class: "modal-body"
-  }, Qp = {
-    class: "ai-config-channel-grid"
   }, Wp = {
+    class: "modal-panel ai-config-add-modal"
+  }, Qp = {
+    class: "modal-header"
+  }, Jp = vue.createElementVNode("h3", {
+    id: "ai-add-channel-title"
+  }, "\u6dfb\u52a0\u6e20\u9053", -1), Zp = {
+    class: "modal-body"
+  }, Yp = {
+    class: "ai-config-channel-grid"
+  }, Xp = {
     class: "ai-config-card-head"
-  }, Jp = {
+  }, ed = {
     class: "ai-config-card-tags"
-  }, Zp = {
+  }, td = {
     key: 0,
     class: "ai-config-card-promo"
-  }, Yp = {
+  }, nd = {
     class: "ai-config-card-actions"
-  }, Xp = [ "href" ], ed = [ "onClick" ], td = {
+  }, ad = [ "href" ], id = [ "onClick" ], rd = {
     key: 0,
     class: "ai-config-field-help"
-  }, nd = {
-    class: "modal-footer"
-  }, ad = [ "disabled" ], id = {
-    class: "modal-panel ai-config-add-modal"
-  }, rd = {
-    class: "modal-header"
   }, sd = {
+    class: "modal-footer"
+  }, od = [ "disabled" ], ld = {
+    class: "modal-panel ai-config-add-modal"
+  }, cd = {
+    class: "modal-header"
+  }, ud = {
     id: "ai-custom-title"
-  }, od = {
+  }, pd = {
     class: "modal-body"
-  }, ld = vue.createElementVNode("p", {
+  }, dd = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "OpenAI Chat Completions \u517c\u5bb9\u683c\u5f0f\u3002\u914d\u7f6e\u4fdd\u5b58\u5728\u672c\u673a\uff1b\u4f7f\u7528\u65f6 Key \u548c\u9898\u76ee\u7ecf\u7231\u95ee\u7b54\u8f6c\u53d1\u5230\u586b\u5199\u7684\u5730\u5740\uff0c\u540e\u7aef\u4e0d\u7559\u5b58 Key\u3002", -1), cd = {
+  }, "OpenAI Chat Completions \u517c\u5bb9\u683c\u5f0f\u3002\u914d\u7f6e\u4fdd\u5b58\u5728\u672c\u673a\uff1b\u4f7f\u7528\u65f6 Key \u548c\u9898\u76ee\u7ecf\u7231\u95ee\u7b54\u8f6c\u53d1\u5230\u586b\u5199\u7684\u5730\u5740\uff0c\u540e\u7aef\u4e0d\u7559\u5b58 Key\u3002", -1), hd = {
     class: "ai-config-field"
-  }, ud = vue.createElementVNode("span", null, "API \u5730\u5740\uff08Base URL\uff09", -1), pd = vue.createElementVNode("p", {
+  }, md = vue.createElementVNode("span", null, "API \u5730\u5740\uff08Base URL\uff09", -1), gd = vue.createElementVNode("p", {
     class: "ai-config-field-help"
-  }, "\u4ec5\u516c\u7f51 HTTPS\uff0c\u4e0d\u542b /chat/completions\u3002", -1), dd = {
+  }, "\u4ec5\u516c\u7f51 HTTPS\uff0c\u4e0d\u542b /chat/completions\u3002", -1), fd = {
     class: "ai-config-field"
-  }, hd = vue.createElementVNode("span", null, "\u6a21\u578b\u540d\u79f0", -1), md = {
+  }, vd = vue.createElementVNode("span", null, "\u6a21\u578b\u540d\u79f0", -1), yd = {
     class: "ai-config-field"
-  }, gd = vue.createElementVNode("span", null, "API Key", -1), fd = [ "placeholder" ], vd = {
+  }, wd = vue.createElementVNode("span", null, "API Key", -1), bd = [ "placeholder" ], xd = {
     key: 0,
     class: "aah-alert aah-alert-error",
     role: "alert"
-  }, yd = {
-    class: "modal-panel ai-config-delete-modal"
-  }, wd = {
-    class: "modal-header"
-  }, bd = vue.createElementVNode("h3", {
-    id: "ai-channel-delete-title"
-  }, "\u786e\u8ba4\u79fb\u9664", -1), xd = {
-    class: "modal-body"
   }, kd = {
-    class: "ai-config-delete-text"
+    class: "modal-panel ai-config-delete-modal"
   }, qd = {
+    class: "modal-header"
+  }, Ad = vue.createElementVNode("h3", {
+    id: "ai-channel-delete-title"
+  }, "\u786e\u8ba4\u79fb\u9664", -1), _d = {
+    class: "modal-body"
+  }, Cd = {
+    class: "ai-config-delete-text"
+  }, Td = {
     class: "modal-footer"
-  }, Ad = vue.defineComponent({
+  }, Sd = vue.defineComponent({
     __name: "AiConfigPanel",
     setup(e) {
-      const t = ta(), n = vue.computed((() => "local" === t.settings.connection)), a = vue.ref(!t.settings.instances.some((e => {
+      const t = ra(), n = vue.computed((() => "local" === t.settings.connection)), a = vue.ref(!t.settings.instances.some((e => {
         var t;
         return null == (t = e.credential) ? void 0 : t.value;
       })));
-      const s = t.settings.instances[0], l = vue.ref(s ? 2 : 1), _ = vue.ref((null == s ? void 0 : s.channelId) ?? ""), C = vue.ref(false), I = vue.ref(t.settings.defaultChannelId || (null == s ? void 0 : s.channelId) || ""), E = vue.ref(false), U = vue.ref(false), P = vue.ref(false), L = vue.ref(""), $ = vue.ref(""), H = vue.ref(""), O = vue.ref(""), j = vue.ref(""), z = vue.ref(null), channelOf2 = e => {
+      const s = t.settings.instances[0], l = vue.ref(s ? 2 : 1), _ = vue.ref((null == s ? void 0 : s.channelId) ?? ""), C = vue.ref(false), I = vue.ref(t.settings.defaultChannelId || (null == s ? void 0 : s.channelId) || ""), E = vue.ref(false), U = vue.ref(false), P = vue.ref(false), M = vue.ref(""), $ = vue.ref(""), H = vue.ref(""), O = vue.ref(""), j = vue.ref(""), z = vue.ref(null), channelOf2 = e => {
         const n = resolveChannel(t.catalog, t.settings.customChannels, e);
         return n ? asChannel(n) : void 0;
       }, isCustom = e => t.settings.customChannels.some((t => t.id === e)), D = vue.computed((() => t.catalogForDisplay().filter((e => !t.settings.instances.some((t => t.channelId === e.id)))))), N = vue.computed((() => C.value ? D.value : D.value.slice(0, 6))), R = vue.computed((() => t.settings.instances.map((e => ({
@@ -18051,11 +18081,11 @@
       }))))), F = vue.computed((() => t.settings.instances.find((e => e.channelId === I.value)))), B = vue.computed((() => channelOf2(I.value))), G = vue.computed((() => channelOf2(_.value))), K = vue.computed((() => t.settings.instances.find((e => e.channelId === _.value)))), V = vue.computed((() => {
         var e, t;
         return Boolean(null == (t = null == (e = K.value) ? void 0 : e.credential) ? void 0 : t.value);
-      })), Q = vue.computed((() => R.value.filter((e => e.channel && hasVisionModel(e.channel))).map((e => ({
+      })), W = vue.computed((() => R.value.filter((e => e.channel && hasVisionModel(e.channel))).map((e => ({
         ...e,
         readiness: imageReadiness(e.channel, e.instance)
-      }))))), W = vue.computed((() => B.value && F.value ? imageReadiness(B.value, F.value) : void 0)), useSuggestedVisionModel = () => {
-        const e = F.value, t = W.value;
+      }))))), Q = vue.computed((() => B.value && F.value ? imageReadiness(B.value, F.value) : void 0)), useSuggestedVisionModel = () => {
+        const e = F.value, t = Q.value;
         e && "switchable" === (null == t ? void 0 : t.state) && (e.modelId = t.suggestModelId, 
         save(), msg(`\u5df2\u5207\u6362\u5230 ${t.suggestModelId}`, "success"));
       }, testingFor = e => Boolean(t.connectionTestingIds[e]), messageFor = e => t.connectionMessages[e] || "", save = () => t.saveSettings(), setCredential = (e, n) => {
@@ -18076,13 +18106,13 @@
         _.value = "", l.value = 1, C.value = false, a.value = true;
       }, editCustom = (e = "") => {
         const n = t.settings.customChannels.find((t => t.id === e));
-        L.value = e, $.value = (null == n ? void 0 : n.baseUrl) ?? "", H.value = (null == n ? void 0 : n.model) ?? "", 
+        M.value = e, $.value = (null == n ? void 0 : n.baseUrl) ?? "", H.value = (null == n ? void 0 : n.model) ?? "", 
         O.value = "", j.value = "", P.value = true, E.value = false;
       }, closeCustom = () => {
         O.value = "", P.value = false;
       }, saveCustom = () => {
         try {
-          const e = L.value || `custom-${createAiNonce()}`;
+          const e = M.value || `custom-${createAiNonce()}`;
           t.saveCustomChannel(e, {
             baseUrl: $.value,
             model: H.value,
@@ -18111,43 +18141,43 @@
         n.value || t.loadCatalog();
       })), (e, i) => {
         var r, s, o, T, J, Z, Y, X;
-        return vue.openBlock(), vue.createElementBlock("div", Mc, [ vue.createElementVNode("section", $c, [ vue.createElementVNode("label", Hc, [ Oc, vue.createElementVNode("select", {
+        return vue.openBlock(), vue.createElementBlock("div", jc, [ vue.createElementVNode("section", zc, [ vue.createElementVNode("label", Dc, [ Nc, vue.createElementVNode("select", {
           class: "aah-select",
           "aria-label": "AI \u4f7f\u7528\u65b9\u5f0f",
           value: vue.unref(t).usage,
           onChange: i[0] || (i[0] = e => vue.unref(t).setUsage(e.target.value))
-        }, Rc, 40, jc) ]), vue.createElementVNode("label", Fc, [ Bc, vue.withDirectives(vue.createElementVNode("input", {
+        }, Kc, 40, Rc) ]), vue.createElementVNode("label", Vc, [ Wc, vue.withDirectives(vue.createElementVNode("input", {
           type: "checkbox",
           "aria-label": "\u4fdd\u5b58 AI \u7b54\u6848\u5230\u672c\u673a",
           "onUpdate:modelValue": i[1] || (i[1] = e => vue.unref(t).settings.saveAiLocally = e),
           onChange: save
-        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).settings.saveAiLocally ] ]) ]), Gc, Kc, Vc, vue.createElementVNode("label", Qc, [ Wc, vue.createElementVNode("select", {
+        }, null, 544), [ [ vue.vModelCheckbox, vue.unref(t).settings.saveAiLocally ] ]) ]), Qc, Jc, Zc, vue.createElementVNode("label", Yc, [ Xc, vue.createElementVNode("select", {
           class: "aah-select",
           "aria-label": "AI \u8fde\u63a5\u65b9\u5f0f",
           value: n.value ? "local" : "cloud",
           onChange: i[2] || (i[2] = e => vue.unref(t).changeConnection(e.target.value))
-        }, Xc, 40, Jc) ]), vue.createElementVNode("label", eu, [ tu, vue.withDirectives(vue.createElementVNode("select", {
+        }, au, 40, eu) ]), vue.createElementVNode("label", iu, [ ru, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": i[3] || (i[3] = e => vue.unref(t).settings.adoptionStrategy = e),
           class: "aah-select",
           "aria-label": "AI \u91c7\u7eb3\u7b56\u7565",
           onChange: save
-        }, ru, 544), [ [ vue.vModelSelect, vue.unref(t).settings.adoptionStrategy ] ]) ]) ]), n.value ? (vue.openBlock(), vue.createBlock(Lc, {
+        }, cu, 544), [ [ vue.vModelSelect, vue.unref(t).settings.adoptionStrategy ] ]) ]) ]), n.value ? (vue.openBlock(), vue.createBlock(Oc, {
           key: 0
-        })) : vue.createCommentVNode("", true), vue.createElementVNode("section", su, [ vue.createElementVNode("label", ou, [ vue.createElementVNode("input", {
+        })) : vue.createCommentVNode("", true), vue.createElementVNode("section", uu, [ vue.createElementVNode("label", pu, [ vue.createElementVNode("input", {
           type: "checkbox",
           checked: true === vue.unref(t).settings.autoImages,
           disabled: true !== vue.unref(t).settings.autoImages && !vue.unref(t).selectTarget("ask", "image"),
           onChange: i[4] || (i[4] = e => vue.unref(t).setAutoImages(e.target.checked))
-        }, null, 40, lu), cu ]), uu ]), n.value ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
+        }, null, 40, du), hu ]), mu ]), n.value ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
           key: 1
-        }, [ a.value ? (vue.openBlock(), vue.createElementBlock("section", pu, [ vue.createElementVNode("header", du, [ hu, vue.createElementVNode("span", mu, vue.toDisplayString(l.value) + " / 3", 1) ]), vue.createElementVNode("ol", gu, [ (vue.openBlock(), 
+        }, [ a.value ? (vue.openBlock(), vue.createElementBlock("section", gu, [ vue.createElementVNode("header", fu, [ vu, vue.createElementVNode("span", yu, vue.toDisplayString(l.value) + " / 3", 1) ]), vue.createElementVNode("ol", wu, [ (vue.openBlock(), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList([ "\u9009\u5e73\u53f0", "\u9886 Key", "\u7c98\u56de\u6765" ], ((e, t) => vue.createElementVNode("li", {
           key: e,
           class: vue.normalizeClass({
             done: l.value > t + 1,
             current: l.value === t + 1
           })
-        }, [ fu, vue.createElementVNode("span", null, vue.toDisplayString(e), 1) ], 2))), 64)) ]), 1 === l.value ? (vue.openBlock(), vue.createElementBlock("div", vu, [ yu, vue.createElementVNode("div", wu, [ (vue.openBlock(true), 
+        }, [ bu, vue.createElementVNode("span", null, vue.toDisplayString(e), 1) ], 2))), 64)) ]), 1 === l.value ? (vue.openBlock(), vue.createElementBlock("div", xu, [ ku, vue.createElementVNode("div", qu, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(N.value, (e => (vue.openBlock(), vue.createElementBlock("button", {
           key: e.id,
           type: "button",
@@ -18158,11 +18188,11 @@
             return a = e.id, t.addChannel(a), _.value = a, I.value = a, void (l.value = 2);
             var a;
           }
-        }, [ vue.createElementVNode("span", xu, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("span", ku, [ (vue.openBlock(true), 
+        }, [ vue.createElementVNode("span", _u, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("span", Cu, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(e), (e => (vue.openBlock(), vue.createElementBlock("span", {
           key: e.label,
           class: vue.normalizeClass([ "aah-tag", e.cls ])
-        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("span", qu, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true) ], 10, bu)))), 128)) ]), vue.createElementVNode("div", Au, [ vue.createElementVNode("button", {
+        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("span", Tu, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true) ], 10, Au)))), 128)) ]), vue.createElementVNode("div", Su, [ vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: i[5] || (i[5] = e => editCustom())
@@ -18177,8 +18207,8 @@
           type: "button",
           onClick: skipWizard
         }, " \u8df3\u8fc7\uff0c\u76f4\u63a5\u8fdb\u8bbe\u7f6e ") ]) ])) : 2 === l.value && G.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", _u, [ vue.createElementVNode("h5", Cu, vue.toDisplayString(G.value.name), 1), vue.createElementVNode("p", Tu, vue.toDisplayString(G.value.keyHelp), 1), G.value.promoText ? (vue.openBlock(), 
-        vue.createElementBlock("p", Su, vue.toDisplayString(G.value.promoText), 1)) : vue.createCommentVNode("", true), G.value.signupUrl ? (vue.openBlock(), vue.createElementBlock("a", {
+        vue.createElementBlock("div", Iu, [ vue.createElementVNode("h5", Eu, vue.toDisplayString(G.value.name), 1), vue.createElementVNode("p", Uu, vue.toDisplayString(G.value.keyHelp), 1), G.value.promoText ? (vue.openBlock(), 
+        vue.createElementBlock("p", Pu, vue.toDisplayString(G.value.promoText), 1)) : vue.createCommentVNode("", true), G.value.signupUrl ? (vue.openBlock(), vue.createElementBlock("a", {
           key: 1,
           class: "aah-btn aah-btn-primary",
           href: G.value.signupUrl,
@@ -18187,7 +18217,7 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:open-in-new",
           class: "icon-inline"
-        }), vue.createTextVNode("\u53bb " + vue.toDisplayString(G.value.name) + " \u9886\u53d6 API Key ", 1) ], 8, Iu)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Eu, [ vue.createElementVNode("button", {
+        }), vue.createTextVNode("\u53bb " + vue.toDisplayString(G.value.name) + " \u9886\u53d6 API Key ", 1) ], 8, Mu)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Lu, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: backToPick
@@ -18196,14 +18226,14 @@
           type: "button",
           onClick: i[7] || (i[7] = e => l.value = 3)
         }, "\u6211\u5df2\u7ecf\u6709 Key \u4e86") ]) ])) : 3 === l.value && G.value ? (vue.openBlock(), 
-        vue.createElementBlock("div", Uu, [ vue.createElementVNode("h5", Pu, vue.toDisplayString(G.value.name), 1), vue.createElementVNode("label", Lu, [ Mu, vue.createElementVNode("input", {
+        vue.createElementBlock("div", $u, [ vue.createElementVNode("h5", Hu, vue.toDisplayString(G.value.name), 1), vue.createElementVNode("label", Ou, [ ju, vue.createElementVNode("input", {
           value: (null == (s = null == (r = K.value) ? void 0 : r.credential) ? void 0 : s.value) || "",
           class: "aah-input",
           type: "password",
           autocomplete: "off",
           placeholder: "\u7c98\u8d34\u540e\u4f1a\u81ea\u52a8\u4fdd\u5b58\u5230\u672c\u5730",
           onInput: i[8] || (i[8] = e => setCredential(_.value, e.target.value))
-        }, null, 40, $u) ]), vue.createElementVNode("div", Hu, [ vue.createElementVNode("button", {
+        }, null, 40, zu) ]), vue.createElementVNode("div", Du, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: i[9] || (i[9] = e => l.value = 2)
@@ -18212,16 +18242,16 @@
           type: "button",
           disabled: !V.value || testingFor(_.value),
           onClick: i[10] || (i[10] = e => vue.unref(t).testConfig(_.value))
-        }, vue.toDisplayString(testingFor(_.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 9, Ou), vue.createElementVNode("button", {
+        }, vue.toDisplayString(testingFor(_.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 9, Nu), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary",
           type: "button",
           disabled: !V.value,
           onClick: finishWizard
-        }, " \u5b8c\u6210 ", 8, ju) ]), messageFor(_.value) ? (vue.openBlock(), vue.createElementBlock("div", zu, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }, " \u5b8c\u6210 ", 8, Ru) ]), messageFor(_.value) ? (vue.openBlock(), vue.createElementBlock("div", Fu, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(_.value)), 1) ])) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true) ])) : (vue.openBlock(), 
-        vue.createElementBlock("div", Du, [ vue.createElementVNode("aside", Nu, [ vue.createElementVNode("section", Ru, [ Fu, R.value.length ? (vue.openBlock(), vue.createElementBlock("div", Bu, [ (vue.openBlock(true), 
+        vue.createElementBlock("div", Bu, [ vue.createElementVNode("aside", Gu, [ vue.createElementVNode("section", Ku, [ Vu, R.value.length ? (vue.openBlock(), vue.createElementBlock("div", Wu, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(R.value, (e => {
           var n, a;
           return vue.openBlock(), vue.createElementBlock("button", {
@@ -18235,11 +18265,11 @@
           }, [ vue.createVNode(vue.unref(vue$1.Icon), {
             icon: "mdi:robot",
             class: "icon-inline"
-          }), vue.createElementVNode("span", Ku, [ vue.createElementVNode("strong", null, vue.toDisplayString((null == (n = e.channel) ? void 0 : n.name) ?? e.instance.channelId), 1), e.channel ? (null == (a = e.instance.credential) ? void 0 : a.value) ? e.instance.enabled ? (vue.openBlock(), 
-          vue.createElementBlock("small", Ju, vue.toDisplayString(e.instance.modelId || e.channel.defaultModelId), 1)) : (vue.openBlock(), vue.createElementBlock("small", Wu, "\u5df2\u505c\u7528")) : (vue.openBlock(), 
-          vue.createElementBlock("small", Qu, "\u5f85\u586b API Key")) : (vue.openBlock(), vue.createElementBlock("small", Vu, "\u6e20\u9053\u5df2\u4e0b\u7ebf\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9")) ]), e.instance.channelId === vue.unref(t).settings.defaultChannelId ? (vue.openBlock(), 
-          vue.createElementBlock("span", Zu, "\u9ed8\u8ba4")) : vue.createCommentVNode("", true) ], 10, Gu);
-        })), 128)) ])) : (vue.openBlock(), vue.createElementBlock("p", Yu, "\u8fd8\u6ca1\u6709\u4efb\u4f55\u6e20\u9053\u3002")), vue.createElementVNode("div", Xu, [ vue.createElementVNode("button", {
+          }), vue.createElementVNode("span", Ju, [ vue.createElementVNode("strong", null, vue.toDisplayString((null == (n = e.channel) ? void 0 : n.name) ?? e.instance.channelId), 1), e.channel ? (null == (a = e.instance.credential) ? void 0 : a.value) ? e.instance.enabled ? (vue.openBlock(), 
+          vue.createElementBlock("small", ep, vue.toDisplayString(e.instance.modelId || e.channel.defaultModelId), 1)) : (vue.openBlock(), vue.createElementBlock("small", Xu, "\u5df2\u505c\u7528")) : (vue.openBlock(), 
+          vue.createElementBlock("small", Yu, "\u5f85\u586b API Key")) : (vue.openBlock(), vue.createElementBlock("small", Zu, "\u6e20\u9053\u5df2\u4e0b\u7ebf\uff0c\u8bf7\u91cd\u65b0\u9009\u62e9")) ]), e.instance.channelId === vue.unref(t).settings.defaultChannelId ? (vue.openBlock(), 
+          vue.createElementBlock("span", tp, "\u9ed8\u8ba4")) : vue.createCommentVNode("", true) ], 10, Qu);
+        })), 128)) ])) : (vue.openBlock(), vue.createElementBlock("p", np, "\u8fd8\u6ca1\u6709\u4efb\u4f55\u6e20\u9053\u3002")), vue.createElementVNode("div", ap, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
           onClick: i[11] || (i[11] = e => E.value = true)
@@ -18251,79 +18281,79 @@
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           onClick: restartWizard
-        }, " \u8ddf\u7740\u5f15\u5bfc\u8d70 ")) ]) ]), vue.createElementVNode("section", ep, [ vue.createElementVNode("button", {
+        }, " \u8ddf\u7740\u5f15\u5bfc\u8d70 ")) ]) ]), vue.createElementVNode("section", ip, [ vue.createElementVNode("button", {
           type: "button",
           class: "ai-config-collapse",
           "aria-expanded": U.value,
           onClick: i[12] || (i[12] = e => U.value = !U.value)
-        }, [ np, vue.createVNode(vue.unref(vue$1.Icon), {
+        }, [ sp, vue.createVNode(vue.unref(vue$1.Icon), {
           icon: U.value ? "mdi:chevron-up" : "mdi:chevron-down",
           class: "icon-inline"
-        }, null, 8, [ "icon" ]) ], 8, tp), U.value ? (vue.openBlock(), vue.createElementBlock("div", ap, [ vue.createElementVNode("label", ip, [ rp, vue.withDirectives(vue.createElementVNode("select", {
+        }, null, 8, [ "icon" ]) ], 8, rp), U.value ? (vue.openBlock(), vue.createElementBlock("div", op, [ vue.createElementVNode("label", lp, [ cp, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": i[13] || (i[13] = e => vue.unref(t).settings.defaultVisionChannelId = e),
           class: "aah-select",
           onChange: save
-        }, [ sp, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(Q.value, (e => {
+        }, [ up, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(W.value, (e => {
           var t;
           return vue.openBlock(), vue.createElementBlock("option", {
             key: e.instance.channelId,
             value: e.instance.channelId
-          }, vue.toDisplayString(null == (t = e.channel) ? void 0 : t.name) + vue.toDisplayString("switchable" === e.readiness.state ? "\uff08\u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\uff09" : ""), 9, op);
-        })), 128)) ], 544), [ [ vue.vModelSelect, vue.unref(t).settings.defaultVisionChannelId ] ]), Q.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", lp, " \u5df2\u6dfb\u52a0\u7684\u6e20\u9053\u90fd\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u5fc5\u8981\u56fe\u7247\u4e0d\u5b8c\u6574\u65f6\u4e0d\u4f1a\u8c03\u7528\u6a21\u578b\u3002 ")) ]), vue.createElementVNode("label", cp, [ up, vue.withDirectives(vue.createElementVNode("select", {
+          }, vue.toDisplayString(null == (t = e.channel) ? void 0 : t.name) + vue.toDisplayString("switchable" === e.readiness.state ? "\uff08\u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\uff09" : ""), 9, pp);
+        })), 128)) ], 544), [ [ vue.vModelSelect, vue.unref(t).settings.defaultVisionChannelId ] ]), W.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("p", dp, " \u5df2\u6dfb\u52a0\u7684\u6e20\u9053\u90fd\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u5fc5\u8981\u56fe\u7247\u4e0d\u5b8c\u6574\u65f6\u4e0d\u4f1a\u8c03\u7528\u6a21\u578b\u3002 ")) ]), vue.createElementVNode("label", hp, [ mp, vue.withDirectives(vue.createElementVNode("select", {
           "onUpdate:modelValue": i[14] || (i[14] = e => vue.unref(t).settings.transport = e),
           class: "aah-select",
           onChange: save
-        }, hp, 544), [ [ vue.vModelSelect, vue.unref(t).settings.transport ] ]), mp ]) ])) : vue.createCommentVNode("", true) ]) ]), B.value && F.value ? (vue.openBlock(), 
-        vue.createElementBlock("section", gp, [ (vue.openBlock(), vue.createBlock(ac, {
+        }, vp, 544), [ [ vue.vModelSelect, vue.unref(t).settings.transport ] ]), yp ]) ])) : vue.createCommentVNode("", true) ]) ]), B.value && F.value ? (vue.openBlock(), 
+        vue.createElementBlock("section", wp, [ (vue.openBlock(), vue.createBlock(oc, {
           key: I.value,
           "config-id": I.value
-        }, null, 8, [ "config-id" ])), vue.createElementVNode("header", fp, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, vue.toDisplayString(B.value.name), 1), vue.createElementVNode("p", null, vue.toDisplayString(B.value.providerKind) + " \xb7 " + vue.toDisplayString(B.value.baseUrl), 1) ]), vue.createElementVNode("span", {
+        }, null, 8, [ "config-id" ])), vue.createElementVNode("header", bp, [ vue.createElementVNode("div", null, [ vue.createElementVNode("h4", null, vue.toDisplayString(B.value.name), 1), vue.createElementVNode("p", null, vue.toDisplayString(B.value.providerKind) + " \xb7 " + vue.toDisplayString(B.value.baseUrl), 1) ]), vue.createElementVNode("span", {
           class: vue.normalizeClass([ "aah-tag", (null == (o = F.value.credential) ? void 0 : o.value) ? "aah-tag-success" : "aah-tag-warning" ])
-        }, vue.toDisplayString((null == (T = F.value.credential) ? void 0 : T.value) ? isCustom(B.value.id) ? "\u5df2\u914d\u7f6e" : "\u53ef\u7528" : "\u5f85\u586b API Key"), 3) ]), vue.createElementVNode("div", vp, [ (vue.openBlock(true), 
+        }, vue.toDisplayString((null == (T = F.value.credential) ? void 0 : T.value) ? isCustom(B.value.id) ? "\u5df2\u914d\u7f6e" : "\u53ef\u7528" : "\u5f85\u586b API Key"), 3) ]), vue.createElementVNode("div", xp, [ (vue.openBlock(true), 
         vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(B.value), (e => (vue.openBlock(), vue.createElementBlock("span", {
           key: e.label,
           class: vue.normalizeClass([ "aah-tag", e.cls ])
-        }, vue.toDisplayString(e.label), 3)))), 128)), "ready" === (null == (J = W.value) ? void 0 : J.state) ? (vue.openBlock(), 
-        vue.createElementBlock("span", yp, " \u5f53\u524d\u6a21\u578b\u53ef\u505a\u56fe\u7247\u9898 ")) : vue.createCommentVNode("", true), isCustom(B.value.id) ? (vue.openBlock(), 
-        vue.createElementBlock("span", wp, "\u81ea\u5efa\u63a5\u53e3")) : vue.createCommentVNode("", true) ]), isCustom(B.value.id) ? (vue.openBlock(), 
-        vue.createElementBlock("div", bp, [ vue.createElementVNode("p", xp, "\u6a21\u578b\uff1a" + vue.toDisplayString(B.value.defaultModelId), 1), kp, vue.createElementVNode("button", {
+        }, vue.toDisplayString(e.label), 3)))), 128)), "ready" === (null == (J = Q.value) ? void 0 : J.state) ? (vue.openBlock(), 
+        vue.createElementBlock("span", kp, " \u5f53\u524d\u6a21\u578b\u53ef\u505a\u56fe\u7247\u9898 ")) : vue.createCommentVNode("", true), isCustom(B.value.id) ? (vue.openBlock(), 
+        vue.createElementBlock("span", qp, "\u81ea\u5efa\u63a5\u53e3")) : vue.createCommentVNode("", true) ]), isCustom(B.value.id) ? (vue.openBlock(), 
+        vue.createElementBlock("div", Ap, [ vue.createElementVNode("p", _p, "\u6a21\u578b\uff1a" + vue.toDisplayString(B.value.defaultModelId), 1), Cp, vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: i[15] || (i[15] = e => editCustom(I.value))
-        }, "\u7f16\u8f91\u81ea\u5b9a\u4e49 API") ])) : (vue.openBlock(), vue.createElementBlock("label", qp, [ Ap, vue.createElementVNode("input", {
+        }, "\u7f16\u8f91\u81ea\u5b9a\u4e49 API") ])) : (vue.openBlock(), vue.createElementBlock("label", Tp, [ Sp, vue.createElementVNode("input", {
           value: (null == (Z = F.value.credential) ? void 0 : Z.value) || "",
           class: "aah-input",
           type: "password",
           autocomplete: "off",
           onInput: i[16] || (i[16] = e => setCredential(I.value, e.target.value))
-        }, null, 40, _p), vue.createElementVNode("p", Cp, [ vue.createTextVNode(vue.toDisplayString(B.value.keyHelp) + " ", 1), B.value.signupUrl ? (vue.openBlock(), 
+        }, null, 40, Ip), vue.createElementVNode("p", Ep, [ vue.createTextVNode(vue.toDisplayString(B.value.keyHelp) + " ", 1), B.value.signupUrl ? (vue.openBlock(), 
         vue.createElementBlock("a", {
           key: 0,
           href: B.value.signupUrl,
           target: "_blank",
           rel: "noopener noreferrer"
-        }, " \u53bb\u83b7\u53d6 API Key ", 8, Tp)) : vue.createCommentVNode("", true) ]) ])), isCustom(B.value.id) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("label", Sp, [ Ip, vue.createElementVNode("select", {
+        }, " \u53bb\u83b7\u53d6 API Key ", 8, Up)) : vue.createCommentVNode("", true) ]) ])), isCustom(B.value.id) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("label", Pp, [ Mp, vue.createElementVNode("select", {
           class: "aah-select",
           value: F.value.modelId || B.value.defaultModelId,
           onChange: updateModel
         }, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(B.value.models, (e => (vue.openBlock(), vue.createElementBlock("option", {
           key: e.id,
           value: e.id
-        }, vue.toDisplayString(e.label || e.id) + vue.toDisplayString(e.capabilities.image ? "\uff08\u652f\u6301\u56fe\u7247\uff09" : ""), 9, Up)))), 128)) ], 40, Ep), "switchable" === (null == (Y = W.value) ? void 0 : Y.state) ? (vue.openBlock(), 
-        vue.createElementBlock("p", Pp, [ vue.createTextVNode(" \u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\u9898\u3002 "), vue.createElementVNode("button", {
+        }, vue.toDisplayString(e.label || e.id) + vue.toDisplayString(e.capabilities.image ? "\uff08\u652f\u6301\u56fe\u7247\uff09" : ""), 9, $p)))), 128)) ], 40, Lp), "switchable" === (null == (Y = Q.value) ? void 0 : Y.state) ? (vue.openBlock(), 
+        vue.createElementBlock("p", Hp, [ vue.createTextVNode(" \u5f53\u524d\u6a21\u578b\u4e0d\u652f\u6301\u56fe\u7247\u9898\u3002 "), vue.createElementVNode("button", {
           type: "button",
           class: "ai-config-inline-action",
           onClick: useSuggestedVisionModel
-        }, " \u5207\u6362\u5230 " + vue.toDisplayString(W.value.suggestModelId), 1) ])) : "unsupported" === (null == (X = W.value) ? void 0 : X.state) ? (vue.openBlock(), 
-        vue.createElementBlock("p", Lp, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ])), vue.createElementVNode("label", Mp, [ vue.createElementVNode("input", {
+        }, " \u5207\u6362\u5230 " + vue.toDisplayString(Q.value.suggestModelId), 1) ])) : "unsupported" === (null == (X = Q.value) ? void 0 : X.state) ? (vue.openBlock(), 
+        vue.createElementBlock("p", Op, " \u8be5\u6e20\u9053\u6ca1\u6709\u89c6\u89c9\u6a21\u578b\uff0c\u56fe\u7247\u9898\u9700\u53e6\u52a0\u4e00\u4e2a\u5e26\u300c\u53ef\u9009\u89c6\u89c9\u6a21\u578b\u300d\u7684\u6e20\u9053\u3002 ")) : vue.createCommentVNode("", true) ])), vue.createElementVNode("label", jp, [ vue.createElementVNode("input", {
           type: "checkbox",
           checked: F.value.enabled,
           onChange: toggleEnabled
-        }, null, 40, $p), Hp ]), isCustom(B.value.id) || "global" !== B.value.region ? isCustom(B.value.id) || vue.unref(canDirectConnect)(B.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", jp, " \u8be5\u6e20\u9053\u4e0d\u5728\u672c\u7248\u672c\u7684\u76f4\u8fde\u767d\u540d\u5355\u91cc\uff0c\u53ea\u80fd\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\u2014\u2014\u9700\u8981\u5148\u767b\u5f55\u3002 ")) : (vue.openBlock(), 
-        vue.createElementBlock("p", Op, " \u8be5\u5e73\u53f0\u670d\u52a1\u5668\u5728\u5883\u5916\uff0c\u56fd\u5185\u7f51\u7edc\u901a\u5e38\u65e0\u6cd5\u76f4\u8fde\uff0c\u9700\u81ea\u5907\u4ee3\u7406\u540e\u518d\u4f7f\u7528\u3002 ")), vue.createElementVNode("div", zp, [ vue.createElementVNode("button", {
+        }, null, 40, zp), Dp ]), isCustom(B.value.id) || "global" !== B.value.region ? isCustom(B.value.id) || vue.unref(canDirectConnect)(B.value) ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("p", Rp, " \u8be5\u6e20\u9053\u4e0d\u5728\u672c\u7248\u672c\u7684\u76f4\u8fde\u767d\u540d\u5355\u91cc\uff0c\u53ea\u80fd\u7ecf\u7231\u95ee\u7b54\u4e2d\u8f6c\u2014\u2014\u9700\u8981\u5148\u767b\u5f55\u3002 ")) : (vue.openBlock(), 
+        vue.createElementBlock("p", Np, " \u8be5\u5e73\u53f0\u670d\u52a1\u5668\u5728\u5883\u5916\uff0c\u56fd\u5185\u7f51\u7edc\u901a\u5e38\u65e0\u6cd5\u76f4\u8fde\uff0c\u9700\u81ea\u5907\u4ee3\u7406\u540e\u518d\u4f7f\u7528\u3002 ")), vue.createElementVNode("div", Fp, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain",
           type: "button",
           onClick: setDefault
@@ -18338,8 +18368,8 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:connection",
           class: "icon-inline"
-        }), vue.createTextVNode(vue.toDisplayString(testingFor(I.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, Dp) ]), messageFor(I.value) ? (vue.openBlock(), 
-        vue.createElementBlock("div", Np, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), vue.createTextVNode(vue.toDisplayString(testingFor(I.value) ? "\u6d4b\u8bd5\u4e2d..." : "\u6d4b\u8bd5\u8fde\u63a5"), 1) ], 8, Bp) ]), messageFor(I.value) ? (vue.openBlock(), 
+        vue.createElementBlock("div", Gp, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:information-outline",
           class: "alert-icon"
         }), vue.createElementVNode("span", null, vue.toDisplayString(messageFor(I.value)), 1) ])) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
@@ -18352,10 +18382,10 @@
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:delete-outline",
           class: "icon-inline"
-        }), vue.createTextVNode("\u79fb\u9664\u8be5\u6e20\u9053 ") ]) ])) : (vue.openBlock(), vue.createElementBlock("section", Rp, [ vue.createVNode(vue.unref(vue$1.Icon), {
+        }), vue.createTextVNode("\u79fb\u9664\u8be5\u6e20\u9053 ") ]) ])) : (vue.openBlock(), vue.createElementBlock("section", Kp, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:robot-outline",
           class: "ai-config-empty-icon"
-        }), vue.createElementVNode("p", Fp, vue.toDisplayString(R.value.length ? "\u5728\u5de6\u4fa7\u9009\u4e00\u4e2a\u6e20\u9053\u8fdb\u884c\u914d\u7f6e" : "\u8fd8\u6ca1\u6709\u6e20\u9053\uff0c\u5148\u6dfb\u52a0\u4e00\u4e2a"), 1) ])) ])), E.value ? (vue.openBlock(), 
+        }), vue.createElementVNode("p", Vp, vue.toDisplayString(R.value.length ? "\u5728\u5de6\u4fa7\u9009\u4e00\u4e2a\u6e20\u9053\u8fdb\u884c\u914d\u7f6e" : "\u8fd8\u6ca1\u6709\u6e20\u9053\uff0c\u5148\u6dfb\u52a0\u4e00\u4e2a"), 1) ])) ])), E.value ? (vue.openBlock(), 
         vue.createElementBlock("div", {
           key: 2,
           class: "modal-mask",
@@ -18363,48 +18393,48 @@
           "aria-modal": "true",
           "aria-labelledby": "ai-add-channel-title",
           onClick: i[23] || (i[23] = vue.withModifiers((e => E.value = false), [ "self" ]))
-        }, [ vue.createElementVNode("div", Bp, [ vue.createElementVNode("div", Gp, [ Kp, vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", Wp, [ vue.createElementVNode("div", Qp, [ Jp, vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-icon",
           type: "button",
           "aria-label": "\u5173\u95ed",
           onClick: i[19] || (i[19] = e => E.value = false)
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:close"
-        }) ]) ]), vue.createElementVNode("div", Vp, [ vue.createElementVNode("button", {
+        }) ]) ]), vue.createElementVNode("div", Zp, [ vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: i[20] || (i[20] = e => editCustom())
-        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), vue.createElementVNode("div", Qp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, (e => (vue.openBlock(), 
+        }, "\u6dfb\u52a0\u81ea\u5b9a\u4e49 API"), vue.createElementVNode("div", Yp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(D.value, (e => (vue.openBlock(), 
         vue.createElementBlock("article", {
           key: e.id,
           class: vue.normalizeClass([ "ai-config-card", {
             recommended: e.recommended
           } ])
-        }, [ vue.createElementVNode("div", Wp, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("div", Jp, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(e), (e => (vue.openBlock(), 
+        }, [ vue.createElementVNode("div", Xp, [ vue.createElementVNode("strong", null, vue.toDisplayString(e.name), 1) ]), vue.createElementVNode("div", ed, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(vue.unref(channelTags)(e), (e => (vue.openBlock(), 
         vue.createElementBlock("span", {
           key: e.label,
           class: vue.normalizeClass([ "aah-tag", e.cls ])
-        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("p", Zp, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", Yp, [ e.signupUrl ? (vue.openBlock(), 
+        }, vue.toDisplayString(e.label), 3)))), 128)) ]), e.promoText ? (vue.openBlock(), vue.createElementBlock("p", td, vue.toDisplayString(e.promoText), 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", nd, [ e.signupUrl ? (vue.openBlock(), 
         vue.createElementBlock("a", {
           key: 0,
           class: "aah-btn aah-btn-small",
           href: e.signupUrl,
           target: "_blank",
           rel: "noopener noreferrer"
-        }, "\u53bb\u9886\u53d6", 8, Xp)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+        }, "\u53bb\u9886\u53d6", 8, ad)) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
           class: "aah-btn aah-btn-primary aah-btn-small",
           type: "button",
           onClick: n => {
             return a = e.id, t.addChannel(a), I.value = a, void (E.value = false);
             var a;
           }
-        }, "\u6dfb\u52a0", 8, ed) ]) ], 2)))), 128)) ]), D.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-        vue.createElementBlock("p", td, "\u5168\u90e8\u6e20\u9053\u90fd\u5df2\u6dfb\u52a0\u3002")) ]), vue.createElementVNode("div", nd, [ vue.createElementVNode("button", {
+        }, "\u6dfb\u52a0", 8, id) ]) ], 2)))), 128)) ]), D.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), 
+        vue.createElementBlock("p", rd, "\u5168\u90e8\u6e20\u9053\u90fd\u5df2\u6dfb\u52a0\u3002")) ]), vue.createElementVNode("div", sd, [ vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-small",
           type: "button",
           disabled: vue.unref(t).catalogLoading,
           onClick: i[21] || (i[21] = e => vue.unref(t).loadCatalog())
-        }, vue.toDisplayString(vue.unref(t).catalogLoading ? "\u5237\u65b0\u4e2d..." : "\u5237\u65b0\u5217\u8868"), 9, ad), vue.createElementVNode("button", {
+        }, vue.toDisplayString(vue.unref(t).catalogLoading ? "\u5237\u65b0\u4e2d..." : "\u5237\u65b0\u5217\u8868"), 9, od), vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: i[22] || (i[22] = e => E.value = false)
@@ -18415,30 +18445,30 @@
           "aria-modal": "true",
           "aria-labelledby": "ai-custom-title",
           onClick: vue.withModifiers(closeCustom, [ "self" ])
-        }, [ vue.createElementVNode("div", id, [ vue.createElementVNode("div", rd, [ vue.createElementVNode("h3", sd, vue.toDisplayString(L.value ? "\u7f16\u8f91" : "\u6dfb\u52a0") + "\u81ea\u5b9a\u4e49 API", 1), vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", ld, [ vue.createElementVNode("div", cd, [ vue.createElementVNode("h3", ud, vue.toDisplayString(M.value ? "\u7f16\u8f91" : "\u6dfb\u52a0") + "\u81ea\u5b9a\u4e49 API", 1), vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: closeCustom
-        }, "\u5173\u95ed") ]), vue.createElementVNode("div", od, [ ld, vue.createElementVNode("label", cd, [ ud, vue.withDirectives(vue.createElementVNode("input", {
+        }, "\u5173\u95ed") ]), vue.createElementVNode("div", pd, [ dd, vue.createElementVNode("label", hd, [ md, vue.withDirectives(vue.createElementVNode("input", {
           class: "aah-input",
           "onUpdate:modelValue": i[24] || (i[24] = e => $.value = e),
           "aria-label": "\u81ea\u5b9a\u4e49 API \u5730\u5740",
           placeholder: "https://api.example.com/v1",
           autocomplete: "off"
-        }, null, 512), [ [ vue.vModelText, $.value ] ]), pd ]), vue.createElementVNode("label", dd, [ hd, vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 512), [ [ vue.vModelText, $.value ] ]), gd ]), vue.createElementVNode("label", fd, [ vd, vue.withDirectives(vue.createElementVNode("input", {
           class: "aah-input",
           "onUpdate:modelValue": i[25] || (i[25] = e => H.value = e),
           "aria-label": "\u81ea\u5b9a\u4e49 AI \u6a21\u578b",
           placeholder: "\u670d\u52a1\u5546\u63d0\u4f9b\u7684\u6a21\u578b ID",
           autocomplete: "off"
-        }, null, 512), [ [ vue.vModelText, H.value ] ]) ]), vue.createElementVNode("label", md, [ gd, vue.withDirectives(vue.createElementVNode("input", {
+        }, null, 512), [ [ vue.vModelText, H.value ] ]) ]), vue.createElementVNode("label", yd, [ wd, vue.withDirectives(vue.createElementVNode("input", {
           class: "aah-input",
           "onUpdate:modelValue": i[26] || (i[26] = e => O.value = e),
           "aria-label": "\u81ea\u5b9a\u4e49 AI Key",
           type: "password",
           autocomplete: "off",
-          placeholder: L.value ? "\u5730\u5740\u4e0d\u53d8\u53ef\u7559\u7a7a\uff1b\u66f4\u6362\u5730\u5740\u9700\u91cd\u65b0\u586b\u5199" : "\u586b\u5199 API Key"
-        }, null, 8, fd), [ [ vue.vModelText, O.value ] ]) ]), j.value ? (vue.openBlock(), vue.createElementBlock("p", vd, vue.toDisplayString(j.value), 1)) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
+          placeholder: M.value ? "\u5730\u5740\u4e0d\u53d8\u53ef\u7559\u7a7a\uff1b\u66f4\u6362\u5730\u5740\u9700\u91cd\u65b0\u586b\u5199" : "\u586b\u5199 API Key"
+        }, null, 8, bd), [ [ vue.vModelText, O.value ] ]) ]), j.value ? (vue.openBlock(), vue.createElementBlock("p", xd, vue.toDisplayString(j.value), 1)) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", {
           class: "modal-footer"
         }, [ vue.createElementVNode("button", {
           class: "aah-btn",
@@ -18455,14 +18485,14 @@
           "aria-modal": "true",
           "aria-labelledby": "ai-channel-delete-title",
           onClick: i[29] || (i[29] = vue.withModifiers((e => z.value = null), [ "self" ]))
-        }, [ vue.createElementVNode("div", yd, [ vue.createElementVNode("div", wd, [ bd, vue.createElementVNode("button", {
+        }, [ vue.createElementVNode("div", kd, [ vue.createElementVNode("div", qd, [ Ad, vue.createElementVNode("button", {
           class: "aah-btn aah-btn-plain aah-btn-icon",
           type: "button",
           "aria-label": "\u5173\u95ed",
           onClick: i[27] || (i[27] = e => z.value = null)
         }, [ vue.createVNode(vue.unref(vue$1.Icon), {
           icon: "mdi:close"
-        }) ]) ]), vue.createElementVNode("div", xd, [ vue.createElementVNode("p", kd, " \u786e\u5b9a\u8981\u79fb\u9664\u6e20\u9053\u300c" + vue.toDisplayString(z.value.name) + "\u300d\u5417\uff1f\u4fdd\u5b58\u5728\u672c\u5730\u7684 API Key \u4f1a\u4e00\u5e76\u5220\u9664\u3002 ", 1) ]), vue.createElementVNode("div", qd, [ vue.createElementVNode("button", {
+        }) ]) ]), vue.createElementVNode("div", _d, [ vue.createElementVNode("p", Cd, " \u786e\u5b9a\u8981\u79fb\u9664\u6e20\u9053\u300c" + vue.toDisplayString(z.value.name) + "\u300d\u5417\uff1f\u4fdd\u5b58\u5728\u672c\u5730\u7684 API Key \u4f1a\u4e00\u5e76\u5220\u9664\u3002 ", 1) ]), vue.createElementVNode("div", Td, [ vue.createElementVNode("button", {
           class: "aah-btn",
           type: "button",
           onClick: i[28] || (i[28] = e => z.value = null)
@@ -18473,25 +18503,25 @@
         }, "\u79fb\u9664") ]) ]) ])) : vue.createCommentVNode("", true) ], 64)) ]);
       };
     }
-  }), _d = {
+  }), Id = {
     class: "settings-rows"
-  }, Cd = {
-    class: "config-item-content"
-  }, Td = {
-    class: "config-label"
-  }, Sd = {
-    class: "label-wrapper"
-  }, Id = {
-    class: "label-text"
   }, Ed = {
-    class: "label-desc"
-  }, Ud = {
-    class: "config-control"
-  }, Pd = {
-    class: "config-item"
-  }, Ld = {
     class: "config-item-content"
-  }, Md = vue.createElementVNode("div", {
+  }, Ud = {
+    class: "config-label"
+  }, Pd = {
+    class: "label-wrapper"
+  }, Md = {
+    class: "label-text"
+  }, Ld = {
+    class: "label-desc"
+  }, $d = {
+    class: "config-control"
+  }, Hd = {
+    class: "config-item"
+  }, Od = {
+    class: "config-item-content"
+  }, jd = vue.createElementVNode("div", {
     class: "config-label"
   }, [ vue.createElementVNode("div", {
     class: "label-wrapper"
@@ -18499,19 +18529,19 @@
     class: "label-text"
   }, "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u5173\u95ed\u3001\u4ec5\u624b\u52a8\u6216\u9898\u5e93\u672a\u547d\u4e2d\u540e\u81ea\u52a8\u8865\u7b54\uff1b\u5728\u300cAI \u6e20\u9053\u300d\u914d\u7f6e\u4e91\u7aef\u670d\u52a1\u6216\u672c\u673a\u7f51\u5173\u3002") ]) ], -1), $d = {
+  }, "\u5173\u95ed\u3001\u4ec5\u624b\u52a8\u6216\u9898\u5e93\u672a\u547d\u4e2d\u540e\u81ea\u52a8\u8865\u7b54\uff1b\u5728\u300cAI \u6e20\u9053\u300d\u914d\u7f6e\u4e91\u7aef\u670d\u52a1\u6216\u672c\u673a\u7f51\u5173\u3002") ]) ], -1), zd = {
     class: "config-control"
-  }, Hd = [ "value" ], Od = [ vue.createElementVNode("option", {
+  }, Dd = [ "value" ], Nd = [ vue.createElementVNode("option", {
     value: "off"
   }, "\u5173\u95ed\u8865\u7b54", -1), vue.createElementVNode("option", {
     value: "manual"
   }, "\u4ec5\u624b\u52a8", -1), vue.createElementVNode("option", {
     value: "auto"
-  }, "\u81ea\u52a8\u8865\u7b54", -1) ], jd = {
+  }, "\u81ea\u52a8\u8865\u7b54", -1) ], Rd = {
     class: "config-item"
-  }, zd = {
+  }, Fd = {
     class: "config-item-content"
-  }, Dd = vue.createElementVNode("div", {
+  }, Bd = vue.createElementVNode("div", {
     class: "config-label"
   }, [ vue.createElementVNode("div", {
     class: "label-wrapper"
@@ -18519,19 +18549,19 @@
     class: "label-text"
   }, "\u9898\u95f4\u95f4\u9694"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u4e24\u9898\u4e4b\u95f4\u7b49\u5f85\u7684\u65f6\u95f4\u3002\u95f4\u9694\u592a\u77ed\u5bb9\u6613\u88ab\u5e73\u53f0\u5224\u5b9a\u5f02\u5e38\u3002") ]) ], -1), Nd = {
+  }, "\u4e24\u9898\u4e4b\u95f4\u7b49\u5f85\u7684\u65f6\u95f4\u3002\u95f4\u9694\u592a\u77ed\u5bb9\u6613\u88ab\u5e73\u53f0\u5224\u5b9a\u5f02\u5e38\u3002") ]) ], -1), Gd = {
     class: "config-control settings-range"
-  }, Rd = [ "min" ], Fd = {
+  }, Kd = [ "min" ], Vd = {
     class: "num"
-  }, Bd = {
+  }, Wd = {
     key: 0,
     class: "aah-alert aah-alert-warning"
-  }, Gd = {
+  }, Qd = {
     key: 1,
     class: "config-item"
-  }, Kd = {
+  }, Jd = {
     class: "config-item-content"
-  }, Vd = vue.createElementVNode("div", {
+  }, Zd = vue.createElementVNode("div", {
     class: "config-label"
   }, [ vue.createElementVNode("div", {
     class: "label-wrapper"
@@ -18539,14 +18569,14 @@
     class: "label-text"
   }, "\u591a\u9009\u9010\u9879\u95f4\u9694"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u5f53\u524d\u5e73\u53f0\u591a\u9009\u9898\u6bcf\u9009\u4e00\u9879\u90fd\u4f1a\u8bf7\u6c42\u63a5\u53e3\uff0c\u8fc7\u5feb\u5bb9\u6613\u89e6\u53d1 403") ]) ], -1), Qd = {
+  }, "\u5f53\u524d\u5e73\u53f0\u591a\u9009\u9898\u6bcf\u9009\u4e00\u9879\u90fd\u4f1a\u8bf7\u6c42\u63a5\u53e3\uff0c\u8fc7\u5feb\u5bb9\u6613\u89e6\u53d1 403") ]) ], -1), Yd = {
     class: "config-control settings-range"
-  }, Wd = [ "min" ], Jd = {
+  }, Xd = [ "min" ], eh = {
     class: "num"
-  }, Zd = vue.defineComponent({
+  }, th = vue.defineComponent({
     __name: "AskSettings",
     setup(e) {
-      const t = ia(), n = Qn(), a = ta(), persist = (e, t) => Cache.set(e, t), setDelay = () => persist("delay", t.delay), setOptionDelay = () => {
+      const t = la(), n = Yn(), a = ra(), persist = (e, t) => Cache.set(e, t), setDelay = () => persist("delay", t.delay), setOptionDelay = () => {
         t.optionDelay < t.optionMinDelay && (t.optionDelay = t.optionMinDelay), Cache.set("optionDelay", t.optionDelay);
         const e = t.rule;
         e && (e.optionDelay = t.optionDelay);
@@ -18567,15 +18597,15 @@
         label: "\u65e0\u7b54\u6848\u65f6\u968f\u673a\u4f5c\u7b54",
         desc: "\u6240\u6709\u6765\u6e90\u90fd\u6ca1\u67e5\u5230\u65f6\u968f\u673a\u9009\u62e9\u4e00\u4e2a\u9009\u9879"
       } ];
-      return (e, r) => (vue.openBlock(), vue.createElementBlock("div", _d, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(i, (e => vue.createElementVNode("div", {
+      return (e, r) => (vue.openBlock(), vue.createElementBlock("div", Id, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(i, (e => vue.createElementVNode("div", {
         key: e.key,
         class: "config-item"
-      }, [ vue.createElementVNode("div", Cd, [ vue.createElementVNode("div", Td, [ vue.createElementVNode("div", Sd, [ vue.createElementVNode("span", Id, vue.toDisplayString(e.label), 1), vue.createElementVNode("span", Ed, vue.toDisplayString(e.desc), 1) ]) ]), vue.createElementVNode("div", Ud, [ vue.createVNode(Ul, {
+      }, [ vue.createElementVNode("div", Ed, [ vue.createElementVNode("div", Ud, [ vue.createElementVNode("div", Pd, [ vue.createElementVNode("span", Md, vue.toDisplayString(e.label), 1), vue.createElementVNode("span", Ld, vue.toDisplayString(e.desc), 1) ]) ]), vue.createElementVNode("div", $d, [ vue.createVNode($l, {
         "model-value": vue.unref(t)[e.key],
         "onUpdate:modelValue": n => {
           vue.unref(t)[e.key] = n, persist(e.key, n);
         }
-      }, null, 8, [ "model-value", "onUpdate:modelValue" ]) ]) ]) ]))), 64)), vue.createElementVNode("div", Pd, [ vue.createElementVNode("div", Ld, [ Md, vue.createElementVNode("div", $d, [ vue.createElementVNode("select", {
+      }, null, 8, [ "model-value", "onUpdate:modelValue" ]) ]) ]) ]))), 64)), vue.createElementVNode("div", Hd, [ vue.createElementVNode("div", Od, [ jd, vue.createElementVNode("div", zd, [ vue.createElementVNode("select", {
         class: "aah-select",
         "aria-label": "\u7b54\u9898 AI \u4f7f\u7528\u65b9\u5f0f",
         value: vue.unref(a).usage,
@@ -18586,7 +18616,7 @@
             askGpt: t
           }), Cache.set("askGpt", t), t && msg("\u8bf7\u5148\u6d4b\u8bd5\u53ef\u7528\u7684\u6a21\u578b\uff1b\u81ea\u52a8 AI \u4ecd\u9700\u901a\u8fc7\u5b89\u5168\u5339\u914d\u548c\u91c7\u7eb3\u7b56\u7565\u3002");
         })(e.target.value))
-      }, Od, 40, Hd) ]) ]) ]), vue.createElementVNode("div", jd, [ vue.createElementVNode("div", zd, [ Dd, vue.createElementVNode("div", Nd, [ vue.withDirectives(vue.createElementVNode("input", {
+      }, Nd, 40, Dd) ]) ]) ]), vue.createElementVNode("div", Rd, [ vue.createElementVNode("div", Fd, [ Bd, vue.createElementVNode("div", Gd, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": r[1] || (r[1] = e => vue.unref(t).delay = e),
         type: "range",
         min: vue.unref(t).minDelay,
@@ -18595,13 +18625,13 @@
         class: "aah-slider",
         "aria-label": "\u9898\u95f4\u95f4\u9694",
         onInput: setDelay
-      }, null, 40, Rd), [ [ vue.vModelText, vue.unref(t).delay, void 0, {
+      }, null, 40, Kd), [ [ vue.vModelText, vue.unref(t).delay, void 0, {
         number: true
-      } ] ]), vue.createElementVNode("span", Fd, vue.toDisplayString(vue.unref(t).delay) + "ms", 1) ]) ]) ]), vue.unref(t).minDelay > 0 ? (vue.openBlock(), 
-      vue.createElementBlock("div", Bd, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      } ] ]), vue.createElementVNode("span", Vd, vue.toDisplayString(vue.unref(t).delay) + "ms", 1) ]) ]) ]), vue.unref(t).minDelay > 0 ? (vue.openBlock(), 
+      vue.createElementBlock("div", Wd, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:alert-outline"
       }), vue.createTextVNode("\u5f53\u524d\u5e73\u53f0\u89c4\u5219\u8981\u6c42\u9898\u95f4\u95f4\u9694\u4e0d\u5c11\u4e8e " + vue.toDisplayString(vue.unref(t).minDelay) + "ms ", 1) ])) : vue.createCommentVNode("", true), vue.unref(t).optionMinDelay > 0 ? (vue.openBlock(), 
-      vue.createElementBlock("div", Gd, [ vue.createElementVNode("div", Kd, [ Vd, vue.createElementVNode("div", Qd, [ vue.withDirectives(vue.createElementVNode("input", {
+      vue.createElementBlock("div", Qd, [ vue.createElementVNode("div", Jd, [ Zd, vue.createElementVNode("div", Yd, [ vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": r[2] || (r[2] = e => vue.unref(t).optionDelay = e),
         type: "range",
         min: vue.unref(t).optionMinDelay,
@@ -18610,11 +18640,11 @@
         class: "aah-slider",
         "aria-label": "\u591a\u9009\u9010\u9879\u95f4\u9694",
         onInput: setOptionDelay
-      }, null, 40, Wd), [ [ vue.vModelText, vue.unref(t).optionDelay, void 0, {
+      }, null, 40, Xd), [ [ vue.vModelText, vue.unref(t).optionDelay, void 0, {
         number: true
-      } ] ]), vue.createElementVNode("span", Jd, vue.toDisplayString(vue.unref(t).optionDelay) + "ms", 1) ]) ]) ])) : vue.createCommentVNode("", true) ]));
+      } ] ]), vue.createElementVNode("span", eh, vue.toDisplayString(vue.unref(t).optionDelay) + "ms", 1) ]) ]) ])) : vue.createCommentVNode("", true) ]));
     }
-  }), Yd = vue.defineComponent({
+  }), nh = vue.defineComponent({
     __name: "ThemeSwitcher",
     props: {
       compact: {
@@ -18623,7 +18653,7 @@
       }
     },
     setup(e) {
-      const t = e, n = Qn(), a = [ {
+      const t = e, n = Yn(), a = [ {
         key: "light",
         label: "\u6d45\u8272"
       }, {
@@ -18651,89 +18681,89 @@
         class: vue.normalizeClass([ "theme-switcher", {
           "theme-switcher-compact": e.compact
         } ])
-      }, [ vue.createVNode(Sl, {
+      }, [ vue.createVNode(Pl, {
         modelValue: o.value,
         "onUpdate:modelValue": t[0] || (t[0] = e => o.value = e),
         segments: s.value
       }, null, 8, [ "modelValue", "segments" ]) ], 2));
     }
-  }), Xd = "https://www.aiask.site", eh = {
-    account: `${Xd}/account.html`,
-    register: `${Xd}/account.html#register`,
-    reset: `${Xd}/reset.html`,
-    feedback: `${Xd}/feedback.html`
-  }, th = {
+  }), ah = "https://www.aiask.site", ih = {
+    account: `${ah}/account.html`,
+    register: `${ah}/account.html#register`,
+    reset: `${ah}/reset.html`,
+    feedback: `${ah}/feedback.html`
+  }, rh = {
     class: "user-page"
-  }, nh = {
+  }, sh = {
     class: "user-page__tabs",
     role: "tablist",
     "aria-label": "\u767b\u5f55\u65b9\u5f0f"
-  }, ah = [ "aria-selected" ], ih = [ "aria-selected" ], rh = {
+  }, oh = [ "aria-selected" ], lh = [ "aria-selected" ], ch = {
     class: "user-page__field"
-  }, sh = vue.createElementVNode("span", null, "\u7528\u6237\u540d\u6216\u90ae\u7bb1", -1), oh = {
+  }, uh = vue.createElementVNode("span", null, "\u7528\u6237\u540d\u6216\u90ae\u7bb1", -1), ph = {
     class: "user-page__field"
-  }, lh = vue.createElementVNode("span", null, "\u5bc6\u7801", -1), ch = {
+  }, dh = vue.createElementVNode("span", null, "\u5bc6\u7801", -1), hh = {
     key: 1,
     class: "user-page__field"
-  }, uh = vue.createElementVNode("span", null, "API Key", -1), ph = vue.createElementVNode("small", {
+  }, mh = vue.createElementVNode("span", null, "API Key", -1), gh = vue.createElementVNode("small", {
     class: "user-page__helper"
-  }, "\u5bc6\u7801\u767b\u5f55\u540e\u53ef\u5728\u672c\u9875\u300c\u5237\u65b0 API Key\u300d\u53d6\u5f97\uff0c\u6362\u8bbe\u5907\u65f6\u7c98\u8d34\u4f7f\u7528", -1), dh = {
+  }, "\u5bc6\u7801\u767b\u5f55\u540e\u53ef\u5728\u672c\u9875\u300c\u5237\u65b0 API Key\u300d\u53d6\u5f97\uff0c\u6362\u8bbe\u5907\u65f6\u7c98\u8d34\u4f7f\u7528", -1), fh = {
     class: "user-page__form-actions"
-  }, hh = [ "disabled" ], mh = {
+  }, vh = [ "disabled" ], yh = {
     class: "user-page__helper"
-  }, gh = {
+  }, wh = {
     key: 1,
     class: "settings-rows"
-  }, fh = {
+  }, bh = {
     class: "config-item"
-  }, vh = {
-    class: "config-item-content"
-  }, yh = {
-    class: "config-label"
-  }, wh = [ "src" ], bh = {
-    class: "label-wrapper"
   }, xh = {
-    class: "label-text"
+    class: "config-item-content"
   }, kh = {
-    class: "label-desc"
-  }, qh = {
-    class: "config-item"
-  }, Ah = {
-    class: "config-item-content"
+    class: "config-label"
+  }, qh = [ "src" ], Ah = {
+    class: "label-wrapper"
   }, _h = {
-    class: "config-label"
+    class: "label-text"
   }, Ch = {
-    class: "label-wrapper"
+    class: "label-desc"
   }, Th = {
-    class: "label-text"
-  }, Sh = {
-    class: "user-page__score num"
-  }, Ih = vue.createElementVNode("span", {
-    class: "label-desc"
-  }, "\u7528\u4e8e\u5b98\u65b9\u9898\u5e93\u641c\u9898\uff1b\u4f59\u989d\u3001\u5361\u5bc6\u5151\u6362\u4e0e\u6d88\u8d39\u6d41\u6c34\u5728\u5b98\u7f51\u300c\u6211\u7684\u8d26\u6237\u300d", -1), Eh = {
-    class: "config-control"
-  }, Uh = {
     class: "config-item"
-  }, Ph = {
+  }, Sh = {
     class: "config-item-content"
-  }, Lh = {
+  }, Ih = {
     class: "config-label"
-  }, Mh = {
+  }, Eh = {
     class: "label-wrapper"
-  }, $h = vue.createElementVNode("span", {
+  }, Uh = {
     class: "label-text"
-  }, "API Key", -1), Hh = vue.createElementVNode("span", {
+  }, Ph = {
+    class: "user-page__score num"
+  }, Mh = vue.createElementVNode("span", {
     class: "label-desc"
-  }, "\u7528\u4e8e API Key \u767b\u5f55\u548c\u5b98\u65b9\u9898\u5e93\u8bf7\u6c42\u9274\u6743\uff0c\u8bf7\u52ff\u6cc4\u9732\u7ed9\u4ed6\u4eba", -1), Oh = {
-    class: "user-page__apikey num"
-  }, jh = {
+  }, "\u7528\u4e8e\u5b98\u65b9\u9898\u5e93\u641c\u9898\uff1b\u4f59\u989d\u3001\u5361\u5bc6\u5151\u6362\u4e0e\u6d88\u8d39\u6d41\u6c34\u5728\u5b98\u7f51\u300c\u6211\u7684\u8d26\u6237\u300d", -1), Lh = {
     class: "config-control"
-  }, zh = [ "disabled" ], Dh = {
+  }, $h = {
+    class: "config-item"
+  }, Hh = {
+    class: "config-item-content"
+  }, Oh = {
+    class: "config-label"
+  }, jh = {
+    class: "label-wrapper"
+  }, zh = vue.createElementVNode("span", {
+    class: "label-text"
+  }, "API Key", -1), Dh = vue.createElementVNode("span", {
+    class: "label-desc"
+  }, "\u7528\u4e8e API Key \u767b\u5f55\u548c\u5b98\u65b9\u9898\u5e93\u8bf7\u6c42\u9274\u6743\uff0c\u8bf7\u52ff\u6cc4\u9732\u7ed9\u4ed6\u4eba", -1), Nh = {
+    class: "user-page__apikey num"
+  }, Rh = {
+    class: "config-control"
+  }, Fh = [ "disabled" ], Bh = {
     class: "user-page__tips"
-  }, Nh = vue.defineComponent({
+  }, Gh = vue.defineComponent({
     __name: "User",
     setup(e) {
-      const t = Jn(), n = vue.ref("password"), a = vue.ref({
+      const t = ea(), n = vue.ref("password"), a = vue.ref({
         username: "",
         password: ""
       }), s = vue.ref(""), o = vue.ref(false), l = vue.ref(false), g = vue.computed((() => t.isLoggedIn)), f = vue.computed((() => {
@@ -18785,35 +18815,35 @@
       };
       return vue.onMounted((() => {
         g.value && t.fetchUserInfo();
-      })), (e, i) => (vue.openBlock(), vue.createElementBlock("div", th, [ g.value ? (vue.openBlock(), vue.createElementBlock("div", gh, [ vue.createElementVNode("div", fh, [ vue.createElementVNode("div", vh, [ vue.createElementVNode("div", yh, [ vue.unref(t).avatar ? (vue.openBlock(), 
+      })), (e, i) => (vue.openBlock(), vue.createElementBlock("div", rh, [ g.value ? (vue.openBlock(), vue.createElementBlock("div", wh, [ vue.createElementVNode("div", bh, [ vue.createElementVNode("div", xh, [ vue.createElementVNode("div", kh, [ vue.unref(t).avatar ? (vue.openBlock(), 
       vue.createElementBlock("img", {
         key: 0,
         src: vue.unref(t).avatar,
         alt: "",
         class: "user-page__avatar"
-      }, null, 8, wh)) : (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
+      }, null, 8, qh)) : (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
         key: 1,
         icon: "mdi:account-circle",
         class: "user-page__avatar"
-      })), vue.createElementVNode("div", bh, [ vue.createElementVNode("span", xh, vue.toDisplayString(vue.unref(t).nickname), 1), vue.createElementVNode("span", kh, "@" + vue.toDisplayString(vue.unref(t).username), 1) ]) ]), vue.createElementVNode("div", {
+      })), vue.createElementVNode("div", Ah, [ vue.createElementVNode("span", _h, vue.toDisplayString(vue.unref(t).nickname), 1), vue.createElementVNode("span", Ch, "@" + vue.toDisplayString(vue.unref(t).username), 1) ]) ]), vue.createElementVNode("div", {
         class: "config-control"
       }, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-danger aah-btn-small",
         type: "button",
         onClick: handleLogout
-      }, "\u9000\u51fa\u767b\u5f55") ]) ]) ]), vue.createElementVNode("div", qh, [ vue.createElementVNode("div", Ah, [ vue.createElementVNode("div", _h, [ vue.createElementVNode("div", Ch, [ vue.createElementVNode("span", Th, [ vue.createTextVNode("\u79ef\u5206 "), vue.createElementVNode("b", Sh, vue.toDisplayString(vue.unref(t).score), 1) ]), Ih ]) ]), vue.createElementVNode("div", Eh, [ vue.createElementVNode("button", {
+      }, "\u9000\u51fa\u767b\u5f55") ]) ]) ]), vue.createElementVNode("div", Th, [ vue.createElementVNode("div", Sh, [ vue.createElementVNode("div", Ih, [ vue.createElementVNode("div", Eh, [ vue.createElementVNode("span", Uh, [ vue.createTextVNode("\u79ef\u5206 "), vue.createElementVNode("b", Ph, vue.toDisplayString(vue.unref(t).score), 1) ]), Mh ]) ]), vue.createElementVNode("div", Lh, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
-        onClick: i[7] || (i[7] = e => openSite(vue.unref(eh).account))
-      }, "\u79ef\u5206\u660e\u7ec6") ]) ]) ]), vue.createElementVNode("div", Uh, [ vue.createElementVNode("div", Ph, [ vue.createElementVNode("div", Lh, [ vue.createElementVNode("div", Mh, [ $h, Hh, vue.createElementVNode("code", Oh, vue.toDisplayString(f.value), 1) ]) ]), vue.createElementVNode("div", jh, [ vue.createElementVNode("button", {
+        onClick: i[7] || (i[7] = e => openSite(vue.unref(ih).account))
+      }, "\u79ef\u5206\u660e\u7ec6") ]) ]) ]), vue.createElementVNode("div", $h, [ vue.createElementVNode("div", Hh, [ vue.createElementVNode("div", Oh, [ vue.createElementVNode("div", jh, [ zh, Dh, vue.createElementVNode("code", Nh, vue.toDisplayString(f.value), 1) ]) ]), vue.createElementVNode("div", Rh, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         disabled: l.value,
         onClick: handleRefreshApiKey
-      }, vue.toDisplayString(l.value ? "\u5237\u65b0\u4e2d\u2026" : "\u5237\u65b0 API Key"), 9, zh) ]) ]) ]) ])) : (vue.openBlock(), 
+      }, vue.toDisplayString(l.value ? "\u5237\u65b0\u4e2d\u2026" : "\u5237\u65b0 API Key"), 9, Fh) ]) ]) ]) ])) : (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ vue.createElementVNode("div", nh, [ vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("div", sh, [ vue.createElementVNode("button", {
         type: "button",
         role: "tab",
         class: vue.normalizeClass([ "user-page__tab", {
@@ -18821,7 +18851,7 @@
         } ]),
         "aria-selected": "password" === n.value,
         onClick: i[0] || (i[0] = e => switchMethod("password"))
-      }, "\u8d26\u53f7\u5bc6\u7801", 10, ah), vue.createElementVNode("button", {
+      }, "\u8d26\u53f7\u5bc6\u7801", 10, oh), vue.createElementVNode("button", {
         type: "button",
         role: "tab",
         class: vue.normalizeClass([ "user-page__tab", {
@@ -18829,77 +18859,77 @@
         } ]),
         "aria-selected": "apikey" === n.value,
         onClick: i[1] || (i[1] = e => switchMethod("apikey"))
-      }, "API Key", 10, ih) ]), vue.createElementVNode("form", {
+      }, "API Key", 10, lh) ]), vue.createElementVNode("form", {
         class: "user-page__form",
         onSubmit: vue.withModifiers(handleLogin, [ "prevent" ])
       }, [ "password" === n.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ vue.createElementVNode("label", rh, [ sh, vue.withDirectives(vue.createElementVNode("input", {
+      }, [ vue.createElementVNode("label", ch, [ uh, vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": i[2] || (i[2] = e => a.value.username = e),
         class: "aah-input",
         type: "text",
         autocomplete: "username",
         placeholder: "\u7528\u6237\u540d\u6216\u90ae\u7bb1"
-      }, null, 512), [ [ vue.vModelText, a.value.username ] ]) ]), vue.createElementVNode("label", oh, [ lh, vue.withDirectives(vue.createElementVNode("input", {
+      }, null, 512), [ [ vue.vModelText, a.value.username ] ]) ]), vue.createElementVNode("label", ph, [ dh, vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": i[3] || (i[3] = e => a.value.password = e),
         class: "aah-input",
         type: "password",
         autocomplete: "current-password",
         placeholder: "\u5bc6\u7801",
         onKeyup: vue.withKeys(handleLogin, [ "enter" ])
-      }, null, 544), [ [ vue.vModelText, a.value.password ] ]) ]) ], 64)) : (vue.openBlock(), vue.createElementBlock("label", ch, [ uh, vue.withDirectives(vue.createElementVNode("input", {
+      }, null, 544), [ [ vue.vModelText, a.value.password ] ]) ]) ], 64)) : (vue.openBlock(), vue.createElementBlock("label", hh, [ mh, vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": i[4] || (i[4] = e => s.value = e),
         class: "aah-input",
         type: "text",
         placeholder: "\u7c98\u8d34 API Key"
-      }, null, 512), [ [ vue.vModelText, s.value ] ]), ph ])), vue.createElementVNode("div", dh, [ vue.createElementVNode("button", {
+      }, null, 512), [ [ vue.vModelText, s.value ] ]), gh ])), vue.createElementVNode("div", fh, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary",
         type: "submit",
         disabled: o.value
-      }, vue.toDisplayString(o.value ? "\u767b\u5f55\u4e2d\u2026" : "\u767b\u5f55"), 9, hh), vue.createElementVNode("span", mh, [ vue.createTextVNode(" \u6ca1\u6709\u8d26\u53f7\uff1f"), vue.createElementVNode("button", {
+      }, vue.toDisplayString(o.value ? "\u767b\u5f55\u4e2d\u2026" : "\u767b\u5f55"), 9, vh), vue.createElementVNode("span", yh, [ vue.createTextVNode(" \u6ca1\u6709\u8d26\u53f7\uff1f"), vue.createElementVNode("button", {
         class: "user-page__link-btn",
         type: "button",
-        onClick: i[5] || (i[5] = e => openSite(vue.unref(eh).register))
+        onClick: i[5] || (i[5] = e => openSite(vue.unref(ih).register))
       }, "\u524d\u5f80\u5b98\u7f51\u6ce8\u518c"), vue.createTextVNode(" \xb7 \u5fd8\u8bb0\u5bc6\u7801\uff1f"), vue.createElementVNode("button", {
         class: "user-page__link-btn",
         type: "button",
-        onClick: i[6] || (i[6] = e => openSite(vue.unref(eh).reset))
-      }, "\u5728\u5b98\u7f51\u627e\u56de") ]) ]) ], 32) ], 64)), vue.createElementVNode("p", Dh, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
+        onClick: i[6] || (i[6] = e => openSite(vue.unref(ih).reset))
+      }, "\u5728\u5b98\u7f51\u627e\u56de") ]) ]) ], 32) ], 64)), vue.createElementVNode("p", Bh, [ vue.createTextVNode(" \u9047\u5230\u95ee\u9898\u6216\u60f3\u63d0\u5efa\u8bae\uff0c\u53ef\u5728"), vue.createElementVNode("button", {
         class: "user-page__link-btn",
         type: "button",
-        onClick: i[8] || (i[8] = e => openSite(vue.unref(eh).feedback))
+        onClick: i[8] || (i[8] = e => openSite(vue.unref(ih).feedback))
       }, "\u610f\u89c1\u53cd\u9988"), vue.createTextVNode("\u9875\u767b\u5f55\u540e\u63d0\u4ea4\u3002 ") ]) ]));
     }
-  }), Rh = {
+  }), Kh = {
     class: "log-page"
-  }, Fh = {
+  }, Vh = {
     class: "log-toolbar"
-  }, Bh = {
+  }, Wh = {
     class: "lib-chips",
     role: "group",
     "aria-label": "\u6309\u7ea7\u522b\u7b5b\u9009"
-  }, Gh = [ "aria-pressed", "onClick" ], Kh = {
+  }, Qh = [ "aria-pressed", "onClick" ], Jh = {
     class: "log-count num"
-  }, Vh = vue.createElementVNode("span", {
+  }, Zh = vue.createElementVNode("span", {
     class: "area-foot-spacer"
-  }, null, -1), Qh = [ "disabled" ], Wh = [ "disabled" ], Jh = {
+  }, null, -1), Yh = [ "disabled" ], Xh = [ "disabled" ], em = {
     key: 0,
     class: "log-list"
-  }, Zh = {
-    class: "log-time num"
-  }, Yh = {
-    class: "log-level"
-  }, Xh = vue.createElementVNode("i", {
-    "aria-hidden": "true"
-  }, null, -1), em = {
-    class: "log-msg"
   }, tm = {
+    class: "log-time num"
+  }, nm = {
+    class: "log-level"
+  }, am = vue.createElementVNode("i", {
+    "aria-hidden": "true"
+  }, null, -1), im = {
+    class: "log-msg"
+  }, rm = {
     key: 1,
     class: "log-empty"
-  }, nm = vue.defineComponent({
+  }, sm = vue.defineComponent({
     __name: "Log",
     setup(e) {
-      const t = Qn(), n = [ {
+      const t = Yn(), n = [ {
         key: "all",
         label: "\u5168\u90e8",
         tone: "primary"
@@ -18928,7 +18958,7 @@
           type: "application/json"
         }), `aiask-logs-${Date.now()}.json`);
       };
-      return (e, i) => (vue.openBlock(), vue.createElementBlock("div", Rh, [ vue.createElementVNode("div", Fh, [ vue.createElementVNode("div", Bh, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(n, (e => vue.createElementVNode("button", {
+      return (e, i) => (vue.openBlock(), vue.createElementBlock("div", Kh, [ vue.createElementVNode("div", Vh, [ vue.createElementVNode("div", Wh, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(n, (e => vue.createElementVNode("button", {
         key: e.key,
         type: "button",
         class: vue.normalizeClass([ "lib-chip", {
@@ -18936,55 +18966,41 @@
         } ]),
         "aria-pressed": s.value === e.key,
         onClick: t => s.value = e.key
-      }, vue.toDisplayString(e.label), 11, Gh))), 64)) ]), vue.createElementVNode("span", Kh, "\u5171 " + vue.toDisplayString(f.value) + " \u6761", 1), Vh, vue.createElementVNode("button", {
+      }, vue.toDisplayString(e.label), 11, Qh))), 64)) ]), vue.createElementVNode("span", Jh, "\u5171 " + vue.toDisplayString(f.value) + " \u6761", 1), Zh, vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         disabled: !f.value,
         onClick: exportLogs
-      }, "\u5bfc\u51fa", 8, Qh), vue.createElementVNode("button", {
+      }, "\u5bfc\u51fa", 8, Yh), vue.createElementVNode("button", {
         class: "aah-btn aah-btn-small",
         type: "button",
         disabled: !f.value,
         onClick: i[0] || (i[0] = e => vue.unref(t).logs = [])
-      }, "\u6e05\u7a7a", 8, Wh) ]), o.value.length ? (vue.openBlock(), vue.createElementBlock("ol", Jh, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(o.value, ((e, t) => (vue.openBlock(), 
+      }, "\u6e05\u7a7a", 8, Xh) ]), o.value.length ? (vue.openBlock(), vue.createElementBlock("ol", em, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(o.value, ((e, t) => (vue.openBlock(), 
       vue.createElementBlock("li", {
         key: t,
         class: vue.normalizeClass([ "log-row", `log-row-${e.type}` ])
-      }, [ vue.createElementVNode("span", Zh, vue.toDisplayString(e.time), 1), vue.createElementVNode("span", Yh, [ Xh, vue.createTextVNode(vue.toDisplayString(a[e.type] ?? e.type), 1) ]), vue.createElementVNode("span", em, vue.toDisplayString(e.content), 1) ], 2)))), 128)) ])) : (vue.openBlock(), 
-      vue.createElementBlock("p", tm, vue.toDisplayString("all" === s.value ? "\u8fd8\u6ca1\u6709\u65e5\u5fd7" : `\u6ca1\u6709\u300c${l.value}\u300d\u7ea7\u522b\u7684\u65e5\u5fd7`), 1)) ]));
+      }, [ vue.createElementVNode("span", tm, vue.toDisplayString(e.time), 1), vue.createElementVNode("span", nm, [ am, vue.createTextVNode(vue.toDisplayString(a[e.type] ?? e.type), 1) ]), vue.createElementVNode("span", im, vue.toDisplayString(e.content), 1) ], 2)))), 128)) ])) : (vue.openBlock(), 
+      vue.createElementBlock("p", rm, vue.toDisplayString("all" === s.value ? "\u8fd8\u6ca1\u6709\u65e5\u5fd7" : `\u6ca1\u6709\u300c${l.value}\u300d\u7ea7\u522b\u7684\u65e5\u5fd7`), 1)) ]));
     }
-  }), am = {
+  }), om = {
     class: "settings-nav scroll",
     "aria-label": "\u8bbe\u7f6e\u5206\u8282"
-  }, im = {
+  }, lm = {
     class: "lib-search settings-search"
-  }, rm = [ "aria-current", "onClick" ], sm = {
+  }, cm = [ "aria-current", "onClick" ], um = {
     key: 0,
     class: "settings-nav-empty"
-  }, om = {
+  }, pm = {
     class: "settings-pane scroll"
-  }, lm = {
-    class: "settings-pane-head"
-  }, cm = {
-    key: 0
-  }, um = vue.createElementVNode("h3", {
-    class: "aah-section-title settings-group-title"
-  }, "\u5916\u89c2", -1), pm = {
-    class: "settings-rows"
   }, dm = {
-    class: "config-item"
+    class: "settings-pane-head"
   }, hm = {
-    class: "config-item-content"
-  }, mm = vue.createElementVNode("div", {
-    class: "config-label"
-  }, [ vue.createElementVNode("div", {
-    class: "label-wrapper"
-  }, [ vue.createElementVNode("span", {
-    class: "label-text"
-  }, "\u4e3b\u9898"), vue.createElementVNode("span", {
-    class: "label-desc"
-  }, "\u4e5f\u53ef\u4ee5\u70b9\u9762\u677f\u53f3\u4e0a\u89d2\u7684\u4e3b\u9898\u6309\u94ae\u5207\u6362") ]) ], -1), gm = {
-    class: "config-control"
+    key: 0
+  }, mm = vue.createElementVNode("h3", {
+    class: "aah-section-title settings-group-title"
+  }, "\u5916\u89c2", -1), gm = {
+    class: "settings-rows"
   }, fm = {
     class: "config-item"
   }, vm = {
@@ -18995,69 +19011,83 @@
     class: "label-wrapper"
   }, [ vue.createElementVNode("span", {
     class: "label-text"
+  }, "\u4e3b\u9898"), vue.createElementVNode("span", {
+    class: "label-desc"
+  }, "\u4e5f\u53ef\u4ee5\u70b9\u9762\u677f\u53f3\u4e0a\u89d2\u7684\u4e3b\u9898\u6309\u94ae\u5207\u6362") ]) ], -1), wm = {
+    class: "config-control"
+  }, bm = {
+    class: "config-item"
+  }, xm = {
+    class: "config-item-content"
+  }, km = vue.createElementVNode("div", {
+    class: "config-label"
+  }, [ vue.createElementVNode("div", {
+    class: "label-wrapper"
+  }, [ vue.createElementVNode("span", {
+    class: "label-text"
   }, "\u9762\u677f\u5bbd\u5ea6"), vue.createElementVNode("span", {
     class: "label-desc"
-  }, "720px \u4ee5\u4e0a\u5de6\u53f3\u5206\u680f\u663e\u793a\uff1b\u4e5f\u53ef\u4ee5\u62d6\u9762\u677f\u53f3\u4e0b\u89d2\u8c03\u6574") ]) ], -1), wm = {
+  }, "720px \u4ee5\u4e0a\u5de6\u53f3\u5206\u680f\u663e\u793a\uff1b\u4e5f\u53ef\u4ee5\u62d6\u9762\u677f\u53f3\u4e0b\u89d2\u8c03\u6574") ]) ], -1), qm = {
     class: "config-control settings-range"
-  }, bm = [ "value" ], xm = {
+  }, Am = [ "value" ], _m = {
     class: "num"
-  }, km = vue.createElementVNode("h3", {
-    class: "aah-section-title settings-group-title"
-  }, "\u5feb\u6377\u952e", -1), qm = {
-    class: "settings-rows"
-  }, Am = vue.createElementVNode("h3", {
-    class: "aah-section-title settings-group-title"
-  }, "\u8fd0\u884c", -1), _m = {
-    class: "settings-rows"
   }, Cm = vue.createElementVNode("h3", {
     class: "aah-section-title settings-group-title"
-  }, "\u672c\u5730\u6570\u636e", -1), Tm = {
+  }, "\u5feb\u6377\u952e", -1), Tm = {
     class: "settings-rows"
-  }, Sm = {
-    class: "config-item"
-  }, Im = {
-    class: "config-item-content"
-  }, Em = {
-    class: "config-label"
-  }, Um = {
-    class: "label-wrapper"
-  }, Pm = vue.createElementVNode("span", {
-    class: "label-text"
-  }, "\u6e05\u7a7a\u672c\u5730\u9898\u5e93", -1), Lm = {
-    class: "label-desc"
-  }, Mm = {
-    class: "num"
-  }, $m = {
-    class: "config-control"
-  }, Hm = [ "disabled" ], Om = {
-    class: "settings-rows"
-  }, jm = {
-    class: "config-item"
-  }, zm = {
-    class: "config-item-content"
-  }, Dm = {
-    class: "config-label"
-  }, Nm = {
-    class: "label-wrapper"
-  }, Rm = {
-    class: "label-text"
-  }, Fm = {
-    class: "num"
-  }, Bm = vue.createElementVNode("span", {
-    class: "label-desc"
-  }, "\u624b\u52a8\u68c0\u67e5\u4e0d\u53d7\u4e0b\u9762\u5f00\u5173\u548c\u51b7\u5374\u65f6\u95f4\u9650\u5236", -1), Gm = {
-    class: "config-control"
-  }, Km = [ "disabled" ], Vm = vue.createElementVNode("h3", {
+  }, Sm = vue.createElementVNode("h3", {
     class: "aah-section-title settings-group-title"
-  }, "\u5f53\u524d\u516c\u544a", -1), Qm = [ "innerHTML" ], Wm = {
+  }, "\u8fd0\u884c", -1), Im = {
+    class: "settings-rows"
+  }, Em = vue.createElementVNode("h3", {
+    class: "aah-section-title settings-group-title"
+  }, "\u672c\u5730\u6570\u636e", -1), Um = {
+    class: "settings-rows"
+  }, Pm = {
+    class: "config-item"
+  }, Mm = {
+    class: "config-item-content"
+  }, Lm = {
+    class: "config-label"
+  }, $m = {
+    class: "label-wrapper"
+  }, Hm = vue.createElementVNode("span", {
+    class: "label-text"
+  }, "\u6e05\u7a7a\u672c\u5730\u9898\u5e93", -1), Om = {
+    class: "label-desc"
+  }, jm = {
+    class: "num"
+  }, zm = {
+    class: "config-control"
+  }, Dm = [ "disabled" ], Nm = {
+    class: "settings-rows"
+  }, Rm = {
+    class: "config-item"
+  }, Fm = {
+    class: "config-item-content"
+  }, Bm = {
+    class: "config-label"
+  }, Gm = {
+    class: "label-wrapper"
+  }, Km = {
+    class: "label-text"
+  }, Vm = {
+    class: "num"
+  }, Wm = vue.createElementVNode("span", {
+    class: "label-desc"
+  }, "\u624b\u52a8\u68c0\u67e5\u4e0d\u53d7\u4e0b\u9762\u5f00\u5173\u548c\u51b7\u5374\u65f6\u95f4\u9650\u5236", -1), Qm = {
+    class: "config-control"
+  }, Jm = [ "disabled" ], Zm = vue.createElementVNode("h3", {
+    class: "aah-section-title settings-group-title"
+  }, "\u5f53\u524d\u516c\u544a", -1), Ym = [ "innerHTML" ], Xm = {
     key: 1,
     class: "ask-source-empty"
-  }, Jm = vue.createElementVNode("h3", {
+  }, eg = vue.createElementVNode("h3", {
     class: "aah-section-title settings-group-title"
-  }, "\u8fd0\u884c\u65e5\u5fd7", -1), Zm = vue.defineComponent({
+  }, "\u8fd0\u884c\u65e5\u5fd7", -1), tg = vue.defineComponent({
     __name: "Settings",
     setup(e) {
-      const t = Qn(), n = Jn(), a = useLibraryCount(), s = [ {
+      const t = Yn(), n = ea(), a = useLibraryCount(), s = [ {
         id: "ask",
         label: "\u7b54\u9898",
         icon: "mdi:play-circle-outline",
@@ -19128,19 +19158,19 @@
           danger: true
         }) && (Cache.matchRemove("ques1_"), msg("\u6e05\u9664\u6210\u529f", "success"), 
         refreshLibraryCount());
-      }, P = vue.computed((() => n.notice ? O.sanitize(n.notice) : "")), L = vue.ref(false), checkUpdate = async () => {
-        L.value = true;
+      }, P = vue.computed((() => n.notice ? O.sanitize(n.notice) : "")), M = vue.ref(false), checkUpdate = async () => {
+        M.value = true;
         try {
           await updateFn(!1);
         } finally {
-          L.value = false;
+          M.value = false;
         }
       };
       return (e, n) => (vue.openBlock(), vue.createElementBlock("div", {
         class: vue.normalizeClass([ "area settings-area", {
           "is-drilled": _.value
         } ])
-      }, [ vue.createElementVNode("nav", am, [ vue.createElementVNode("label", im, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, [ vue.createElementVNode("nav", om, [ vue.createElementVNode("label", lm, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:magnify"
       }), vue.withDirectives(vue.createElementVNode("input", {
         "onUpdate:modelValue": n[0] || (n[0] = e => C.value = e),
@@ -19164,22 +19194,22 @@
       }, null, 8, [ "icon" ]), vue.createElementVNode("span", null, vue.toDisplayString(e.label), 1), vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:chevron-right",
         class: "settings-nav-chevron"
-      }) ], 10, rm)))), 128)), T.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock("p", sm, "\u6ca1\u6709\u627e\u5230\u300c" + vue.toDisplayString(C.value) + "\u300d\u76f8\u5173\u7684\u8bbe\u7f6e", 1)) ]), vue.createElementVNode("main", om, [ vue.createElementVNode("button", {
+      }) ], 10, cm)))), 128)), T.value.length ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock("p", um, "\u6ca1\u6709\u627e\u5230\u300c" + vue.toDisplayString(C.value) + "\u300d\u76f8\u5173\u7684\u8bbe\u7f6e", 1)) ]), vue.createElementVNode("main", pm, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-plain aah-btn-small settings-back",
         onClick: n[1] || (n[1] = e => _.value = false)
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:arrow-left"
-      }), vue.createTextVNode("\u5168\u90e8\u8bbe\u7f6e ") ]), vue.createElementVNode("header", lm, [ vue.createElementVNode("h2", null, vue.toDisplayString(S.value.label), 1), l[A.value] ? (vue.openBlock(), 
-      vue.createElementBlock("p", cm, vue.toDisplayString(l[A.value]), 1)) : vue.createCommentVNode("", true) ]), "ask" === A.value ? (vue.openBlock(), vue.createBlock(Zd, {
+      }), vue.createTextVNode("\u5168\u90e8\u8bbe\u7f6e ") ]), vue.createElementVNode("header", dm, [ vue.createElementVNode("h2", null, vue.toDisplayString(S.value.label), 1), l[A.value] ? (vue.openBlock(), 
+      vue.createElementBlock("p", hm, vue.toDisplayString(l[A.value]), 1)) : vue.createCommentVNode("", true) ]), "ask" === A.value ? (vue.openBlock(), vue.createBlock(th, {
         key: 0
-      })) : "ai" === A.value ? (vue.openBlock(), vue.createBlock(Ad, {
+      })) : "ai" === A.value ? (vue.openBlock(), vue.createBlock(Sd, {
         key: 1
-      })) : "account" === A.value ? (vue.openBlock(), vue.createBlock(Nh, {
+      })) : "account" === A.value ? (vue.openBlock(), vue.createBlock(Gh, {
         key: 2
       })) : "general" === A.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 3
-      }, [ um, vue.createElementVNode("div", pm, [ vue.createElementVNode("div", dm, [ vue.createElementVNode("div", hm, [ mm, vue.createElementVNode("div", gm, [ vue.createVNode(Yd) ]) ]) ]), vue.createElementVNode("div", fm, [ vue.createElementVNode("div", vm, [ ym, vue.createElementVNode("div", wm, [ vue.createElementVNode("input", {
+      }, [ mm, vue.createElementVNode("div", gm, [ vue.createElementVNode("div", fm, [ vue.createElementVNode("div", vm, [ ym, vue.createElementVNode("div", wm, [ vue.createVNode(nh) ]) ]) ]), vue.createElementVNode("div", bm, [ vue.createElementVNode("div", xm, [ km, vue.createElementVNode("div", qm, [ vue.createElementVNode("input", {
         type: "range",
         min: "480",
         max: "1200",
@@ -19189,12 +19219,12 @@
         "aria-label": "\u9762\u677f\u5bbd\u5ea6",
         onInput: previewWidth,
         onChange: commitWidth
-      }, null, 40, bm), vue.createElementVNode("span", xm, vue.toDisplayString(vue.unref(t).app.dialogWidth) + "px", 1) ]) ]) ]), (vue.openBlock(true), 
-      vue.createElementBlock(vue.Fragment, null, vue.renderList(configGroup("display"), ((e, t) => (vue.openBlock(), vue.createBlock(Wl, {
+      }, null, 40, Am), vue.createElementVNode("span", _m, vue.toDisplayString(vue.unref(t).app.dialogWidth) + "px", 1) ]) ]) ]), (vue.openBlock(true), 
+      vue.createElementBlock(vue.Fragment, null, vue.renderList(configGroup("display"), ((e, t) => (vue.openBlock(), vue.createBlock(Xl, {
         key: `display-${t}`,
         item: e
-      }, null, 8, [ "item" ])))), 128)) ]), km, vue.createElementVNode("div", qm, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(configGroup("hotkey"), ((e, t) => (vue.openBlock(), 
-      vue.createBlock(Wl, {
+      }, null, 8, [ "item" ])))), 128)) ]), Cm, vue.createElementVNode("div", Tm, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(configGroup("hotkey"), ((e, t) => (vue.openBlock(), 
+      vue.createBlock(Xl, {
         key: `hotkey-${t}`,
         item: e,
         "recording-hotkey": I.value,
@@ -19203,44 +19233,44 @@
       }, null, 8, [ "item", "recording-hotkey" ])))), 128)) ]), E.value.length ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ Am, vue.createElementVNode("div", _m, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(E.value, ((e, t) => (vue.openBlock(), vue.createBlock(Wl, {
+      }, [ Sm, vue.createElementVNode("div", Im, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(E.value, ((e, t) => (vue.openBlock(), vue.createBlock(Xl, {
         key: `runtime-${t}`,
         item: e
-      }, null, 8, [ "item" ])))), 128)) ]) ], 64)) : vue.createCommentVNode("", true), Cm, vue.createElementVNode("div", Tm, [ vue.createElementVNode("div", Sm, [ vue.createElementVNode("div", Im, [ vue.createElementVNode("div", Em, [ vue.createElementVNode("div", Um, [ Pm, vue.createElementVNode("span", Lm, [ vue.createTextVNode("\u5f53\u524d\u5171 "), vue.createElementVNode("b", Mm, vue.toDisplayString(vue.unref(a).toLocaleString()), 1), vue.createTextVNode(" \u9898\uff0c\u4fdd\u5b58\u5728\u8fd9\u4e2a\u6d4f\u89c8\u5668\u91cc\u3002\u6e05\u7a7a\u540e\u65e0\u6cd5\u6062\u590d\uff0c\u6362\u6d4f\u89c8\u5668\u6216\u6e05\u7a7a\u524d\u5148\u5728\u300c\u9898\u5e93 \u2192 \u5bfc\u51fa\u300d\u5907\u4efd\u3002") ]) ]) ]), vue.createElementVNode("div", $m, [ vue.createElementVNode("button", {
+      }, null, 8, [ "item" ])))), 128)) ]) ], 64)) : vue.createCommentVNode("", true), Em, vue.createElementVNode("div", Um, [ vue.createElementVNode("div", Pm, [ vue.createElementVNode("div", Mm, [ vue.createElementVNode("div", Lm, [ vue.createElementVNode("div", $m, [ Hm, vue.createElementVNode("span", Om, [ vue.createTextVNode("\u5f53\u524d\u5171 "), vue.createElementVNode("b", jm, vue.toDisplayString(vue.unref(a).toLocaleString()), 1), vue.createTextVNode(" \u9898\uff0c\u4fdd\u5b58\u5728\u8fd9\u4e2a\u6d4f\u89c8\u5668\u91cc\u3002\u6e05\u7a7a\u540e\u65e0\u6cd5\u6062\u590d\uff0c\u6362\u6d4f\u89c8\u5668\u6216\u6e05\u7a7a\u524d\u5148\u5728\u300c\u9898\u5e93 \u2192 \u5bfc\u51fa\u300d\u5907\u4efd\u3002") ]) ]) ]), vue.createElementVNode("div", zm, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-danger",
         disabled: !vue.unref(a),
         onClick: clearCache
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:trash-can-outline"
-      }), vue.createTextVNode("\u6e05\u7a7a ") ], 8, Hm) ]) ]) ]) ]) ], 64)) : "about" === A.value ? (vue.openBlock(), 
+      }), vue.createTextVNode("\u6e05\u7a7a ") ], 8, Dm) ]) ]) ]) ]) ], 64)) : "about" === A.value ? (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 4
-      }, [ vue.createElementVNode("div", Om, [ vue.createElementVNode("div", jm, [ vue.createElementVNode("div", zm, [ vue.createElementVNode("div", Dm, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("span", Rm, [ vue.createTextVNode(vue.toDisplayString(vue.unref(Re).script.name) + " ", 1), vue.createElementVNode("span", Fm, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), Bm ]) ]), vue.createElementVNode("div", Gm, [ vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("div", Nm, [ vue.createElementVNode("div", Rm, [ vue.createElementVNode("div", Fm, [ vue.createElementVNode("div", Bm, [ vue.createElementVNode("div", Gm, [ vue.createElementVNode("span", Km, [ vue.createTextVNode(vue.toDisplayString(vue.unref(Re).script.name) + " ", 1), vue.createElementVNode("span", Vm, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), Wm ]) ]), vue.createElementVNode("div", Qm, [ vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn",
-        disabled: L.value,
+        disabled: M.value,
         onClick: checkUpdate
-      }, vue.toDisplayString(L.value ? "\u68c0\u67e5\u4e2d\u2026" : "\u68c0\u67e5\u66f4\u65b0"), 9, Km) ]) ]) ]), (vue.openBlock(true), 
-      vue.createElementBlock(vue.Fragment, null, vue.renderList(U.value, ((e, t) => (vue.openBlock(), vue.createBlock(Wl, {
+      }, vue.toDisplayString(M.value ? "\u68c0\u67e5\u4e2d\u2026" : "\u68c0\u67e5\u66f4\u65b0"), 9, Jm) ]) ]) ]), (vue.openBlock(true), 
+      vue.createElementBlock(vue.Fragment, null, vue.renderList(U.value, ((e, t) => (vue.openBlock(), vue.createBlock(Xl, {
         key: `update-${t}`,
         item: e
-      }, null, 8, [ "item" ])))), 128)) ]), Vm, P.value ? (vue.openBlock(), vue.createElementBlock("div", {
+      }, null, 8, [ "item" ])))), 128)) ]), Zm, P.value ? (vue.openBlock(), vue.createElementBlock("div", {
         key: 0,
         class: "settings-notice-body",
         innerHTML: P.value
-      }, null, 8, Qm)) : (vue.openBlock(), vue.createElementBlock("p", Wm, "\u6682\u65e0\u516c\u544a")), Jm, vue.createVNode(nm) ], 64)) : vue.createCommentVNode("", true) ]) ], 2));
+      }, null, 8, Ym)) : (vue.openBlock(), vue.createElementBlock("p", Xm, "\u6682\u65e0\u516c\u544a")), eg, vue.createVNode(sm) ], 64)) : vue.createCommentVNode("", true) ]) ], 2));
     }
   });
 
-  const Ym = {
+  const ng = {
     class: "notice-row"
-  }, Xm = {
+  }, ag = {
     class: "notice-text"
-  }, eg = [ "aria-expanded" ], tg = [ "innerHTML" ], ng = vue.defineComponent({
+  }, ig = [ "aria-expanded" ], rg = [ "innerHTML" ], sg = vue.defineComponent({
     __name: "NoticeBar",
     setup(e) {
-      const t = Jn(), n = vue.ref(false), a = vue.ref(Cache.get("noticeDismissed", "")), s = vue.computed((() => t.notice ? O.sanitize(t.notice) : "")), o = vue.computed((() => {
+      const t = ea(), n = vue.ref(false), a = vue.ref(Cache.get("noticeDismissed", "")), s = vue.computed((() => t.notice ? O.sanitize(t.notice) : "")), o = vue.computed((() => {
         const e = document.createElement("div");
         return e.innerHTML = s.value, (e.textContent || "").replace(/\s+/g, " ").trim();
       })), l = vue.computed((() => o.value ? function(e) {
@@ -19258,15 +19288,15 @@
         class: vue.normalizeClass([ "notice-bar", {
           "is-expanded": n.value
         } ])
-      }, [ vue.createElementVNode("div", Ym, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, [ vue.createElementVNode("div", ng, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:bullhorn-outline",
         class: "notice-icon"
-      }), vue.createElementVNode("span", Xm, vue.toDisplayString(o.value), 1), vue.createElementVNode("button", {
+      }), vue.createElementVNode("span", ag, vue.toDisplayString(o.value), 1), vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-plain aah-btn-small",
         "aria-expanded": n.value,
         onClick: t[0] || (t[0] = e => n.value = !n.value)
-      }, vue.toDisplayString(n.value ? "\u6536\u8d77" : "\u67e5\u770b"), 9, eg), vue.createElementVNode("button", {
+      }, vue.toDisplayString(n.value ? "\u6536\u8d77" : "\u67e5\u770b"), 9, ig), vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-plain aah-btn-small aah-btn-icon",
         "aria-label": "\u5173\u95ed\u516c\u544a",
@@ -19278,22 +19308,22 @@
         key: 0,
         class: "notice-full custom-scroll",
         innerHTML: s.value
-      }, null, 8, tg)) : vue.createCommentVNode("", true) ], 2)) : vue.createCommentVNode("", true);
+      }, null, 8, rg)) : vue.createCommentVNode("", true) ], 2)) : vue.createCommentVNode("", true);
     }
-  }), ag = {
+  }), og = {
     class: "mini-ball-dock"
-  }, ig = {
+  }, lg = {
     key: 0
-  }, rg = [ "aria-label" ], sg = [ "src" ], og = {
+  }, cg = [ "aria-label" ], ug = [ "src" ], pg = {
     key: 0,
     class: "mini-ball-value num"
-  }, lg = {
+  }, dg = {
     key: 1,
     class: "mini-ball-badge num"
-  }, cg = vue.defineComponent({
+  }, hg = vue.defineComponent({
     __name: "MiniBall",
     setup(e) {
-      const t = Qn(), n = ia(), a = useAskOverview(), i = vue.computed((() => n.questionList.length)), s = vue.computed((() => a.value.tally.done)), o = vue.computed((() => i.value ? Math.round(s.value / i.value * 100) : 0)), l = vue.computed((() => a.value.tally.none + a.value.tally.wait)), m = vue.computed((() => n.questionList.findIndex((e => Array.isArray(e.answer) && e.answer.some((e => null == e ? void 0 : e.needLogin)))))), g = vue.computed((() => {
+      const t = Yn(), n = la(), a = useAskOverview(), i = vue.computed((() => n.questionList.length)), s = vue.computed((() => a.value.tally.done)), o = vue.computed((() => i.value ? Math.round(s.value / i.value * 100) : 0)), l = vue.computed((() => a.value.tally.none + a.value.tally.wait)), m = vue.computed((() => n.questionList.findIndex((e => Array.isArray(e.answer) && e.answer.some((e => null == e ? void 0 : e.needLogin)))))), g = vue.computed((() => {
         const {firstWait: e, firstNone: i, tally: r} = a.value;
         if (e >= 0) return {
           title: `\u7b2c ${e + 1} \u9898 AI \u5efa\u8bae\u5f85\u786e\u8ba4`,
@@ -19325,12 +19355,12 @@
       })), expand = (e = -1) => {
         t.app.showFloat = true, e >= 0 && (t.closeSearch(), t.setPage("ask"), n.toQuestion(e));
       };
-      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", ag, [ g.value && vue.unref(t).app.alertBubble ? (vue.openBlock(), vue.createElementBlock("button", {
+      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", og, [ g.value && vue.unref(t).app.alertBubble ? (vue.openBlock(), vue.createElementBlock("button", {
         key: 0,
         type: "button",
         class: "mini-bubble",
         onClick: a[0] || (a[0] = e => expand(g.value.index))
-      }, [ vue.createElementVNode("strong", null, vue.toDisplayString(g.value.title), 1), g.value.detail ? (vue.openBlock(), vue.createElementBlock("span", ig, vue.toDisplayString(g.value.detail), 1)) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
+      }, [ vue.createElementVNode("strong", null, vue.toDisplayString(g.value.title), 1), g.value.detail ? (vue.openBlock(), vue.createElementBlock("span", lg, vue.toDisplayString(g.value.detail), 1)) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), vue.createElementVNode("button", {
         type: "button",
         class: vue.normalizeClass([ "mini-ball", {
           "has-progress": i.value > 0,
@@ -19344,90 +19374,90 @@
       }, [ vue.createElementVNode("img", {
         src: vue.unref("data:image/svg+xml,%3csvg%20class='icon'%20viewBox='0%200%201024%201024'%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3e%3cpath%20d='m253.36%201024-115.278-58.836v-53.206c-64.889-68.266-62.918-94.729%2014.075-153.424-23.506-17.594-63.762%202.675-77.275-36.315%2047.435-42.93%2070.378-101.063%2087.973-162.01a326.695%20326.695%200%200%201%20208.037-226.617c4.645-89.38%2086.847-143.43%20178.479-112.605l-35.612%2090.365c105.145%207.32%20192.414%2045.042%20256.317%20123.303%2040.538%2015.483%2038.849-34.767%2069.252-40.82l11.964%2058.273%2050.391-27.306c28.151%2018.72-5.208%2031.951-10.416%2052.22%2014.78%2020.128%2028.996%2040.538%2044.479%2060.244a142.867%20142.867%200%200%201%2028.996%20114.153c-12.528%2077.838-30.263%20154.831-41.101%20233.092A1276.939%201276.939%200%200%200%20918.433%201024H897.32l-89.24-70.378%209.994-10.416-17.735%2036.878-68.408-20.128-39.411%2023.788-42.227-21.114c-28.151%2014.076-52.502%2036.034-86.565%2027.307l-9.009-37.863H332.747L306.144%201024zm-9.993-380.041-.844.985%20126.68%2019.706%2010.838%2010.979c-29.277%2032.374-19.846%2074.178-29.7%20110.493l34.064%2030.263-35.19%2094.87a412.274%20412.274%200%200%200%20233.515%202.11l9.712-26.602%2012.809%2015.905-11.824%2050.672%205.35%204.645c16.749-11.682%2033.218-24.21%2050.812-34.626a84.454%2084.454%200%200%201%2026.04-5.348l7.46%2033.922%2048.842-23.788%2052.925%2014.076c-1.83-43.212-2.956-80.935-5.912-118.517%200-4.926-9.853-9.29-15.061-14.075l-5.63-23.225%2014.075-100.922h18.72l3.238-1.267c-11.964%20106.412%208.023%20202.266%2087.128%20281.512%208.727-48.842%2016.61-93.321%2024.632-137.66%207.46-40.96%2015.061-81.92%2022.521-122.88%2010.557-48.42%2025.477-97.262-10.979-140.755l-30.825%2038.004c0-16.469%201.126-33.078%201.126-49.546%200-70.378-53.206-104.723-115.983-76.29a232.951%20232.951%200%200%201-32.937%209.43c16.046-32.373-3.519-52.924-25.477-70.377a292.21%20292.21%200%200%200-209.304-70.378c-11.401.703-22.802%200-40.256%200l45.183-104.582c-40.397%2010.979-74.038%2014.78-94.73%2045.464s14.92%2045.886%2020.833%2069.674c-110.212%204.364-202.69%2080.513-236.611%20193.117l-70.378%20172.708%2049.124%203.519%205.63%2054.191c32.514-26.04%2026.04-61.088%2030.262-92.899h17.876v58.414l30.967%206.334c1.407-6.616%202.393-11.683%203.66-16.469%209.148-34.626-19.706-59.117-22.38-91.491zm-37.863%20178.9-6.475%2020.833-25.336%2084.453c1.548%208.868%200%2023.225%205.067%2025.477%2032.374%2016.046%2065.733%2029.277%20104.16%2045.746%2021.113-65.452%2063.621-114.435%2069.533-180.872-37.3-16.187-70.941-31.53-104.722-44.338-17.032-6.756-36.315-10.979-35.049%2019.002zm121.754-38.848%2010.556-90.225-48.138-6.193v78.964zm-168.907%2096.98%2023.084-73.474c-28.152-10.416-47.576-9.29-56.303%2015.483s2.674%2042.79%2032.937%2057.992z'%20fill='%23353947'/%3e%3cpath%20d='M198.607%20548.948c33.922-112.604%20126.68-188.472%20235.907-192.272-5.912-23.788-41.1-39.553-20.832-69.674s54.332-34.486%2094.729-45.465L463.228%20346.12h40.256a292.21%20292.21%200%200%201%20209.304%2070.378c21.958%2017.735%2042.227%2038.286%2025.477%2070.378l.986-.985c-30.967%2026.743-32.797%2059.399-19.847%2095.15L744.599%20622l-40.819-6.192-103.174-14.076-62.214-93.04-31.67%2050.672c-19.425-5.63-26.603.845-20.691%2020.692l-21.536-.845a165.67%20165.67%200%200%200-100.078-17.172l-10.416-86.565-37.44%2031.248-44.339%2042.226zm255.19-62.917-10.556-10.557c-17.173-17.032-35.049-15.061-47.294%203.378s-4.786%2036.737%2012.105%2050.25c20.128%2016.046%2034.907%209.712%2045.745-11.542%2014.217-10.838%2015.202-21.395%200-31.811z'%20fill='%23F5F5F6'%20data-spm-anchor-id='a313x.search_index.0.i5.dc0f3a810XA6r8'%20class='selected'/%3e%3cpath%20d='m592.442%20886.763-9.712%2026.603a412.274%20412.274%200%200%201-233.514-2.112l35.189-94.87-34.063-30.543c9.853-36.315%200-78.12%2029.7-110.494a198.184%20198.184%200%200%200%20105.425-94.87c16.328%202.394%2026.04-1.688%2020.692-20.69l31.67-4.927%2063.058%2078.542c0%207.882-1.97%2018.017%201.971%2023.084%2030.966%2038.708%2023.788%2080.935%2014.076%20123.865-8.587%2036.034-16.469%2071.364-24.492%20106.412zm-149.624-223.24c0%2014.076-2.815%2023.648%200%2026.885%2020.27%2020.691%2020.832%2045.605%2019.566%2071.927a96.84%2096.84%200%200%200%203.237%2031.107c5.912%2020.41%2012.668%2041.382%2038.426%2044.056a48.56%2048.56%200%200%200%2053.347-35.189%20696.602%20696.602%200%200%200%2018.58-80.371c6.052-6.475%2035.47-2.534%2018.157-36.597z'%20fill='%23F5F5F6'/%3e%3cpath%20d='M600.606%20602.013%20703.78%20616.09l40.82%205.349c37.863%209.993%2022.943%2041.241%2026.461%2065.17L756.986%20787.53l-49.828%2078.12-21.395%2031.529-10.134%2021.395a84.454%2084.454%200%200%200-26.04%205.348c-17.594%2010.416-34.063%2022.944-50.813%2034.626v-5.208h-5.067l11.823-50.672c16.047-61.932%2032.937-123.724%2047.717-185.938%205.348-22.662-25.477-68.267-51.94-82.624zM927.3%20706.736c-7.46%2040.96-15.061%2081.92-22.521%20122.88-8.023%2044.338-15.906%2088.817-24.633%20137.66-79.105-79.387-98.529-175.242-87.128-281.513z'%20fill='%23B3DCF8'/%3e%3cpath%20d='m199.029%20843.692%206.475-20.832h45.605c2.111-39.271-20.973-30.263-38.427-30.122-1.548-29.981%2018.017-25.758%2035.049-18.58%2034.063%2013.231%2067.422%2028.151%20104.722%2044.479-5.912%2066.437-48.42%20115.42-69.533%20180.871-38.427-16.186-71.927-29.418-104.16-45.182-4.786-2.252-3.519-16.61-5.067-25.477h33.5l26.321-70.378z'%20fill='%2387BC85'/%3e%3cpath%20d='M738.265%20486.03a232.951%20232.951%200%200%200%2032.937-9.43c62.777-28.151%20116.405%206.615%20115.983%2076.29%200%2016.468-.704%2033.077-1.126%2049.546l1.126-.986-12.105-2.674-21.536%2016.75-29.98%208.305a86.565%2086.565%200%200%201-91.633-59.259c2.393-26.462%204.645-52.924%207.038-79.527zm113.731%2061.792-61.37-52.502c-3.94%2035.752-6.615%2059.822-10.275%2093.18z'%20fill='%23F5F5F6'%20data-spm-anchor-id='a313x.search_index.0.i3.dc0f3a810XA6r8'/%3e%3cpath%20d='M198.607%20548.948h73.615c-28.151%2042.227-74.178%2076.853-59.117%20137.66-4.223%2031.81%202.252%2066.859-30.263%2092.899l-6.052-54.473-49.124-3.519z'%20fill='%23AED4EF'/%3e%3cpath%20d='m927.3%20706.736-134.28-21.113-3.238%201.266%206.897-37.863%2027.025-7.742%2031.248-8.867%2029.84-20.691%202.393-10.276-.422.986%2030.262-36.738c35.752%2043.776%2020.832%2092.618%2010.276%20141.038zm-557.675-42.79-126.68-19.706a171.3%20171.3%200%200%201%2016.75-41.1c21.817-29.278%2046.168-56.303%2069.533-84.454%203.238%209.15%206.757%2018.157%209.572%2027.307q15.624%2049.123%2030.966%2098.529z'%20fill='%23F5F5F6'/%3e%3cpath%20d='M763.18%20810.473c5.207%204.645%2014.075%209.009%2015.06%2014.076%202.956%2037.582%204.082%2075.304%205.912%20118.516l-52.925-14.075-47.997%2023.787-7.601-34.766c14.075-1.97%2020.55-7.883%2010.979-21.817%2021.395%2011.682%2023.788-9.994%2033.359-19.003z'%20fill='%23AED4EF'/%3e%3cpath%20d='M601.169%20634.106c26.462%2014.075%2057.288%2059.962%2051.939%2082.624-14.076%2062.214-31.67%20124.006-47.716%20185.938l-12.95-15.905c8.023-35.33%2015.905-70.378%2024.35-105.99%2010.135-42.93%2017.314-85.157-14.075-123.865-3.519-4.785-.985-14.92-1.548-22.802zM328.806%20518.404c-23.365%2028.152-47.716%2055.458-69.533%2084.454a171.3%20171.3%200%200%200-16.75%2041.1l.844-.985-12.386%2043.072h-17.876c-15.061-60.385%2030.403-94.87%2059.117-137.097l44.338-42.226z'%20fill='%23484F5E'/%3e%3cpath%20d='m327.258%20784.011-37.582-17.454v-78.964l48.138%206.193z'%20fill='%23D55375'/%3e%3cpath%20d='m823.704%20641.284-27.025%207.742-6.897%2037.863h-18.72c-3.52-23.928%2011.4-55.176-26.463-65.17l-25.195-40.96%2012.527-16.187a86.565%2086.565%200%200%200%2091.35%2059.259zm-454.079%2022.662V644.1l12.246-12.95c8.445%201.267%2020.41%206.897%2024.773%203.237%2020.55-17.031%2038.99-36.455%2058.132-55.176l20.973%201.548a198.184%20198.184%200%200%201-105.708%2094.87z'%20fill='%23484F5E'/%3e%3cpath%20d='m199.029%20843.692%2034.485%2014.075-26.321%2070.378h-33.5z'%20fill='%23CAE7AF'/%3e%3cpath%20d='m230.98%20686.326%2012.387-43.071c2.675%2031.67%2031.53%2056.302%2022.24%2091.35-1.267%204.786-2.252%209.854-3.66%2016.47l-30.966-6.335z'%20fill='%23F5F5F6'/%3e%3cpath%20d='m763.18%20810.473-44.058%2067.704-11.964-12.528%2050.39-78.4z'%20fill='%23484F5E'/%3e%3cpath%20d='M212.682%20792.738c17.454%200%2040.538-9.15%2038.427%2030.122h-45.605z'%20fill='%23CDEAB1'/%3e%3cpath%20d='m598.917%20957.985-5.349-4.645h5.067z'%20fill='%23484F5E'/%3e%3cpath%20d='M464.495%20579.211c-19.143%2018.72-37.582%2038.145-58.132%2055.176-4.364%203.66-16.328-1.97-24.773-3.237l-17.173-69.111a165.67%20165.67%200%200%201%20100.078%2017.172z'%20fill='%23AED4EF'/%3e%3cpath%20d='m364.417%20562.039%2017.173%2069.111-12.246%2012.95Q354%20594.976%20338.377%20545.57c-2.815-9.149-6.334-18.157-9.571-27.306l-12.246-11.542%2037.441-30.967z'%20fill='%23353947'/%3e%3cpath%20d='M600.606%20602.013v31.67l-62.214-79.245-31.67%204.926%2031.388-50.39z'%20fill='%23484F5E'/%3e%3cpath%20d='M453.797%20517.278c-10.838%2021.255-25.617%2028.152-45.745%2011.542-16.891-14.075-24.633-31.529-12.105-50.25s30.121-20.41%2047.294-3.378c-23.507.986-34.767%2011.542-29.137%2039.412l39.693%203.097z'%20fill='%23AED4EF'/%3e%3cpath%20d='m731.931%20564.572-12.809%2015.624c-12.95-35.752-11.12-68.407%2019.847-95.15-2.111%2026.602-4.363%2053.064-7.038%2079.526z'%20fill='%23353947'/%3e%3cpath%20d='M506.722%20559.787c5.348%2019.002-4.364%2023.084-20.691%2020.69-6.194-19.846.985-26.32%2020.69-20.69z'%20fill='%23484F5E'/%3e%3cpath%20d='M453.797%20485.749c15.202%2010.416%2014.076%2020.973%200%2031.53v-31.812zm-10.556-10.557%2010.556%2010.557-10.556-10.557z'%20fill='%23AED4EF'/%3e%3cpath%20d='m442.818%20663.524%20151.313%2022.099c17.313%2034.062-12.105%2030.121-18.157%2036.596a696.602%20696.602%200%200%201-18.58%2080.09%2048.56%2048.56%200%200%201-52.784%2034.908c-25.758-2.675-32.514-23.647-38.426-44.057a96.84%2096.84%200%200%201-3.237-31.107c1.266-26.321%200-51.235-19.566-71.926-3.378-2.956-.563-12.387-.563-26.603zm66.297%20153.987c41.523-26.462%2042.226-60.384%2034.766-98.53l-55.317-10.274c-.422%2038.707-15.202%2075.163%2020.55%20108.804zm198.043%2048.138%2011.964%2012.528c-9.57%209.008-11.964%2030.685-33.359%2019.002z'%20fill='%23353947'/%3e%3cpath%20d='M686.186%20896.757c9.571%2014.075%202.955%2019.846-10.98%2021.817zm165.81-348.935-71.645%2040.679c3.66-33.36%206.334-57.429%2010.276-93.18z'%20fill='%23353947'/%3e%3cpath%20d='m884.792%20611.726-29.84%2020.69-1.408-16.89%2021.536-16.75z'%20fill='%23484F5E'%20data-spm-anchor-id='a313x.search_index.0.i4.dc0f3a810XA6r8'%20class='selected'/%3e%3cpath%20d='m853.544%20615.526%201.408%2016.89-31.248%208.868v-17.453zm31.248-3.8-9.712-12.95%2012.105%202.674z'%20fill='%23353947'/%3e%3cpath%20d='m443.522%20474.91%2010.557%2010.557v31.952l-39.693-3.097c-6.194-27.87%205.63-38.426%2029.136-39.411z'%20fill='%23F5F5F6'/%3e%3cpath%20d='M509.115%20817.51c-35.753-33.64-20.973-70.377-20.55-108.803l55.316%2010.275c7.883%2038.145%206.757%2072.067-34.766%2098.529z'%20fill='%23E25679'/%3e%3c/svg%3e"),
         alt: ""
-      }, null, 8, sg), i.value ? (vue.openBlock(), vue.createElementBlock("span", og, [ vue.createTextVNode(vue.toDisplayString(s.value), 1), vue.createElementVNode("small", null, "/" + vue.toDisplayString(i.value), 1) ])) : vue.createCommentVNode("", true), l.value ? (vue.openBlock(), 
-      vue.createElementBlock("span", lg, vue.toDisplayString(l.value), 1)) : vue.createCommentVNode("", true) ], 14, rg) ]));
+      }, null, 8, ug), i.value ? (vue.openBlock(), vue.createElementBlock("span", pg, [ vue.createTextVNode(vue.toDisplayString(s.value), 1), vue.createElementVNode("small", null, "/" + vue.toDisplayString(i.value), 1) ])) : vue.createCommentVNode("", true), l.value ? (vue.openBlock(), 
+      vue.createElementBlock("span", dg, vue.toDisplayString(l.value), 1)) : vue.createCommentVNode("", true) ], 14, cg) ]));
     }
-  }), ug = {
+  }), mg = {
     class: "ai-workbench"
-  }, pg = {
+  }, gg = {
     class: "ai-tabs",
     role: "tablist",
     "aria-label": "\u641c\u9898\u65b9\u5f0f"
-  }, dg = [ "aria-selected", "onClick" ], hg = vue.createElementVNode("span", {
+  }, fg = [ "aria-selected", "onClick" ], vg = vue.createElementVNode("span", {
     class: "ai-tabs-spacer"
-  }, null, -1), mg = [ "title" ], gg = vue.createElementVNode("i", {
+  }, null, -1), yg = [ "title" ], wg = vue.createElementVNode("i", {
     "aria-hidden": "true"
-  }, null, -1), fg = {
+  }, null, -1), bg = {
     class: "ai-split"
-  }, vg = {
+  }, xg = {
     class: "ai-input"
-  }, yg = vue.createElementVNode("label", {
+  }, kg = vue.createElementVNode("label", {
     class: "ai-field-label",
     for: "aah-ai-input"
-  }, "\u9898\u76ee", -1), wg = [ "placeholder" ], bg = {
+  }, "\u9898\u76ee", -1), qg = [ "placeholder" ], Ag = {
     class: "ai-command-row"
-  }, xg = [ "disabled" ], kg = {
+  }, _g = [ "disabled" ], Cg = {
     key: 0,
     class: "ai-field-hint"
-  }, qg = {
+  }, Tg = {
     key: 1,
     class: "ai-service-details"
-  }, Ag = vue.createElementVNode("summary", null, "\u670d\u52a1\u8bf4\u660e", -1), _g = [ "innerHTML" ], Cg = {
+  }, Sg = vue.createElementVNode("summary", null, "\u670d\u52a1\u8bf4\u660e", -1), Ig = [ "innerHTML" ], Eg = {
     class: "ai-result",
     "aria-live": "polite"
-  }, Tg = {
+  }, Ug = {
     class: "ai-result-head"
-  }, Sg = {
+  }, Pg = {
     class: "aah-section-title"
-  }, Ig = {
-    class: "ai-result-note"
-  }, Eg = vue.createElementVNode("span", {
-    class: "ai-tabs-spacer"
-  }, null, -1), Ug = {
-    key: 0,
-    class: "ai-placeholder is-loading"
-  }, Pg = [ "innerHTML" ], Lg = {
-    key: 2,
-    class: "ai-placeholder"
   }, Mg = {
+    class: "ai-result-note"
+  }, Lg = vue.createElementVNode("span", {
+    class: "ai-tabs-spacer"
+  }, null, -1), $g = {
     key: 0,
     class: "ai-placeholder is-loading"
-  }, $g = {
-    key: 1,
-    class: "aah-alert aah-alert-warning"
   }, Hg = [ "innerHTML" ], Og = {
     key: 2,
-    class: "official-result-list"
+    class: "ai-placeholder"
   }, jg = {
-    class: "official-result-head"
+    key: 0,
+    class: "ai-placeholder is-loading"
   }, zg = {
+    key: 1,
+    class: "aah-alert aah-alert-warning"
+  }, Dg = [ "innerHTML" ], Ng = {
+    key: 2,
+    class: "official-result-list"
+  }, Rg = {
+    class: "official-result-head"
+  }, Fg = {
     class: "official-result-num"
-  }, Dg = {
+  }, Bg = {
     class: "num"
-  }, Ng = {
+  }, Gg = {
     class: "aah-tag"
-  }, Rg = [ "innerHTML" ], Fg = {
+  }, Kg = [ "innerHTML" ], Vg = {
     key: 0,
     class: "official-options"
-  }, Bg = {
+  }, Wg = {
     class: "ask-option-key"
-  }, Gg = [ "innerHTML" ], Kg = {
+  }, Qg = [ "innerHTML" ], Jg = {
     class: "official-answer"
-  }, Vg = vue.createElementVNode("span", {
+  }, Zg = vue.createElementVNode("span", {
     class: "official-answer-label"
-  }, "\u53c2\u8003\u7b54\u6848", -1), Qg = {
+  }, "\u53c2\u8003\u7b54\u6848", -1), Yg = {
     key: 0,
     class: "ai-result-note"
-  }, Wg = {
+  }, Xg = {
     key: 3,
     class: "ai-placeholder"
-  }, Jg = {
+  }, ef = {
     key: 4,
     class: "ai-placeholder"
-  }, Zg = vue.defineComponent({
+  }, tf = vue.defineComponent({
     __name: "Ai",
     setup(e) {
-      const t = ta(), n = Qn(), a = Jn(), s = vue.ref(""), k = vue.ref("1"), q = vue.ref(""), A = vue.ref([]), _ = vue.ref(false), C = vue.ref(""), T = vue.ref(false), S = vue.ref(false), I = vue.computed((() => "1" === k.value)), E = vue.computed((() => I.value ? t.aiLoading : _.value)), U = vue.computed((() => E.value ? "\u641c\u7d22\u4e2d..." : "\u5f00\u59cb\u641c\u7d22")), P = vue.computed((() => t.selectTarget("search"))), L = vue.computed((() => {
+      const t = ra(), n = Yn(), a = ea(), s = vue.ref(""), k = vue.ref("1"), q = vue.ref(""), A = vue.ref([]), _ = vue.ref(false), C = vue.ref(""), T = vue.ref(false), S = vue.ref(false), I = vue.computed((() => "1" === k.value)), E = vue.computed((() => I.value ? t.aiLoading : _.value)), U = vue.computed((() => E.value ? "\u641c\u7d22\u4e2d..." : "\u5f00\u59cb\u641c\u7d22")), P = vue.computed((() => t.selectTarget("search"))), M = vue.computed((() => {
         var e;
         return null == (e = P.value) ? void 0 : e.config;
       })), $ = vue.computed((() => {
@@ -19532,7 +19562,7 @@
             onToken: e => {
               q.value === a && (t.aiMsg += e);
             }
-          })), (null == (n = L.value) ? void 0 : n.timeout) || 6e4);
+          })), (null == (n = M.value) ? void 0 : n.timeout) || 6e4);
           if (q.value !== a) return;
           r.success ? t.aiMsg || (t.aiMsg = r.text) : t.aiMsg = r.displayMessage || "AI \u641c\u9898\u5931\u8d25\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5";
         } catch (i) {
@@ -19591,7 +19621,7 @@
         value: "2",
         key: "ask"
       } ];
-      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", ug, [ vue.createElementVNode("div", pg, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(j, (e => vue.createElementVNode("button", {
+      return (e, a) => (vue.openBlock(), vue.createElementBlock("div", mg, [ vue.createElementVNode("div", gg, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(j, (e => vue.createElementVNode("button", {
         key: e.value,
         type: "button",
         role: "tab",
@@ -19600,11 +19630,11 @@
         } ]),
         "aria-selected": k.value === e.value,
         onClick: t => k.value = e.value
-      }, vue.toDisplayString(e.label), 11, dg))), 64)), hg, "1" === k.value ? (vue.openBlock(), vue.createElementBlock("span", {
+      }, vue.toDisplayString(e.label), 11, fg))), 64)), vg, "1" === k.value ? (vue.openBlock(), vue.createElementBlock("span", {
         key: 0,
         class: vue.normalizeClass([ "ai-status", `is-${$.value.tone}` ]),
         title: $.value.desc
-      }, [ gg, vue.createTextVNode(vue.toDisplayString("success" === $.value.tone ? $.value.model : $.value.title), 1) ], 10, mg)) : vue.createCommentVNode("", true), "1" === k.value ? (vue.openBlock(), 
+      }, [ wg, vue.createTextVNode(vue.toDisplayString("success" === $.value.tone ? $.value.model : $.value.title), 1) ], 10, yg)) : vue.createCommentVNode("", true), "1" === k.value ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 1,
         class: "aah-btn aah-btn-plain aah-btn-small",
@@ -19612,30 +19642,30 @@
         onClick: openAiSettings
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:cog-outline"
-      }), vue.createTextVNode("AI \u8bbe\u7f6e ") ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", fg, [ vue.createElementVNode("section", vg, [ yg, vue.withDirectives(vue.createElementVNode("textarea", {
+      }), vue.createTextVNode("AI \u8bbe\u7f6e ") ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("div", bg, [ vue.createElementVNode("section", xg, [ kg, vue.withDirectives(vue.createElementVNode("textarea", {
         id: "aah-ai-input",
         "onUpdate:modelValue": a[0] || (a[0] = e => s.value = e),
         class: "ai-textarea",
         placeholder: "1" === k.value ? "\u7c98\u8d34\u9898\u5e72\u548c\u9009\u9879\uff0cAI \u4f1a\u7ed9\u51fa\u7b54\u6848\u548c\u89e3\u6790" : "\u8f93\u5165\u9898\u5e72\u3001\u5173\u952e\u53e5\u6216\u6574\u9053\u9898\uff0c\u5728\u5b98\u65b9\u9898\u5e93\u91cc\u627e\u76f8\u4f3c\u9898",
         rows: "7"
-      }, null, 8, wg), [ [ vue.vModelText, s.value ] ]), vue.createElementVNode("div", bg, [ vue.createElementVNode("button", {
+      }, null, 8, qg), [ [ vue.vModelText, s.value ] ]), vue.createElementVNode("div", Ag, [ vue.createElementVNode("button", {
         class: "aah-btn aah-btn-primary",
         type: "button",
         disabled: E.value,
         onClick: search
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:magnify"
-      }), vue.createElementVNode("span", null, vue.toDisplayString(U.value), 1) ], 8, xg), "1" === k.value ? (vue.openBlock(), vue.createElementBlock("button", {
+      }), vue.createElementVNode("span", null, vue.toDisplayString(U.value), 1) ], 8, _g), "1" === k.value ? (vue.openBlock(), vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn aah-btn-plain",
         type: "button",
         onClick: clearAiResult
       }, vue.toDisplayString(vue.unref(t).aiLoading ? "\u505c\u6b62\u5e76\u6e05\u7a7a" : "\u6e05\u7a7a"), 1)) : vue.createCommentVNode("", true) ]), "2" === k.value ? (vue.openBlock(), 
-      vue.createElementBlock("p", kg, "\u6a21\u7cca\u5339\u914d\uff0c\u6700\u591a\u8fd4\u56de 6 \u9053\u76f8\u4f3c\u9898\uff1b\u641c\u5230\u7ed3\u679c\u65f6\u6309\u6b21\u6263\u79ef\u5206\uff0c\u6ca1\u641c\u5230\u4e0d\u6263\u3002")) : vue.createCommentVNode("", true), "1" === k.value ? (vue.openBlock(), 
-      vue.createElementBlock("details", qg, [ Ag, vue.createElementVNode("div", {
+      vue.createElementBlock("p", Cg, "\u6a21\u7cca\u5339\u914d\uff0c\u6700\u591a\u8fd4\u56de 6 \u9053\u76f8\u4f3c\u9898\uff1b\u641c\u5230\u7ed3\u679c\u65f6\u6309\u6b21\u6263\u79ef\u5206\uff0c\u6ca1\u641c\u5230\u4e0d\u6263\u3002")) : vue.createCommentVNode("", true), "1" === k.value ? (vue.openBlock(), 
+      vue.createElementBlock("details", Tg, [ Sg, vue.createElementVNode("div", {
         class: "copyright-content",
         innerHTML: vue.unref(createSafeMarkdownHtml)(H.value)
-      }, null, 8, _g) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("section", Cg, [ vue.createElementVNode("header", Tg, [ vue.createElementVNode("h3", Sg, vue.toDisplayString("1" === k.value ? "AI \u89e3\u7b54" : "\u76f8\u4f3c\u9898\u76ee"), 1), vue.createElementVNode("span", Ig, vue.toDisplayString("1" === k.value ? "\u4ec5\u4f9b\u53c2\u8003\uff0c\u8bf7\u7ed3\u5408\u9898\u76ee\u81ea\u884c\u6838\u5bf9" : "\u6309\u76f8\u4f3c\u5ea6\u6392\u5e8f\uff0c\u8bf7\u6838\u5bf9\u662f\u5426\u4e3a\u540c\u4e00\u9053\u9898"), 1), Eg, "1" === k.value && vue.unref(t).aiMsg ? (vue.openBlock(), 
+      }, null, 8, Ig) ])) : vue.createCommentVNode("", true) ]), vue.createElementVNode("section", Eg, [ vue.createElementVNode("header", Ug, [ vue.createElementVNode("h3", Pg, vue.toDisplayString("1" === k.value ? "AI \u89e3\u7b54" : "\u76f8\u4f3c\u9898\u76ee"), 1), vue.createElementVNode("span", Mg, vue.toDisplayString("1" === k.value ? "\u4ec5\u4f9b\u53c2\u8003\uff0c\u8bf7\u7ed3\u5408\u9898\u76ee\u81ea\u884c\u6838\u5bf9" : "\u6309\u76f8\u4f3c\u5ea6\u6392\u5e8f\uff0c\u8bf7\u6838\u5bf9\u662f\u5426\u4e3a\u540c\u4e00\u9053\u9898"), 1), Lg, "1" === k.value && vue.unref(t).aiMsg ? (vue.openBlock(), 
       vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn aah-btn-small",
@@ -19645,20 +19675,20 @@
         icon: "mdi:content-copy"
       }), vue.createTextVNode("\u590d\u5236 ") ])) : vue.createCommentVNode("", true) ]), "1" === k.value ? (vue.openBlock(), vue.createElementBlock(vue.Fragment, {
         key: 0
-      }, [ vue.unref(t).aiLoading && !vue.unref(t).aiMsg ? (vue.openBlock(), vue.createElementBlock("p", Ug, "AI \u6b63\u5728\u751f\u6210\u2026")) : vue.unref(t).aiMsg ? (vue.openBlock(), 
+      }, [ vue.unref(t).aiLoading && !vue.unref(t).aiMsg ? (vue.openBlock(), vue.createElementBlock("p", $g, "AI \u6b63\u5728\u751f\u6210\u2026")) : vue.unref(t).aiMsg ? (vue.openBlock(), 
       vue.createElementBlock("div", {
         key: 1,
         innerHTML: vue.unref(t).currentAiMd(),
         class: "markdown-body ai-markdown"
-      }, null, 8, Pg)) : (vue.openBlock(), vue.createElementBlock("p", Lg, "\u8f93\u5165\u9898\u76ee\u540e\u70b9\u300c" + vue.toDisplayString(U.value) + "\u300d\uff0c\u89e3\u7b54\u4f1a\u663e\u793a\u5728\u8fd9\u91cc\u3002", 1)) ], 64)) : (vue.openBlock(), 
+      }, null, 8, Hg)) : (vue.openBlock(), vue.createElementBlock("p", Og, "\u8f93\u5165\u9898\u76ee\u540e\u70b9\u300c" + vue.toDisplayString(U.value) + "\u300d\uff0c\u89e3\u7b54\u4f1a\u663e\u793a\u5728\u8fd9\u91cc\u3002", 1)) ], 64)) : (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
-      }, [ _.value ? (vue.openBlock(), vue.createElementBlock("p", Mg, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true), C.value ? (vue.openBlock(), 
-      vue.createElementBlock("div", $g, [ vue.createVNode(vue.unref(vue$1.Icon), {
+      }, [ _.value ? (vue.openBlock(), vue.createElementBlock("p", jg, "\u641c\u7d22\u4e2d\u2026")) : vue.createCommentVNode("", true), C.value ? (vue.openBlock(), 
+      vue.createElementBlock("div", zg, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:alert-outline"
       }), vue.createElementVNode("span", {
         innerHTML: C.value
-      }, null, 8, Hg), S.value ? (vue.openBlock(), vue.createElementBlock("button", {
+      }, null, 8, Dg), S.value ? (vue.openBlock(), vue.createElementBlock("button", {
         key: 0,
         class: "aah-btn aah-btn-small aah-btn-primary",
         type: "button",
@@ -19666,74 +19696,74 @@
           vue.unref(n).closeSearch(), vue.unref(n).setPage("settings", "account");
         })
       }, " \u53bb\u767b\u5f55 ")) : vue.createCommentVNode("", true) ])) : vue.createCommentVNode("", true), A.value.length ? (vue.openBlock(), 
-      vue.createElementBlock("ol", Og, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(A.value, ((e, t) => {
+      vue.createElementBlock("ol", Ng, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(A.value, ((e, t) => {
         return vue.openBlock(), vue.createElementBlock("li", {
           key: `official-${t}`,
           class: "official-result-item"
-        }, [ vue.createElementVNode("div", jg, [ vue.createElementVNode("span", zg, [ vue.createTextVNode("\u76f8\u4f3c\u9898 "), vue.createElementVNode("span", Dg, vue.toDisplayString(t + 1), 1) ]), vue.createElementVNode("span", Ng, vue.toDisplayString((n = e.type, 
+        }, [ vue.createElementVNode("div", Rg, [ vue.createElementVNode("span", Fg, [ vue.createTextVNode("\u76f8\u4f3c\u9898 "), vue.createElementVNode("span", Bg, vue.toDisplayString(t + 1), 1) ]), vue.createElementVNode("span", Gg, vue.toDisplayString((n = e.type, 
         O[String(n)] || "\u5176\u5b83\u9898\u578b")), 1) ]), vue.createElementVNode("div", {
           class: "official-question",
           innerHTML: e.question
-        }, null, 8, Rg), e.options && e.options.length ? (vue.openBlock(), vue.createElementBlock("ul", Fg, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, n) => (vue.openBlock(), 
+        }, null, 8, Kg), e.options && e.options.length ? (vue.openBlock(), vue.createElementBlock("ul", Vg, [ (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(e.options, ((e, n) => (vue.openBlock(), 
         vue.createElementBlock("li", {
           key: `opt-${t}-${n}`
-        }, [ vue.createElementVNode("span", Bg, vue.toDisplayString(String.fromCharCode(65 + n)), 1), vue.createElementVNode("span", {
+        }, [ vue.createElementVNode("span", Wg, vue.toDisplayString(String.fromCharCode(65 + n)), 1), vue.createElementVNode("span", {
           innerHTML: e
-        }, null, 8, Gg) ])))), 128)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Kg, [ Vg, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(formatAnswer(e.answer), ((e, n) => (vue.openBlock(), 
+        }, null, 8, Qg) ])))), 128)) ])) : vue.createCommentVNode("", true), vue.createElementVNode("div", Jg, [ Zg, (vue.openBlock(true), vue.createElementBlock(vue.Fragment, null, vue.renderList(formatAnswer(e.answer), ((e, n) => (vue.openBlock(), 
         vue.createElementBlock("span", {
           key: `answer-${t}-${n}`,
           class: "lib-answer-chip"
-        }, vue.toDisplayString(e), 1)))), 128)), formatAnswer(e.answer).length ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock("span", Qg, "\u6682\u65e0\u7b54\u6848\u4fe1\u606f")) ]) ]);
+        }, vue.toDisplayString(e), 1)))), 128)), formatAnswer(e.answer).length ? vue.createCommentVNode("", true) : (vue.openBlock(), vue.createElementBlock("span", Yg, "\u6682\u65e0\u7b54\u6848\u4fe1\u606f")) ]) ]);
         var n;
       })), 128)) ])) : !T.value || C.value || _.value ? C.value || _.value ? vue.createCommentVNode("", true) : (vue.openBlock(), 
-      vue.createElementBlock("p", Jg, "\u8f93\u5165\u9898\u5e72\u6216\u5173\u952e\u53e5\u540e\u70b9\u300c" + vue.toDisplayString(U.value) + "\u300d\uff0c\u5728\u5b98\u65b9\u9898\u5e93\u91cc\u627e\u76f8\u4f3c\u9898\u3002", 1)) : (vue.openBlock(), 
-      vue.createElementBlock("p", Wg, "\u6ca1\u6709\u627e\u5230\u76f8\u4f3c\u7684\u9898\uff0c\u8bd5\u8bd5\u6362\u4e2a\u8bf4\u6cd5\uff0c\u6216\u53ea\u8f93\u5165\u9898\u5e72\u91cc\u6700\u6709\u533a\u5206\u5ea6\u7684\u4e00\u53e5\u3002")) ], 64)) ]) ]) ]));
+      vue.createElementBlock("p", ef, "\u8f93\u5165\u9898\u5e72\u6216\u5173\u952e\u53e5\u540e\u70b9\u300c" + vue.toDisplayString(U.value) + "\u300d\uff0c\u5728\u5b98\u65b9\u9898\u5e93\u91cc\u627e\u76f8\u4f3c\u9898\u3002", 1)) : (vue.openBlock(), 
+      vue.createElementBlock("p", Xg, "\u6ca1\u6709\u627e\u5230\u76f8\u4f3c\u7684\u9898\uff0c\u8bd5\u8bd5\u6362\u4e2a\u8bf4\u6cd5\uff0c\u6216\u53ea\u8f93\u5165\u9898\u5e72\u91cc\u6700\u6709\u533a\u5206\u5ea6\u7684\u4e00\u53e5\u3002")) ], 64)) ]) ]) ]));
     }
-  }), Yg = {
+  }), nf = {
     class: "search-sheet",
     role: "dialog",
     "aria-label": "\u641c\u9898"
-  }, Xg = {
+  }, af = {
     class: "search-sheet-head"
-  }, ef = vue.createElementVNode("h2", null, "\u641c\u9898", -1), tf = vue.createElementVNode("span", {
+  }, rf = vue.createElementVNode("h2", null, "\u641c\u9898", -1), sf = vue.createElementVNode("span", {
     class: "search-sheet-hint"
-  }, "\u4e0d\u5f71\u54cd\u6b63\u5728\u8fdb\u884c\u7684\u7b54\u9898\uff0c\u6309 Esc \u5173\u95ed", -1), nf = {
+  }, "\u4e0d\u5f71\u54cd\u6b63\u5728\u8fdb\u884c\u7684\u7b54\u9898\uff0c\u6309 Esc \u5173\u95ed", -1), of = {
     class: "search-sheet-body scroll"
-  }, af = vue.defineComponent({
+  }, lf = vue.defineComponent({
     __name: "SearchSheet",
     setup(e) {
-      const t = Qn(), onKeydown = e => {
+      const t = Yn(), onKeydown = e => {
         "Escape" === e.key && t.closeSearch();
       };
       return vue.onMounted((() => document.addEventListener("keydown", onKeydown))), vue.onBeforeUnmount((() => document.removeEventListener("keydown", onKeydown))), 
-      (e, n) => (vue.openBlock(), vue.createElementBlock("section", Yg, [ vue.createElementVNode("header", Xg, [ ef, tf, vue.createElementVNode("button", {
+      (e, n) => (vue.openBlock(), vue.createElementBlock("section", nf, [ vue.createElementVNode("header", af, [ rf, sf, vue.createElementVNode("button", {
         type: "button",
         class: "aah-btn aah-btn-plain aah-btn-icon",
         "aria-label": "\u5173\u95ed\u641c\u9898",
         onClick: n[0] || (n[0] = e => vue.unref(t).closeSearch())
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:close"
-      }) ]) ]), vue.createElementVNode("div", nf, [ vue.createVNode(Zg) ]) ]));
+      }) ]) ]), vue.createElementVNode("div", of, [ vue.createVNode(tf) ]) ]));
     }
-  }), rf = [ "aria-describedby" ], sf = {
+  }), cf = [ "aria-describedby" ], uf = {
     id: "aah-confirm-title"
-  }, of = {
+  }, pf = {
     key: 0,
     id: "aah-confirm-msg"
-  }, lf = {
+  }, df = {
     class: "confirm-actions"
-  }, cf = vue.defineComponent({
+  }, hf = vue.defineComponent({
     __name: "ConfirmDialog",
     setup(e) {
       const t = vue.ref(null), a = vue.ref(null);
-      vue.watch((() => jo.open), (async e => {
+      vue.watch((() => Ro.open), (async e => {
         var i;
-        e && (await vue.nextTick(), null == (i = jo.danger ? t.value : a.value) || i.focus());
+        e && (await vue.nextTick(), null == (i = Ro.danger ? t.value : a.value) || i.focus());
       }));
       const onKeydown = e => {
         "Escape" === e.key && (e.stopPropagation(), settleConfirm(false));
       };
-      return (e, n) => vue.unref(jo).open ? (vue.openBlock(), vue.createElementBlock("div", {
+      return (e, n) => vue.unref(Ro).open ? (vue.openBlock(), vue.createElementBlock("div", {
         key: 0,
         class: "confirm-layer",
         onKeydown: onKeydown,
@@ -19743,8 +19773,8 @@
         role: "alertdialog",
         "aria-modal": "true",
         "aria-labelledby": "aah-confirm-title",
-        "aria-describedby": vue.unref(jo).message ? "aah-confirm-msg" : void 0
-      }, [ vue.createElementVNode("h2", sf, vue.toDisplayString(vue.unref(jo).title), 1), vue.unref(jo).message ? (vue.openBlock(), vue.createElementBlock("p", of, vue.toDisplayString(vue.unref(jo).message), 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", lf, [ vue.createElementVNode("button", {
+        "aria-describedby": vue.unref(Ro).message ? "aah-confirm-msg" : void 0
+      }, [ vue.createElementVNode("h2", uf, vue.toDisplayString(vue.unref(Ro).title), 1), vue.unref(Ro).message ? (vue.openBlock(), vue.createElementBlock("p", pf, vue.toDisplayString(vue.unref(Ro).message), 1)) : vue.createCommentVNode("", true), vue.createElementVNode("div", df, [ vue.createElementVNode("button", {
         ref_key: "cancelRef",
         ref: t,
         type: "button",
@@ -19754,14 +19784,14 @@
         ref_key: "okRef",
         ref: a,
         type: "button",
-        class: vue.normalizeClass([ "aah-btn", vue.unref(jo).danger ? "aah-btn-danger-solid" : "aah-btn-primary" ]),
+        class: vue.normalizeClass([ "aah-btn", vue.unref(Ro).danger ? "aah-btn-danger-solid" : "aah-btn-primary" ]),
         onClick: n[1] || (n[1] = e => vue.unref(settleConfirm)(true))
-      }, vue.toDisplayString(vue.unref(jo).confirmText), 3) ]) ], 8, rf) ], 32)) : vue.createCommentVNode("", true);
+      }, vue.toDisplayString(vue.unref(Ro).confirmText), 3) ]) ], 8, cf) ], 32)) : vue.createCommentVNode("", true);
     }
   });
 
   function useTheme(e) {
-    const t = Qn(), n = function() {
+    const t = Yn(), n = function() {
       const e = vue.ref(false);
       if ("undefined" == typeof window || !window.matchMedia) return {
         isDark: e,
@@ -19796,47 +19826,47 @@
     }));
   }
 
-  const uf = {
+  const mf = {
     class: "el_wrapper",
     style: {
       "z-index": "9999999 !important"
     }
-  }, pf = [ "aria-label" ], df = {
+  }, gf = [ "aria-label" ], ff = {
     class: "panel-brand"
-  }, hf = [ "src" ], mf = {
+  }, vf = [ "src" ], yf = {
     class: "panel-name"
-  }, gf = {
+  }, wf = {
     class: "panel-version num"
-  }, ff = vue.createElementVNode("span", {
+  }, bf = vue.createElementVNode("span", {
     class: "panel-spacer"
-  }, null, -1), vf = {
+  }, null, -1), xf = {
     class: "panel-actions"
-  }, yf = [ "aria-pressed" ], wf = vue.createElementVNode("span", {
+  }, kf = [ "aria-pressed" ], qf = vue.createElementVNode("span", {
     class: "panel-tool-label"
-  }, "\u641c\u9898", -1), bf = vue.createElementVNode("kbd", {
+  }, "\u641c\u9898", -1), Af = vue.createElementVNode("kbd", {
     class: "panel-kbd"
-  }, "/", -1), xf = [ "src" ], kf = {
+  }, "/", -1), _f = [ "src" ], Cf = {
     class: "panel-account-name"
-  }, qf = {
+  }, Tf = {
     class: "panel-account-score num"
-  }, Af = vue.createElementVNode("span", {
+  }, Sf = vue.createElementVNode("span", {
     class: "panel-account-name"
-  }, "\u767b\u5f55", -1), _f = [ "title", "aria-label" ], Cf = [ "title" ], Tf = {
+  }, "\u767b\u5f55", -1), If = [ "title", "aria-label" ], Ef = [ "title" ], Uf = {
     class: "panel-nav",
     role: "tablist",
     "aria-label": "\u9762\u677f\u5206\u533a"
-  }, Sf = [ "aria-selected", "onClick" ], If = {
+  }, Pf = [ "aria-selected", "onClick" ], Mf = {
     key: 0,
     class: "panel-nav-count num"
-  }, Ef = {
+  }, Lf = {
     key: 1,
     class: "panel-nav-count num"
-  }, Uf = {
+  }, $f = {
     class: "panel-body"
-  }, Pf = vue.defineComponent({
+  }, Hf = vue.defineComponent({
     __name: "App",
     setup(e) {
-      const t = Qn(), n = ia(), a = Ho(), s = Jn(), y = ta();
+      const t = Yn(), n = la(), a = Do(), s = ea(), y = ra();
       y.loadCatalog(), t.app.showFloat = t.app.defaultShowFloat;
       const q = vue.ref(null), A = vue.ref(null);
       useTheme(A);
@@ -19880,7 +19910,7 @@
         auto: "light",
         light: "dark",
         dark: "auto"
-      }, L = {
+      }, M = {
         auto: {
           icon: "mdi:theme-light-dark",
           label: "\u4e3b\u9898\uff1a\u8ddf\u968f\u7cfb\u7edf"
@@ -19985,7 +20015,7 @@
         document.removeEventListener("keydown", onSearchKey), window.removeEventListener("pointermove", handleDragMove), 
         window.removeEventListener("pointerup", stopDrag), window.removeEventListener("pointermove", handleResizeMove), 
         window.removeEventListener("pointerup", stopResize);
-      })), updateFn(), (e, a) => (vue.openBlock(), vue.createElementBlock("div", uf, [ vue.createElementVNode("div", {
+      })), updateFn(), (e, a) => (vue.openBlock(), vue.createElementBlock("div", mf, [ vue.createElementVNode("div", {
         ref_key: "wrapperRef",
         ref: A,
         class: "floating-wrapper"
@@ -19999,21 +20029,21 @@
       }, [ vue.createElementVNode("header", {
         class: "panel-head",
         onPointerdown: startDrag
-      }, [ vue.createElementVNode("div", df, [ vue.createElementVNode("img", {
+      }, [ vue.createElementVNode("div", ff, [ vue.createElementVNode("img", {
         src: vue.unref(Re).script.icon,
         alt: "",
         width: "18",
         height: "18"
-      }, null, 8, hf), vue.createElementVNode("span", mf, vue.toDisplayString(vue.unref(Re).script.name), 1), vue.createElementVNode("span", gf, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), vue.createElementVNode("button", {
+      }, null, 8, vf), vue.createElementVNode("span", yf, vue.toDisplayString(vue.unref(Re).script.name), 1), vue.createElementVNode("span", wf, "v" + vue.toDisplayString(vue.unref(Re).script.version), 1) ]), vue.createElementVNode("button", {
         type: "button",
         class: vue.normalizeClass([ "panel-status num", `is-${S.value.tone}` ]),
         title: "\u56de\u5230\u7b54\u9898",
         onClick: a[0] || (a[0] = e => switchArea("ask"))
-      }, [ S.value.mark ? (vue.openBlock(), vue.createBlock(Va, {
+      }, [ S.value.mark ? (vue.openBlock(), vue.createBlock(Za, {
         key: 0,
         mark: S.value.mark,
         size: 12
-      }, null, 8, [ "mark" ])) : vue.createCommentVNode("", true), vue.createTextVNode(" " + vue.toDisplayString(S.value.text), 1) ], 2), ff, vue.createElementVNode("div", vf, [ vue.createElementVNode("button", {
+      }, null, 8, [ "mark" ])) : vue.createCommentVNode("", true), vue.createTextVNode(" " + vue.toDisplayString(S.value.text), 1) ], 2), bf, vue.createElementVNode("div", xf, [ vue.createElementVNode("button", {
         type: "button",
         class: vue.normalizeClass([ "panel-tool", {
           "is-on": vue.unref(t).searchOpen
@@ -20022,7 +20052,7 @@
         onClick: a[1] || (a[1] = e => vue.unref(t).searchOpen ? vue.unref(t).closeSearch() : vue.unref(t).openSearch())
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:magnify"
-      }), wf, bf ], 10, yf), vue.createElementVNode("button", {
+      }), qf, Af ], 10, kf), vue.createElementVNode("button", {
         type: "button",
         class: "panel-account",
         onClick: openAccount
@@ -20033,25 +20063,25 @@
         src: vue.unref(s).avatar,
         alt: "",
         class: "panel-avatar"
-      }, null, 8, xf)) : (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
+      }, null, 8, _f)) : (vue.openBlock(), vue.createBlock(vue.unref(vue$1.Icon), {
         key: 1,
         icon: "mdi:account-circle",
         class: "panel-avatar"
-      })), vue.createElementVNode("span", kf, vue.toDisplayString(vue.unref(s).nickname), 1), vue.createElementVNode("span", qf, vue.toDisplayString(vue.unref(s).score) + " \u5206", 1) ], 64)) : (vue.openBlock(), 
+      })), vue.createElementVNode("span", Cf, vue.toDisplayString(vue.unref(s).nickname), 1), vue.createElementVNode("span", Tf, vue.toDisplayString(vue.unref(s).score) + " \u5206", 1) ], 64)) : (vue.openBlock(), 
       vue.createElementBlock(vue.Fragment, {
         key: 1
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:account-circle-outline",
         class: "panel-avatar"
-      }), Af ], 64)) ]), vue.createElementVNode("button", {
+      }), Sf ], 64)) ]), vue.createElementVNode("button", {
         type: "button",
         class: "panel-icon-btn",
-        title: L[vue.unref(t).app.theme].label,
-        "aria-label": L[vue.unref(t).app.theme].label,
+        title: M[vue.unref(t).app.theme].label,
+        "aria-label": M[vue.unref(t).app.theme].label,
         onClick: cycleTheme
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
-        icon: L[vue.unref(t).app.theme].icon
-      }, null, 8, [ "icon" ]) ], 8, _f), vue.createElementVNode("button", {
+        icon: M[vue.unref(t).app.theme].icon
+      }, null, 8, [ "icon" ]) ], 8, If), vue.createElementVNode("button", {
         type: "button",
         class: "panel-icon-btn",
         title: vue.unref(t).app.hotkeyEnabled ? `\u6536\u8d77\u9762\u677f\uff08${vue.unref(t).app.hotkey}\uff09` : "\u6536\u8d77\u9762\u677f",
@@ -20059,7 +20089,7 @@
         onClick: a[2] || (a[2] = e => vue.unref(t).app.showFloat = false)
       }, [ vue.createVNode(vue.unref(vue$1.Icon), {
         icon: "mdi:minus"
-      }) ], 8, Cf) ]) ], 32), vue.createVNode(ng), vue.createElementVNode("nav", Tf, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(T, (e => vue.createElementVNode("button", {
+      }) ], 8, Ef) ]) ], 32), vue.createVNode(sg), vue.createElementVNode("nav", Uf, [ (vue.openBlock(), vue.createElementBlock(vue.Fragment, null, vue.renderList(T, (e => vue.createElementVNode("button", {
         key: e.key,
         type: "button",
         role: "tab",
@@ -20069,26 +20099,26 @@
         "aria-selected": vue.unref(t).page === e.key,
         onClick: t => switchArea(e.key)
       }, [ vue.createTextVNode(vue.toDisplayString(e.label) + " ", 1), "ask" === e.key && vue.unref(n).questionList.length ? (vue.openBlock(), 
-      vue.createElementBlock("span", If, vue.toDisplayString(vue.unref(_).tally.done) + "/" + vue.toDisplayString(vue.unref(n).questionList.length), 1)) : "library" === e.key ? (vue.openBlock(), 
-      vue.createElementBlock("span", Ef, vue.toDisplayString(vue.unref(I).toLocaleString()), 1)) : vue.createCommentVNode("", true) ], 10, Sf))), 64)) ]), vue.createElementVNode("div", Uf, [ "ask" === vue.unref(t).page ? (vue.openBlock(), 
-      vue.createBlock(Lr, {
+      vue.createElementBlock("span", Mf, vue.toDisplayString(vue.unref(_).tally.done) + "/" + vue.toDisplayString(vue.unref(n).questionList.length), 1)) : "library" === e.key ? (vue.openBlock(), 
+      vue.createElementBlock("span", Lf, vue.toDisplayString(vue.unref(I).toLocaleString()), 1)) : vue.createCommentVNode("", true) ], 10, Pf))), 64)) ]), vue.createElementVNode("div", $f, [ "ask" === vue.unref(t).page ? (vue.openBlock(), 
+      vue.createBlock(Or, {
         key: 0
-      })) : "library" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(_l, {
+      })) : "library" === vue.unref(t).page ? (vue.openBlock(), vue.createBlock(Il, {
         key: 1
-      })) : (vue.openBlock(), vue.createBlock(Zm, {
+      })) : (vue.openBlock(), vue.createBlock(tg, {
         key: 2
-      })), vue.unref(t).searchOpen ? (vue.openBlock(), vue.createBlock(af, {
+      })), vue.unref(t).searchOpen ? (vue.openBlock(), vue.createBlock(lf, {
         key: 3
-      })) : vue.createCommentVNode("", true) ]), vue.createVNode(cf), vue.createElementVNode("div", {
+      })) : vue.createCommentVNode("", true) ]), vue.createVNode(hf), vue.createElementVNode("div", {
         class: "floating-resize-handle",
         onPointerdown: startResize,
         "aria-label": "\u62d6\u52a8\u4ee5\u8c03\u6574\u9762\u677f\u5bbd\u5ea6",
         role: "separator"
-      }, null, 32) ], 12, pf), [ [ vue.vShow, vue.unref(t).app.showFloat ] ]), vue.withDirectives(vue.createVNode(cg, null, null, 512), [ [ vue.vShow, !vue.unref(t).app.showFloat ] ]) ], 512) ]));
+      }, null, 32) ], 12, gf), [ [ vue.vShow, vue.unref(t).app.showFloat ] ]), vue.withDirectives(vue.createVNode(hg, null, null, 512), [ [ vue.vShow, !vue.unref(t).app.showFloat ] ]) ], 512) ]));
     }
-  }), Lf = [ '.floating-wrapper{--c-primary: #1672b8;--c-primary-hover: #12659f;--c-primary-active: #0f5789;--c-primary-soft: rgba(22, 114, 184, .09);--c-primary-ring: rgba(22, 114, 184, .28);--c-on-primary: #ffffff;--c-success: #1d8549;--c-success-soft: rgba(29, 133, 73, .1);--c-warning: #a86200;--c-warning-soft: rgba(214, 135, 0, .12);--c-danger: #c93030;--c-danger-soft: rgba(201, 48, 48, .08);--c-info: #1672b8;--c-info-soft: rgba(22, 114, 184, .09);--c-bg-base: #ffffff;--c-bg-surface: #ffffff;--c-bg-subtle: #f6f7f9;--c-bg-hover: #f0f1f4;--c-bg-selected: rgba(22, 114, 184, .08);--c-bg-inverse: #1d2129;--c-text-primary: #1d2129;--c-text-secondary: #4b5260;--c-text-muted: #6b7280;--c-text-disabled: #a9aeb7;--c-text-inverse: #ffffff;--c-border-subtle: #edeef1;--c-border-base: #e1e3e8;--c-border-strong: #c9ccd3;--s-1: 4px;--s-2: 8px;--s-3: 10px;--s-4: 12px;--s-5: 16px;--s-6: 20px;--s-8: 24px;--s-10: 32px;--r-xs: 4px;--r-sm: 6px;--r-md: 8px;--r-lg: 12px;--r-full: 9999px;--shadow-1: none;--shadow-2: 0 1px 2px rgba(20, 24, 33, .06);--shadow-3: 0 8px 24px -6px rgba(20, 24, 33, .16), 0 2px 6px rgba(20, 24, 33, .06);--shadow-4: 0 18px 48px -12px rgba(20, 24, 33, .28), 0 4px 12px rgba(20, 24, 33, .08);--font-xs: 11px;--font-sm: 12px;--font-base: 13px;--font-md: 14px;--font-lg: 15px;--font-xl: 18px;--fw-regular: 400;--fw-medium: 500;--fw-semibold: 600;--font-numeric: tabular-nums;--font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Arial, sans-serif;--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;--row-h: 32px;--control-h: 28px;--control-h-sm: 24px;--ease-out: cubic-bezier(.16, 1, .3, 1);--ease-spring: cubic-bezier(.22, 1, .36, 1);--dur-fast: .12s;--dur-base: .18s;--dur-slow: .26s;--z-base: 1;--z-sticky: 10;--z-overlay: 20;--z-modal: 30;--z-toast: 40;--z-tooltip: 50;color:var(--c-text-primary);color-scheme:light;font-family:var(--font-sans);font-size:var(--font-base);line-height:1.5;text-align:left}.floating-wrapper[data-theme=dark]{color-scheme:dark;--c-primary: #4da3e6;--c-primary-hover: #6cb4eb;--c-primary-active: #3a92d6;--c-primary-soft: rgba(77, 163, 230, .14);--c-primary-ring: rgba(77, 163, 230, .36);--c-on-primary: #08131c;--c-success: #4cc27e;--c-success-soft: rgba(76, 194, 126, .14);--c-warning: #e8a73c;--c-warning-soft: rgba(232, 167, 60, .15);--c-danger: #f0716b;--c-danger-soft: rgba(240, 113, 107, .14);--c-info: #4da3e6;--c-info-soft: rgba(77, 163, 230, .14);--c-bg-base: #18191c;--c-bg-surface: #18191c;--c-bg-subtle: #1f2024;--c-bg-hover: #26282d;--c-bg-selected: rgba(77, 163, 230, .13);--c-bg-inverse: #e6e7ea;--c-text-primary: #e6e7ea;--c-text-secondary: #b4b8c0;--c-text-muted: #8d929b;--c-text-disabled: #565a62;--c-text-inverse: #18191c;--c-border-subtle: #24262a;--c-border-base: #2d3035;--c-border-strong: #3b3f46;--shadow-2: 0 1px 2px rgba(0, 0, 0, .4);--shadow-3: 0 8px 24px -6px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04);--shadow-4: 0 18px 48px -12px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .06)}.floating-wrapper:not([data-theme]){visibility:hidden}.floating-wrapper,.floating-wrapper *{box-sizing:border-box}:where(.floating-wrapper) :where(button,input,select,textarea){font:inherit;color:inherit}:where(.floating-wrapper) :where(button){cursor:pointer}:where(.floating-wrapper) :where(button:disabled){cursor:not-allowed}.floating-wrapper ::selection{background:var(--c-primary-ring);color:var(--c-text-primary)}.floating-wrapper input,.floating-wrapper textarea{caret-color:var(--c-primary);accent-color:var(--c-primary)}.floating-wrapper :focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:1px}.floating-wrapper a{color:var(--c-primary);text-underline-offset:2px}.custom-scroll,.floating-wrapper .scroll{scrollbar-width:thin;scrollbar-color:var(--c-border-strong) transparent}.custom-scroll::-webkit-scrollbar,.floating-wrapper .scroll::-webkit-scrollbar{width:8px;height:8px}.custom-scroll::-webkit-scrollbar-thumb,.floating-wrapper .scroll::-webkit-scrollbar-thumb{background:var(--c-border-strong);border-radius:8px;border:2px solid transparent;background-clip:content-box}.custom-scroll::-webkit-scrollbar-thumb:hover,.floating-wrapper .scroll::-webkit-scrollbar-thumb:hover{background-color:var(--c-text-muted)}.floating-wrapper *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.num{font-variant-numeric:tabular-nums}.flex-grow{flex:1}.icon-inline{display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:middle;position:relative;top:-.05em}.aah-card{background:var(--c-bg-surface);border-radius:var(--r-md);border:1px solid var(--c-border-base);padding:var(--s-4)}.aah-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:var(--control-h);padding:0 var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.aah-btn:hover:enabled{background:var(--c-bg-hover);border-color:var(--c-border-strong)}.aah-btn:active:enabled{background:var(--c-border-subtle)}.aah-btn:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-btn svg{flex:none;width:15px;height:15px}.aah-btn-primary{background:var(--c-primary);color:var(--c-on-primary);border-color:var(--c-primary)}.aah-btn-primary:hover:enabled{background:var(--c-primary-hover);border-color:var(--c-primary-hover)}.aah-btn-primary:active:enabled{background:var(--c-primary-active)}.aah-btn-primary:disabled{background:var(--c-primary-soft);border-color:transparent;color:var(--c-text-disabled)}.aah-btn-plain{background:transparent;border-color:transparent;color:var(--c-text-secondary)}.aah-btn-plain:hover:enabled{background:var(--c-bg-hover);border-color:transparent;color:var(--c-text-primary)}.aah-btn-small{height:var(--control-h-sm);padding:0 var(--s-2);font-size:var(--font-sm);border-radius:var(--r-xs)}.aah-btn-icon{width:var(--control-h);padding:0}.aah-btn-small.aah-btn-icon{width:var(--control-h-sm)}.aah-btn-danger{color:var(--c-danger)}.aah-btn-danger:hover:enabled{background:var(--c-danger-soft);border-color:var(--c-danger)}.aah-btn-danger-solid{background:var(--c-danger);border-color:var(--c-danger);color:#fff}.aah-btn-danger-solid:hover:enabled{filter:brightness(.94);background:var(--c-danger);border-color:var(--c-danger)}.aah-tag{display:inline-flex;align-items:center;gap:var(--s-1);height:20px;padding:0 6px;border-radius:var(--r-xs);font-size:var(--font-sm);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;color:var(--c-text-secondary);background:var(--c-bg-subtle);border:1px solid var(--c-border-base)}button.aah-tag:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.aah-tag-primary{background:var(--c-primary-soft);color:var(--c-primary);border-color:transparent}.aah-tag-success{background:var(--c-success-soft);color:var(--c-success);border-color:transparent}.aah-tag-warning{background:var(--c-warning-soft);color:var(--c-warning);border-color:transparent}.aah-tag-danger{background:var(--c-danger-soft);color:var(--c-danger);border-color:transparent}.aah-input,.aah-select{width:100%;min-height:var(--control-h);padding:4px var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.aah-input::placeholder,.floating-wrapper textarea::placeholder,.floating-wrapper input::placeholder{color:var(--c-text-muted)}.aah-input:hover:enabled,.aah-select:hover:enabled{border-color:var(--c-border-strong)}.aah-input:focus,.aah-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.aah-input:disabled,.aah-select:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-input.recording{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.aah-select{cursor:pointer}.aah-alert{display:flex;align-items:flex-start;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);line-height:1.6;color:var(--c-text-primary);background:var(--c-bg-subtle)}.aah-alert-info{background:var(--c-info-soft)}.aah-alert-success{background:var(--c-success-soft)}.aah-alert-warning{background:var(--c-warning-soft)}.aah-alert-danger{background:var(--c-danger-soft)}.aah-alert-warning svg{color:var(--c-warning)}.aah-alert-danger svg{color:var(--c-danger)}.aah-alert-info svg{color:var(--c-info)}.aah-section-title{display:flex;align-items:center;gap:6px;margin:0 0 var(--s-2);font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-text-secondary)}.aah-section-title svg{width:14px;height:14px;color:var(--c-text-muted)}.aah-menu{position:absolute;z-index:var(--z-overlay);min-width:200px;padding:var(--s-1);background:var(--c-bg-surface);border:1px solid var(--c-border-base);border-radius:var(--r-md);box-shadow:var(--shadow-3)}.aah-menu-item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:6px var(--s-3);border:0;border-radius:var(--r-xs);background:none;text-align:left;color:var(--c-text-primary)}.aah-menu-item:hover{background:var(--c-bg-hover)}.aah-menu-item small{color:var(--c-text-muted);font-size:var(--font-xs)}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.aah-slider{width:100%;accent-color:var(--c-primary)}.radio-group{display:flex;gap:var(--s-3)}.radio-item{display:inline-flex;align-items:center;gap:var(--s-1);cursor:pointer}.floating-wrapper[data-theme=dark] .aah-btn-danger-solid{color:#1f0b0a}.floating-wrapper[data-theme=dark] :is(.panel-body,.notice-full) img:not(.panel-avatar,.user-page__avatar){padding:2px;border-radius:var(--r-xs);background-color:#fff}', '.floating-wrapper{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:999999}.el_wrapper>.floating-wrapper,.el_wrapper>div,.el_wrapper>div>div{pointer-events:none;z-index:999999!important}.floating-dialog{position:fixed;display:flex;flex-direction:column;height:min(720px,calc(100vh - 80px));max-width:calc(100vw - 32px);pointer-events:auto!important;overflow:hidden;background:var(--c-bg-base);border:1px solid var(--c-border-base);border-radius:var(--r-lg);box-shadow:var(--shadow-4);container:panel / inline-size;z-index:999999}.panel-head{display:flex;align-items:center;gap:var(--s-2);height:44px;flex:none;padding:0 var(--s-2) 0 var(--s-4);cursor:move;-webkit-user-select:none;user-select:none}.panel-brand{display:flex;align-items:center;gap:7px;min-width:0;flex:none}.panel-brand img{width:18px;height:18px;border-radius:4px}.panel-name{font-size:var(--font-md);font-weight:var(--fw-semibold);letter-spacing:-.01em;white-space:nowrap}.panel-version{font-size:var(--font-xs);color:var(--c-text-muted)}.panel-status{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;margin-left:var(--s-1);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary);white-space:nowrap}.panel-status:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.panel-status.is-run{color:var(--c-primary);border-color:var(--c-primary-ring);background:var(--c-primary-soft)}.panel-status.is-done{color:var(--c-success)}.panel-status.is-idle{color:var(--c-text-muted)}.panel-spacer{flex:1}.panel-actions{display:flex;align-items:center;gap:2px;flex:none}.panel-tool,.panel-account,.panel-icon-btn{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--c-text-secondary);white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.panel-tool:hover,.panel-account:hover,.panel-icon-btn:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.panel-tool svg,.panel-icon-btn svg{width:16px;height:16px}.panel-tool.is-on{background:var(--c-primary-soft);color:var(--c-primary)}.panel-icon-btn{width:28px;padding:0;justify-content:center}.panel-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.panel-account-name{max-width:96px;overflow:hidden;text-overflow:ellipsis;color:var(--c-text-primary)}.panel-account-score{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 639px){.panel-version,.panel-tool-label,.panel-account-name{display:none}.panel-tool{width:28px;padding:0;justify-content:center}}@container panel (max-width: 519px){.panel-account-score{display:none}}.notice-bar{flex:none;margin:0 var(--s-3) var(--s-2);border-radius:var(--r-sm);background:var(--c-bg-subtle)}.notice-row{display:flex;align-items:center;gap:var(--s-2);height:32px;padding:0 4px 0 var(--s-3)}.notice-icon{flex:none;width:15px;height:15px;color:var(--c-primary)}.notice-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.notice-full{max-height:180px;overflow:auto;padding:0 var(--s-3) var(--s-3) 33px;font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.notice-full img{max-width:100%;height:auto}.panel-nav{display:flex;gap:var(--s-1);flex:none;padding:0 var(--s-3);border-bottom:1px solid var(--c-border-base)}.panel-nav-item{position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 var(--s-2);border:0;background:none;color:var(--c-text-muted);font-size:var(--font-md);font-weight:var(--fw-medium)}.panel-nav-item:hover{color:var(--c-text-primary)}.panel-nav-item:after{content:"";position:absolute;left:var(--s-2);right:var(--s-2);bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:transparent;transition:background-color var(--dur-base) var(--ease-out)}.panel-nav-item.is-active{color:var(--c-text-primary)}.panel-nav-item.is-active:after{background:var(--c-primary)}.panel-nav-count{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.panel-body{position:relative;flex:1 1 auto;min-height:0}.area{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;min-height:0}.area .scroll{min-height:0;overflow:auto;overscroll-behavior:contain}.area-foot{display:flex;align-items:center;gap:var(--s-2);min-height:48px;padding:var(--s-2) var(--s-3) var(--s-2) var(--s-4);border-top:1px solid var(--c-border-base);background:var(--c-bg-base)}.area-foot-spacer{flex:1}.area-foot-pop,.lib-menu-wrap{position:relative}.area-foot-pop .aah-menu,.lib-menu-wrap .aah-menu{right:0;bottom:calc(100% + 6px)}.search-sheet,.area-sheet{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-overlay);display:flex;flex-direction:column;background:var(--c-bg-base);animation:sheet-in var(--dur-slow) var(--ease-out)}.search-sheet-head,.area-sheet-head{display:flex;align-items:center;gap:var(--s-2);flex:none;height:44px;padding:0 var(--s-2) 0 var(--s-4);border-bottom:1px solid var(--c-border-subtle)}.area-sheet-head{padding-left:var(--s-2)}.search-sheet-head h2,.area-sheet-head h2{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.search-sheet-hint{flex:1;font-size:var(--font-sm);color:var(--c-text-muted)}.search-sheet-body,.area-sheet-body{flex:1;min-height:0;overflow:auto}@keyframes sheet-in{0%{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.floating-resize-handle{position:absolute;right:2px;bottom:2px;z-index:var(--z-overlay);width:14px;height:14px;cursor:nwse-resize;-webkit-user-select:none;user-select:none;background-image:linear-gradient(135deg,transparent 45%,var(--c-border-strong) 45%,var(--c-border-strong) 55%,transparent 55%),linear-gradient(135deg,transparent 70%,var(--c-border-strong) 70%,var(--c-border-strong) 80%,transparent 80%);opacity:.8}.floating-resize-handle:hover{opacity:1}.mini-ball-dock{position:fixed;right:20px;bottom:20px;z-index:9999999;display:flex;align-items:center;gap:var(--s-3);pointer-events:none}.mini-ball,.mini-bubble{pointer-events:auto}.mini-ball{--p: 0;position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:50%;background:transparent;transition:transform var(--dur-base) var(--ease-out)}.mini-ball:hover{transform:translateY(-2px)}.mini-ball img{width:52px;height:52px;filter:drop-shadow(0 2px 6px rgba(20,24,33,.25))}.mini-ball.has-progress:before{content:"";position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;border-radius:50%;background:conic-gradient(var(--c-primary) calc(var(--p) * 1%),rgba(20,24,33,.18) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px))}.mini-ball-value{position:absolute;left:50%;bottom:-10px;transform:translate(-50%);padding:0 6px;border-radius:var(--r-full);background:var(--c-bg-surface);box-shadow:var(--shadow-3);font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:16px;color:var(--c-text-primary);white-space:nowrap}.mini-ball-value small{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.mini-ball-badge{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-full);border:2px solid var(--c-bg-surface);background:var(--c-danger);color:#fff;font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:14px}.mini-bubble{display:flex;flex-direction:column;gap:2px;max-width:240px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-md);background:var(--c-bg-surface);box-shadow:var(--shadow-3);text-align:left;font-size:var(--font-sm);color:var(--c-text-secondary);animation:sheet-in var(--dur-slow) var(--ease-out)}.mini-bubble strong{font-size:var(--font-base);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.mini-bubble:hover{border-color:var(--c-border-strong)}.panel-kbd{margin-left:2px}@container panel (max-width: 639px){.panel-tool .panel-kbd{display:none}}', ".modal-mask{position:fixed;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-4);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .modal-mask{background:#00000080}.modal-panel{display:flex;flex-direction:column;width:min(600px,100%);max-height:100%;border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.modal-header{display:flex;align-items:center;justify-content:space-between;flex:none;height:48px;padding:0 var(--s-2) 0 var(--s-5);border-bottom:1px solid var(--c-border-subtle)}.modal-header h3{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.modal-body{display:flex;flex-direction:column;gap:var(--s-4);padding:var(--s-4) var(--s-5);overflow-y:auto}.modal-footer{display:flex;justify-content:flex-end;gap:var(--s-2);flex:none;padding:var(--s-3) var(--s-5);border-top:1px solid var(--c-border-subtle)}.modal-panel-large{width:min(760px,100%)}.form-row{display:flex;flex-direction:column;gap:6px}.form-row label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.form-row label small{margin-left:6px;font-weight:var(--fw-regular);color:var(--c-text-muted)}.option-list{display:flex;flex-direction:column;gap:6px}.option-row{display:flex;align-items:center;gap:var(--s-2)}.option-selector{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--control-h);height:var(--control-h);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);font-weight:var(--fw-semibold);transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.option-selector:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.option-selector.active{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary)}.reading-form-section+.reading-form-section{padding-top:var(--s-4);border-top:1px solid var(--c-border-base)}.reading-section-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.reading-section-icon{width:16px;height:16px;color:var(--c-text-muted)}.reading-section-header h4{flex:1;margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.reading-sub-questions-editor{display:flex;flex-direction:column}.reading-sub-question-editor{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.reading-sub-question-header{display:flex;align-items:center;gap:var(--s-2)}.reading-sub-question-number{min-width:22px;font-size:var(--font-md);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums}.reading-base-select-small{width:auto;min-width:120px}.reading-answer-list{display:flex;flex-direction:column;gap:6px}.reading-answer-row{display:flex;align-items:center;gap:var(--s-2)}.confirm-layer{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-5);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .confirm-layer{background:#00000080}.confirm-box{width:min(360px,100%);padding:var(--s-5);border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.confirm-box h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.confirm-box p{margin:var(--s-2) 0 0;font-size:var(--font-base);line-height:1.6;color:var(--c-text-secondary)}.confirm-actions{display:flex;justify-content:flex-end;gap:var(--s-2);margin-top:var(--s-5)}", ".hljs{display:block;overflow-x:auto;padding:var(--s-3);border-radius:var(--r-sm);font-family:ui-monospace,SF Mono,Consolas,monospace;font-size:var(--font-sm);line-height:1.5}.floating-wrapper:not([data-theme=dark]) .hljs{background:#f6f8fa;color:#24292f;box-shadow:var(--shadow-1)}.floating-wrapper:not([data-theme=dark]) .hljs-keyword,.floating-wrapper:not([data-theme=dark]) .hljs-selector-tag,.floating-wrapper:not([data-theme=dark]) .hljs-built_in{color:#cf222e}.floating-wrapper:not([data-theme=dark]) .hljs-string,.floating-wrapper:not([data-theme=dark]) .hljs-attr{color:#0a3069}.floating-wrapper:not([data-theme=dark]) .hljs-number,.floating-wrapper:not([data-theme=dark]) .hljs-literal{color:#0550ae}.floating-wrapper:not([data-theme=dark]) .hljs-comment{color:#6e7781;font-style:italic}.floating-wrapper:not([data-theme=dark]) .hljs-title,.floating-wrapper:not([data-theme=dark]) .hljs-name{color:#8250df}.floating-wrapper[data-theme=dark] .hljs{background:#1f1f23;color:#f0f6fc;box-shadow:var(--shadow-1)}.floating-wrapper[data-theme=dark] .hljs-keyword,.floating-wrapper[data-theme=dark] .hljs-selector-tag,.floating-wrapper[data-theme=dark] .hljs-built_in{color:#ff7b72}.floating-wrapper[data-theme=dark] .hljs-string,.floating-wrapper[data-theme=dark] .hljs-attr{color:#a5d6ff}.floating-wrapper[data-theme=dark] .hljs-number,.floating-wrapper[data-theme=dark] .hljs-literal{color:#79c0ff}.floating-wrapper[data-theme=dark] .hljs-comment{color:#8b949e;font-style:italic}.floating-wrapper[data-theme=dark] .hljs-title,.floating-wrapper[data-theme=dark] .hljs-name{color:#d2a8ff}", ".segmented{display:inline-flex;padding:2px;gap:2px;background:var(--c-bg-base);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm)}.segment-item{padding:var(--s-1) var(--s-3);border:none;border-radius:calc(var(--r-sm) - 2px);background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.segment-item.active{background:var(--c-bg-surface);color:var(--c-primary);box-shadow:var(--shadow-1)}.segment-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}", '.switch{position:relative;display:inline-block;width:32px;height:18px;flex:none;cursor:pointer}.switch.disabled{cursor:not-allowed;opacity:.5}.switch input{position:absolute;opacity:0;width:0;height:0}.switch-slider{position:absolute;top:0;right:0;bottom:0;left:0;background:var(--c-border-strong);border-radius:var(--r-full);transition:background-color var(--dur-base) var(--ease-out)}.switch-slider:before{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;box-shadow:0 1px 2px #14182133;transition:transform var(--dur-base) var(--ease-spring)}.switch input:checked+.switch-slider{background:var(--c-primary)}.switch input:checked+.switch-slider:before{transform:translate(14px)}.switch input:focus-visible+.switch-slider{box-shadow:0 0 0 3px var(--c-primary-ring)}', '.settings-rows{display:flex;flex-direction:column}.config-item{padding:12px 0;border-bottom:1px solid var(--c-border-subtle)}.config-item:last-child{border-bottom:0}.config-item-content{display:flex;justify-content:space-between;align-items:center;gap:16px}.config-label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0}.label-wrapper{display:flex;flex-direction:column;gap:2px}.label-text{font-size:var(--font-base);font-weight:var(--fw-medium);color:var(--c-text-primary)}.label-desc{font-size:var(--font-sm);color:var(--c-text-muted);line-height:1.5;white-space:pre-line}.settings-range{min-width:220px}.settings-range .aah-slider{width:150px}.settings-range .num{min-width:56px;text-align:right;color:var(--c-text-secondary);font-size:var(--font-sm)}.config-control{display:flex;align-items:center;flex-shrink:0;gap:10px;flex-wrap:wrap;justify-content:flex-end}.checkbox-group{display:flex;flex-wrap:wrap;gap:10px}.alert-icon{flex:none;width:16px;height:16px}.base-input,.base-select{min-width:180px;min-height:var(--control-h);padding:4px 10px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color .2s ease,box-shadow .2s ease}.base-input:focus,.base-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.base-select{min-width:160px}.checkbox-item{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r-sm);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle)}.hotkey-input-wrapper{position:relative;display:inline-flex;align-items:center;gap:8px}.hotkey-input-wrapper .hotkey-hint{font-size:var(--font-sm);color:var(--c-text-muted);background:var(--c-bg-subtle);padding:2px 8px;border-radius:var(--r-xs)}.hotkey-input-wrapper .hotkey-hint.danger{color:var(--c-danger);background:var(--c-danger-soft)}.hotkey-input-wrapper .base-input.recording{border-color:var(--c-danger);box-shadow:0 0 0 3px var(--c-danger-soft)}.hotkey-input-wrapper .base-input{cursor:pointer}.ai-config-panel{container-type:inline-size;container-name:aipanel;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-panel .aah-card{padding:0;border:0;border-radius:0;background:none}.ai-config-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2);flex-wrap:wrap}.ai-config-section-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-config-section-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard{display:flex;flex-direction:column;gap:var(--s-4)}.ai-wizard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2)}.ai-wizard-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-count{color:var(--c-text-muted);font-size:var(--font-sm);font-variant-numeric:tabular-nums}.ai-wizard-steps{display:flex;align-items:center;gap:var(--s-5);margin:0;padding:0 0 var(--s-3);list-style:none;border-bottom:1px solid var(--c-border-base);color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-steps li{position:relative;display:flex;align-items:center;gap:6px}.ai-wizard-steps li+li:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ai-wizard-dot{width:8px;height:8px;border-radius:var(--r-full);border:1.5px solid var(--c-text-disabled)}.ai-wizard-steps li.done .ai-wizard-dot{border-color:var(--c-success);background:var(--c-success)}.ai-wizard-steps li.current{color:var(--c-text-primary);font-weight:var(--fw-medium)}.ai-wizard-steps li.current .ai-wizard-dot{border-color:var(--c-primary);background:var(--c-primary)}.ai-wizard-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-wizard-subject{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-pick{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}.ai-config-card-pick:hover{background:var(--c-bg-hover)}.ai-config-card-tags{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.ai-config-channel-list{display:flex;flex-direction:column;gap:1px}.ai-config-channel-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--s-2);min-height:40px;padding:6px var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left;cursor:pointer}.ai-config-channel-item:hover{background:var(--c-bg-hover)}.ai-config-channel-item.active{background:var(--c-bg-selected);color:var(--c-text-primary)}.ai-config-channel-item.orphan{opacity:.6}.ai-config-channel-text{min-width:0;display:flex;flex-direction:column;gap:1px}.ai-config-channel-text strong,.ai-config-channel-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-config-channel-text strong{font-weight:var(--fw-medium)}.ai-config-channel-text small{color:var(--c-text-muted);font-size:var(--font-xs)}.ai-config-channel-grid{display:flex;flex-direction:column;border-top:1px solid var(--c-border-subtle)}.ai-config-card{display:flex;flex-direction:column;gap:6px;padding:var(--s-3) var(--s-2);border:0;border-bottom:1px solid var(--c-border-subtle);border-radius:0;background:none}.ai-config-card.recommended{background:var(--c-bg-selected)}.ai-config-card-head{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;font-weight:var(--fw-medium)}.ai-config-card-promo{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-config-card-actions,.ai-config-instance-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-instance-remove{align-self:flex-start}@container aipanel (min-width: 560px){.ai-config-channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-4)}}@container aipanel (min-width: 820px){.ai-config-channel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}.ai-config-manager{display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-side{min-width:0;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-list-panel,.ai-config-global,.ai-config-detail{min-width:0;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-global{padding-top:var(--s-3);border-top:1px solid var(--c-border-base)}.ai-config-side-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-inline-action{padding:0;border:none;background:none;color:var(--c-primary);font:inherit;font-weight:var(--fw-medium);cursor:pointer;text-decoration:underline;text-underline-offset:2px}.ai-config-collapse{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);padding:0;border:none;background:none;color:var(--c-text-primary);font:inherit;font-weight:var(--fw-semibold);cursor:pointer}.ai-config-global-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-detail-empty{min-height:200px;align-items:center;justify-content:center;text-align:center}.ai-config-empty-icon{width:28px;height:28px;color:var(--c-text-muted)}.ai-config-add-modal{width:min(760px,100%)}@container aipanel (min-width: 720px){.ai-config-manager{display:grid;grid-template-columns:minmax(200px,240px) minmax(0,1fr);gap:0;align-items:start}.ai-config-side{padding-right:var(--s-4)}.ai-config-detail{min-height:100%;padding-left:var(--s-5);border-left:1px solid var(--c-border-base)}}.ai-config-delete-modal{width:min(420px,100%)}.ai-config-delete-text{margin:0;color:var(--c-text-secondary);line-height:1.6}.ai-config-field{min-width:0;display:flex;flex-direction:column;gap:6px}.ai-config-field span{color:var(--c-text-secondary);font-size:var(--font-sm);font-weight:var(--fw-medium)}.ai-config-field-help{margin:0;color:var(--c-text-muted);font-size:var(--font-sm);line-height:1.55}.ai-config-field-help a{margin-left:var(--s-1);color:var(--c-primary);font-weight:var(--fw-medium);text-decoration:none}.ai-config-field-help a:hover{text-decoration:underline}@container panel (max-width: 519px){.config-item-content{flex-direction:column;align-items:flex-start}.config-control{width:100%;justify-content:flex-start}}', '.user-page{display:flex;flex-direction:column;gap:var(--s-4);max-width:560px}.user-page__tabs{display:flex;gap:var(--s-4);border-bottom:1px solid var(--c-border-base)}.user-page__tab{position:relative;height:32px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.user-page__tab:hover,.user-page__tab.is-active{color:var(--c-text-primary)}.user-page__tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.user-page__form{display:flex;flex-direction:column;gap:var(--s-3)}.user-page__field{display:flex;flex-direction:column;gap:4px}.user-page__field>span{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.user-page__form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4);margin-top:var(--s-1)}.user-page__form-actions .aah-btn{min-width:96px}.user-page__helper{font-size:var(--font-sm);color:var(--c-text-muted)}.user-page__link-btn{padding:0;border:0;background:none;color:var(--c-primary);font-size:inherit}.user-page__link-btn:hover{text-decoration:underline;text-underline-offset:2px}.user-page__avatar{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.user-page__score{margin-left:6px;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.user-page__apikey{margin-top:4px;font-family:var(--font-mono);font-size:var(--font-sm);color:var(--c-text-secondary);word-break:break-all}.user-page__tips{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}', '.ai-workbench{display:flex;flex-direction:column;min-height:100%}.ai-tabs{display:flex;align-items:center;gap:var(--s-4);padding:0 var(--s-3) 0 var(--s-4);border-bottom:1px solid var(--c-border-base)}.ai-tab{position:relative;height:36px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ai-tab:hover,.ai-tab.is-active{color:var(--c-text-primary)}.ai-tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.ai-tabs-spacer{flex:1}.ai-status{display:inline-flex;align-items:center;gap:6px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.ai-status i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--c-success)}.ai-status.is-warning i{background:var(--c-warning)}.ai-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);flex:1;min-height:0}.ai-input{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-4);border-right:1px solid var(--c-border-base)}.ai-field-label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.ai-textarea{width:100%;min-height:160px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);line-height:1.6;resize:vertical}.ai-textarea:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.ai-field-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-command-row{display:flex;gap:var(--s-2)}.ai-service-details{margin-top:auto;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-service-details summary{cursor:pointer}.ai-service-details .copyright-content{margin-top:var(--s-2);line-height:1.7}.ai-result{min-width:0;padding:var(--s-4) var(--s-5) var(--s-6)}.ai-result-head{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.ai-result-head .aah-section-title{margin:0}.ai-result-note{font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder.is-loading{color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}.ai-markdown{font-size:var(--font-base);line-height:1.75;overflow-wrap:anywhere}.ai-result>.aah-alert{margin-bottom:var(--s-3);align-items:center}.official-options li{display:flex;gap:var(--s-2)}.official-result-list{margin:0;padding:0;list-style:none}.official-result-item{display:flex;flex-direction:column;gap:var(--s-2);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.official-result-head{display:flex;align-items:center;gap:var(--s-2)}.official-result-num{font-weight:var(--fw-semibold);color:var(--c-text-muted)}.official-question{line-height:1.65;overflow-wrap:anywhere}.official-options{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none;font-size:var(--font-sm);color:var(--c-text-secondary)}.official-answer{display:flex;flex-wrap:wrap;align-items:center;gap:4px var(--s-2)}.official-answer-label{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.ai-split{grid-template-columns:1fr}.ai-input{border-right:0;border-bottom:1px solid var(--c-border-base)}.ai-status{display:none}}', '.ask-area{grid-template-columns:minmax(240px,300px) 1fr;grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"list detail" "foot foot"}.ask-area.is-empty{grid-template-columns:1fr;grid-template-rows:1fr;grid-template-areas:"detail"}.ask-list{grid-area:list}.ask-detail{grid-area:detail}.ask-strip{display:none}.ask-area>.area-foot{grid-area:foot}@container panel (max-width: 719px){.ask-area{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"strip" "detail" "foot"}.ask-list{display:none}.ask-strip{display:block;grid-area:strip}}.status-glyph{flex:none;display:block}.status-glyph.is-todo{color:var(--c-text-disabled)}.status-glyph.is-run{color:var(--c-primary)}.status-glyph.is-done{color:var(--c-success)}.status-glyph.is-none{color:var(--c-danger)}.status-glyph.is-wait{color:var(--c-warning)}.status-glyph-arc{transform-origin:7px 7px;animation:glyph-spin .9s linear infinite}@keyframes glyph-spin{to{transform:rotate(360deg)}}.ask-list{margin:0;padding:var(--s-1) 0;list-style:none;border-right:1px solid var(--c-border-base)}.ask-row{display:grid;grid-template-columns:22px 14px minmax(0,1fr) auto;align-items:center;gap:var(--s-2);height:var(--row-h);margin:0 var(--s-1);padding:0 var(--s-2);border-radius:var(--r-sm);cursor:pointer}.ask-row:hover{background:var(--c-bg-hover)}.ask-row.is-current{background:var(--c-bg-selected)}.ask-row-num{font-size:var(--font-sm);color:var(--c-text-muted)}.ask-row.is-current .ask-row-num{color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-secondary)}.ask-row.is-current .ask-row-stem{color:var(--c-text-primary)}.ask-row.is-todo .ask-row-stem{color:var(--c-text-muted)}.ask-row-src{max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-xs);color:var(--c-text-muted)}.ask-row.is-none .ask-row-src{color:var(--c-danger)}.ask-row.is-wait .ask-row-src{color:var(--c-warning)}.ask-strip{max-height:166px;overflow:auto;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);padding:var(--s-2) var(--s-4) var(--s-3);border-bottom:1px solid var(--c-border-base)}.ask-strip summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary);list-style:none}.ask-strip summary::-webkit-details-marker{display:none}.ask-strip-meta{font-weight:var(--fw-regular);color:var(--c-text-muted)}.ask-cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:4px;margin-top:var(--s-2)}.ask-cell{display:inline-flex;align-items:center;justify-content:center;gap:3px;height:26px;padding:0;border:1px solid var(--c-border-subtle);border-radius:var(--r-xs);background:var(--c-bg-surface);font-size:var(--font-xs);color:var(--c-text-secondary)}.ask-cell:hover{border-color:var(--c-border-strong)}.ask-cell.is-current{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-detail{padding:var(--s-4) var(--s-6) var(--s-6)}.ask-detail-head{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);margin-bottom:var(--s-4)}.ask-detail-num{font-size:var(--font-xl);font-weight:var(--fw-semibold);letter-spacing:-.02em;line-height:1}.ask-detail-state{display:inline-flex;align-items:center;gap:5px;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-detail-state.is-none{color:var(--c-danger)}.ask-detail-state.is-wait{color:var(--c-warning)}.ask-detail-actions{display:inline-flex;gap:var(--s-1);margin-left:auto}.ask-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-stem img,.ask-option-text img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.reading-passage{max-height:220px;overflow:auto;padding:var(--s-3);border-radius:var(--r-sm);background:var(--c-bg-subtle);font-size:var(--font-base)}.ask-sub{margin-top:var(--s-4)}.ask-sub-title{margin-bottom:var(--s-2);font-weight:var(--fw-medium)}.ask-option{display:flex;align-items:flex-start;gap:var(--s-2);padding:7px var(--s-3);margin-bottom:4px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);line-height:1.55;overflow-wrap:anywhere}.ask-option-key{flex:none;width:14px;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ask-option-text{flex:1;min-width:0}.ask-option.is-hit{border-color:var(--c-primary);background:var(--c-bg-selected)}.ask-option.is-hit .ask-option-key{color:var(--c-primary)}.ask-option-check{flex:none;width:16px;height:16px;margin-top:2px;color:var(--c-primary)}.ask-match-table{width:100%;margin-top:var(--s-2);border-collapse:collapse}.ask-match-table td{padding:6px var(--s-2);border-bottom:1px solid var(--c-border-subtle);vertical-align:middle}.ask-detail>.aah-alert{margin-top:var(--s-3)}.ask-preview{margin-top:var(--s-4);padding:var(--s-3) var(--s-4);border:1px dashed var(--c-warning);border-radius:var(--r-md);background:var(--c-warning-soft)}.ask-preview-head{display:flex;align-items:center;gap:6px;margin-bottom:var(--s-2)}.ask-preview-reason{font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-answer{font-size:var(--font-md);font-weight:var(--fw-semibold)}.ask-preview-note{margin:var(--s-2) 0;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-actions{display:flex;gap:var(--s-2)}.ask-sources,.ask-ai{margin-top:var(--s-6)}.ask-source-table{border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.ask-source-row{display:grid;grid-template-columns:minmax(92px,auto) minmax(0,1fr) auto;align-items:baseline;gap:var(--s-3);padding:8px var(--s-3);border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.ask-source-row:last-child{border-bottom:0}.ask-source-row.is-used{background:var(--c-bg-selected)}.ask-source-name{display:inline-flex;align-items:center;gap:6px;font-weight:var(--fw-medium);color:var(--c-text-primary);white-space:nowrap}.ask-source-name .aah-tag{height:18px;font-size:var(--font-xs)}.ask-source-answer{min-width:0;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-source-answer .aah-btn{margin-left:var(--s-2)}.ask-source-miss{color:var(--c-text-muted)}.ask-source-time{font-size:var(--font-xs);color:var(--c-text-muted)}.ask-source-empty{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.answer-field-html+.answer-field-html{margin-top:2px}.answer-field-html p{margin:0}.ask-ai-streaming{margin-left:var(--s-1);font-weight:var(--fw-regular);color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}@keyframes streaming-pulse{50%{opacity:.45}}.ai-answer-markdown{font-size:var(--font-base);color:var(--c-text-primary);line-height:1.7}.ask-empty{grid-area:detail;align-self:center;justify-self:center;max-width:420px;padding:var(--s-8);color:var(--c-text-secondary)}.ask-empty-icon{width:32px;height:32px;color:var(--c-text-muted)}.ask-empty h2{margin:var(--s-3) 0 var(--s-1);font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-empty p{margin:0 0 var(--s-3)}.ask-empty ul{margin:0 0 var(--s-5);padding-left:18px;font-size:var(--font-sm);line-height:1.9;color:var(--c-text-muted)}.ask-empty-actions{display:flex;gap:var(--s-2)}.ask-empty-types{margin-top:var(--s-4);font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-tally{display:flex;flex-wrap:wrap;gap:4px var(--s-4);font-size:var(--font-sm);color:var(--c-text-muted)}.ask-tally span{display:inline-flex;align-items:center;gap:5px}.ask-tally b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-tally .is-none b{color:var(--c-danger)}.ask-tally .is-wait b{color:var(--c-warning)}.ask-run-btn{min-width:104px}.ask-tips{width:320px;max-height:360px;padding:var(--s-3) var(--s-4);font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.ask-tips-forms{display:flex;flex-wrap:wrap;gap:4px;margin:var(--s-2) 0}.ask-tips summary{cursor:pointer;color:var(--c-text-primary)}@container panel (max-width: 599px){.ask-tally{flex-wrap:nowrap;gap:var(--s-3)}.ask-tally i{display:none}.ask-detail{padding:var(--s-3) var(--s-4) var(--s-5)}}.native-checkbox{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);color:var(--c-text-primary);cursor:pointer}.native-checkbox input{width:16px;height:16px;accent-color:var(--c-primary)}.ask-chain{display:flex;flex-wrap:wrap;gap:4px var(--s-5);margin:0 0 var(--s-2);padding:0;list-style:none;font-size:var(--font-sm)}.ask-chain-step{position:relative;display:inline-flex;align-items:center;gap:6px;color:var(--c-text-secondary)}.ask-chain-step+.ask-chain-step:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ask-chain-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c-text-disabled);transition:background-color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}.ask-chain-state{color:var(--c-text-muted)}.ask-chain-step.is-run .ask-chain-dot{border-color:var(--c-primary);background:var(--c-primary-soft);animation:streaming-pulse 1.2s ease-in-out infinite}.ask-chain-step.is-run .ask-chain-state{color:var(--c-primary)}.ask-chain-step.is-hit .ask-chain-dot{border-color:var(--c-success);background:var(--c-success)}.ask-chain-step.is-hit .ask-chain-state{color:var(--c-success);font-weight:var(--fw-medium)}.ask-chain-step.is-miss .ask-chain-dot{border-color:var(--c-danger)}.ask-chain-step.is-wait .ask-chain-dot{border-color:var(--c-warning);background:linear-gradient(90deg,var(--c-warning) 50%,transparent 50%)}.ask-chain-step.is-wait .ask-chain-state{color:var(--c-warning)}.ask-chain-step.is-off{color:var(--c-text-muted)}.ask-chain-step.is-off .ask-chain-dot{border-style:dashed}.ask-chain-hint{margin-bottom:var(--s-2)}.ask-tally i{font-style:normal}.floating-wrapper kbd{display:inline-flex;align-items:center;min-width:18px;height:18px;padding:0 4px;border:1px solid var(--c-border-base);border-bottom-width:2px;border-radius:var(--r-xs);background:var(--c-bg-subtle);font-family:var(--font-mono);font-size:var(--font-xs);color:var(--c-text-secondary)}.ai-explanation p{color:var(--c-text-secondary);font-size:12px;line-height:1.6}.ai-explanation .explanation-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-pair{padding:10px 0;border-top:1px solid var(--c-border-base)}.ai-explanation .explanation-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;max-height:380px;overflow:auto;margin:6px 0 12px}.ai-explanation .explanation-image{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-image img{max-width:100%;max-height:120px;object-fit:contain}.ai-explanation textarea{width:100%;resize:vertical}', ".question-tool{display:flex;flex-direction:column;gap:var(--s-3);height:100%}.qt-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4)}.qt-strategy{display:inline-flex;align-items:center;gap:var(--s-3);font-size:var(--font-sm)}.qt-strategy-label{color:var(--c-text-secondary)}.qt-radio{display:inline-flex;align-items:center;gap:4px;cursor:pointer}.qt-stats{font-size:var(--font-sm);color:var(--c-text-muted)}.qt-stats b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.qt-stats .qt-stat-error{color:var(--c-danger)}.qt-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;min-height:360px;border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.qt-textarea{width:100%;min-height:100%;padding:var(--s-3);border:0;border-right:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-family:var(--font-mono);font-size:var(--font-sm);line-height:1.7;resize:none}.qt-textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--c-primary-soft)}.qt-preview{margin:0;padding:0 var(--s-3);list-style:none;overflow:auto;background:var(--c-bg-subtle)}.qt-empty{padding:var(--s-8) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-row{display:flex;flex-direction:column;gap:4px;padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-base);font-size:var(--font-sm)}.qt-row-head{display:flex;align-items:center;gap:var(--s-2)}.qt-title-no{min-width:20px;font-weight:var(--fw-semibold);color:var(--c-text-muted)}.qt-status{margin-left:auto;color:var(--c-text-muted)}.qt-row.is-create .qt-status{color:var(--c-success)}.qt-row.is-overwrite .qt-status{color:var(--c-warning)}.qt-row.is-error .qt-status{color:var(--c-danger);font-weight:var(--fw-medium)}.qt-question{margin:0;color:var(--c-text-primary);line-height:1.6;overflow-wrap:anywhere}.qt-options{display:flex;flex-wrap:wrap;gap:2px var(--s-3);color:var(--c-text-secondary)}.qt-options .is-true{color:var(--c-primary);font-weight:var(--fw-medium)}.qt-answer{margin:0;color:var(--c-text-secondary)}.qt-error{margin:0;padding-left:16px;color:var(--c-danger)}@container panel (max-width: 719px){.qt-grid{grid-template-columns:1fr}.qt-textarea{min-height:220px;border-right:0;border-bottom:1px solid var(--c-border-base)}}", ".log-page{display:flex;flex-direction:column;gap:var(--s-2)}.log-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);padding-bottom:var(--s-2);border-bottom:1px solid var(--c-border-base)}.log-count{font-size:var(--font-sm);color:var(--c-text-muted)}.log-list{margin:0;padding:0;list-style:none}.log-row{display:grid;grid-template-columns:148px 52px minmax(0,1fr);align-items:baseline;gap:var(--s-3);padding:6px 0;border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.log-time{color:var(--c-text-muted)}.log-level{display:inline-flex;align-items:center;gap:5px;color:var(--c-text-secondary)}.log-level i{width:6px;height:6px;border-radius:50%;background:var(--c-text-disabled)}.log-row-success .log-level i{background:var(--c-success)}.log-row-warning .log-level{color:var(--c-warning)}.log-row-warning .log-level i{background:var(--c-warning)}.log-row-error .log-level{color:var(--c-danger)}.log-row-error .log-level i{background:var(--c-danger)}.log-msg{min-width:0;color:var(--c-text-primary);line-height:1.5;overflow-wrap:anywhere}.log-empty{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.log-row{grid-template-columns:52px minmax(0,1fr)}.log-time{grid-column:1 / -1}}", ".lib-area{grid-template-rows:auto minmax(0,1fr) auto}.lib-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-3);padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--c-border-base)}.lib-search{display:flex;align-items:center;gap:6px;flex:1 1 220px;min-width:0;height:var(--control-h);padding:0 var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.lib-search:focus-within{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.lib-search svg{flex:none;width:15px;height:15px}.lib-search input{flex:1;min-width:0;height:100%;border:0;outline:none;background:transparent;color:var(--c-text-primary)}.lib-search-state{font-size:var(--font-xs);white-space:nowrap}.lib-chips{display:flex;flex-wrap:wrap;gap:4px}.lib-chip{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 var(--s-2);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary)}.lib-chip:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.lib-chip.is-on{border-color:var(--c-text-primary);background:var(--c-text-primary);color:var(--c-text-inverse)}.lib-chip.is-scope{border-style:dashed;border-color:var(--c-primary);color:var(--c-primary)}.lib-chip.is-scope.is-on{border-style:solid;background:var(--c-primary);border-color:var(--c-primary);color:var(--c-on-primary)}.lib-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,1fr);min-height:0}.lib-list{padding:var(--s-1) 0}.lib-row{margin:0 var(--s-1)}.lib-row-main{display:grid;grid-template-columns:52px minmax(0,1fr);gap:1px var(--s-2);width:100%;padding:7px var(--s-2);border:0;border-radius:var(--r-sm);background:none;text-align:left}.lib-row-main:hover{background:var(--c-bg-hover)}.lib-row.is-current>.lib-row-main{background:var(--c-bg-selected)}.lib-row-type{grid-row:span 2;padding-top:1px;font-size:var(--font-xs);color:var(--c-text-muted)}.lib-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-primary)}.lib-row-answer{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-muted)}.lib-row-inline{display:none}.lib-more{display:flex;width:calc(100% - 16px);margin:var(--s-2) var(--s-2) var(--s-3)}.lib-pane{padding:var(--s-4) var(--s-6) var(--s-6);border-left:1px solid var(--c-border-base)}.lib-pane-empty{margin:var(--s-8) 0;text-align:center;color:var(--c-text-muted)}@container panel (max-width: 719px){.lib-split{grid-template-columns:1fr}.lib-pane{display:none}.lib-row.is-current .lib-row-inline{display:block;padding:var(--s-2) var(--s-3) var(--s-4) calc(52px + var(--s-4))}}.lib-detail-head{display:flex;align-items:center;gap:var(--s-1);margin-bottom:var(--s-3)}.lib-detail-spacer{flex:1}.lib-detail-stem img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.lib-detail-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;overflow-wrap:anywhere}.lib-detail-sub{margin-bottom:var(--s-3)}.lib-detail-sub-title{margin-bottom:6px;font-weight:var(--fw-medium)}.lib-detail-answer{margin-top:var(--s-5)}.lib-detail-answer-list{display:flex;flex-wrap:wrap;gap:4px}.lib-answer-chip{padding:2px var(--s-2);border-radius:var(--r-xs);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-medium)}.floating-wrapper .highlight{padding:0 1px;border-radius:2px;background:var(--c-warning-soft);color:inherit}.lib-empty{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);padding:var(--s-10) var(--s-6);text-align:center;color:var(--c-text-muted)}.lib-empty p{margin:0;font-weight:var(--fw-medium);color:var(--c-text-primary)}.lib-empty span{max-width:320px;font-size:var(--font-sm)}.lib-empty-icon{width:28px;height:28px}.lib-count{font-size:var(--font-sm);color:var(--c-text-muted)}.lib-count b{color:var(--c-text-primary);font-weight:var(--fw-semibold)}.lib-uploading{margin-left:var(--s-2);color:var(--c-primary)}.lib-file-input{display:none}.lib-menu{min-width:240px}.lib-drop{position:absolute;inset:var(--s-2);z-index:var(--z-overlay);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-2);border:2px dashed var(--c-primary);border-radius:var(--r-md);background:color-mix(in srgb,var(--c-bg-base) 88%,transparent);color:var(--c-primary);pointer-events:none}.lib-drop svg{width:28px;height:28px}.lib-drop p{margin:0;font-weight:var(--fw-medium)}.lib-area .area-sheet-body .question-tool{padding:var(--s-4)}", ".settings-area{grid-template-columns:200px minmax(0,1fr)}.settings-nav{display:flex;flex-direction:column;gap:1px;padding:var(--s-3) var(--s-2);border-right:1px solid var(--c-border-base);background:var(--c-bg-subtle)}.settings-search{flex:none;margin-bottom:var(--s-2)}.settings-nav-item{display:flex;align-items:center;gap:var(--s-2);height:30px;padding:0 var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left}.settings-nav-item svg{flex:none;width:16px;height:16px;color:var(--c-text-muted)}.settings-nav-item span{flex:1}.settings-nav-item:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.settings-nav-item.is-active{background:var(--c-bg-surface);color:var(--c-text-primary);font-weight:var(--fw-medium);box-shadow:inset 0 0 0 1px var(--c-border-base)}.settings-nav-item.is-active svg{color:var(--c-primary)}.settings-nav-chevron{display:none}.settings-nav-empty{margin:var(--s-3) var(--s-2);font-size:var(--font-sm);color:var(--c-text-muted)}.settings-pane{padding:var(--s-5) var(--s-6) var(--s-8)}.settings-back{display:none;margin:0 0 var(--s-2) -6px}.settings-pane-head{margin-bottom:var(--s-3)}.settings-pane-head h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.settings-pane-head p{margin:2px 0 0;font-size:var(--font-sm);color:var(--c-text-muted)}.settings-group-title{margin-top:var(--s-6);padding-bottom:var(--s-1);border-bottom:1px solid var(--c-border-base)}.settings-pane-head+.settings-group-title{margin-top:var(--s-2)}.settings-notice-body{font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.settings-notice-body img{max-width:100%;height:auto}@container panel (max-width: 719px){.settings-area{grid-template-columns:1fr}.settings-nav{border-right:0;background:var(--c-bg-base);padding:var(--s-3) var(--s-3)}.settings-nav-item{height:40px;border-bottom:1px solid var(--c-border-subtle);border-radius:0}.settings-nav-item.is-active{background:none;box-shadow:none;font-weight:var(--fw-regular)}.settings-nav-chevron{display:block}.settings-area.is-drilled .settings-nav{display:none}.settings-area:not(.is-drilled) .settings-pane{display:none}.settings-back{display:inline-flex}.settings-pane{padding:var(--s-3) var(--s-4) var(--s-6)}}" ].join("\n"), Mf = "__aiAskHookedXHRSend", installXHRHook = (e, t) => {
+  }), Of = [ '.floating-wrapper{--c-primary: #1672b8;--c-primary-hover: #12659f;--c-primary-active: #0f5789;--c-primary-soft: rgba(22, 114, 184, .09);--c-primary-ring: rgba(22, 114, 184, .28);--c-on-primary: #ffffff;--c-success: #1d8549;--c-success-soft: rgba(29, 133, 73, .1);--c-warning: #a86200;--c-warning-soft: rgba(214, 135, 0, .12);--c-danger: #c93030;--c-danger-soft: rgba(201, 48, 48, .08);--c-info: #1672b8;--c-info-soft: rgba(22, 114, 184, .09);--c-bg-base: #ffffff;--c-bg-surface: #ffffff;--c-bg-subtle: #f6f7f9;--c-bg-hover: #f0f1f4;--c-bg-selected: rgba(22, 114, 184, .08);--c-bg-inverse: #1d2129;--c-text-primary: #1d2129;--c-text-secondary: #4b5260;--c-text-muted: #6b7280;--c-text-disabled: #a9aeb7;--c-text-inverse: #ffffff;--c-border-subtle: #edeef1;--c-border-base: #e1e3e8;--c-border-strong: #c9ccd3;--s-1: 4px;--s-2: 8px;--s-3: 10px;--s-4: 12px;--s-5: 16px;--s-6: 20px;--s-8: 24px;--s-10: 32px;--r-xs: 4px;--r-sm: 6px;--r-md: 8px;--r-lg: 12px;--r-full: 9999px;--shadow-1: none;--shadow-2: 0 1px 2px rgba(20, 24, 33, .06);--shadow-3: 0 8px 24px -6px rgba(20, 24, 33, .16), 0 2px 6px rgba(20, 24, 33, .06);--shadow-4: 0 18px 48px -12px rgba(20, 24, 33, .28), 0 4px 12px rgba(20, 24, 33, .08);--font-xs: 11px;--font-sm: 12px;--font-base: 13px;--font-md: 14px;--font-lg: 15px;--font-xl: 18px;--fw-regular: 400;--fw-medium: 500;--fw-semibold: 600;--font-numeric: tabular-nums;--font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", "Helvetica Neue", Arial, sans-serif;--font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;--row-h: 32px;--control-h: 28px;--control-h-sm: 24px;--ease-out: cubic-bezier(.16, 1, .3, 1);--ease-spring: cubic-bezier(.22, 1, .36, 1);--dur-fast: .12s;--dur-base: .18s;--dur-slow: .26s;--z-base: 1;--z-sticky: 10;--z-overlay: 20;--z-modal: 30;--z-toast: 40;--z-tooltip: 50;color:var(--c-text-primary);color-scheme:light;font-family:var(--font-sans);font-size:var(--font-base);line-height:1.5;text-align:left}.floating-wrapper[data-theme=dark]{color-scheme:dark;--c-primary: #4da3e6;--c-primary-hover: #6cb4eb;--c-primary-active: #3a92d6;--c-primary-soft: rgba(77, 163, 230, .14);--c-primary-ring: rgba(77, 163, 230, .36);--c-on-primary: #08131c;--c-success: #4cc27e;--c-success-soft: rgba(76, 194, 126, .14);--c-warning: #e8a73c;--c-warning-soft: rgba(232, 167, 60, .15);--c-danger: #f0716b;--c-danger-soft: rgba(240, 113, 107, .14);--c-info: #4da3e6;--c-info-soft: rgba(77, 163, 230, .14);--c-bg-base: #18191c;--c-bg-surface: #18191c;--c-bg-subtle: #1f2024;--c-bg-hover: #26282d;--c-bg-selected: rgba(77, 163, 230, .13);--c-bg-inverse: #e6e7ea;--c-text-primary: #e6e7ea;--c-text-secondary: #b4b8c0;--c-text-muted: #8d929b;--c-text-disabled: #565a62;--c-text-inverse: #18191c;--c-border-subtle: #24262a;--c-border-base: #2d3035;--c-border-strong: #3b3f46;--shadow-2: 0 1px 2px rgba(0, 0, 0, .4);--shadow-3: 0 8px 24px -6px rgba(0, 0, 0, .6), 0 0 0 1px rgba(255, 255, 255, .04);--shadow-4: 0 18px 48px -12px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .06)}.floating-wrapper:not([data-theme]){visibility:hidden}.floating-wrapper,.floating-wrapper *{box-sizing:border-box}:where(.floating-wrapper) :where(button,input,select,textarea){font:inherit;color:inherit}:where(.floating-wrapper) :where(button){cursor:pointer}:where(.floating-wrapper) :where(button:disabled){cursor:not-allowed}.floating-wrapper ::selection{background:var(--c-primary-ring);color:var(--c-text-primary)}.floating-wrapper input,.floating-wrapper textarea{caret-color:var(--c-primary);accent-color:var(--c-primary)}.floating-wrapper :focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:1px}.floating-wrapper a{color:var(--c-primary);text-underline-offset:2px}.custom-scroll,.floating-wrapper .scroll{scrollbar-width:thin;scrollbar-color:var(--c-border-strong) transparent}.custom-scroll::-webkit-scrollbar,.floating-wrapper .scroll::-webkit-scrollbar{width:8px;height:8px}.custom-scroll::-webkit-scrollbar-thumb,.floating-wrapper .scroll::-webkit-scrollbar-thumb{background:var(--c-border-strong);border-radius:8px;border:2px solid transparent;background-clip:content-box}.custom-scroll::-webkit-scrollbar-thumb:hover,.floating-wrapper .scroll::-webkit-scrollbar-thumb:hover{background-color:var(--c-text-muted)}.floating-wrapper *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.num{font-variant-numeric:tabular-nums}.flex-grow{flex:1}.icon-inline{display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:middle;position:relative;top:-.05em}.aah-card{background:var(--c-bg-surface);border-radius:var(--r-md);border:1px solid var(--c-border-base);padding:var(--s-4)}.aah-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:var(--control-h);padding:0 var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.aah-btn:hover:enabled{background:var(--c-bg-hover);border-color:var(--c-border-strong)}.aah-btn:active:enabled{background:var(--c-border-subtle)}.aah-btn:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-btn svg{flex:none;width:15px;height:15px}.aah-btn-primary{background:var(--c-primary);color:var(--c-on-primary);border-color:var(--c-primary)}.aah-btn-primary:hover:enabled{background:var(--c-primary-hover);border-color:var(--c-primary-hover)}.aah-btn-primary:active:enabled{background:var(--c-primary-active)}.aah-btn-primary:disabled{background:var(--c-primary-soft);border-color:transparent;color:var(--c-text-disabled)}.aah-btn-plain{background:transparent;border-color:transparent;color:var(--c-text-secondary)}.aah-btn-plain:hover:enabled{background:var(--c-bg-hover);border-color:transparent;color:var(--c-text-primary)}.aah-btn-small{height:var(--control-h-sm);padding:0 var(--s-2);font-size:var(--font-sm);border-radius:var(--r-xs)}.aah-btn-icon{width:var(--control-h);padding:0}.aah-btn-small.aah-btn-icon{width:var(--control-h-sm)}.aah-btn-danger{color:var(--c-danger)}.aah-btn-danger:hover:enabled{background:var(--c-danger-soft);border-color:var(--c-danger)}.aah-btn-danger-solid{background:var(--c-danger);border-color:var(--c-danger);color:#fff}.aah-btn-danger-solid:hover:enabled{filter:brightness(.94);background:var(--c-danger);border-color:var(--c-danger)}.aah-tag{display:inline-flex;align-items:center;gap:var(--s-1);height:20px;padding:0 6px;border-radius:var(--r-xs);font-size:var(--font-sm);font-weight:var(--fw-medium);line-height:1;white-space:nowrap;color:var(--c-text-secondary);background:var(--c-bg-subtle);border:1px solid var(--c-border-base)}button.aah-tag:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.aah-tag-primary{background:var(--c-primary-soft);color:var(--c-primary);border-color:transparent}.aah-tag-success{background:var(--c-success-soft);color:var(--c-success);border-color:transparent}.aah-tag-warning{background:var(--c-warning-soft);color:var(--c-warning);border-color:transparent}.aah-tag-danger{background:var(--c-danger-soft);color:var(--c-danger);border-color:transparent}.aah-input,.aah-select{width:100%;min-height:var(--control-h);padding:4px var(--s-3);border-radius:var(--r-sm);border:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.aah-input::placeholder,.floating-wrapper textarea::placeholder,.floating-wrapper input::placeholder{color:var(--c-text-muted)}.aah-input:hover:enabled,.aah-select:hover:enabled{border-color:var(--c-border-strong)}.aah-input:focus,.aah-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.aah-input:disabled,.aah-select:disabled{color:var(--c-text-disabled);background:var(--c-bg-subtle)}.aah-input.recording{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-ring)}.aah-select{cursor:pointer}.aah-alert{display:flex;align-items:flex-start;gap:var(--s-2);padding:var(--s-2) var(--s-3);border-radius:var(--r-sm);font-size:var(--font-sm);line-height:1.6;color:var(--c-text-primary);background:var(--c-bg-subtle)}.aah-alert-info{background:var(--c-info-soft)}.aah-alert-success{background:var(--c-success-soft)}.aah-alert-warning{background:var(--c-warning-soft)}.aah-alert-danger{background:var(--c-danger-soft)}.aah-alert-warning svg{color:var(--c-warning)}.aah-alert-danger svg{color:var(--c-danger)}.aah-alert-info svg{color:var(--c-info)}.aah-section-title{display:flex;align-items:center;gap:6px;margin:0 0 var(--s-2);font-size:var(--font-sm);font-weight:var(--fw-semibold);color:var(--c-text-secondary)}.aah-section-title svg{width:14px;height:14px;color:var(--c-text-muted)}.aah-menu{position:absolute;z-index:var(--z-overlay);min-width:200px;padding:var(--s-1);background:var(--c-bg-surface);border:1px solid var(--c-border-base);border-radius:var(--r-md);box-shadow:var(--shadow-3)}.aah-menu-item{display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:100%;padding:6px var(--s-3);border:0;border-radius:var(--r-xs);background:none;text-align:left;color:var(--c-text-primary)}.aah-menu-item:hover{background:var(--c-bg-hover)}.aah-menu-item small{color:var(--c-text-muted);font-size:var(--font-xs)}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}.aah-slider{width:100%;accent-color:var(--c-primary)}.radio-group{display:flex;gap:var(--s-3)}.radio-item{display:inline-flex;align-items:center;gap:var(--s-1);cursor:pointer}.floating-wrapper[data-theme=dark] .aah-btn-danger-solid{color:#1f0b0a}.floating-wrapper[data-theme=dark] :is(.panel-body,.notice-full) img:not(.panel-avatar,.user-page__avatar){padding:2px;border-radius:var(--r-xs);background-color:#fff}', '.floating-wrapper{position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:999999}.el_wrapper>.floating-wrapper,.el_wrapper>div,.el_wrapper>div>div{pointer-events:none;z-index:999999!important}.floating-dialog{position:fixed;display:flex;flex-direction:column;height:min(720px,calc(100vh - 80px));max-width:calc(100vw - 32px);pointer-events:auto!important;overflow:hidden;background:var(--c-bg-base);border:1px solid var(--c-border-base);border-radius:var(--r-lg);box-shadow:var(--shadow-4);container:panel / inline-size;z-index:999999}.panel-head{display:flex;align-items:center;gap:var(--s-2);height:44px;flex:none;padding:0 var(--s-2) 0 var(--s-4);cursor:move;-webkit-user-select:none;user-select:none}.panel-brand{display:flex;align-items:center;gap:7px;min-width:0;flex:none}.panel-brand img{width:18px;height:18px;border-radius:4px}.panel-name{font-size:var(--font-md);font-weight:var(--fw-semibold);letter-spacing:-.01em;white-space:nowrap}.panel-version{font-size:var(--font-xs);color:var(--c-text-muted)}.panel-status{display:inline-flex;align-items:center;gap:5px;height:22px;padding:0 8px;margin-left:var(--s-1);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary);white-space:nowrap}.panel-status:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.panel-status.is-run{color:var(--c-primary);border-color:var(--c-primary-ring);background:var(--c-primary-soft)}.panel-status.is-done{color:var(--c-success)}.panel-status.is-idle{color:var(--c-text-muted)}.panel-spacer{flex:1}.panel-actions{display:flex;align-items:center;gap:2px;flex:none}.panel-tool,.panel-account,.panel-icon-btn{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--c-text-secondary);white-space:nowrap;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.panel-tool:hover,.panel-account:hover,.panel-icon-btn:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.panel-tool svg,.panel-icon-btn svg{width:16px;height:16px}.panel-tool.is-on{background:var(--c-primary-soft);color:var(--c-primary)}.panel-icon-btn{width:28px;padding:0;justify-content:center}.panel-avatar{width:20px;height:20px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.panel-account-name{max-width:96px;overflow:hidden;text-overflow:ellipsis;color:var(--c-text-primary)}.panel-account-score{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 639px){.panel-version,.panel-tool-label,.panel-account-name{display:none}.panel-tool{width:28px;padding:0;justify-content:center}}@container panel (max-width: 519px){.panel-account-score{display:none}}.notice-bar{flex:none;margin:0 var(--s-3) var(--s-2);border-radius:var(--r-sm);background:var(--c-bg-subtle)}.notice-row{display:flex;align-items:center;gap:var(--s-2);height:32px;padding:0 4px 0 var(--s-3)}.notice-icon{flex:none;width:15px;height:15px;color:var(--c-primary)}.notice-text{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.notice-full{max-height:180px;overflow:auto;padding:0 var(--s-3) var(--s-3) 33px;font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.notice-full img{max-width:100%;height:auto}.panel-nav{display:flex;gap:var(--s-1);flex:none;padding:0 var(--s-3);border-bottom:1px solid var(--c-border-base)}.panel-nav-item{position:relative;display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 var(--s-2);border:0;background:none;color:var(--c-text-muted);font-size:var(--font-md);font-weight:var(--fw-medium)}.panel-nav-item:hover{color:var(--c-text-primary)}.panel-nav-item:after{content:"";position:absolute;left:var(--s-2);right:var(--s-2);bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:transparent;transition:background-color var(--dur-base) var(--ease-out)}.panel-nav-item.is-active{color:var(--c-text-primary)}.panel-nav-item.is-active:after{background:var(--c-primary)}.panel-nav-count{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.panel-body{position:relative;flex:1 1 auto;min-height:0}.area{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;min-height:0}.area .scroll{min-height:0;overflow:auto;overscroll-behavior:contain}.area-foot{display:flex;align-items:center;gap:var(--s-2);min-height:48px;padding:var(--s-2) var(--s-3) var(--s-2) var(--s-4);border-top:1px solid var(--c-border-base);background:var(--c-bg-base)}.area-foot-spacer{flex:1}.area-foot-pop,.lib-menu-wrap{position:relative}.area-foot-pop .aah-menu,.lib-menu-wrap .aah-menu{right:0;bottom:calc(100% + 6px)}.search-sheet,.area-sheet{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-overlay);display:flex;flex-direction:column;background:var(--c-bg-base);animation:sheet-in var(--dur-slow) var(--ease-out)}.search-sheet-head,.area-sheet-head{display:flex;align-items:center;gap:var(--s-2);flex:none;height:44px;padding:0 var(--s-2) 0 var(--s-4);border-bottom:1px solid var(--c-border-subtle)}.area-sheet-head{padding-left:var(--s-2)}.search-sheet-head h2,.area-sheet-head h2{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.search-sheet-hint{flex:1;font-size:var(--font-sm);color:var(--c-text-muted)}.search-sheet-body,.area-sheet-body{flex:1;min-height:0;overflow:auto}@keyframes sheet-in{0%{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}.floating-resize-handle{position:absolute;right:2px;bottom:2px;z-index:var(--z-overlay);width:14px;height:14px;cursor:nwse-resize;-webkit-user-select:none;user-select:none;background-image:linear-gradient(135deg,transparent 45%,var(--c-border-strong) 45%,var(--c-border-strong) 55%,transparent 55%),linear-gradient(135deg,transparent 70%,var(--c-border-strong) 70%,var(--c-border-strong) 80%,transparent 80%);opacity:.8}.floating-resize-handle:hover{opacity:1}.mini-ball-dock{position:fixed;right:20px;bottom:20px;z-index:9999999;display:flex;align-items:center;gap:var(--s-3);pointer-events:none}.mini-ball,.mini-bubble{pointer-events:auto}.mini-ball{--p: 0;position:relative;display:grid;place-items:center;width:56px;height:56px;padding:0;border:0;border-radius:50%;background:transparent;transition:transform var(--dur-base) var(--ease-out)}.mini-ball:hover{transform:translateY(-2px)}.mini-ball img{width:52px;height:52px;filter:drop-shadow(0 2px 6px rgba(20,24,33,.25))}.mini-ball.has-progress:before{content:"";position:absolute;top:-3px;right:-3px;bottom:-3px;left:-3px;border-radius:50%;background:conic-gradient(var(--c-primary) calc(var(--p) * 1%),rgba(20,24,33,.18) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px))}.mini-ball-value{position:absolute;left:50%;bottom:-10px;transform:translate(-50%);padding:0 6px;border-radius:var(--r-full);background:var(--c-bg-surface);box-shadow:var(--shadow-3);font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:16px;color:var(--c-text-primary);white-space:nowrap}.mini-ball-value small{font-size:var(--font-xs);font-weight:var(--fw-regular);color:var(--c-text-muted)}.mini-ball-badge{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--r-full);border:2px solid var(--c-bg-surface);background:var(--c-danger);color:#fff;font-size:var(--font-xs);font-weight:var(--fw-semibold);line-height:14px}.mini-bubble{display:flex;flex-direction:column;gap:2px;max-width:240px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-md);background:var(--c-bg-surface);box-shadow:var(--shadow-3);text-align:left;font-size:var(--font-sm);color:var(--c-text-secondary);animation:sheet-in var(--dur-slow) var(--ease-out)}.mini-bubble strong{font-size:var(--font-base);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.mini-bubble:hover{border-color:var(--c-border-strong)}.panel-kbd{margin-left:2px}@container panel (max-width: 639px){.panel-tool .panel-kbd{display:none}}', ".modal-mask{position:fixed;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-4);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .modal-mask{background:#00000080}.modal-panel{display:flex;flex-direction:column;width:min(600px,100%);max-height:100%;border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.modal-header{display:flex;align-items:center;justify-content:space-between;flex:none;height:48px;padding:0 var(--s-2) 0 var(--s-5);border-bottom:1px solid var(--c-border-subtle)}.modal-header h3{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.modal-body{display:flex;flex-direction:column;gap:var(--s-4);padding:var(--s-4) var(--s-5);overflow-y:auto}.modal-footer{display:flex;justify-content:flex-end;gap:var(--s-2);flex:none;padding:var(--s-3) var(--s-5);border-top:1px solid var(--c-border-subtle)}.modal-panel-large{width:min(760px,100%)}.form-row{display:flex;flex-direction:column;gap:6px}.form-row label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.form-row label small{margin-left:6px;font-weight:var(--fw-regular);color:var(--c-text-muted)}.option-list{display:flex;flex-direction:column;gap:6px}.option-row{display:flex;align-items:center;gap:var(--s-2)}.option-selector{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--control-h);height:var(--control-h);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);font-weight:var(--fw-semibold);transition:background-color var(--dur-fast) var(--ease-out),border-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.option-selector:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.option-selector.active{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary)}.reading-form-section+.reading-form-section{padding-top:var(--s-4);border-top:1px solid var(--c-border-base)}.reading-section-header{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.reading-section-icon{width:16px;height:16px;color:var(--c-text-muted)}.reading-section-header h4{flex:1;margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.reading-sub-questions-editor{display:flex;flex-direction:column}.reading-sub-question-editor{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.reading-sub-question-header{display:flex;align-items:center;gap:var(--s-2)}.reading-sub-question-number{min-width:22px;font-size:var(--font-md);font-weight:var(--fw-semibold);font-variant-numeric:tabular-nums}.reading-base-select-small{width:auto;min-width:120px}.reading-answer-list{display:flex;flex-direction:column;gap:6px}.reading-answer-row{display:flex;align-items:center;gap:var(--s-2)}.confirm-layer{position:absolute;top:0;right:0;bottom:0;left:0;z-index:var(--z-modal);display:grid;place-items:center;padding:var(--s-5);background:#14182147;animation:sheet-in var(--dur-base) var(--ease-out)}.floating-wrapper[data-theme=dark] .confirm-layer{background:#00000080}.confirm-box{width:min(360px,100%);padding:var(--s-5);border:1px solid var(--c-border-base);border-radius:var(--r-lg);background:var(--c-bg-surface);box-shadow:var(--shadow-4)}.confirm-box h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.confirm-box p{margin:var(--s-2) 0 0;font-size:var(--font-base);line-height:1.6;color:var(--c-text-secondary)}.confirm-actions{display:flex;justify-content:flex-end;gap:var(--s-2);margin-top:var(--s-5)}", ".hljs{display:block;overflow-x:auto;padding:var(--s-3);border-radius:var(--r-sm);font-family:ui-monospace,SF Mono,Consolas,monospace;font-size:var(--font-sm);line-height:1.5}.floating-wrapper:not([data-theme=dark]) .hljs{background:#f6f8fa;color:#24292f;box-shadow:var(--shadow-1)}.floating-wrapper:not([data-theme=dark]) .hljs-keyword,.floating-wrapper:not([data-theme=dark]) .hljs-selector-tag,.floating-wrapper:not([data-theme=dark]) .hljs-built_in{color:#cf222e}.floating-wrapper:not([data-theme=dark]) .hljs-string,.floating-wrapper:not([data-theme=dark]) .hljs-attr{color:#0a3069}.floating-wrapper:not([data-theme=dark]) .hljs-number,.floating-wrapper:not([data-theme=dark]) .hljs-literal{color:#0550ae}.floating-wrapper:not([data-theme=dark]) .hljs-comment{color:#6e7781;font-style:italic}.floating-wrapper:not([data-theme=dark]) .hljs-title,.floating-wrapper:not([data-theme=dark]) .hljs-name{color:#8250df}.floating-wrapper[data-theme=dark] .hljs{background:#1f1f23;color:#f0f6fc;box-shadow:var(--shadow-1)}.floating-wrapper[data-theme=dark] .hljs-keyword,.floating-wrapper[data-theme=dark] .hljs-selector-tag,.floating-wrapper[data-theme=dark] .hljs-built_in{color:#ff7b72}.floating-wrapper[data-theme=dark] .hljs-string,.floating-wrapper[data-theme=dark] .hljs-attr{color:#a5d6ff}.floating-wrapper[data-theme=dark] .hljs-number,.floating-wrapper[data-theme=dark] .hljs-literal{color:#79c0ff}.floating-wrapper[data-theme=dark] .hljs-comment{color:#8b949e;font-style:italic}.floating-wrapper[data-theme=dark] .hljs-title,.floating-wrapper[data-theme=dark] .hljs-name{color:#d2a8ff}", ".segmented{display:inline-flex;padding:2px;gap:2px;background:var(--c-bg-base);border:1px solid var(--c-border-subtle);border-radius:var(--r-sm)}.segment-item{padding:var(--s-1) var(--s-3);border:none;border-radius:calc(var(--r-sm) - 2px);background:transparent;color:var(--c-text-muted);font-size:var(--font-sm);font-weight:var(--fw-medium);cursor:pointer;transition:background-color var(--dur-fast) var(--ease-out),color var(--dur-fast) var(--ease-out)}.segment-item.active{background:var(--c-bg-surface);color:var(--c-primary);box-shadow:var(--shadow-1)}.segment-item:focus-visible{outline:2px solid var(--c-primary-ring);outline-offset:2px}", '.switch{position:relative;display:inline-block;width:32px;height:18px;flex:none;cursor:pointer}.switch.disabled{cursor:not-allowed;opacity:.5}.switch input{position:absolute;opacity:0;width:0;height:0}.switch-slider{position:absolute;top:0;right:0;bottom:0;left:0;background:var(--c-border-strong);border-radius:var(--r-full);transition:background-color var(--dur-base) var(--ease-out)}.switch-slider:before{content:"";position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;box-shadow:0 1px 2px #14182133;transition:transform var(--dur-base) var(--ease-spring)}.switch input:checked+.switch-slider{background:var(--c-primary)}.switch input:checked+.switch-slider:before{transform:translate(14px)}.switch input:focus-visible+.switch-slider{box-shadow:0 0 0 3px var(--c-primary-ring)}', '.settings-rows{display:flex;flex-direction:column}.config-item{padding:12px 0;border-bottom:1px solid var(--c-border-subtle)}.config-item:last-child{border-bottom:0}.config-item-content{display:flex;justify-content:space-between;align-items:center;gap:16px}.config-label{display:flex;align-items:flex-start;gap:8px;flex:1;min-width:0}.label-wrapper{display:flex;flex-direction:column;gap:2px}.label-text{font-size:var(--font-base);font-weight:var(--fw-medium);color:var(--c-text-primary)}.label-desc{font-size:var(--font-sm);color:var(--c-text-muted);line-height:1.5;white-space:pre-line}.settings-range{min-width:220px}.settings-range .aah-slider{width:150px}.settings-range .num{min-width:56px;text-align:right;color:var(--c-text-secondary);font-size:var(--font-sm)}.config-control{display:flex;align-items:center;flex-shrink:0;gap:10px;flex-wrap:wrap;justify-content:flex-end}.checkbox-group{display:flex;flex-wrap:wrap;gap:10px}.alert-icon{flex:none;width:16px;height:16px}.base-input,.base-select{min-width:180px;min-height:var(--control-h);padding:4px 10px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);font-size:var(--font-base);transition:border-color .2s ease,box-shadow .2s ease}.base-input:focus,.base-select:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.base-select{min-width:160px}.checkbox-item{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:var(--r-sm);background:var(--c-bg-subtle);border:1px solid var(--c-border-subtle)}.hotkey-input-wrapper{position:relative;display:inline-flex;align-items:center;gap:8px}.hotkey-input-wrapper .hotkey-hint{font-size:var(--font-sm);color:var(--c-text-muted);background:var(--c-bg-subtle);padding:2px 8px;border-radius:var(--r-xs)}.hotkey-input-wrapper .hotkey-hint.danger{color:var(--c-danger);background:var(--c-danger-soft)}.hotkey-input-wrapper .base-input.recording{border-color:var(--c-danger);box-shadow:0 0 0 3px var(--c-danger-soft)}.hotkey-input-wrapper .base-input{cursor:pointer}.ai-config-panel{container-type:inline-size;container-name:aipanel;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-panel .aah-card{padding:0;border:0;border-radius:0;background:none}.ai-config-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2);flex-wrap:wrap}.ai-config-section-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-config-section-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard{display:flex;flex-direction:column;gap:var(--s-4)}.ai-wizard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--s-2)}.ai-wizard-head h4{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-head p{margin:2px 0 0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-count{color:var(--c-text-muted);font-size:var(--font-sm);font-variant-numeric:tabular-nums}.ai-wizard-steps{display:flex;align-items:center;gap:var(--s-5);margin:0;padding:0 0 var(--s-3);list-style:none;border-bottom:1px solid var(--c-border-base);color:var(--c-text-muted);font-size:var(--font-sm)}.ai-wizard-steps li{position:relative;display:flex;align-items:center;gap:6px}.ai-wizard-steps li+li:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ai-wizard-dot{width:8px;height:8px;border-radius:var(--r-full);border:1.5px solid var(--c-text-disabled)}.ai-wizard-steps li.done .ai-wizard-dot{border-color:var(--c-success);background:var(--c-success)}.ai-wizard-steps li.current{color:var(--c-text-primary);font-weight:var(--fw-medium)}.ai-wizard-steps li.current .ai-wizard-dot{border-color:var(--c-primary);background:var(--c-primary)}.ai-wizard-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-wizard-subject{margin:0;font-size:var(--font-md);font-weight:var(--fw-semibold)}.ai-wizard-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-card-pick{width:100%;text-align:left;cursor:pointer;font:inherit;color:inherit}.ai-config-card-pick:hover{background:var(--c-bg-hover)}.ai-config-card-tags{display:flex;align-items:center;gap:4px;flex-wrap:wrap}.ai-config-channel-list{display:flex;flex-direction:column;gap:1px}.ai-config-channel-item{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:var(--s-2);min-height:40px;padding:6px var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left;cursor:pointer}.ai-config-channel-item:hover{background:var(--c-bg-hover)}.ai-config-channel-item.active{background:var(--c-bg-selected);color:var(--c-text-primary)}.ai-config-channel-item.orphan{opacity:.6}.ai-config-channel-text{min-width:0;display:flex;flex-direction:column;gap:1px}.ai-config-channel-text strong,.ai-config-channel-text small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-config-channel-text strong{font-weight:var(--fw-medium)}.ai-config-channel-text small{color:var(--c-text-muted);font-size:var(--font-xs)}.ai-config-channel-grid{display:flex;flex-direction:column;border-top:1px solid var(--c-border-subtle)}.ai-config-card{display:flex;flex-direction:column;gap:6px;padding:var(--s-3) var(--s-2);border:0;border-bottom:1px solid var(--c-border-subtle);border-radius:0;background:none}.ai-config-card.recommended{background:var(--c-bg-selected)}.ai-config-card-head{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap;font-weight:var(--fw-medium)}.ai-config-card-promo{margin:0;color:var(--c-text-muted);font-size:var(--font-sm)}.ai-config-card-actions,.ai-config-instance-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-instance-remove{align-self:flex-start}@container aipanel (min-width: 560px){.ai-config-channel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--s-4)}}@container aipanel (min-width: 820px){.ai-config-channel-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}.ai-config-manager{display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-side{min-width:0;display:flex;flex-direction:column;gap:var(--s-4)}.ai-config-list-panel,.ai-config-global,.ai-config-detail{min-width:0;display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-global{padding-top:var(--s-3);border-top:1px solid var(--c-border-base)}.ai-config-side-actions{display:flex;align-items:center;gap:var(--s-2);flex-wrap:wrap}.ai-config-inline-action{padding:0;border:none;background:none;color:var(--c-primary);font:inherit;font-weight:var(--fw-medium);cursor:pointer;text-decoration:underline;text-underline-offset:2px}.ai-config-collapse{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);padding:0;border:none;background:none;color:var(--c-text-primary);font:inherit;font-weight:var(--fw-semibold);cursor:pointer}.ai-config-global-body{display:flex;flex-direction:column;gap:var(--s-3)}.ai-config-detail-empty{min-height:200px;align-items:center;justify-content:center;text-align:center}.ai-config-empty-icon{width:28px;height:28px;color:var(--c-text-muted)}.ai-config-add-modal{width:min(760px,100%)}@container aipanel (min-width: 720px){.ai-config-manager{display:grid;grid-template-columns:minmax(200px,240px) minmax(0,1fr);gap:0;align-items:start}.ai-config-side{padding-right:var(--s-4)}.ai-config-detail{min-height:100%;padding-left:var(--s-5);border-left:1px solid var(--c-border-base)}}.ai-config-delete-modal{width:min(420px,100%)}.ai-config-delete-text{margin:0;color:var(--c-text-secondary);line-height:1.6}.ai-config-field{min-width:0;display:flex;flex-direction:column;gap:6px}.ai-config-field span{color:var(--c-text-secondary);font-size:var(--font-sm);font-weight:var(--fw-medium)}.ai-config-field-help{margin:0;color:var(--c-text-muted);font-size:var(--font-sm);line-height:1.55}.ai-config-field-help a{margin-left:var(--s-1);color:var(--c-primary);font-weight:var(--fw-medium);text-decoration:none}.ai-config-field-help a:hover{text-decoration:underline}@container panel (max-width: 519px){.config-item-content{flex-direction:column;align-items:flex-start}.config-control{width:100%;justify-content:flex-start}}', '.user-page{display:flex;flex-direction:column;gap:var(--s-4);max-width:560px}.user-page__tabs{display:flex;gap:var(--s-4);border-bottom:1px solid var(--c-border-base)}.user-page__tab{position:relative;height:32px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.user-page__tab:hover,.user-page__tab.is-active{color:var(--c-text-primary)}.user-page__tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.user-page__form{display:flex;flex-direction:column;gap:var(--s-3)}.user-page__field{display:flex;flex-direction:column;gap:4px}.user-page__field>span{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.user-page__form-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4);margin-top:var(--s-1)}.user-page__form-actions .aah-btn{min-width:96px}.user-page__helper{font-size:var(--font-sm);color:var(--c-text-muted)}.user-page__link-btn{padding:0;border:0;background:none;color:var(--c-primary);font-size:inherit}.user-page__link-btn:hover{text-decoration:underline;text-underline-offset:2px}.user-page__avatar{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;color:var(--c-text-muted)}.user-page__score{margin-left:6px;font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.user-page__apikey{margin-top:4px;font-family:var(--font-mono);font-size:var(--font-sm);color:var(--c-text-secondary);word-break:break-all}.user-page__tips{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}', '.ai-workbench{display:flex;flex-direction:column;min-height:100%}.ai-tabs{display:flex;align-items:center;gap:var(--s-4);padding:0 var(--s-3) 0 var(--s-4);border-bottom:1px solid var(--c-border-base)}.ai-tab{position:relative;height:36px;padding:0;border:0;background:none;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ai-tab:hover,.ai-tab.is-active{color:var(--c-text-primary)}.ai-tab.is-active:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;border-radius:2px 2px 0 0;background:var(--c-primary)}.ai-tabs-spacer{flex:1}.ai-status{display:inline-flex;align-items:center;gap:6px;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-secondary)}.ai-status i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--c-success)}.ai-status.is-warning i{background:var(--c-warning)}.ai-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);flex:1;min-height:0}.ai-input{display:flex;flex-direction:column;gap:var(--s-3);padding:var(--s-4);border-right:1px solid var(--c-border-base)}.ai-field-label{font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary)}.ai-textarea{width:100%;min-height:160px;padding:var(--s-2) var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-primary);line-height:1.6;resize:vertical}.ai-textarea:focus{outline:none;border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.ai-field-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-command-row{display:flex;gap:var(--s-2)}.ai-service-details{margin-top:auto;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-service-details summary{cursor:pointer}.ai-service-details .copyright-content{margin-top:var(--s-2);line-height:1.7}.ai-result{min-width:0;padding:var(--s-4) var(--s-5) var(--s-6)}.ai-result-head{display:flex;align-items:center;gap:var(--s-2);margin-bottom:var(--s-3)}.ai-result-head .aah-section-title{margin:0}.ai-result-note{font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.ai-placeholder.is-loading{color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}.ai-markdown{font-size:var(--font-base);line-height:1.75;overflow-wrap:anywhere}.ai-result>.aah-alert{margin-bottom:var(--s-3);align-items:center}.official-options li{display:flex;gap:var(--s-2)}.official-result-list{margin:0;padding:0;list-style:none}.official-result-item{display:flex;flex-direction:column;gap:var(--s-2);padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-subtle)}.official-result-head{display:flex;align-items:center;gap:var(--s-2)}.official-result-num{font-weight:var(--fw-semibold);color:var(--c-text-muted)}.official-question{line-height:1.65;overflow-wrap:anywhere}.official-options{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none;font-size:var(--font-sm);color:var(--c-text-secondary)}.official-answer{display:flex;flex-wrap:wrap;align-items:center;gap:4px var(--s-2)}.official-answer-label{font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.ai-split{grid-template-columns:1fr}.ai-input{border-right:0;border-bottom:1px solid var(--c-border-base)}.ai-status{display:none}}', '.ask-area{grid-template-columns:minmax(240px,300px) 1fr;grid-template-rows:minmax(0,1fr) auto;grid-template-areas:"list detail" "foot foot"}.ask-area.is-empty{grid-template-columns:1fr;grid-template-rows:1fr;grid-template-areas:"detail"}.ask-list{grid-area:list}.ask-detail{grid-area:detail}.ask-strip{display:none}.ask-area>.area-foot{grid-area:foot}@container panel (max-width: 719px){.ask-area{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;grid-template-areas:"strip" "detail" "foot"}.ask-list{display:none}.ask-strip{display:block;grid-area:strip}}.status-glyph{flex:none;display:block}.status-glyph.is-todo{color:var(--c-text-disabled)}.status-glyph.is-run{color:var(--c-primary)}.status-glyph.is-done{color:var(--c-success)}.status-glyph.is-none{color:var(--c-danger)}.status-glyph.is-wait{color:var(--c-warning)}.status-glyph-arc{transform-origin:7px 7px;animation:glyph-spin .9s linear infinite}@keyframes glyph-spin{to{transform:rotate(360deg)}}.ask-list{margin:0;padding:var(--s-1) 0;list-style:none;border-right:1px solid var(--c-border-base)}.ask-row{display:grid;grid-template-columns:22px 14px minmax(0,1fr) auto;align-items:center;gap:var(--s-2);height:var(--row-h);margin:0 var(--s-1);padding:0 var(--s-2);border-radius:var(--r-sm);cursor:pointer}.ask-row:hover{background:var(--c-bg-hover)}.ask-row.is-current{background:var(--c-bg-selected)}.ask-row-num{font-size:var(--font-sm);color:var(--c-text-muted)}.ask-row.is-current .ask-row-num{color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-secondary)}.ask-row.is-current .ask-row-stem{color:var(--c-text-primary)}.ask-row.is-todo .ask-row-stem{color:var(--c-text-muted)}.ask-row-src{max-width:84px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-xs);color:var(--c-text-muted)}.ask-row.is-none .ask-row-src{color:var(--c-danger)}.ask-row.is-wait .ask-row-src{color:var(--c-warning)}.ask-strip{max-height:166px;overflow:auto;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 14px),transparent);padding:var(--s-2) var(--s-4) var(--s-3);border-bottom:1px solid var(--c-border-base)}.ask-strip summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-size:var(--font-sm);font-weight:var(--fw-medium);color:var(--c-text-secondary);list-style:none}.ask-strip summary::-webkit-details-marker{display:none}.ask-strip-meta{font-weight:var(--fw-regular);color:var(--c-text-muted)}.ask-cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:4px;margin-top:var(--s-2)}.ask-cell{display:inline-flex;align-items:center;justify-content:center;gap:3px;height:26px;padding:0;border:1px solid var(--c-border-subtle);border-radius:var(--r-xs);background:var(--c-bg-surface);font-size:var(--font-xs);color:var(--c-text-secondary)}.ask-cell:hover{border-color:var(--c-border-strong)}.ask-cell.is-current{border-color:var(--c-primary);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-semibold)}.ask-detail{padding:var(--s-4) var(--s-6) var(--s-6)}.ask-detail-head{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);margin-bottom:var(--s-4)}.ask-detail-num{font-size:var(--font-xl);font-weight:var(--fw-semibold);letter-spacing:-.02em;line-height:1}.ask-detail-state{display:inline-flex;align-items:center;gap:5px;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-detail-state.is-none{color:var(--c-danger)}.ask-detail-state.is-wait{color:var(--c-warning)}.ask-detail-actions{display:inline-flex;gap:var(--s-1);margin-left:auto}.ask-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-stem img,.ask-option-text img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.reading-passage{max-height:220px;overflow:auto;padding:var(--s-3);border-radius:var(--r-sm);background:var(--c-bg-subtle);font-size:var(--font-base)}.ask-sub{margin-top:var(--s-4)}.ask-sub-title{margin-bottom:var(--s-2);font-weight:var(--fw-medium)}.ask-option{display:flex;align-items:flex-start;gap:var(--s-2);padding:7px var(--s-3);margin-bottom:4px;border:1px solid var(--c-border-base);border-radius:var(--r-sm);line-height:1.55;overflow-wrap:anywhere}.ask-option-key{flex:none;width:14px;color:var(--c-text-muted);font-weight:var(--fw-medium)}.ask-option-text{flex:1;min-width:0}.ask-option.is-hit{border-color:var(--c-primary);background:var(--c-bg-selected)}.ask-option.is-hit .ask-option-key{color:var(--c-primary)}.ask-option-check{flex:none;width:16px;height:16px;margin-top:2px;color:var(--c-primary)}.ask-match-table{width:100%;margin-top:var(--s-2);border-collapse:collapse}.ask-match-table td{padding:6px var(--s-2);border-bottom:1px solid var(--c-border-subtle);vertical-align:middle}.ask-detail>.aah-alert{margin-top:var(--s-3)}.ask-preview{margin-top:var(--s-4);padding:var(--s-3) var(--s-4);border:1px dashed var(--c-warning);border-radius:var(--r-md);background:var(--c-warning-soft)}.ask-preview-head{display:flex;align-items:center;gap:6px;margin-bottom:var(--s-2)}.ask-preview-reason{font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-answer{font-size:var(--font-md);font-weight:var(--fw-semibold)}.ask-preview-note{margin:var(--s-2) 0;font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-preview-actions{display:flex;gap:var(--s-2)}.ask-sources,.ask-ai{margin-top:var(--s-6)}.ask-source-table{border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.ask-source-row{display:grid;grid-template-columns:minmax(92px,auto) minmax(0,1fr) auto;align-items:baseline;gap:var(--s-3);padding:8px var(--s-3);border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.ask-source-row:last-child{border-bottom:0}.ask-source-row.is-used{background:var(--c-bg-selected)}.ask-source-name{display:inline-flex;align-items:center;gap:6px;font-weight:var(--fw-medium);color:var(--c-text-primary);white-space:nowrap}.ask-source-name .aah-tag{height:18px;font-size:var(--font-xs)}.ask-source-answer{min-width:0;color:var(--c-text-primary);overflow-wrap:anywhere}.ask-source-answer .aah-btn{margin-left:var(--s-2)}.ask-source-miss{color:var(--c-text-muted)}.ask-source-time{font-size:var(--font-xs);color:var(--c-text-muted)}.ask-source-empty{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.answer-field-html+.answer-field-html{margin-top:2px}.answer-field-html p{margin:0}.ask-ai-streaming{margin-left:var(--s-1);font-weight:var(--fw-regular);color:var(--c-primary);animation:streaming-pulse 1.4s ease-in-out infinite}@keyframes streaming-pulse{50%{opacity:.45}}.ai-answer-markdown{font-size:var(--font-base);color:var(--c-text-primary);line-height:1.7}.ask-empty{grid-area:detail;align-self:center;justify-self:center;max-width:420px;padding:var(--s-8);color:var(--c-text-secondary)}.ask-empty-icon{width:32px;height:32px;color:var(--c-text-muted)}.ask-empty h2{margin:var(--s-3) 0 var(--s-1);font-size:var(--font-lg);font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-empty p{margin:0 0 var(--s-3)}.ask-empty ul{margin:0 0 var(--s-5);padding-left:18px;font-size:var(--font-sm);line-height:1.9;color:var(--c-text-muted)}.ask-empty-actions{display:flex;gap:var(--s-2)}.ask-empty-types{margin-top:var(--s-4);font-size:var(--font-sm);color:var(--c-text-secondary)}.ask-tally{display:flex;flex-wrap:wrap;gap:4px var(--s-4);font-size:var(--font-sm);color:var(--c-text-muted)}.ask-tally span{display:inline-flex;align-items:center;gap:5px}.ask-tally b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.ask-tally .is-none b{color:var(--c-danger)}.ask-tally .is-wait b{color:var(--c-warning)}.ask-run-btn{min-width:104px}.ask-tips{width:320px;max-height:360px;padding:var(--s-3) var(--s-4);font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.ask-tips-forms{display:flex;flex-wrap:wrap;gap:4px;margin:var(--s-2) 0}.ask-tips summary{cursor:pointer;color:var(--c-text-primary)}@container panel (max-width: 599px){.ask-tally{flex-wrap:nowrap;gap:var(--s-3)}.ask-tally i{display:none}.ask-detail{padding:var(--s-3) var(--s-4) var(--s-5)}}.native-checkbox{display:inline-flex;align-items:center;gap:var(--s-1);font-size:var(--font-sm);color:var(--c-text-primary);cursor:pointer}.native-checkbox input{width:16px;height:16px;accent-color:var(--c-primary)}.ask-chain{display:flex;flex-wrap:wrap;gap:4px var(--s-5);margin:0 0 var(--s-2);padding:0;list-style:none;font-size:var(--font-sm)}.ask-chain-step{position:relative;display:inline-flex;align-items:center;gap:6px;color:var(--c-text-secondary)}.ask-chain-step+.ask-chain-step:before{content:"";position:absolute;left:calc(-1 * var(--s-5) + 4px);width:calc(var(--s-5) - 8px);height:1px;background:var(--c-border-strong)}.ask-chain-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--c-text-disabled);transition:background-color var(--dur-base) var(--ease-out),border-color var(--dur-base) var(--ease-out)}.ask-chain-state{color:var(--c-text-muted)}.ask-chain-step.is-run .ask-chain-dot{border-color:var(--c-primary);background:var(--c-primary-soft);animation:streaming-pulse 1.2s ease-in-out infinite}.ask-chain-step.is-run .ask-chain-state{color:var(--c-primary)}.ask-chain-step.is-hit .ask-chain-dot{border-color:var(--c-success);background:var(--c-success)}.ask-chain-step.is-hit .ask-chain-state{color:var(--c-success);font-weight:var(--fw-medium)}.ask-chain-step.is-miss .ask-chain-dot{border-color:var(--c-danger)}.ask-chain-step.is-wait .ask-chain-dot{border-color:var(--c-warning);background:linear-gradient(90deg,var(--c-warning) 50%,transparent 50%)}.ask-chain-step.is-wait .ask-chain-state{color:var(--c-warning)}.ask-chain-step.is-off{color:var(--c-text-muted)}.ask-chain-step.is-off .ask-chain-dot{border-style:dashed}.ask-chain-hint{margin-bottom:var(--s-2)}.ask-tally i{font-style:normal}.floating-wrapper kbd{display:inline-flex;align-items:center;min-width:18px;height:18px;padding:0 4px;border:1px solid var(--c-border-base);border-bottom-width:2px;border-radius:var(--r-xs);background:var(--c-bg-subtle);font-family:var(--font-mono);font-size:var(--font-xs);color:var(--c-text-secondary)}.ai-explanation p{color:var(--c-text-secondary);font-size:12px;line-height:1.6}.ai-explanation .explanation-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-pair{padding:10px 0;border-top:1px solid var(--c-border-base)}.ai-explanation .explanation-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;max-height:380px;overflow:auto;margin:6px 0 12px}.ai-explanation .explanation-image{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:8px 0}.ai-explanation .explanation-image img{max-width:100%;max-height:120px;object-fit:contain}.ai-explanation textarea{width:100%;resize:vertical}', ".question-tool{display:flex;flex-direction:column;gap:var(--s-3);height:100%}.qt-hint{margin:0;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-4)}.qt-strategy{display:inline-flex;align-items:center;gap:var(--s-3);font-size:var(--font-sm)}.qt-strategy-label{color:var(--c-text-secondary)}.qt-radio{display:inline-flex;align-items:center;gap:4px;cursor:pointer}.qt-stats{font-size:var(--font-sm);color:var(--c-text-muted)}.qt-stats b{font-weight:var(--fw-semibold);color:var(--c-text-primary)}.qt-stats .qt-stat-error{color:var(--c-danger)}.qt-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);flex:1;min-height:360px;border:1px solid var(--c-border-base);border-radius:var(--r-md);overflow:hidden}.qt-textarea{width:100%;min-height:100%;padding:var(--s-3);border:0;border-right:1px solid var(--c-border-base);background:var(--c-bg-surface);color:var(--c-text-primary);font-family:var(--font-mono);font-size:var(--font-sm);line-height:1.7;resize:none}.qt-textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--c-primary-soft)}.qt-preview{margin:0;padding:0 var(--s-3);list-style:none;overflow:auto;background:var(--c-bg-subtle)}.qt-empty{padding:var(--s-8) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}.qt-row{display:flex;flex-direction:column;gap:4px;padding:var(--s-3) 0;border-bottom:1px solid var(--c-border-base);font-size:var(--font-sm)}.qt-row-head{display:flex;align-items:center;gap:var(--s-2)}.qt-title-no{min-width:20px;font-weight:var(--fw-semibold);color:var(--c-text-muted)}.qt-status{margin-left:auto;color:var(--c-text-muted)}.qt-row.is-create .qt-status{color:var(--c-success)}.qt-row.is-overwrite .qt-status{color:var(--c-warning)}.qt-row.is-error .qt-status{color:var(--c-danger);font-weight:var(--fw-medium)}.qt-question{margin:0;color:var(--c-text-primary);line-height:1.6;overflow-wrap:anywhere}.qt-options{display:flex;flex-wrap:wrap;gap:2px var(--s-3);color:var(--c-text-secondary)}.qt-options .is-true{color:var(--c-primary);font-weight:var(--fw-medium)}.qt-answer{margin:0;color:var(--c-text-secondary)}.qt-error{margin:0;padding-left:16px;color:var(--c-danger)}@container panel (max-width: 719px){.qt-grid{grid-template-columns:1fr}.qt-textarea{min-height:220px;border-right:0;border-bottom:1px solid var(--c-border-base)}}", ".log-page{display:flex;flex-direction:column;gap:var(--s-2)}.log-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s-2);padding-bottom:var(--s-2);border-bottom:1px solid var(--c-border-base)}.log-count{font-size:var(--font-sm);color:var(--c-text-muted)}.log-list{margin:0;padding:0;list-style:none}.log-row{display:grid;grid-template-columns:148px 52px minmax(0,1fr);align-items:baseline;gap:var(--s-3);padding:6px 0;border-bottom:1px solid var(--c-border-subtle);font-size:var(--font-sm)}.log-time{color:var(--c-text-muted)}.log-level{display:inline-flex;align-items:center;gap:5px;color:var(--c-text-secondary)}.log-level i{width:6px;height:6px;border-radius:50%;background:var(--c-text-disabled)}.log-row-success .log-level i{background:var(--c-success)}.log-row-warning .log-level{color:var(--c-warning)}.log-row-warning .log-level i{background:var(--c-warning)}.log-row-error .log-level{color:var(--c-danger)}.log-row-error .log-level i{background:var(--c-danger)}.log-msg{min-width:0;color:var(--c-text-primary);line-height:1.5;overflow-wrap:anywhere}.log-empty{margin:var(--s-6) 0;text-align:center;font-size:var(--font-sm);color:var(--c-text-muted)}@container panel (max-width: 719px){.log-row{grid-template-columns:52px minmax(0,1fr)}.log-time{grid-column:1 / -1}}", ".lib-area{grid-template-rows:auto minmax(0,1fr) auto}.lib-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s-2) var(--s-3);padding:var(--s-3) var(--s-4);border-bottom:1px solid var(--c-border-base)}.lib-search{display:flex;align-items:center;gap:6px;flex:1 1 220px;min-width:0;height:var(--control-h);padding:0 var(--s-3);border:1px solid var(--c-border-base);border-radius:var(--r-sm);background:var(--c-bg-surface);color:var(--c-text-muted);transition:border-color var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out)}.lib-search:focus-within{border-color:var(--c-primary);box-shadow:0 0 0 3px var(--c-primary-soft)}.lib-search svg{flex:none;width:15px;height:15px}.lib-search input{flex:1;min-width:0;height:100%;border:0;outline:none;background:transparent;color:var(--c-text-primary)}.lib-search-state{font-size:var(--font-xs);white-space:nowrap}.lib-chips{display:flex;flex-wrap:wrap;gap:4px}.lib-chip{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 var(--s-2);border:1px solid var(--c-border-base);border-radius:var(--r-full);background:var(--c-bg-surface);font-size:var(--font-sm);color:var(--c-text-secondary)}.lib-chip:hover{border-color:var(--c-border-strong);color:var(--c-text-primary)}.lib-chip.is-on{border-color:var(--c-text-primary);background:var(--c-text-primary);color:var(--c-text-inverse)}.lib-chip.is-scope{border-style:dashed;border-color:var(--c-primary);color:var(--c-primary)}.lib-chip.is-scope.is-on{border-style:solid;background:var(--c-primary);border-color:var(--c-primary);color:var(--c-on-primary)}.lib-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,1fr);min-height:0}.lib-list{padding:var(--s-1) 0}.lib-row{margin:0 var(--s-1)}.lib-row-main{display:grid;grid-template-columns:52px minmax(0,1fr);gap:1px var(--s-2);width:100%;padding:7px var(--s-2);border:0;border-radius:var(--r-sm);background:none;text-align:left}.lib-row-main:hover{background:var(--c-bg-hover)}.lib-row.is-current>.lib-row-main{background:var(--c-bg-selected)}.lib-row-type{grid-row:span 2;padding-top:1px;font-size:var(--font-xs);color:var(--c-text-muted)}.lib-row-stem{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--c-text-primary)}.lib-row-answer{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--font-sm);color:var(--c-text-muted)}.lib-row-inline{display:none}.lib-more{display:flex;width:calc(100% - 16px);margin:var(--s-2) var(--s-2) var(--s-3)}.lib-pane{padding:var(--s-4) var(--s-6) var(--s-6);border-left:1px solid var(--c-border-base)}.lib-pane-empty{margin:var(--s-8) 0;text-align:center;color:var(--c-text-muted)}@container panel (max-width: 719px){.lib-split{grid-template-columns:1fr}.lib-pane{display:none}.lib-row.is-current .lib-row-inline{display:block;padding:var(--s-2) var(--s-3) var(--s-4) calc(52px + var(--s-4))}}.lib-detail-head{display:flex;align-items:center;gap:var(--s-1);margin-bottom:var(--s-3)}.lib-detail-spacer{flex:1}.lib-detail-stem img{max-width:100%;height:auto;vertical-align:middle;border-radius:var(--r-xs)}.lib-detail-stem{margin-bottom:var(--s-3);font-size:var(--font-md);line-height:1.7;overflow-wrap:anywhere}.lib-detail-sub{margin-bottom:var(--s-3)}.lib-detail-sub-title{margin-bottom:6px;font-weight:var(--fw-medium)}.lib-detail-answer{margin-top:var(--s-5)}.lib-detail-answer-list{display:flex;flex-wrap:wrap;gap:4px}.lib-answer-chip{padding:2px var(--s-2);border-radius:var(--r-xs);background:var(--c-bg-selected);color:var(--c-primary);font-weight:var(--fw-medium)}.floating-wrapper .highlight{padding:0 1px;border-radius:2px;background:var(--c-warning-soft);color:inherit}.lib-empty{display:flex;flex-direction:column;align-items:center;gap:var(--s-2);padding:var(--s-10) var(--s-6);text-align:center;color:var(--c-text-muted)}.lib-empty p{margin:0;font-weight:var(--fw-medium);color:var(--c-text-primary)}.lib-empty span{max-width:320px;font-size:var(--font-sm)}.lib-empty-icon{width:28px;height:28px}.lib-count{font-size:var(--font-sm);color:var(--c-text-muted)}.lib-count b{color:var(--c-text-primary);font-weight:var(--fw-semibold)}.lib-uploading{margin-left:var(--s-2);color:var(--c-primary)}.lib-file-input{display:none}.lib-menu{min-width:240px}.lib-drop{position:absolute;inset:var(--s-2);z-index:var(--z-overlay);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-2);border:2px dashed var(--c-primary);border-radius:var(--r-md);background:color-mix(in srgb,var(--c-bg-base) 88%,transparent);color:var(--c-primary);pointer-events:none}.lib-drop svg{width:28px;height:28px}.lib-drop p{margin:0;font-weight:var(--fw-medium)}.lib-area .area-sheet-body .question-tool{padding:var(--s-4)}", ".settings-area{grid-template-columns:200px minmax(0,1fr)}.settings-nav{display:flex;flex-direction:column;gap:1px;padding:var(--s-3) var(--s-2);border-right:1px solid var(--c-border-base);background:var(--c-bg-subtle)}.settings-search{flex:none;margin-bottom:var(--s-2)}.settings-nav-item{display:flex;align-items:center;gap:var(--s-2);height:30px;padding:0 var(--s-2);border:0;border-radius:var(--r-sm);background:none;color:var(--c-text-secondary);text-align:left}.settings-nav-item svg{flex:none;width:16px;height:16px;color:var(--c-text-muted)}.settings-nav-item span{flex:1}.settings-nav-item:hover{background:var(--c-bg-hover);color:var(--c-text-primary)}.settings-nav-item.is-active{background:var(--c-bg-surface);color:var(--c-text-primary);font-weight:var(--fw-medium);box-shadow:inset 0 0 0 1px var(--c-border-base)}.settings-nav-item.is-active svg{color:var(--c-primary)}.settings-nav-chevron{display:none}.settings-nav-empty{margin:var(--s-3) var(--s-2);font-size:var(--font-sm);color:var(--c-text-muted)}.settings-pane{padding:var(--s-5) var(--s-6) var(--s-8)}.settings-back{display:none;margin:0 0 var(--s-2) -6px}.settings-pane-head{margin-bottom:var(--s-3)}.settings-pane-head h2{margin:0;font-size:var(--font-lg);font-weight:var(--fw-semibold)}.settings-pane-head p{margin:2px 0 0;font-size:var(--font-sm);color:var(--c-text-muted)}.settings-group-title{margin-top:var(--s-6);padding-bottom:var(--s-1);border-bottom:1px solid var(--c-border-base)}.settings-pane-head+.settings-group-title{margin-top:var(--s-2)}.settings-notice-body{font-size:var(--font-sm);line-height:1.7;color:var(--c-text-secondary)}.settings-notice-body img{max-width:100%;height:auto}@container panel (max-width: 719px){.settings-area{grid-template-columns:1fr}.settings-nav{border-right:0;background:var(--c-bg-base);padding:var(--s-3) var(--s-3)}.settings-nav-item{height:40px;border-bottom:1px solid var(--c-border-subtle);border-radius:0}.settings-nav-item.is-active{background:none;box-shadow:none;font-weight:var(--fw-regular)}.settings-nav-chevron{display:block}.settings-area.is-drilled .settings-nav{display:none}.settings-area:not(.is-drilled) .settings-pane{display:none}.settings-back{display:inline-flex}.settings-pane{padding:var(--s-3) var(--s-4) var(--s-6)}}" ].join("\n"), jf = "__aiAskHookedXHRSend", installXHRHook = (e, t) => {
     const n = Object.getOwnPropertyDescriptor(e.prototype, "send"), a = (null == n ? void 0 : n.value) ?? e.prototype.send;
-    if ("function" == typeof (i = a) && true === i[Mf]) return false;
+    if ("function" == typeof (i = a) && true === i[jf]) return false;
     var i;
     if ("function" != typeof a) return false;
     if (false === (null == n ? void 0 : n.configurable) && false === n.writable) return false;
@@ -20097,7 +20127,7 @@
         t.call(this, this);
       })), r.call(this, e);
     };
-    return Object.defineProperty(hookedSend, Mf, {
+    return Object.defineProperty(hookedSend, jf, {
       value: true
     }), Object.defineProperty(e.prototype, "send", {
       configurable: false,
@@ -20215,9 +20245,9 @@
         }
       }
     }));
-  }, $f = [ "copy", "cut", "paste", "selectstart", "contextmenu" ], Hf = new Set([ "text", "password", "email", "search", "url", "tel", "number" ]), isTextControl = e => {
+  }, zf = [ "copy", "cut", "paste", "selectstart", "contextmenu" ], Df = new Set([ "text", "password", "email", "search", "url", "tel", "number" ]), isTextControl = e => {
     const t = null == e ? void 0 : e.nodeName;
-    return "TEXTAREA" === t || "INPUT" === t && Hf.has(e.type);
+    return "TEXTAREA" === t || "INPUT" === t && Df.has(e.type);
   };
 
   (e => {
@@ -20229,7 +20259,7 @@
 
   const loadVue = () => {
     var e;
-    const t = pinia.createPinia(), n = vue.createApp(Pf);
+    const t = pinia.createPinia(), n = vue.createApp(Hf);
     n.use(t);
     const a = document.createElement("div"), i = document.createElement("div");
     i.id = "AiAskApp", ((e, t) => {
@@ -20240,7 +20270,7 @@
       } catch {
         return false;
       }
-    })(window, Kn.iframe) ? (i.id = "AiAskAppTop", null == (e = window.top) || e.document.body.appendChild(a)) : document.body.append(a);
+    })(window, Jn.iframe) ? (i.id = "AiAskAppTop", null == (e = window.top) || e.document.body.appendChild(a)) : document.body.append(a);
     const r = a.attachShadow({
       mode: "closed"
     });
@@ -20251,16 +20281,16 @@
       }, stopSelectionChange = n => {
         n.target === t && t.activeElement === e.host && isTextControl(e.activeElement) && n.stopPropagation();
       };
-      for (const a of $f) e.addEventListener(a, stopEditingEvent);
+      for (const a of zf) e.addEventListener(a, stopEditingEvent);
       return null == n || n.addEventListener("selectionchange", stopSelectionChange, true), 
       () => {
-        for (const t of $f) e.removeEventListener(t, stopEditingEvent);
+        for (const t of zf) e.removeEventListener(t, stopEditingEvent);
         null == n || n.removeEventListener("selectionchange", stopSelectionChange, true);
       };
     }(r);
     try {
       const e = document.createElement("style");
-      e.textContent = Lf, r.appendChild(e);
+      e.textContent = Of, r.appendChild(e);
     } catch (o) {
       console.error("\u5e94\u7528\u6837\u5f0f\u8868\u65f6\u51fa\u9519:", o);
     }
@@ -20271,20 +20301,20 @@
     };
   };
 
-  let Of = null, jf = false;
+  let Nf = null, Rf = false;
 
   const installHooks = () => {
-    jf || isPageClaimedByNewLine(document) || (jf = true, comHook(), Ln.filter((e => isRuleMatched(e) && e.hook)).forEach((e => {
+    Rf || isPageClaimedByNewLine(document) || (Rf = true, comHook(), On.filter((e => isRuleMatched(e) && e.hook)).forEach((e => {
       e.hook();
     })));
   }, run = () => {
     if (isPageClaimedByNewLine(document)) return;
-    if (Of) return;
+    if (Nf) return;
     var e;
     installHooks(), (e = document.createElement("iframe")).style.display = "none", document.body.appendChild(e), 
     window.console = e.contentWindow.console;
-    (K === K.top || [ /\/work\/doHomeWorkNew/i, /selectWorkQuestionYiPiYue/i, /page\/quiz\/stu\/answerQuestion2/i, /page\/active\/stuActiveList/i, /uooconline.com/i, /edu-edu.com/i, /hblearning\/exam\/portal\/exam.jsp/i ].some((e => e.test(location.href))) || Ln.some((e => "hook" !== e.type && isRuleMatched(e)))) && (Of = loadVue(), 
-    parseRule(Ln));
+    (K === K.top || [ /\/work\/doHomeWorkNew/i, /selectWorkQuestionYiPiYue/i, /page\/quiz\/stu\/answerQuestion2/i, /page\/active\/stuActiveList/i, /uooconline.com/i, /edu-edu.com/i, /hblearning\/exam\/portal\/exam.jsp/i ].some((e => e.test(location.href))) || On.some((e => "hook" !== e.type && isRuleMatched(e)))) && (Nf = loadVue(), 
+    parseRule(On));
   }, watchOwnership = () => {
     const e = ((e, t, n = ("undefined" == typeof MutationObserver ? void 0 : MutationObserver)) => {
       let a = isPageClaimedByNewLine(e);
@@ -20298,19 +20328,19 @@
       }));
       return s.observe(i, {
         attributes: true,
-        attributeFilter: [ wn ]
+        attributeFilter: [ qn ]
       }), () => {
         r = true, s.disconnect();
       };
     })(document, (e => {
       var t, n;
-      e ? Of && (null == (t = getAskStore()) || t.pause(), null == (n = null == getAiStore ? void 0 : getAiStore()) || n.cancelOperations(), 
-      Of.stopEditingProtection(), Of.app.unmount(), Of.main_root.remove(), Of = null) : run();
+      e ? Nf && (null == (t = getAskStore()) || t.pause(), null == (n = null == getAiStore ? void 0 : getAiStore()) || n.cancelOperations(), 
+      Nf.stopEditingProtection(), Nf.app.unmount(), Nf.main_root.remove(), Nf = null) : run();
     }));
     window.addEventListener("pagehide", (t => {
       var n, a;
       null == (n = getAskStore()) || n.pause(), null == (a = null == getAiStore ? void 0 : getAiStore()) || a.cancelOperations(), 
-      t.persisted || (e(), null == Of || Of.stopEditingProtection());
+      t.persisted || (e(), null == Nf || Nf.stopEditingProtection());
     }));
   };
 
